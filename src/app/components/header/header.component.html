@@ -1,0 +1,63 @@
+<header>
+  <div class="wrapper">
+    <i
+      class="add-btn"
+      nz-tooltip nzTooltipTitle="add a theme" nzTooltipPlacement="bottom"
+      nz-icon nzType="plus" nzTheme="outline"
+      (click)="addTheme()"
+    ></i>
+
+    <div>
+      <i
+        class="more-btn"
+        nz-icon nzType="more" nzTheme="outline"
+        nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
+      ></i>
+
+      <ng-container>
+        <nz-select
+          [ngModel]="themes.active"
+          nzShowSearch
+          nzServerSearch
+          (ngModelChange)="changeTheme($event)"
+          (nzScrollToBottom)="loadMore()"
+          nzOptionOverflowSize="7"
+          [nzDropdownRender]="renderTemplate"
+          (nzOnSearch)="searchTheme($event)"
+        >
+        <ng-container *ngFor="let item of themes.list">
+          <nz-option
+           *ngIf="!themes.isLoading"
+            [nzValue]="item"
+            [nzLabel]="item.name"
+          ></nz-option>
+        </ng-container>
+
+        <nz-option *ngIf="themes.isLoading" nzDisabled nzCustomContent>
+          <i nz-icon nzType="loading" nzTheme="outline"></i>
+        </nz-option>
+
+        </nz-select>
+        <ng-template #renderTemplate>
+          <i nz-icon nzType="loading" nzTheme="outline" *ngIf="loadMorePending"></i>
+        </ng-template>
+      </ng-container>
+
+    </div>
+    <button nz-button nzType="primary">Export</button>
+  </div>
+
+  <ng-template #input>
+    <input nz-input [(ngModel)]="modalInputValue" />
+  </ng-template>
+
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+      <li nz-menu-item (click)="renameTheme()">Rename</li>
+      <li nz-menu-item (click)="deleteTheme()">Delete</li>
+    </ul>
+  </nz-dropdown-menu>
+
+</header>
+
+

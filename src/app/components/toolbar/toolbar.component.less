@@ -1,0 +1,41 @@
+@import "../../../design-tokens";
+
+.toolbar {
+  padding: @space-sm;
+  text-align: center;
+
+  li {
+    margin-bottom: @space-xl;
+    cursor: pointer;
+    padding: 6px 0;
+    position: relative;
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: @color-primary;
+      border-radius: @border-radius-lg;
+      transition: all 0.3s;
+      transform: scale(0);
+    }
+    &.active:before {
+      transform: scale(1);
+    }
+  }
+
+  .icon {
+    z-index: 1;
+    position: relative;
+    &::ng-deep svg {
+      height: @icon-sm;
+      width: @icon-sm;
+      fill: @color-contrast-higher;
+      display: block;
+      margin: 0 auto;
+    }
+  }
+}
