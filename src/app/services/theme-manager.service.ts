@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, from } from 'rxjs';
+import { BehaviorSubject, from, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, switchMap, tap } from 'rxjs/operators';
 import { DBService, ThemeModel, ThemeTable } from './db.service';
 
@@ -8,14 +8,14 @@ export class ThemeManagerService {
   table: ThemeTable;
   isLoading = false;
   
-  private _active: ThemeModel = null;
+  private _selected: ThemeModel = null;
   
-  set active(theme: ThemeModel) {
-    this._active = theme;
+  set selected(theme: ThemeModel) {
+    this._selected = theme;
   }
   
-  get active() {
-    return this._active;
+  get selected() {
+    return this._selected;
   }
 
   private _list: ThemeModel[] = [];
@@ -29,10 +29,8 @@ export class ThemeManagerService {
   }
 
   private searchChange$ = new BehaviorSubject('');
-
-  private get isSearching() {
-    return Boolean(this.searchChange$.getValue());
-  }
+  private isSearching = false;
+  private canSearch = false;
 
   private readonly PAGE_SIZE = 8;
   private totalCount = 0;
@@ -49,6 +47,7 @@ export class ThemeManagerService {
     this.searchChange$.pipe(
       debounceTime(500),
       distinctUntilChanged(),
+      tap(value => this.isSearching = Boolean(value)),
       switchMap(themeName => this.getSearchResults(themeName))
     ).subscribe();
   }
@@ -56,10 +55,14 @@ export class ThemeManagerService {
   async loadList(limit = this.PAGE_SIZE) {
     this.list = await this.load({limit});
     this.totalCount = await this.table.count();
-    this.active = this.list[0]; // tmp
+    this.selected = this.list[0]; // tmp
   }
 
   search(themeName: string) {
+    if (!this.canSearch) {
+      this.canSearch = true;
+    }
+
     this.searchChange$.next(themeName);
   }
 
@@ -74,8 +77,7 @@ export class ThemeManagerService {
   }
 
   async load({offset = 0, limit = this.PAGE_SIZE} = {}) {
-    const collection = this.table.orderBy('id').reverse();
-    const query = collection.offset(offset).limit(limit)
+    const query = this.getCollection().offset(offset).limit(limit)
     let themes = await query.toArray();
   
     if (!themes.length) {
@@ -84,16 +86,15 @@ export class ThemeManagerService {
     }
     return themes;
   }
-
   
   async add(name = this.DEFAULT_THEME_NAME) {
     const theme = await this.addToDB(name);
     this.list = [theme, ...this.list];
-    this.active = theme;
+    this.selected = theme;
   }
-  
+
   async rename(name: string) {
-    const { id } = this.active;
+    const { id } = this.selected;
     await this.table.update(id, {name});
 
     const nextTheme = {id, name};
@@ -101,38 +102,8 @@ export class ThemeManagerService {
       prevTheme.id === id ? nextTheme : prevTheme
     ))
 
-    this.active = nextTheme;
     this.list = nextList;
-  }
-
-  private getSearchResults(value: string) {
-    console.log('getSearchResults')
-    const limit = !this.isSearching 
-      ? this.PAGE_SIZE * this.currentPage
-      : this.PAGE_SIZE;
-
-    this.isLoading = true;
-
-    const collection = this.table.orderBy('id').reverse().filter(theme => (
-      new RegExp(value, 'i').test(theme.name)
-    )).limit(limit);
-
-    return from(collection.toArray()).pipe(
-      tap(list => {
-        this.list = list;
-        this.list.map(theme => {
-          if (theme.id === this.active.id) {
-            this.active = theme;
-          }
-        })
-      }),
-      finalize(() => this.isLoading = false)
-    )
-  }
-
-  private async addToDB(name = this.DEFAULT_THEME_NAME) {
-    const id = await this.table.add({name});
-    return {id, name} as ThemeModel;
+    this.updateSelected();
   }
 
   async delete(id: number) {
@@ -143,21 +114,63 @@ export class ThemeManagerService {
     const prevTheme = this.list[themeIndex - 1];
 
     let nextThemeList = this.list.filter(theme => theme.id !== id);
-    let nextActiveTheme = null;
+    let nextSelectedTheme = null;
 
     if (nextTheme) {
-      nextActiveTheme = nextTheme;
+      nextSelectedTheme = nextTheme;
     } else if (prevTheme) {
-      nextActiveTheme = prevTheme;
+      nextSelectedTheme = prevTheme;
     }
 
-    if (!nextActiveTheme) {
+    if (!nextSelectedTheme) {
       const theme = await this.addToDB();
       nextThemeList = [theme];
-      nextActiveTheme = theme;
+      nextSelectedTheme = theme;
     }
 
     this.list = nextThemeList;
-    this.active = nextActiveTheme;
+    this.selected = nextSelectedTheme;
+  }
+
+  getSearchResults(value: string) {
+    if (!this.canSearch) {
+      return of();
+    }
+
+    const limit = !this.isSearching 
+      ? this.PAGE_SIZE * this.currentPage
+      : this.PAGE_SIZE;
+
+    this.isLoading = true;
+
+    const collection = this.getCollection().filter(theme => (
+      new RegExp(value, 'i').test(theme.name)
+    )).limit(limit);
+
+    return from(collection.toArray()).pipe(
+      tap(list => {
+        this.list = list;
+        this.updateSelected();
+      }),
+      finalize(() => this.isLoading = false)
+    )
+  }
+
+  private async addToDB(name = this.DEFAULT_THEME_NAME) {
+    const id = await this.table.add({name});
+    return {id, name} as ThemeModel;
+  }
+
+  private getCollection() {
+    return this.table.orderBy('id').reverse();
+  }
+
+  // without updating the selected theme, nz-select won't be able to mark an object of a new list as active
+  private updateSelected() {
+    this.list.map(theme => {
+      if (theme.id === this.selected.id) {
+        this.selected = theme;
+      }
+    })
   }
 }

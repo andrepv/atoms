@@ -10,7 +10,6 @@ import { ThemeModel } from '../../services/db.service';
 })
 export class HeaderComponent implements OnInit {
   modalInputValue = "";
-  private isDataSaving = false;
   loadMorePending = false;
 
   @ViewChild('input') inputEl: TemplateRef<any>;
@@ -28,60 +27,43 @@ export class HeaderComponent implements OnInit {
     this.modal.create({
       nzTitle: 'Enter a name for your theme',
       nzContent: this.inputEl,
-      nzOnOk: () => {
-        this.load(() => this.themes.add(this.modalInputValue))
-      },
-      nzOkLoading: this.isDataSaving,
+      nzOnOk: () => this.themes.add(this.modalInputValue),
     });
   }
 
   renameTheme() {
-    this.modalInputValue = this.themes.active.name;
+    this.modalInputValue = this.themes.selected.name;
 
     this.modal.create({
       nzTitle: 'Enter a new theme name',
       nzContent: this.inputEl,
-      nzOnOk: () => {
-        this.load(() => this.themes.rename(this.modalInputValue))
-      },
-      nzOkLoading: this.isDataSaving,
+      nzOnOk: () => this.themes.rename(this.modalInputValue),
     });
   }
 
-  changeTheme(theme: ThemeModel) {
-    this.themes.active = theme;
+  selectTheme(theme: ThemeModel) {
+    this.themes.selected = theme;
   }
 
   deleteTheme(): void {
-    const activeTheme = this.themes.active;
+    const {id} = this.themes.selected;
 
     this.modal.confirm({
       nzTitle: 'Are you sure delete this theme?',
       nzOkText: 'Yes',
       nzOkType: 'primary',
       nzOkDanger: true,
-      nzOnOk: () => this.load(() => this.themes.delete(activeTheme.id)),
+      nzOnOk: () => this.themes.delete(id),
       nzCancelText: 'No',
-      nzOkLoading: this.isDataSaving,
     });
   }
 
   async loadMore() {
     this.loadMorePending = true;
-    await this.themes.loadMore();
-    this.loadMorePending = false;
-  }
-
-  searchTheme(value: string) {
-    this.themes.search(value);
-  }
-
-  private async load(query: () => Promise<any>) {
-    this.isDataSaving = true;
     try {
-      await query();
+      await this.themes.loadMore();
     } finally {
-      this.isDataSaving = false
+      this.loadMorePending = false;
     }
   }
 }

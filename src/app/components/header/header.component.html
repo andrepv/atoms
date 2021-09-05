@@ -14,16 +14,23 @@
         nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
       ></i>
 
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item (click)="renameTheme()">Rename</li>
+          <li nz-menu-item (click)="deleteTheme()">Delete</li>
+        </ul>
+      </nz-dropdown-menu>
+
       <ng-container>
         <nz-select
-          [ngModel]="themes.active"
+          [ngModel]="themes.selected"
           nzShowSearch
           nzServerSearch
-          (ngModelChange)="changeTheme($event)"
+          (ngModelChange)="selectTheme($event)"
           (nzScrollToBottom)="loadMore()"
           nzOptionOverflowSize="7"
           [nzDropdownRender]="renderTemplate"
-          (nzOnSearch)="searchTheme($event)"
+          (nzOnSearch)="themes.search($event)"
         >
         <ng-container *ngFor="let item of themes.list">
           <nz-option
@@ -46,18 +53,8 @@
     </div>
     <button nz-button nzType="primary">Export</button>
   </div>
-
-  <ng-template #input>
-    <input nz-input [(ngModel)]="modalInputValue" />
-  </ng-template>
-
-  <nz-dropdown-menu #menu="nzDropdownMenu">
-    <ul nz-menu>
-      <li nz-menu-item (click)="renameTheme()">Rename</li>
-      <li nz-menu-item (click)="deleteTheme()">Delete</li>
-    </ul>
-  </nz-dropdown-menu>
-
 </header>
 
-
+<ng-template #input>
+  <input nz-input [(ngModel)]="modalInputValue" />
+</ng-template>
