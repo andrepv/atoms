@@ -32,7 +32,7 @@ export class ThemeManagerService {
   private isSearching = false;
   private canSearch = false;
 
-  private readonly PAGE_SIZE = 8;
+  private readonly PAGE_SIZE = 20;
   private totalCount = 0;
   private currentPage = 1;
   private get hasMorePages() {

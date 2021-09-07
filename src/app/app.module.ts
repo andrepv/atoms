@@ -25,6 +25,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 
 
 import { DBService } from './services/db.service';
@@ -32,6 +34,7 @@ import { ThemeManagerService } from './services/theme-manager.service';
 import { HeaderComponent } from './components/header/header.component';
 import { TypographyComponent } from './components/typography/typography.component';
 import { SpacingComponent } from './components/spacing/spacing.component';
+import { ExplorerComponent } from './components/explorer/explorer.component';
 
 registerLocaleData(en);
 
@@ -42,6 +45,7 @@ registerLocaleData(en);
     HeaderComponent,
     TypographyComponent,
     SpacingComponent,
+    ExplorerComponent,
   ],
   imports: [
     CommonModule,
@@ -58,7 +62,9 @@ registerLocaleData(en);
     NzSelectModule,
     NzButtonModule,
     NzInputModule,
-    NzModalModule
+    NzModalModule,
+    NzTypographyModule,
+    NzAnchorModule
   ],
   providers: [
     DBService,

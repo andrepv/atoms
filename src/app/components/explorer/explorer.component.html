@@ -1,0 +1,24 @@
+<div>
+  <div class="content">
+    <div class="content-wrapper">
+
+      <header>
+        <h4 nz-typography>{{ section.name }}</h4>
+      </header>
+
+      <div class="main">
+        <div *ngFor="let groups of section.content">
+          <h5 nz-typography>{{ groups.name }}</h5>
+          <nz-anchor [nzAffix]="false">
+            <nz-link
+              *ngFor="let group of groups.content"
+              [nzHref]="'#' + service.getAnchorLink(group)"
+              [nzTitle]="group.name"
+            ></nz-link>
+          </nz-anchor>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
