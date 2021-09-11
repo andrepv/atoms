@@ -35,6 +35,11 @@ import { HeaderComponent } from './components/header/header.component';
 import { TypographyComponent } from './components/typography/typography.component';
 import { SpacingComponent } from './components/spacing/spacing.component';
 import { ExplorerComponent } from './components/explorer/explorer.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
+import { TypefaceComponent } from './components/typeface/typeface.component';
+import { TypescaleComponent } from './components/typescale/typescale.component';
+import { GroupHeaderComponent } from './components/group-header/group-header.component';
+import { EditableTextComponent } from './components/editable-text/editable-text.component';
 
 registerLocaleData(en);
 
@@ -46,6 +51,11 @@ registerLocaleData(en);
     TypographyComponent,
     SpacingComponent,
     ExplorerComponent,
+    AutofocusDirective,
+    TypefaceComponent,
+    TypescaleComponent,
+    GroupHeaderComponent,
+    EditableTextComponent,
   ],
   imports: [
     CommonModule,

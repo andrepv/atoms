@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ExplorerService } from '../explorer/explorer.service';
+import { StoreService } from '../../services/store.service';
 
 @Component({
   selector: 'app-spacing',
@@ -8,10 +8,10 @@ import { ExplorerService } from '../explorer/explorer.service';
 })
 export class SpacingComponent implements OnInit {
 
-  constructor(public explorer: ExplorerService) { }
+  constructor(public store: StoreService) { }
 
   ngOnInit(): void {
-    this.explorer.section = {
+    this.store.section = {
       name: "Spacing",
       content: [
         {name: "Groups", content: []},

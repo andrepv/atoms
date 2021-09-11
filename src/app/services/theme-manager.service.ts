@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, from, of } from 'rxjs';
+import { BehaviorSubject, from, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, switchMap, tap } from 'rxjs/operators';
-import { DBService, ThemeModel, ThemeTable } from './db.service';
+import { db, ThemeModel, ThemeTable } from './db.service';
 
 @Injectable({providedIn: 'root'})
 export class ThemeManagerService {
@@ -9,9 +9,11 @@ export class ThemeManagerService {
   isLoading = false;
   
   private _selected: ThemeModel = null;
+  selected$ = new Subject<ThemeModel>();
   
   set selected(theme: ThemeModel) {
     this._selected = theme;
+    this.selected$.next(theme);
   }
   
   get selected() {
@@ -41,7 +43,7 @@ export class ThemeManagerService {
 
   private readonly DEFAULT_THEME_NAME = "new theme";
 
-  constructor(private db: DBService) {
+  constructor() {
     this.table = db.theme;
 
     this.searchChange$.pipe(

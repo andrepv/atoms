@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StoreService } from './services/store.service';
 import { ThemeManagerService } from './services/theme-manager.service';
 
 @Component({
@@ -11,13 +12,13 @@ export class AppComponent implements OnInit {
   title = 'ui-theme-builder';
   isLoading = false;
 
-  constructor(private themes: ThemeManagerService) {}
+  constructor(private store: StoreService) {}
   
   async ngOnInit() {
     this.isLoading = true;
 
     try {
-      await this.themes.loadList();
+      await this.store.loadTheme();
     } finally {
       this.isLoading = false
     }

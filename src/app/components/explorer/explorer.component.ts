@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ExplorerService} from './explorer.service';
+import { StoreService } from '../../services/store.service';
 
 @Component({
   selector: 'app-explorer',
@@ -7,11 +7,6 @@ import { ExplorerService} from './explorer.service';
   styleUrls: ['./explorer.component.less']
 })
 export class ExplorerComponent implements OnInit {
-  constructor(public service: ExplorerService) {}
-
-  get section() {
-    return this.service.section;
-  }
-
+  constructor(public store: StoreService) {}
   ngOnInit() {}
 }

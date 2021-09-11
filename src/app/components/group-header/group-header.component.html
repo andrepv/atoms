@@ -1,0 +1,29 @@
+<header>
+  <app-editable-text
+    #editableText
+    [text]="name"
+    (blur)="onBlur($event)"
+  ></app-editable-text>
+  
+  <!-- <ng-template #textTemplate let-text>
+    <h4>{{ text }}</h4>
+  </ng-template> -->
+
+  <i
+    nz-icon nzType="more" nzTheme="outline"
+    nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
+  ></i>
+
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+      <li
+        nz-menu-item
+        (click)="contentManager.deleteGroup(id)"
+      >Delete</li>
+      <li
+        nz-menu-item
+        (click)="editableText.makeEditable()"
+      >Rename</li>
+    </ul>
+  </nz-dropdown-menu>
+</header>

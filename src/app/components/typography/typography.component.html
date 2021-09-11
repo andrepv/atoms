@@ -1,15 +1,7 @@
-<h1>{{ section.name }}</h1>
-<p (click)="addGroup()">add group</p>
-<div *ngFor="let groups of section.content">
-  <h3>{{ groups.name }}</h3>
-  <div *ngFor="let group of groups.content">
-    <div [id]="explorer.getAnchorLink(group)" class="group">
-      <h4>{{ group.name }}</h4>
-      <div
-        *ngFor="let token of group.tokens"
-        class="token"
-      >{{ token.name }}</div>
-    </div>
-    </div>
-
+<div>
+  <h1>{{ PAGE_NAME }}</h1>
+  <div>
+    <app-typeface></app-typeface>
+    <app-typescale></app-typescale>
+  </div>
 </div>

@@ -2,13 +2,11 @@
   <ul>
     <li
       *ngFor="let item of items; index as i"
-      
       nz-tooltip
       [nzTooltipTitle]="item.name"
       nzTooltipPlacement="right"
       [routerLink]="item.url"
       routerLinkActive="active"
-      
     >
       <span class="icon" [inlineSVG]="item.icon"></span>
     </li>

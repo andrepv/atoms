@@ -1,0 +1,47 @@
+<div>
+  <header>
+    <h2>{{ sectionName }}</h2>
+    <p (click)="addGroup()">add group</p>
+  </header>
+
+  <div *ngFor="let group of groupList">
+    <div [id]="store.getAnchorLink(group)" class="group">
+      <app-group-header
+        [id]="group.id"
+        [name]="group.name"
+        [contentManager]="contentManager"
+      ></app-group-header>
+
+      <ul>
+        <li *ngFor="let token of group.tokens">
+          <app-editable-text
+            #editableText
+            [text]="token.name"
+            (blur)="renameToken($event, token, group.id)"
+          ></app-editable-text>
+
+          <i
+            nz-icon nzType="more" nzTheme="outline"
+            nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
+          ></i>
+
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+              <li
+                nz-menu-item
+                (click)="editableText.makeEditable()"
+              >Rename</li>
+              <li
+                nz-menu-item
+                (click)="contentManager.deleteToken(token.id, group.id)"
+              >Delete</li>
+            </ul>
+          </nz-dropdown-menu>
+
+        </li>
+      </ul>
+
+      <h4 (click)="addToken(group.id)">Add Token</h4>
+    </div>
+  </div>
+</div>
