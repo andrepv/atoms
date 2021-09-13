@@ -7,6 +7,8 @@ import { StoreService, Token } from './store.service';
 export class ContentManagerService<T extends Table, G extends Table> {
   isLoading = false;
   subscription: Subscription;
+  addTokenLoading = false;
+  addGroupLoading = false;
 
   get groupTable() {
     return this.tables.group;
@@ -62,10 +64,15 @@ export class ContentManagerService<T extends Table, G extends Table> {
   }
 
   async addToken<T>(token: TokenModel<T>, groupId: number) {
-    const newToken = await this.saveTokenToDB(token, groupId);
-    this.store.updateGroup(this.sectionName, groupId,
-      group => group.tokens.push(newToken)
-    );
+    this.addTokenLoading = true;
+    try {
+      const newToken = await this.saveTokenToDB(token, groupId);
+      this.store.updateGroup(this.sectionName, groupId,
+        group => group.tokens.push(newToken)
+      );
+    } finally {
+      this.addTokenLoading = false;
+    }
   }
 
   deleteToken(tokenId: number, groupId: number) {
@@ -102,9 +109,14 @@ export class ContentManagerService<T extends Table, G extends Table> {
   }
 
   async addGroup(group: TokenGroupModel) {
-    const groupId = await this.groupTable.add(group);
-    const newGroup = {id: groupId, name: group.name, tokens: []}
-    this.store.addGroup(this.sectionName, newGroup)
+    this.addGroupLoading = true;
+    try {
+      const groupId = await this.groupTable.add(group);
+      const newGroup = {id: groupId, name: group.name, tokens: []}
+      this.store.addGroup(this.sectionName, newGroup)
+    } finally {
+      this.addGroupLoading = false;
+    }
   }
 
   deleteGroup(groupId: number) {
@@ -116,7 +128,8 @@ export class ContentManagerService<T extends Table, G extends Table> {
       for (let tokenId of tokenIds) {
         await this.tokenTable.delete(tokenId);
       }
-    }).then(() => this.store.deleteGroup(this.sectionName, groupId));
+      this.store.deleteGroup(this.sectionName, groupId);
+    });
   }
 
   async renameGroup(groupName: string, groupId: number) {

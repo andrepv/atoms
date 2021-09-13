@@ -1,7 +1,14 @@
-<div>
+<div *ngIf="!contentManager.isLoading">
   <header>
     <h2>{{ sectionName }}</h2>
-    <p (click)="addGroup()">add group</p>
+    <p
+      *ngIf="!contentManager.addGroupLoading"
+      (click)="addGroup()"
+    >add group</p>
+    <i
+      *ngIf="contentManager.addGroupLoading"
+      nz-icon nzType="loading" nzTheme="outline"
+    ></i>
   </header>
 
   <div *ngFor="let group of groupList">
@@ -45,7 +52,16 @@
         </li>
       </ul>
 
-      <h4 (click)="addToken(group.id)">Add Token</h4>
+      <h4
+        *ngIf="!contentManager.addTokenLoading"
+        (click)="addToken(group.id)"
+      >Add Token</h4>
+      <i
+        *ngIf="contentManager.addTokenLoading"
+        nz-icon nzType="loading" nzTheme="outline"
+      ></i>
     </div>
   </div>
 </div>
+
+<div *ngIf="contentManager.isLoading">Loading</div>
