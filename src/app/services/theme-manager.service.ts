@@ -109,6 +109,7 @@ export class ThemeManagerService {
   }
 
   async delete(id: number) {
+    await db.deleteData(id);
     await this.table.delete(id);
   
     const themeIndex = this.list.findIndex(theme => theme.id === id);

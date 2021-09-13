@@ -1,4 +1,4 @@
-import Dexie from 'dexie';
+import Dexie, { PromiseExtended } from 'dexie';
 import { SectionNames } from './store.service';
 
 export interface ThemeModel {
@@ -35,12 +35,13 @@ export interface ITables<T, G> {
   name: SectionNames;
   token: T;
   group: G;
+  deleteData: (themeId: number) => PromiseExtended<void>;
 }
 
 export class DBService extends Dexie {
   theme: ThemeTable;
   typeface: ITables<TypefaceTokenTable, TypefaceGroupTable>;
-  typescale: ITables<TypefaceTokenTable, TypefaceGroupTable>;
+  typescale: ITables<TypescaleTokenTable, TypescaleGroupTable>;
 
   constructor() {
     super('ui-theme-builder-db');
@@ -71,6 +72,13 @@ export class DBService extends Dexie {
       this.table("typescaleGroup")
     )
   }
+
+  async deleteData(themeId: number) {
+    const sections = [this.typeface, this.typescale];
+    for (let section of sections) {
+      await section.deleteData(themeId)
+    }
+  }
 }
 
 class Tables {
@@ -79,6 +87,19 @@ class Tables {
     public token: TypefaceTokenTable,
     public group: TypefaceGroupTable
   ) {}
+
+  deleteData(themeId: number) {
+    return db.transaction('rw', [this.token, this.group], async () => {
+      const groups = await this.group.where("themeId").equals(themeId).toArray();
+
+      for (let group of groups) {
+        for (let tokenId of group.tokensId) {
+          await this.token.delete(tokenId);
+        }
+        await this.group.delete(group.id);
+      }
+    })
+  }
 }
 
 const db = new DBService();
