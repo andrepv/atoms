@@ -2,12 +2,13 @@
   <app-editable-text
     #editableText
     [text]="name"
+    [customTemplate]="textTemplate"
     (blur)="onBlur($event)"
   ></app-editable-text>
   
-  <!-- <ng-template #textTemplate let-text>
+  <ng-template #textTemplate let-text>
     <h4>{{ text }}</h4>
-  </ng-template> -->
+  </ng-template>
 
   <i
     nz-icon nzType="more" nzTheme="outline"

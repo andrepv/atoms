@@ -18,7 +18,11 @@
             #editableText
             [text]="token.name"
             (blur)="renameToken($event, token, group.id)"
+            [customTemplate]="textTemplate"
           ></app-editable-text>
+          <ng-template #textTemplate let-text>
+            <span>{{ text }}</span>
+          </ng-template>
 
           <i
             nz-icon nzType="more" nzTheme="outline"

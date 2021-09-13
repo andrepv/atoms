@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'app-editable-text',
   template: `
     <ng-container *ngIf="!isEditable">
-      {{ text }}
+      <ng-container *ngTemplateOutlet="customTemplate; context: {$implicit: text}"></ng-container>
     </ng-container>
 
     <ng-container *ngIf="isEditable">
@@ -21,6 +21,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class EditableTextComponent implements OnInit {
   @Input() isEditable = false;
   @Input() text = "";
+  @Input() customTemplate: TemplateRef<any>;
   @Output() blur: EventEmitter<string> = new EventEmitter();
   inputValue = this.text;
 
