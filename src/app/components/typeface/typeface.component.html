@@ -12,7 +12,7 @@
   </header>
 
   <div *ngFor="let group of groupList">
-    <div [id]="store.getAnchorLink(group)" class="group">
+    <div [id]="group.anchorLink" class="group">
       <app-group-header
         [id]="group.id"
         [name]="group.name"

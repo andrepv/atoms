@@ -12,7 +12,7 @@
           <nz-anchor [nzAffix]="false">
             <nz-link
               *ngFor="let group of groups.content"
-              [nzHref]="'#' + store.getAnchorLink(group)"
+              [nzHref]="'#' + group.anchorLink"
               [nzTitle]="group.name"
             ></nz-link>
           </nz-anchor>

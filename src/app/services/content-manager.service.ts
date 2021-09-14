@@ -55,6 +55,7 @@ export class ContentManagerService<T extends Table, G extends Table> {
         name: group.name,
         id: group.id,
         tokens,
+        anchorLink: this.getAnchorLink(),
       })
     }
 
@@ -112,7 +113,12 @@ export class ContentManagerService<T extends Table, G extends Table> {
     this.addGroupLoading = true;
     try {
       const groupId = await this.groupTable.add(group);
-      const newGroup = {id: groupId, name: group.name, tokens: []}
+      const newGroup = {
+        id: groupId,
+        name: group.name,
+        tokens: [],
+        anchorLink: this.getAnchorLink(),
+      }
       this.store.addGroup(this.sectionName, newGroup)
     } finally {
       this.addGroupLoading = false;
@@ -148,5 +154,15 @@ export class ContentManagerService<T extends Table, G extends Table> {
       await this.groupTable.update(groupId, {tokensId: nextTokenIds});
       return {id: tokenId, name: token.name, value: token.value} as Token<T>;
     });
+  }
+
+  private getAnchorLink() {
+    let res = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 10; i++ ) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      res += characters.charAt(randomIndex);
+    }
+    return res;
   }
 }

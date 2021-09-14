@@ -13,6 +13,7 @@ export interface TokenGroup {
   name: string;
   id: number;
   tokens: Token<any>[];
+  anchorLink: string;
 }
 
 export type TokenGroups = {
@@ -100,9 +101,5 @@ export class StoreService {
   setGroupList(sectionName: SectionNames, groupList: TokenGroup[]) {
     this._groups[sectionName] = groupList;
     this.updateSection();
-  }
-
-  getAnchorLink(group: TokenGroup) {
-    return `${group.name.toLowerCase()}-${group.id}`
   }
 }
