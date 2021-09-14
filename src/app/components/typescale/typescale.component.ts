@@ -51,9 +51,6 @@ export class TypescaleComponent implements OnInit {
   }
 
   renameToken(value: string, token: Token<any>, groupId: number) {
-    if (!value.length || value === token.name) {
-      return;
-    }
     this.contentManager.renameToken(value, token.id, groupId)
   }
 }

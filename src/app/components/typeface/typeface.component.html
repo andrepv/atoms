@@ -52,14 +52,7 @@
         </li>
       </ul>
 
-      <h4
-        *ngIf="!contentManager.addTokenLoading"
-        (click)="addToken(group.id)"
-      >Add Token</h4>
-      <i
-        *ngIf="contentManager.addTokenLoading"
-        nz-icon nzType="loading" nzTheme="outline"
-      ></i>
+      <h4 (click)="addToken(group.id)">Add Token</h4>
     </div>
   </div>
 </div>

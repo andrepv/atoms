@@ -1,4 +1,5 @@
 import { InjectionToken, Provider } from "@angular/core";
+import { NzMessageService } from "ng-zorro-antd/message";
 import { ContentManagerService } from "./content-manager.service";
 import { ITables, Table } from "./db.service";
 import { StoreService } from "./store.service";
@@ -9,10 +10,10 @@ export function getContentManagerProvider<T extends Table, G extends Table>(tabl
   const provider: Provider[] = [
     {
       provide: PROVIDER_TOKEN,
-      useFactory: (store: StoreService) => {
-        return new ContentManagerService(tables, store);
+      useFactory: (store: StoreService, message: NzMessageService) => {
+        return new ContentManagerService(tables, store, message);
       },
-      deps: [StoreService]
+      deps: [StoreService, NzMessageService]
     }
   ]
 

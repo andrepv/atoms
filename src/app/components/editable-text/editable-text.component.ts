@@ -35,7 +35,10 @@ export class EditableTextComponent implements OnInit {
   }
 
   onBlur() {
-    this.blur.emit(this.inputValue);
+    const inputValue = this.inputValue.trim();
+    if (inputValue.length && inputValue !== this.text) {
+      this.blur.emit(inputValue);
+    }
     this.isEditable = false;
   }
 }

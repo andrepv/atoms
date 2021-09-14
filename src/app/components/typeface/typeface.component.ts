@@ -43,7 +43,7 @@ export class TypefaceComponent implements OnInit {
 
   addToken(groupId: number) {
     this.contentManager.addToken({
-      name: "token",
+      name: `token-${this.contentManager.getRandomChars()}`,
       value: "",
       groupId,
       themeId: this.store.themeManager.selected.id,
@@ -51,9 +51,6 @@ export class TypefaceComponent implements OnInit {
   }
 
   renameToken(value: string, token: Token<any>, groupId: number) {
-    if (!value.length || value === token.name) {
-      return;
-    }
     this.contentManager.renameToken(value, token.id, groupId)
   }
 }

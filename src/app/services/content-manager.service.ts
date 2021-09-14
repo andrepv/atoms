@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subscription } from 'rxjs';
 import { Table, ITables, TokenGroupModel, TokenModel, db } from './db.service';
 import { StoreService, Token } from './store.service';
@@ -7,7 +8,6 @@ import { StoreService, Token } from './store.service';
 export class ContentManagerService<T extends Table, G extends Table> {
   isLoading = false;
   subscription: Subscription;
-  addTokenLoading = false;
   addGroupLoading = false;
 
   get groupTable() {
@@ -22,9 +22,14 @@ export class ContentManagerService<T extends Table, G extends Table> {
     return this.tables.name;
   }
 
+  get selectedThemeId() {
+    return this.store.themeManager.selected.id;
+  }
+
   constructor(
     private tables: ITables<T, G>,
     private store: StoreService,
+    private message: NzMessageService,
   ) {
     this.subscription = store.themeManager.selected$.subscribe(() => this.load())
   }
@@ -34,7 +39,7 @@ export class ContentManagerService<T extends Table, G extends Table> {
 
     const groups = await this.groupTable
     .where("themeId")
-    .equals(this.store.themeManager.selected.id)
+    .equals(this.selectedThemeId)
     .toArray();
 
     if (!groups.length) {
@@ -55,7 +60,7 @@ export class ContentManagerService<T extends Table, G extends Table> {
         name: group.name,
         id: group.id,
         tokens,
-        anchorLink: this.getAnchorLink(),
+        anchorLink: this.getRandomChars(),
       })
     }
 
@@ -65,15 +70,10 @@ export class ContentManagerService<T extends Table, G extends Table> {
   }
 
   async addToken<T>(token: TokenModel<T>, groupId: number) {
-    this.addTokenLoading = true;
-    try {
-      const newToken = await this.saveTokenToDB(token, groupId);
-      this.store.updateGroup(this.sectionName, groupId,
-        group => group.tokens.push(newToken)
-      );
-    } finally {
-      this.addTokenLoading = false;
-    }
+    const newToken = await this.saveTokenToDB(token, groupId);
+    this.store.updateGroup(this.sectionName, groupId,
+      group => group.tokens.push(newToken)
+    );
   }
 
   deleteToken(tokenId: number, groupId: number) {
@@ -95,6 +95,12 @@ export class ContentManagerService<T extends Table, G extends Table> {
   }
 
   async renameToken(tokenName: string, tokenId: number, groupId: number) {
+    const isUnique = await this.isTokenNameUnique(tokenName);
+    if (!isUnique) {
+      this.message.create('error', 'The token name must be unique');
+      return;
+    }
+
     await this.tokenTable.update(tokenId, {name: tokenName});
 
     this.store.updateGroup(
@@ -117,7 +123,7 @@ export class ContentManagerService<T extends Table, G extends Table> {
         id: groupId,
         name: group.name,
         tokens: [],
-        anchorLink: this.getAnchorLink(),
+        anchorLink: this.getRandomChars(),
       }
       this.store.addGroup(this.sectionName, newGroup)
     } finally {
@@ -140,10 +146,20 @@ export class ContentManagerService<T extends Table, G extends Table> {
 
   async renameGroup(groupName: string, groupId: number) {
     await this.groupTable.update(groupId, {name: groupName});
-
+    
     this.store.updateGroup(this.sectionName, groupId,
       group => group.name = groupName,
     );
+  }
+    
+  getRandomChars() {
+    let res = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 10; i++ ) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      res += characters.charAt(randomIndex);
+    }
+    return res;
   }
 
   private async saveTokenToDB<T>(token: TokenModel<T>, groupId: number) {
@@ -156,13 +172,11 @@ export class ContentManagerService<T extends Table, G extends Table> {
     });
   }
 
-  private getAnchorLink() {
-    let res = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 10; i++ ) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      res += characters.charAt(randomIndex);
-    }
-    return res;
+
+  private async isTokenNameUnique(name: string) {
+    const res = await this.tokenTable
+    .where("name").equalsIgnoreCase(name)
+    .and(token => token.themeId === this.selectedThemeId).toArray();
+    return !Boolean(res.length)
   }
 }

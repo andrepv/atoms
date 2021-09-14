@@ -27,7 +27,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
-
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 import { DBService } from './services/db.service';
 import { ThemeManagerService } from './services/theme-manager.service';
@@ -74,7 +74,8 @@ registerLocaleData(en);
     NzInputModule,
     NzModalModule,
     NzTypographyModule,
-    NzAnchorModule
+    NzAnchorModule,
+    NzMessageModule
   ],
   providers: [
     DBService,
