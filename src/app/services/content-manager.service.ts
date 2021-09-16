@@ -3,12 +3,19 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subscription } from 'rxjs';
 import { Table, ITables, TokenGroupModel, TokenModel, db } from './db.service';
 import { StoreService, Token } from './store.service';
+import {Clipboard} from "./clipboard";
+
+interface CopiedContent<T> {
+  id: string;
+  content: T
+}
 
 @Injectable()
 export class ContentManagerService<T extends Table, G extends Table> {
   isLoading = false;
   subscription: Subscription;
   addGroupLoading = false;
+  clipboard = new Clipboard(this, this.message)
 
   get groupTable() {
     return this.tables.group;
@@ -97,7 +104,7 @@ export class ContentManagerService<T extends Table, G extends Table> {
   async renameToken(tokenName: string, tokenId: number, groupId: number) {
     const isUnique = await this.isTokenNameUnique(tokenName);
     if (!isUnique) {
-      this.message.create('error', 'The token name must be unique');
+      this.message.error('The token name must be unique');
       return;
     }
 
@@ -115,10 +122,23 @@ export class ContentManagerService<T extends Table, G extends Table> {
     );
   }
 
+  createToken<T>(
+    groupId: number,
+    value: T,
+    name = `token-${this.getRandomChars()}`
+  ) {
+    return {
+      name,
+      value,
+      groupId,
+      themeId: this.selectedThemeId,
+    } as TokenModel<T>;
+  }
+
   async addGroup(group: TokenGroupModel) {
     this.addGroupLoading = true;
     try {
-      const groupId = await this.groupTable.add(group);
+      const groupId: number = await this.groupTable.add(group);
       const newGroup = {
         id: groupId,
         name: group.name,
@@ -126,6 +146,7 @@ export class ContentManagerService<T extends Table, G extends Table> {
         anchorLink: this.getRandomChars(),
       }
       this.store.addGroup(this.sectionName, newGroup)
+      return groupId;
     } finally {
       this.addGroupLoading = false;
     }
@@ -151,32 +172,46 @@ export class ContentManagerService<T extends Table, G extends Table> {
       group => group.name = groupName,
     );
   }
+
+  createGroup(name = "group", tokensId = []) {
+    return {
+      name,
+      themeId: this.selectedThemeId,
+      tokensId,
+    } as TokenGroupModel
+  }
     
-  getRandomChars() {
+  getRandomChars(length = 10) {
     let res = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 10; i++ ) {
+    for (let i = 0; i < length; i++ ) {
       const randomIndex = Math.floor(Math.random() * characters.length);
       res += characters.charAt(randomIndex);
     }
     return res;
   }
 
-  private async saveTokenToDB<T>(token: TokenModel<T>, groupId: number) {
+  private async saveTokenToDB<T>(token: TokenModel<T>, groupId: number): Promise<Token<T>>
+  {
     return db.transaction('rw', [this.tokenTable, this.groupTable], async () => {
       const tokenId = await this.tokenTable.add(token);
       const tokenIds = this.store.getGroupTokenIds(this.sectionName, groupId);
       const nextTokenIds = [...tokenIds, tokenId]
       await this.groupTable.update(groupId, {tokensId: nextTokenIds});
-      return {id: tokenId, name: token.name, value: token.value} as Token<T>;
+      return {id: tokenId, ...token};
     });
   }
 
 
   private async isTokenNameUnique(name: string) {
+    const matchCount = await this.getTokenNameMatchCount(name);
+    return !Boolean(matchCount)
+  }
+
+  private async getTokenNameMatchCount(name: string) {
     const res = await this.tokenTable
     .where("name").equalsIgnoreCase(name)
     .and(token => token.themeId === this.selectedThemeId).toArray();
-    return !Boolean(res.length)
+    return res.length;
   }
 }

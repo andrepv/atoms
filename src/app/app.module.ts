@@ -40,6 +40,7 @@ import { TypefaceComponent } from './components/typeface/typeface.component';
 import { TypescaleComponent } from './components/typescale/typescale.component';
 import { GroupHeaderComponent } from './components/group-header/group-header.component';
 import { EditableTextComponent } from './components/editable-text/editable-text.component';
+import { TokenDropdownMenuComponent } from './components/token-dropdown-menu/token-dropdown-menu.component';
 
 registerLocaleData(en);
 
@@ -56,6 +57,7 @@ registerLocaleData(en);
     TypescaleComponent,
     GroupHeaderComponent,
     EditableTextComponent,
+    TokenDropdownMenuComponent,
   ],
   imports: [
     CommonModule,

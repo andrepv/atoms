@@ -85,7 +85,7 @@ class Tables {
   constructor(
     public name: SectionNames,
     public token: TypefaceTokenTable,
-    public group: TypefaceGroupTable
+    public group: TypefaceGroupTable,
   ) {}
 
   deleteData(themeId: number) {

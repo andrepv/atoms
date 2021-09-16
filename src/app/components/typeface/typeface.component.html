@@ -9,13 +9,16 @@
       *ngIf="contentManager.addGroupLoading"
       nz-icon nzType="loading" nzTheme="outline"
     ></i>
+    <p
+      *ngIf="store.isClipboardActionsAvailable"
+      (click)="contentManager.clipboard.pastGroup()"
+    >past group</p>
   </header>
 
   <div *ngFor="let group of groupList">
     <div [id]="group.anchorLink" class="group">
       <app-group-header
-        [id]="group.id"
-        [name]="group.name"
+        [group]="group"
         [contentManager]="contentManager"
       ></app-group-header>
 
@@ -24,31 +27,19 @@
           <app-editable-text
             #editableText
             [text]="token.name"
-            (blur)="renameToken($event, token, group.id)"
+            (blur)="contentManager.renameToken($event, token, group.id)"
             [customTemplate]="textTemplate"
           ></app-editable-text>
+
           <ng-template #textTemplate let-text>
             <span>{{ text }}</span>
           </ng-template>
 
-          <i
-            nz-icon nzType="more" nzTheme="outline"
-            nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
-          ></i>
-
-          <nz-dropdown-menu #menu="nzDropdownMenu">
-            <ul nz-menu>
-              <li
-                nz-menu-item
-                (click)="editableText.makeEditable()"
-              >Rename</li>
-              <li
-                nz-menu-item
-                (click)="contentManager.deleteToken(token.id, group.id)"
-              >Delete</li>
-            </ul>
-          </nz-dropdown-menu>
-
+          <app-token-dropdown-menu
+            (rename)="editableText.makeEditable()"
+            (delete)="contentManager.deleteToken(token.id, group.id)"
+            (copy)="contentManager.clipboard.copyToken(token)"
+          ></app-token-dropdown-menu>
         </li>
       </ul>
 

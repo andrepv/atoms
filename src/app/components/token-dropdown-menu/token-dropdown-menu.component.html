@@ -1,0 +1,15 @@
+<i
+  nz-icon nzType="more" nzTheme="outline"
+  nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
+></i>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item (click)="rename.emit()">Rename</li>
+    <li nz-menu-item (click)="delete.emit()">Delete</li>
+    <li
+      *ngIf="store.isClipboardActionsAvailable"
+      nz-menu-item (click)="copy.emit()"
+    >Copy</li>
+  </ul>
+</nz-dropdown-menu>

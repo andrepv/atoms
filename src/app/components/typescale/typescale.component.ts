@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ContentManagerService } from '../../services/content-manager.service';
-import { db, TokenGroupModel, TokenModel } from '../../services/db.service';
+import { db } from '../../services/db.service';
 import { getContentManagerProvider } from '../../services/get-content-manager-provider';
-import { StoreService, Token } from '../../services/store.service';
+import { StoreService } from '../../services/store.service';
 
 const {token, provider} = getContentManagerProvider(db.typescale)
 
@@ -34,23 +34,12 @@ export class TypescaleComponent implements OnInit {
   }
 
   addGroup() {
-    this.contentManager.addGroup({
-      name: 'group',
-      themeId: this.store.themeManager.selected.id,
-      tokensId: [],
-    } as TokenGroupModel);
+    const group = this.contentManager.createGroup();
+    this.contentManager.addGroup(group);
   }
 
   addToken(groupId: number) {
-    this.contentManager.addToken({
-      name: "token",
-      value: "",
-      groupId,
-      themeId: this.store.themeManager.selected.id,
-    } as TokenModel<string>, groupId)
-  }
-
-  renameToken(value: string, token: Token<any>, groupId: number) {
-    this.contentManager.renameToken(value, token.id, groupId)
+    const token = this.contentManager.createToken(groupId, '');
+    this.contentManager.addToken(token, groupId);
   }
 }

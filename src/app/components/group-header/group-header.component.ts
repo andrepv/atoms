@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ContentManagerService } from '../../services/content-manager.service';
+import { StoreService, TokenGroup } from '../../services/store.service';
 
 @Component({
   selector: 'app-group-header',
@@ -7,18 +8,17 @@ import { ContentManagerService } from '../../services/content-manager.service';
   styleUrls: ['./group-header.component.less']
 })
 export class GroupHeaderComponent implements OnInit {
-  @Input() name: string;
-  @Input() id: number;
+  @Input() group: TokenGroup;
   @Input() contentManager: ContentManagerService<any, any>;
   
-  constructor() {}
+  constructor(public store: StoreService) {}
 
   ngOnInit() {}
 
   onBlur(value: string) {
-    if (!value.length || value === this.name) {
+    if (!value.length || value === this.group.name) {
       return;
     }
-    this.contentManager.renameGroup(value, this.id)
+    this.contentManager.renameGroup(value, this.group.id)
   }
 }

@@ -1,7 +1,7 @@
 <header>
   <app-editable-text
     #editableText
-    [text]="name"
+    [text]="group.name"
     [customTemplate]="textTemplate"
     (blur)="onBlur($event)"
   ></app-editable-text>
@@ -19,12 +19,22 @@
     <ul nz-menu>
       <li
         nz-menu-item
-        (click)="contentManager.deleteGroup(id)"
+        (click)="contentManager.deleteGroup(group.id)"
       >Delete</li>
       <li
         nz-menu-item
         (click)="editableText.makeEditable()"
       >Rename</li>
+      <li
+        *ngIf="store.isClipboardActionsAvailable"
+        nz-menu-item
+        (click)="contentManager.clipboard.pastToken(group.id)"
+      >Past Token</li>
+      <li
+        *ngIf="store.isClipboardActionsAvailable"
+        nz-menu-item
+        (click)="contentManager.clipboard.copyGroup(group)"
+      >Copy Group</li>
     </ul>
   </nz-dropdown-menu>
 </header>

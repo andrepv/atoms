@@ -29,6 +29,8 @@ export interface Section {
 @Injectable({ providedIn: 'root' })
 export class StoreService {
   isLoading = false;
+  isClipboardActionsAvailable = true;
+
   _groups: {[key: string]: TokenGroup[]} = {}
 
   get groups(): TokenGroups {
@@ -44,7 +46,22 @@ export class StoreService {
     content: this.groups,
   };
 
-  constructor(public themeManager: ThemeManagerService) {}
+  constructor(public themeManager: ThemeManagerService) {
+    const queryOpts = {
+      name: 'clipboard-read' as PermissionName,
+      allowWithoutGesture: false
+    };
+    navigator.permissions.query(queryOpts).then(permissionStatus => {
+
+      this.setClipboardActionsStatus(permissionStatus.state);
+
+      permissionStatus.onchange = () => {
+        this.setClipboardActionsStatus(permissionStatus.state);
+        console.log(permissionStatus.state);
+      };
+    });
+
+  }
 
   loadTheme() {
     return this.themeManager.loadList();
@@ -89,11 +106,6 @@ export class StoreService {
     return group.tokens.map(token => token.id);
   }
 
-
-  private updateSection() {
-    this.section.content = this.groups;
-  }
-
   getGroupList(sectionName: SectionNames) {
     return this._groups[sectionName];
   }
@@ -102,4 +114,15 @@ export class StoreService {
     this._groups[sectionName] = groupList;
     this.updateSection();
   }
+
+  private setClipboardActionsStatus(permissionStatus: PermissionState) {
+    if (permissionStatus === 'denied') {
+      this.isClipboardActionsAvailable = false;
+    }
+  }
+
+  private updateSection() {
+    this.section.content = this.groups;
+  }
+
 }
