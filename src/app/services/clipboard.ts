@@ -8,15 +8,6 @@ interface CopiedContent<T> {
   content: T
 }
 
-interface IClipboard {
-  copyToken<T>(token: TokenModel<T>): Promise<void>;
-  copyGroup(group: TokenGroupModel): Promise<void>
-
-  pastToken(groupId: number): Promise<void>;
-  pastGroup(): Promise<void>
-
-}
-
 export class Clipboard {
   private copiedTokenId = "";
   private copiedGroupId = "";
@@ -54,17 +45,15 @@ export class Clipboard {
   }
 
   async pastGroup() {
+    const id = this.message.loading('Action in progress..').messageId;
     try {
       const data: CopiedContent<TokenGroup> = await this.getCopiedData();
 
       if (data.id === this.copiedGroupId) {
-        const {name} = data.content;
-        const tokensId = data.content.tokens.map((token: any) => token.id)
+        const {name, tokens} = data.content;
 
         const group = this.contentManager.createGroup(name);
         const groupId = await this.contentManager.addGroup(group);
-
-        const tokens = await this.contentManager.tokenTable.where("id").anyOf(tokensId).toArray();
 
         for (let token of tokens) {
           token.name = `${token.name}-${this.contentManager.getRandomChars(4)}`;
@@ -75,6 +64,8 @@ export class Clipboard {
       }
     } catch (err) {
       console.error('Failed to read clipboard contents: ', err);
+    } finally {
+      this.message.remove(id);
     }
   }
 

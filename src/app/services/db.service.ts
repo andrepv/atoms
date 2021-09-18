@@ -36,12 +36,17 @@ export interface ITables<T, G> {
   token: T;
   group: G;
   deleteData: (themeId: number) => PromiseExtended<void>;
+  isTokenNameUnique: (name: string, themeId: number) => Promise<boolean>;
 }
 
 export class DBService extends Dexie {
   theme: ThemeTable;
   typeface: ITables<TypefaceTokenTable, TypefaceGroupTable>;
   typescale: ITables<TypescaleTokenTable, TypescaleGroupTable>;
+
+  get sections() {
+    return [this.typeface, this.typescale];
+  }
 
   constructor() {
     super('ui-theme-builder-db');
@@ -74,8 +79,7 @@ export class DBService extends Dexie {
   }
 
   async deleteData(themeId: number) {
-    const sections = [this.typeface, this.typescale];
-    for (let section of sections) {
+    for (let section of this.sections) {
       await section.deleteData(themeId)
     }
   }
@@ -99,6 +103,13 @@ class Tables {
         await this.group.delete(group.id);
       }
     })
+  }
+
+  async isTokenNameUnique(name: string, themeId: number) {
+    const res = await this.token
+    .where("name").equalsIgnoreCase(name)
+    .and(token => token.themeId === themeId).toArray();
+    return !Boolean(res.length);
   }
 }
 

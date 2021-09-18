@@ -204,14 +204,12 @@ export class ContentManagerService<T extends Table, G extends Table> {
 
 
   private async isTokenNameUnique(name: string) {
-    const matchCount = await this.getTokenNameMatchCount(name);
-    return !Boolean(matchCount)
-  }
-
-  private async getTokenNameMatchCount(name: string) {
-    const res = await this.tokenTable
-    .where("name").equalsIgnoreCase(name)
-    .and(token => token.themeId === this.selectedThemeId).toArray();
-    return res.length;
+    for (let section of db.sections) {
+      const isUnique = await section.isTokenNameUnique(name, this.selectedThemeId);
+      if (!isUnique) {
+        return false;
+      }
+    }
+    return true;
   }
 }
