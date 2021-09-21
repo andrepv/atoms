@@ -1,38 +1,39 @@
 import { NzMessageService } from "ng-zorro-antd/message";
 import { ContentManagerService } from "./content-manager.service";
 import { TokenGroupModel, TokenModel } from "./db.service";
-import { TokenGroup } from "./store.service";
+import { SectionNames, StoreService, TokenGroup } from "./store.service";
 
 interface CopiedContent<T> {
-  id: string;
+  section: SectionNames;
   content: T
 }
 
 export class Clipboard {
-  private copiedTokenId = "";
-  private copiedGroupId = "";
+  store: StoreService;
 
   constructor(
-    private contentManager: ContentManagerService<any, any>,
+    private contentManager: ContentManagerService,
     private message: NzMessageService,
-  ) {}
+  ) {
+    this.store = contentManager.store;
+  }
 
   copyToken<T>(token: TokenModel<T>) {
-    this.copiedTokenId = this.contentManager.getRandomChars();
-    const content = {id: this.copiedTokenId, content: token}
+    this.store.copiedTokenSection = this.contentManager.sectionName;
+    const content = {section: this.store.copiedTokenSection, content: token}
     return this.copyContent(content)
   }
 
   copyGroup(group: TokenGroupModel) {
-    this.copiedGroupId = this.contentManager.getRandomChars();
-    const content = {id: this.copiedGroupId, content: group}
+    this.store.copiedGroupSection = this.contentManager.sectionName;
+    const content = {section: this.store.copiedGroupSection, content: group}
     return this.copyContent(content)
   }
 
   async pastToken(groupId: number) {
     try {
       const data: CopiedContent<any> = await this.getCopiedData();
-      if (data.id === this.copiedTokenId) {
+      if (data.section === this.contentManager.sectionName) {
         let {value, name} = data.content;
         name = `${name}-${this.contentManager.getRandomChars(4)}`;
         const token = this.contentManager.createToken(groupId, value, name);
@@ -48,8 +49,7 @@ export class Clipboard {
     const id = this.message.loading('Action in progress..').messageId;
     try {
       const data: CopiedContent<TokenGroup> = await this.getCopiedData();
-
-      if (data.id === this.copiedGroupId) {
+      if (data.section === this.contentManager.sectionName) {
         const {name, tokens} = data.content;
 
         const group = this.contentManager.createGroup(name);

@@ -1,22 +1,31 @@
 <div>
   <div class="content">
-    <div class="content-wrapper">
+    <div [ngSwitch]="store.editorSection" class="content-wrapper">
 
-      <header>
-        <h5 nz-typography>{{ store.section.name }}</h5>
-      </header>
+      <app-typeface-editor *ngSwitchCase="'Type Face'"></app-typeface-editor>
 
-      <div class="main">
-        <div *ngFor="let groups of store.section.content">
-          <h5 nz-typography>{{ groups.name }}</h5>
-          <nz-anchor [nzAffix]="false">
-            <nz-link
-              *ngFor="let group of groups.content"
-              [nzHref]="'#' + group.anchorLink"
-              [nzTitle]="group.name"
-            ></nz-link>
-          </nz-anchor>
+      <div class="anchor-list" *ngSwitchDefault>
+    
+        <header>
+          <h5 nz-typography>{{ store.section.name }}</h5>
+        </header>
+
+        <div class="main">
+          <div *ngFor="let groups of store.section.content">
+            <h5 nz-typography>{{ groups.name }}</h5>
+            <nz-anchor
+              [nzAffix]="false"
+              (nzClick)="store.activateEditor(groups.name, $event)"
+            >
+              <nz-link
+                *ngFor="let group of groups.content"
+                [nzHref]="'#' + group.anchorLink"
+                [nzTitle]="group.name"
+              ></nz-link>
+            </nz-anchor>
+          </div>
         </div>
+    
       </div>
 
     </div>

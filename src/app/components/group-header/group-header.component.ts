@@ -9,8 +9,8 @@ import { StoreService, TokenGroup } from '../../services/store.service';
 })
 export class GroupHeaderComponent implements OnInit {
   @Input() group: TokenGroup;
-  @Input() contentManager: ContentManagerService<any, any>;
-  
+  @Input() contentManager: ContentManagerService;
+
   constructor(public store: StoreService) {}
 
   ngOnInit() {}

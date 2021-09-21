@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { ThemeManagerService } from './theme-manager.service';
 
 export type SectionNames = "Type Face" | "Type Scale"; 
@@ -31,6 +32,14 @@ export class StoreService {
   isLoading = false;
   isClipboardActionsAvailable = true;
 
+  subscription: Subscription;
+
+  copiedGroupSection: SectionNames | '' = "";
+  copiedTokenSection: SectionNames | '' = "";
+
+  editorSection: SectionNames | '' = '';
+  editableGroup$: BehaviorSubject<TokenGroup | null> = new BehaviorSubject(null);
+
   _groups: {[key: string]: TokenGroup[]} = {}
 
   get groups(): TokenGroups {
@@ -57,10 +66,10 @@ export class StoreService {
 
       permissionStatus.onchange = () => {
         this.setClipboardActionsStatus(permissionStatus.state);
-        console.log(permissionStatus.state);
       };
     });
 
+    this.subscription = this.themeManager.selected$.subscribe(() => this.deactivateEditor())
   }
 
   loadTheme() {
@@ -98,7 +107,14 @@ export class StoreService {
       }
       return group;
     });
+
     this.updateSection();
+
+    if (this.isGroupEditable(groupId)) {
+      const nextEditableGroup = this.getGroupList(sectionName).find(group => this.isGroupEditable(group.id));
+
+      this.editableGroup$.next(nextEditableGroup);
+    }
   }
 
   getGroupTokenIds(sectionName: SectionNames, groupId: number) {
@@ -115,6 +131,20 @@ export class StoreService {
     this.updateSection();
   }
 
+  activateEditor(sectionName: SectionNames, anchorLink: string) {
+    if (!anchorLink) return;
+    const nextEditableGroup = this.getGroupList(sectionName).find(group => {
+      return group.anchorLink === anchorLink.split('#')[1]
+    });
+    this.editorSection = sectionName;
+    this.editableGroup$.next(nextEditableGroup);
+  }
+
+  deactivateEditor() {
+    this.editorSection = '';
+    this.editableGroup$.next(null);
+  }
+
   private setClipboardActionsStatus(permissionStatus: PermissionState) {
     if (permissionStatus === 'denied') {
       this.isClipboardActionsAvailable = false;
@@ -125,4 +155,7 @@ export class StoreService {
     this.section.content = this.groups;
   }
 
+  isGroupEditable(groupId: number) {
+    return groupId === this.editableGroup$.getValue()?.id;
+  }
 }

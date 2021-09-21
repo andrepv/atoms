@@ -4,7 +4,7 @@ import { db } from '../../services/db.service';
 import { getContentManagerProvider } from '../../services/get-content-manager-provider';
 import { StoreService } from '../../services/store.service';
 
-const {token, provider} = getContentManagerProvider(db.typeface)
+const {token, provider} = getContentManagerProvider(db.typeface);
 
 @Component({
   selector: 'app-typeface',
@@ -21,7 +21,7 @@ export class TypefaceComponent implements OnInit {
 
   constructor(
     @Inject(token) 
-    public contentManager: ContentManagerService<any, any>,
+    public contentManager: ContentManagerService,
     public store: StoreService,
   ) {}
 

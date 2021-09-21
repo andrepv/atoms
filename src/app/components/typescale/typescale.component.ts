@@ -21,7 +21,7 @@ export class TypescaleComponent implements OnInit {
 
   constructor(
     @Inject(token) 
-    public contentManager: ContentManagerService<any, any>,
+    public contentManager: ContentManagerService,
     public store: StoreService,
   ) {}
 

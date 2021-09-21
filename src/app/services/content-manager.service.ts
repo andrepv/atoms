@@ -5,13 +5,9 @@ import { Table, ITables, TokenGroupModel, TokenModel, db } from './db.service';
 import { StoreService, Token } from './store.service';
 import {Clipboard} from "./clipboard";
 
-interface CopiedContent<T> {
-  id: string;
-  content: T
-}
 
 @Injectable()
-export class ContentManagerService<T extends Table, G extends Table> {
+export class ContentManagerService<T extends Table = any, G extends Table = any> {
   isLoading = false;
   subscription: Subscription;
   addGroupLoading = false;
@@ -35,7 +31,7 @@ export class ContentManagerService<T extends Table, G extends Table> {
 
   constructor(
     private tables: ITables<T, G>,
-    private store: StoreService,
+    public store: StoreService,
     private message: NzMessageService,
   ) {
     this.subscription = store.themeManager.selected$.subscribe(() => this.load())
@@ -153,6 +149,9 @@ export class ContentManagerService<T extends Table, G extends Table> {
   }
 
   deleteGroup(groupId: number) {
+    if (this.store.isGroupEditable(groupId)) {
+      this.store.deactivateEditor();
+    }
     db.transaction('rw', [this.tokenTable, this.groupTable], async () => {
       const tokenIds = this.store.getGroupTokenIds(this.sectionName, groupId);
 
@@ -167,7 +166,7 @@ export class ContentManagerService<T extends Table, G extends Table> {
 
   async renameGroup(groupName: string, groupId: number) {
     await this.groupTable.update(groupId, {name: groupName});
-    
+
     this.store.updateGroup(this.sectionName, groupId,
       group => group.name = groupName,
     );
@@ -180,7 +179,7 @@ export class ContentManagerService<T extends Table, G extends Table> {
       tokensId,
     } as TokenGroupModel
   }
-    
+
   getRandomChars(length = 10) {
     let res = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -201,7 +200,6 @@ export class ContentManagerService<T extends Table, G extends Table> {
       return {id: tokenId, ...token};
     });
   }
-
 
   private async isTokenNameUnique(name: string) {
     for (let section of db.sections) {

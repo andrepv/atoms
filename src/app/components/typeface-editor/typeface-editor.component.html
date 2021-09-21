@@ -1,0 +1,21 @@
+<div>
+  <header>
+    <div class="heading" (click)="store.deactivateEditor()">
+      <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
+      <h3>Type face</h3>
+    </div>
+
+    <div class="action-list">
+      <i nz-icon nzType="reload" nzTheme="outline" nz-tooltip [nzTooltipTitle]="'Reload'" nzTooltipPlacement="bottom"></i>
+
+      <i nz-icon nzType="delete" nzTheme="outline" nz-tooltip  [nzTooltipTitle]="'Delete'" nzTooltipPlacement="bottom" (click)="contentManager.deleteGroup(group.id)"></i>
+    </div>
+
+  </header>
+
+  <div class="content">
+    <label for="group-name">Name</label>
+    <input id="group-name" nz-input [(ngModel)]="name" (blur)="onBlur()" />
+  </div>
+
+</div>
