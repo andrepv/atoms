@@ -18,26 +18,14 @@ export class Clipboard {
     this.store = contentManager.store;
   }
 
-  copyToken<T>(token: TokenModel<T>) {
-    this.store.copiedTokenSection = this.contentManager.sectionName;
-    const content = {section: this.store.copiedTokenSection, content: token}
-    return this.copyContent(content)
-  }
-
-  copyGroup(group: TokenGroupModel) {
-    this.store.copiedGroupSection = this.contentManager.sectionName;
-    const content = {section: this.store.copiedGroupSection, content: group}
-    return this.copyContent(content)
-  }
-
   async pastToken(groupId: number) {
     try {
-      const data: CopiedContent<any> = await this.getCopiedData();
+      const data: CopiedContent<TokenModel> = await this.getCopiedData();
       if (data.section === this.contentManager.sectionName) {
         let {value, name} = data.content;
         name = `${name}-${this.contentManager.getRandomChars(4)}`;
         const token = this.contentManager.createToken(groupId, value, name);
-        await this.contentManager.addToken<any>(token, groupId);
+        await this.contentManager.addToken(token, groupId);
         this.message.success('Done');
       }
     } catch (err) {
@@ -58,7 +46,7 @@ export class Clipboard {
         for (let token of tokens) {
           token.name = `${token.name}-${this.contentManager.getRandomChars(4)}`;
           const newToken = this.contentManager.createToken(groupId, token.value, token.name);
-          await this.contentManager.addToken<any>(newToken, groupId);
+          await this.contentManager.addToken(newToken, groupId);
         }
         this.message.success('Done');
       }
@@ -69,9 +57,14 @@ export class Clipboard {
     }
   }
 
-  private async copyContent<T>(content: CopiedContent<T>) {
+  async copy(content: CopiedContent<TokenModel | TokenGroupModel>) {
     try {
-      await navigator.clipboard.writeText(JSON.stringify(content));
+      await navigator.clipboard.writeText(
+        JSON.stringify({
+          section: this.contentManager.sectionName,
+          content
+        })
+      );
       this.message.info('Content copied to clipboard');
     } catch (err) {
       this.message.error('Failed to copy');

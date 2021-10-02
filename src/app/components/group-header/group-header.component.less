@@ -1,4 +1,32 @@
 header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
+  i {
+    cursor: pointer;
+    position: relative;
+    z-index: 3;
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translateY(-50%) translateX(-50%);
+      background: #32323d;
+      display: block;
+      padding: 13px 15px;
+      z-index: -1;
+      border-radius: 5px;
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    &:hover:before {
+      opacity: 1;
+    }
+  }
 }

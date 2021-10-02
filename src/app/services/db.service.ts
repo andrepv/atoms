@@ -6,7 +6,7 @@ export interface ThemeModel {
   name: string;
 }
 
-export interface TokenModel<T> {
+export interface TokenModel<T = any> {
   id: number;
   name: string;
   value: T;

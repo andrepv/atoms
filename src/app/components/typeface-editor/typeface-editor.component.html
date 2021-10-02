@@ -1,6 +1,6 @@
 <div>
   <header>
-    <div class="heading" (click)="store.deactivateEditor()">
+    <div class="heading" (click)="store.editor.disable()">
       <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
       <h3>Type face</h3>
     </div>
@@ -8,14 +8,58 @@
     <div class="action-list">
       <i nz-icon nzType="reload" nzTheme="outline" nz-tooltip [nzTooltipTitle]="'Reload'" nzTooltipPlacement="bottom"></i>
 
-      <i nz-icon nzType="delete" nzTheme="outline" nz-tooltip  [nzTooltipTitle]="'Delete'" nzTooltipPlacement="bottom" (click)="contentManager.deleteGroup(group.id)"></i>
+      <i nz-icon nzType="delete" nzTheme="outline" nz-tooltip  [nzTooltipTitle]="'Delete'" nzTooltipPlacement="bottom" (click)="contentManager.deleteToken(content.token.id, content.group.id)"></i>
     </div>
 
   </header>
 
   <div class="content">
-    <label for="group-name">Name</label>
-    <input id="group-name" nz-input [(ngModel)]="name" (blur)="onBlur()" />
+    <label for="name">Name</label>
+    <input id="name" nz-input [(ngModel)]="tokenName" (blur)="onBlur()" />
+
+      <nz-select
+        [ngModel]="fontManager.sortOption"
+        (ngModelChange)="fontManager.sort($event)"
+      >
+        <nz-option 
+          *ngFor="let option of fontManager.SORT_OPTIONS"
+          [nzValue]="option"
+          [nzLabel]="option"
+        ></nz-option>
+      </nz-select>
+
+      <div *ngFor="let option of categoryOptions">
+        <span>{{ option.name }}</span>
+        <nz-switch
+          [(ngModel)]="option.value"
+          (ngModelChange)="fontManager.toggleCategory(option.name, $event)"
+        ></nz-switch>
+      </div>
+
+      <input
+        nz-input
+        placeholder="Search by name"
+        [(ngModel)]="searchValue"
+        (input)="search()"
+      />
+
+      <span>{{ fontManager.fonts.length }} of {{ fontManager.totalFontsCount }} families </span>
+  
+      <cdk-virtual-scroll-viewport itemSize="155" class="demo-infinite-container">
+        <nz-list>
+          <nz-list-item *cdkVirtualFor="let font of ds">
+            <div class="font" (click)="selectFont(font)">
+              <div class="font-header">
+                <p>{{ font.family }}</p><p>{{ font.variants.length }} styles</p>
+              </div>
+              <div class="font-family-preview">
+                <p [style.font-family]="font.family">{{ fontManager.PREVIEW_TEXT }}</p>
+              </div>
+            </div>
+          </nz-list-item>
+        </nz-list>
+      </cdk-virtual-scroll-viewport>
+
   </div>
 
 </div>

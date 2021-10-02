@@ -28,6 +28,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 import { DBService } from './services/db.service';
 import { ThemeManagerService } from './services/theme-manager.service';
@@ -42,6 +44,7 @@ import { GroupHeaderComponent } from './components/group-header/group-header.com
 import { EditableTextComponent } from './components/editable-text/editable-text.component';
 import { TokenDropdownMenuComponent } from './components/token-dropdown-menu/token-dropdown-menu.component';
 import { TypefaceEditorComponent } from './components/typeface-editor/typeface-editor.component';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 registerLocaleData(en);
 
@@ -79,7 +82,10 @@ registerLocaleData(en);
     NzModalModule,
     NzTypographyModule,
     NzAnchorModule,
-    NzMessageModule
+    NzMessageModule,
+    ScrollingModule,
+    NzListModule,
+    NzSwitchModule
   ],
   providers: [
     DBService,

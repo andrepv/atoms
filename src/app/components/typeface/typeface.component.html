@@ -1,49 +1,63 @@
 <div *ngIf="!contentManager.isLoading">
   <header>
     <h2>{{ sectionName }}</h2>
-    <p
-      *ngIf="!contentManager.addGroupLoading"
-      (click)="addGroup()"
-    >add group</p>
-    <i
-      *ngIf="contentManager.addGroupLoading"
-      nz-icon nzType="loading" nzTheme="outline"
-    ></i>
-    <p
-      *ngIf="store.isClipboardActionsAvailable"
-      (click)="contentManager.clipboard.pastGroup()"
-    >past group</p>
+    <div class="actions">
+      <i
+        nz-tooltip nzTooltipTitle="add a group" nzTooltipPlacement="bottom"
+        nz-icon nzType="plus" nzTheme="outline" (click)="addGroup()"></i>
+      <i
+        *ngIf="store.isClipboardActionsAvailable"
+        nz-icon nzType="snippets" nzTheme="outline"
+        nz-tooltip nzTooltipTitle="past a group" nzTooltipPlacement="bottom"
+        (click)="contentManager.clipboard.pastGroup()"></i>
+    </div>
   </header>
 
   <div *ngFor="let group of groupList">
     <div [id]="group.anchorLink" class="group">
-      <app-group-header
-        [group]="group"
-        [contentManager]="contentManager"
-      ></app-group-header>
 
-      <ul>
-        <li *ngFor="let token of group.tokens">
+      <div class="group-header">
+        <app-group-header
+          [group]="group"
+          [contentManager]="contentManager"
+        ></app-group-header>
+      </div>
+
+      <div class="container">
+        <div *ngFor="let token of group.tokens" class="token-wrapper">
+          <div
+            class="token"
+            (click)="openEditor(token, group)"
+            [style.font-family]="token.value.family"
+          >
+            <h1>Ag</h1>
+            <p>{{ token.value.family }}</p>
+            <div class="dropdown-menu">
+              <app-token-dropdown-menu
+                (rename)="editableText.makeEditable()"
+                (delete)="contentManager.deleteToken(token.id, group.id)"
+                (copy)="contentManager.clipboard.copy(token)"
+              ></app-token-dropdown-menu>
+            </div>
+          </div>
+
           <app-editable-text
             #editableText
             [text]="token.name"
-            (blur)="contentManager.renameToken($event, token, group.id)"
+            (blur)="contentManager.renameToken($event, token.id, group.id)"
             [customTemplate]="textTemplate"
           ></app-editable-text>
 
           <ng-template #textTemplate let-text>
-            <span>{{ text }}</span>
+            <p class="token-name">{{ text }}</p>
           </ng-template>
 
-          <app-token-dropdown-menu
-            (rename)="editableText.makeEditable()"
-            (delete)="contentManager.deleteToken(token.id, group.id)"
-            (copy)="contentManager.clipboard.copyToken(token)"
-          ></app-token-dropdown-menu>
-        </li>
-      </ul>
+        </div>
+      </div>
 
-      <h4 (click)="addToken(group.id)">Add Token</h4>
+      <div class="add-token-btn" (click)="addToken(group.id)">
+        <i nz-icon nzType="plus" nzTheme="outline" (click)="addGroup()"></i>
+      </div>
     </div>
   </div>
 </div>

@@ -1,14 +1,7 @@
 <div>
   <header>
     <h2>{{ sectionName }}</h2>
-    <p
-      *ngIf="!contentManager.addGroupLoading"
-      (click)="addGroup()"
-    >add group</p>
-    <i
-      *ngIf="contentManager.addGroupLoading"
-      nz-icon nzType="loading" nzTheme="outline"
-    ></i>
+    <p (click)="addGroup()">add group</p>
     <p
       *ngIf="store.isClipboardActionsAvailable"
       (click)="contentManager.clipboard.pastGroup()"
@@ -27,7 +20,7 @@
           <app-editable-text
             #editableText
             [text]="token.name"
-            (blur)="contentManager.renameToken($event, token, group.id)"
+            (blur)="contentManager.renameToken($event, token.id, group.id)"
             [customTemplate]="textTemplate"
           ></app-editable-text>
           <ng-template #textTemplate let-text>
@@ -37,7 +30,7 @@
           <app-token-dropdown-menu
             (rename)="editableText.makeEditable()"
             (delete)="contentManager.deleteToken(token.id, group.id)"
-            (copy)="contentManager.clipboard.copyToken(token)"
+            (copy)="contentManager.clipboard.copy(token)"
           ></app-token-dropdown-menu>
 
         </li>

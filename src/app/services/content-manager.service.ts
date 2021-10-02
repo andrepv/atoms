@@ -10,7 +10,6 @@ import {Clipboard} from "./clipboard";
 export class ContentManagerService<T extends Table = any, G extends Table = any> {
   isLoading = false;
   subscription: Subscription;
-  addGroupLoading = false;
   clipboard = new Clipboard(this, this.message)
 
   get groupTable() {
@@ -72,7 +71,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     this.isLoading = false;
   }
 
-  async addToken<T>(token: TokenModel<T>, groupId: number) {
+  async addToken(token: TokenModel, groupId: number) {
     const newToken = await this.saveTokenToDB(token, groupId);
     this.store.updateGroup(this.sectionName, groupId,
       group => group.tokens.push(newToken)
@@ -90,9 +89,12 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     
       }).then(() => {
         this.store.updateGroup(this.sectionName, groupId,
-          group => (
-            group.tokens = group.tokens.filter(({id}) => id !== tokenId)
-          )
+          group => {
+            if (this.store.editor.isTokenEditable(tokenId, this.sectionName)) {
+              this.store.editor.disable();
+            }
+            return group.tokens = group.tokens.filter(({id}) => id !== tokenId)
+          }
         );
     });
   }
@@ -101,7 +103,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     const isUnique = await this.isTokenNameUnique(tokenName);
     if (!isUnique) {
       this.message.error('The token name must be unique');
-      return;
+      throw new Error('The token name must be unique');
     }
 
     await this.tokenTable.update(tokenId, {name: tokenName});
@@ -112,6 +114,13 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
       group => group.tokens.map(token => {
         if (token.id === tokenId) {
           token.name = tokenName;
+          if (this.store.editor.isTokenEditable(tokenId, this.sectionName)) {
+            const {token, group} = this.store.editor.content;
+            this.store.editor.content = {
+              token: {name: tokenName, ...token},
+              group
+            }
+          }
         }
         return token;
       }),
@@ -132,26 +141,18 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
   }
 
   async addGroup(group: TokenGroupModel) {
-    this.addGroupLoading = true;
-    try {
-      const groupId: number = await this.groupTable.add(group);
-      const newGroup = {
-        id: groupId,
-        name: group.name,
-        tokens: [],
-        anchorLink: this.getRandomChars(),
-      }
-      this.store.addGroup(this.sectionName, newGroup)
-      return groupId;
-    } finally {
-      this.addGroupLoading = false;
+    const groupId: number = await this.groupTable.add(group);
+    const newGroup = {
+      id: groupId,
+      name: group.name,
+      tokens: [],
+      anchorLink: this.getRandomChars(),
     }
+    this.store.addGroup(this.sectionName, newGroup)
+    return groupId;
   }
 
   deleteGroup(groupId: number) {
-    if (this.store.isGroupEditable(groupId)) {
-      this.store.deactivateEditor();
-    }
     db.transaction('rw', [this.tokenTable, this.groupTable], async () => {
       const tokenIds = this.store.getGroupTokenIds(this.sectionName, groupId);
 
@@ -161,6 +162,10 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
         await this.tokenTable.delete(tokenId);
       }
       this.store.deleteGroup(this.sectionName, groupId);
+
+      if (this.store.editor.isGroupEditable(groupId, this.sectionName)) {
+        this.store.editor.disable();
+      }
     });
   }
 
@@ -178,6 +183,24 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
       themeId: this.selectedThemeId,
       tokensId,
     } as TokenGroupModel
+  }
+
+  async setTokenValue(value: T, tokenId: number, groupId: number) {
+    await this.tokenTable.update(tokenId, {value});
+
+    this.store.updateGroup(this.sectionName, groupId,
+      group => group.tokens.map(token => {
+        if (token.id === tokenId) {
+          token.value = value;
+        
+          if (this.store.editor.isTokenEditable(tokenId, this.sectionName)) {
+            const {token, group} = this.store.editor.content;
+            this.store.editor.content = {token: {value: value, ...token},group }
+          }
+        }
+        return token;
+      }),
+    );
   }
 
   getRandomChars(length = 10) {

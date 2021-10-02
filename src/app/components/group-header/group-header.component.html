@@ -5,9 +5,9 @@
     [customTemplate]="textTemplate"
     (blur)="onBlur($event)"
   ></app-editable-text>
-  
+
   <ng-template #textTemplate let-text>
-    <h4>{{ text }}</h4>
+    <h3>{{ text }}</h3>
   </ng-template>
 
   <i
@@ -33,7 +33,7 @@
       <li
         *ngIf="store.isClipboardActionsAvailable"
         nz-menu-item
-        (click)="contentManager.clipboard.copyGroup(group)"
+        (click)="contentManager.clipboard.copy(group)"
       >Copy Group</li>
     </ul>
   </nz-dropdown-menu>

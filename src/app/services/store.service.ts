@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Editor } from './editor';
 import { ThemeManagerService } from './theme-manager.service';
 
 export type SectionNames = "Type Face" | "Type Scale"; 
 
-export interface Token<T> {
+export interface Token<T = any> {
   name: string;
   id: number;
   value: T;
@@ -32,13 +32,7 @@ export class StoreService {
   isLoading = false;
   isClipboardActionsAvailable = true;
 
-  subscription: Subscription;
-
-  copiedGroupSection: SectionNames | '' = "";
-  copiedTokenSection: SectionNames | '' = "";
-
-  editorSection: SectionNames | '' = '';
-  editableGroup$: BehaviorSubject<TokenGroup | null> = new BehaviorSubject(null);
+  editor: Editor;
 
   _groups: {[key: string]: TokenGroup[]} = {}
 
@@ -69,7 +63,7 @@ export class StoreService {
       };
     });
 
-    this.subscription = this.themeManager.selected$.subscribe(() => this.deactivateEditor())
+    this.editor = new Editor(this);
   }
 
   loadTheme() {
@@ -109,12 +103,6 @@ export class StoreService {
     });
 
     this.updateSection();
-
-    if (this.isGroupEditable(groupId)) {
-      const nextEditableGroup = this.getGroupList(sectionName).find(group => this.isGroupEditable(group.id));
-
-      this.editableGroup$.next(nextEditableGroup);
-    }
   }
 
   getGroupTokenIds(sectionName: SectionNames, groupId: number) {
@@ -131,20 +119,6 @@ export class StoreService {
     this.updateSection();
   }
 
-  activateEditor(sectionName: SectionNames, anchorLink: string) {
-    if (!anchorLink) return;
-    const nextEditableGroup = this.getGroupList(sectionName).find(group => {
-      return group.anchorLink === anchorLink.split('#')[1]
-    });
-    this.editorSection = sectionName;
-    this.editableGroup$.next(nextEditableGroup);
-  }
-
-  deactivateEditor() {
-    this.editorSection = '';
-    this.editableGroup$.next(null);
-  }
-
   private setClipboardActionsStatus(permissionStatus: PermissionState) {
     if (permissionStatus === 'denied') {
       this.isClipboardActionsAvailable = false;
@@ -153,9 +127,5 @@ export class StoreService {
 
   private updateSection() {
     this.section.content = this.groups;
-  }
-
-  isGroupEditable(groupId: number) {
-    return groupId === this.editableGroup$.getValue()?.id;
   }
 }

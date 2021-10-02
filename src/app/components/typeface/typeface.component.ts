@@ -2,7 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ContentManagerService } from '../../services/content-manager.service';
 import { db } from '../../services/db.service';
 import { getContentManagerProvider } from '../../services/get-content-manager-provider';
-import { StoreService } from '../../services/store.service';
+import { StoreService, Token, TokenGroup } from '../../services/store.service';
+import { Font, FontManagerService } from '../typeface-editor/font-manager.service';
 
 const {token, provider} = getContentManagerProvider(db.typeface);
 
@@ -23,10 +24,20 @@ export class TypefaceComponent implements OnInit {
     @Inject(token) 
     public contentManager: ContentManagerService,
     public store: StoreService,
+    private fontManager: FontManagerService
   ) {}
 
   ngOnInit() {
-    this.contentManager.load();
+    this.contentManager.load().then(() => {
+      let fonts: Font[];
+
+      this.groupList.map(group => group.tokens).forEach(tokens => {
+        fonts = tokens.map(item => item.value);
+      });
+
+      this.fontManager.addStylesheet({fonts, preview: false})
+
+    });
   }
 
   ngOnDestroy() {
@@ -41,5 +52,9 @@ export class TypefaceComponent implements OnInit {
   addToken(groupId: number) {
     const token = this.contentManager.createToken(groupId, '');
     this.contentManager.addToken(token, groupId);
+  }
+
+  openEditor(token: Token, group: TokenGroup) {
+    this.store.editor.enable(this.sectionName, {token, group})
   }
 }

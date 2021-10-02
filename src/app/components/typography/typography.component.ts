@@ -7,7 +7,7 @@ import { StoreService } from '../../services/store.service';
   styleUrls: ['./typography.component.less'],
 })
 export class TypographyComponent implements OnInit {
-  readonly PAGE_NAME = "Type Face";
+  readonly PAGE_NAME = "Typography";
 
   constructor(public store: StoreService) {}
 
