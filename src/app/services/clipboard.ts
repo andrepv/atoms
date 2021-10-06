@@ -1,4 +1,5 @@
 import { NzMessageService } from "ng-zorro-antd/message";
+import { getRandomChars } from "../utils/get-random-chars";
 import { ContentManagerService } from "./content-manager.service";
 import { TokenGroupModel, TokenModel } from "./db.service";
 import { SectionNames, StoreService, TokenGroup } from "./store.service";
@@ -23,7 +24,7 @@ export class Clipboard {
       const data: CopiedContent<TokenModel> = await this.getCopiedData();
       if (data.section === this.contentManager.sectionName) {
         let {value, name} = data.content;
-        name = `${name}-${this.contentManager.getRandomChars(4)}`;
+        name = `${name}-${getRandomChars(4)}`;
         const token = this.contentManager.createToken(groupId, value, name);
         await this.contentManager.addToken(token, groupId);
         this.message.success('Done');
@@ -44,7 +45,7 @@ export class Clipboard {
         const groupId = await this.contentManager.addGroup(group);
 
         for (let token of tokens) {
-          token.name = `${token.name}-${this.contentManager.getRandomChars(4)}`;
+          token.name = `${token.name}-${getRandomChars(4)}`;
           const newToken = this.contentManager.createToken(groupId, token.value, token.name);
           await this.contentManager.addToken(newToken, groupId);
         }

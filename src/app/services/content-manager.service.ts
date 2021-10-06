@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { Table, ITables, TokenGroupModel, TokenModel, db } from './db.service';
 import { StoreService, Token } from './store.service';
 import {Clipboard} from "./clipboard";
-
+import { getRandomChars } from '../utils/get-random-chars';
 
 @Injectable()
 export class ContentManagerService<T extends Table = any, G extends Table = any> {
@@ -67,7 +67,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
         name: group.name,
         id: group.id,
         tokens,
-        anchorLink: this.getRandomChars(),
+        anchorLink: getRandomChars(),
       })
     }
 
@@ -137,7 +137,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
   createToken(
     groupId: number,
     value: any,
-    name = `token-${this.getRandomChars()}`
+    name = `token-${getRandomChars()}`
   ) {
     return {
       name,
@@ -153,7 +153,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
       id: groupId,
       name: group.name,
       tokens: [],
-      anchorLink: this.getRandomChars(),
+      anchorLink: getRandomChars(),
     }
     this.store.addGroup(this.sectionName, newGroup)
     return groupId;
@@ -208,16 +208,6 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
         return token;
       }),
     );
-  }
-
-  getRandomChars(length = 10) {
-    let res = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < length; i++ ) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      res += characters.charAt(randomIndex);
-    }
-    return res;
   }
 
   private async saveTokenToDB<T>(token: TokenModel<T>, groupId: number): Promise<Token<T>>

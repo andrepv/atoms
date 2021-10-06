@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ContentManagerService } from '../../services/content-manager.service';
 import { db, TypefaceGroupTable, TypefaceTokenTable } from '../../services/db.service';
-import { getContentManagerProvider } from '../../services/get-content-manager-provider';
+import { getContentManagerProvider } from '../../utils/get-content-manager-provider';
 import { StoreService } from '../../services/store.service';
 import { Subscription } from 'rxjs';
 import { CustomFont } from './custom-fonts/custom-font.component';

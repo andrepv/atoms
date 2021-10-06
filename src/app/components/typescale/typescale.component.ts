@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ContentManagerService } from '../../services/content-manager.service';
 import { db } from '../../services/db.service';
-import { getContentManagerProvider } from '../../services/get-content-manager-provider';
+import { getContentManagerProvider } from '../../utils/get-content-manager-provider';
 import { StoreService } from '../../services/store.service';
 
 const {token, provider} = getContentManagerProvider(db.typescale)
