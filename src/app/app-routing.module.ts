@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SpacingComponent } from './components/spacing/spacing.component';
-import { TypographyComponent } from './components/typography/typography.component';
+import { SpacingComponent } from './pages/spacing.component';
+import { TypographyComponent } from './pages/typography.component';
 
 const routes: Routes = [
   {path: 'typography', component: TypographyComponent},

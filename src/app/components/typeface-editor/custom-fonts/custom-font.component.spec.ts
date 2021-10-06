@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SpacingComponent } from './spacing.component';
+import { CustomFontComponent } from './custom-font.component';
 
-describe('SpacingComponent', () => {
-  let component: SpacingComponent;
-  let fixture: ComponentFixture<SpacingComponent>;
+describe('CustomFontComponent', () => {
+  let component: CustomFontComponent;
+  let fixture: ComponentFixture<CustomFontComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SpacingComponent ]
+      declarations: [ CustomFontComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SpacingComponent);
+    fixture = TestBed.createComponent(CustomFontComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,32 @@
+<div
+  class="dropzone"
+  (click)="inputFileRef.click()"
+  (dragenter)="onDragEnter($event)"
+  (dragover)="onDragOver($event)"
+  (drop)="onDrop($event)"
+  (dragleave)="onDragLeave()"
+  [style.border-color]="isDropZoneActive ? 'red' : 'white'"
+>
+  Upload File
+</div>
+
+<input
+  #inputFileRef
+  [accept]="ALLOWED_FILES.join(',')"
+  type="file"
+  hidden
+  (change)="onDropZoneClick($event)"
+>
+
+<div *ngIf="fontPreview.isActive">
+  <p [style.font-family]="'CustomFontPreview'">
+    Preview Text
+  </p>
+
+  <input
+    nz-input
+    [(ngModel)]="fontFamily"
+    (blur)="onBlur()"
+  >
+  <p (click)="saveFont()">Save</p>
+</div>

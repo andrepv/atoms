@@ -1,4 +1,6 @@
 import Dexie, { PromiseExtended } from 'dexie';
+import { CustomFont } from '../components/typeface-editor/custom-fonts/custom-font.component';
+import { GoogleFont } from '../components/typeface-editor/google-fonts/google-fonts.component';
 import { SectionNames } from './store.service';
 
 export interface ThemeModel {
@@ -23,7 +25,7 @@ export interface TokenGroupModel {
 
 export type ThemeTable = Dexie.Table<ThemeModel, number>;
 
-export type TypefaceTokenTable = Dexie.Table<TokenModel<string>, number>;
+export type TypefaceTokenTable = Dexie.Table<TokenModel<CustomFont | GoogleFont>, number>;
 export type TypefaceGroupTable = Dexie.Table<TokenGroupModel, number>;
 
 export type TypescaleTokenTable = Dexie.Table<TokenModel<string>, number>;
@@ -85,11 +87,11 @@ export class DBService extends Dexie {
   }
 }
 
-class Tables {
+class Tables<T extends Table, G extends Table> {
   constructor(
     public name: SectionNames,
-    public token: TypefaceTokenTable,
-    public group: TypefaceGroupTable,
+    public token: T,
+    public group: G,
   ) {}
 
   deleteData(themeId: number) {

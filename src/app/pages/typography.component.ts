@@ -1,10 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { StoreService } from '../../services/store.service';
+import { StoreService } from '../services/store.service';
 
 @Component({
   selector: 'app-typography',
-  templateUrl: './typography.component.html',
-  styleUrls: ['./typography.component.less'],
+  template: `
+  <div>
+    <h1 class="page-title">{{ PAGE_NAME }}</h1>
+    <div>
+      <app-typeface></app-typeface>
+      <app-typescale></app-typescale>
+    </div>
+  </div>
+  `,
+  styles: [`
+    .page-title {
+      margin-bottom: 14px;
+    }
+  `],
 })
 export class TypographyComponent implements OnInit {
   readonly PAGE_NAME = "Typography";

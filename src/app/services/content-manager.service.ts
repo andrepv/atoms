@@ -10,7 +10,8 @@ import {Clipboard} from "./clipboard";
 export class ContentManagerService<T extends Table = any, G extends Table = any> {
   isLoading = false;
   subscription: Subscription;
-  clipboard = new Clipboard(this, this.message)
+  clipboard = new Clipboard(this, this.message);
+  private _onLoad = () => {};
 
   get groupTable() {
     return this.tables.group;
@@ -26,6 +27,10 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
 
   get selectedThemeId() {
     return this.store.themeManager.selected.id;
+  }
+
+  set onLoad(onLoadCallback: () => any) {
+    this._onLoad = onLoadCallback;
   }
 
   constructor(
@@ -69,6 +74,8 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     this.store.setGroupList(this.sectionName, groupList)
 
     this.isLoading = false;
+
+    this._onLoad();
   }
 
   async addToken(token: TokenModel, groupId: number) {
@@ -127,9 +134,9 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     );
   }
 
-  createToken<T>(
+  createToken(
     groupId: number,
-    value: T,
+    value: any,
     name = `token-${this.getRandomChars()}`
   ) {
     return {
@@ -137,7 +144,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
       value,
       groupId,
       themeId: this.selectedThemeId,
-    } as TokenModel<T>;
+    } as TokenModel;
   }
 
   async addGroup(group: TokenGroupModel) {
@@ -163,9 +170,9 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
       }
       this.store.deleteGroup(this.sectionName, groupId);
 
-      if (this.store.editor.isGroupEditable(groupId, this.sectionName)) {
-        this.store.editor.disable();
-      }
+      // if (this.store.editor.isGroupEditable(groupId, this.sectionName)) {
+      //   this.store.editor.disable();
+      // }
     });
   }
 
@@ -185,7 +192,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     } as TokenGroupModel
   }
 
-  async setTokenValue(value: T, tokenId: number, groupId: number) {
+  async setTokenValue(value: any, tokenId: number, groupId: number) {
     await this.tokenTable.update(tokenId, {value});
 
     this.store.updateGroup(this.sectionName, groupId,

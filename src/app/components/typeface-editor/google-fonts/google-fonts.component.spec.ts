@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TypographyComponent } from './typography.component';
+import { GoogleFontsComponent } from './google-fonts.component';
 
-describe('TypographyComponent', () => {
-  let component: TypographyComponent;
-  let fixture: ComponentFixture<TypographyComponent>;
+describe('GoogleFontsComponent', () => {
+  let component: GoogleFontsComponent;
+  let fixture: ComponentFixture<GoogleFontsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TypographyComponent ]
+      declarations: [ GoogleFontsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TypographyComponent);
+    fixture = TestBed.createComponent(GoogleFontsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

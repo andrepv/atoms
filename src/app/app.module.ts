@@ -30,12 +30,13 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 import { DBService } from './services/db.service';
 import { ThemeManagerService } from './services/theme-manager.service';
 import { HeaderComponent } from './components/header/header.component';
-import { TypographyComponent } from './components/typography/typography.component';
-import { SpacingComponent } from './components/spacing/spacing.component';
+import { TypographyComponent } from './pages/typography.component';
+import { SpacingComponent } from './pages/spacing.component';
 import { ExplorerComponent } from './components/explorer/explorer.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { TypefaceComponent } from './components/typeface/typeface.component';
@@ -45,6 +46,8 @@ import { EditableTextComponent } from './components/editable-text/editable-text.
 import { TokenDropdownMenuComponent } from './components/token-dropdown-menu/token-dropdown-menu.component';
 import { TypefaceEditorComponent } from './components/typeface-editor/typeface-editor.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import { GoogleFontsComponent } from './components/typeface-editor/google-fonts/google-fonts.component';
+import { CustomFontComponent } from './components/typeface-editor/custom-fonts/custom-font.component';
 
 registerLocaleData(en);
 
@@ -63,6 +66,8 @@ registerLocaleData(en);
     EditableTextComponent,
     TokenDropdownMenuComponent,
     TypefaceEditorComponent,
+    GoogleFontsComponent,
+    CustomFontComponent,
   ],
   imports: [
     CommonModule,
@@ -85,7 +90,8 @@ registerLocaleData(en);
     NzMessageModule,
     ScrollingModule,
     NzListModule,
-    NzSwitchModule
+    NzSwitchModule,
+    NzRadioModule
   ],
   providers: [
     DBService,

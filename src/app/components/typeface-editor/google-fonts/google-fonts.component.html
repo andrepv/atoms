@@ -1,0 +1,42 @@
+<nz-select
+  [ngModel]="fontManager.sortOption"
+  (ngModelChange)="fontManager.sort($event)"
+>
+  <nz-option 
+    *ngFor="let option of fontManager.SORT_OPTIONS"
+    [nzValue]="option"
+    [nzLabel]="option"
+  ></nz-option>
+</nz-select>
+
+<div *ngFor="let option of categoryOptions">
+  <span>{{ option.name }}</span>
+  <nz-switch
+    [(ngModel)]="option.value"
+    (ngModelChange)="fontManager.toggleCategory(option.name, $event)"
+  ></nz-switch>
+</div>
+
+<input
+  nz-input
+  placeholder="Search by name"
+  [(ngModel)]="searchValue"
+  (input)="search()"
+/>
+
+<span>{{ fontManager.fonts.length }} of {{ fontManager.totalFontsCount }} families </span>
+  
+<cdk-virtual-scroll-viewport itemSize="155" class="demo-infinite-container">
+  <nz-list>
+    <nz-list-item *cdkVirtualFor="let font of ds">
+      <div class="font" (click)="selectFont(font)">
+        <div class="font-header">
+          <p>{{ font.family }}</p><p>{{ font.variants.length }} styles</p>
+        </div>
+        <div class="font-family-preview">
+          <p [style.font-family]="font.family">{{ fontManager.PREVIEW_TEXT }}</p>
+        </div>
+      </div>
+    </nz-list-item>
+  </nz-list>
+</cdk-virtual-scroll-viewport>

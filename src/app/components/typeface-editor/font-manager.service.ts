@@ -2,6 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { pluck } from 'rxjs/operators';
+import { TokenGroup } from '../../services/store.service';
+import { GoogleFont } from './google-fonts/google-fonts.component';
 
 export type FontCategory = "sans-serif" | "serif" | "display" | "handwriting" | "monospace";
 
@@ -22,6 +24,38 @@ type SortOption = 'popularity' | 'date' | 'alpha' | 'style' | 'trending';
   providedIn: 'root'
 })
 export class FontManagerService {
+	embeddedFonts = new Set<string>()
+
+	googleFonts: GoogleFontsManager;
+	customFonts: CustomFontsManager;
+
+  constructor(http: HttpClient) {
+		this.googleFonts = new GoogleFontsManager(http, this);
+		this.customFonts = new CustomFontsManager(this);
+	}
+
+	load(groupList: TokenGroup[]) {
+    let googleFonts: GoogleFont[] = [];
+
+    for (let group of groupList) {
+      for (let token of group.tokens) {
+        const font = token.value;
+        if (font.type === "google-fonts") {
+          googleFonts.push(font)
+        } else if (font.type === "custom-font") {
+					this.customFonts.addCustomFont(font.family, font.data)
+        }
+      }
+    }
+
+    if (googleFonts.length) {
+      this.googleFonts.addStylesheet({fonts: googleFonts, preview: false})
+    }
+	}
+}
+
+
+export class GoogleFontsManager {
   readonly API_KEY = 'AIzaSyD2qPnGwH89O2n3-U7OxQETWq4wG1BkAt8';
   readonly BASE_URL = "https://www.googleapis.com/webfonts/v1/webfonts";
   readonly FONT_BASE_URL = "https://fonts.googleapis.com/css";
@@ -39,16 +73,15 @@ export class FontManagerService {
 
 	isLoading = false;
 
-	private embeddedFonts = new Set<string>()
-	private ALL_FONTS: Font[] = [];
+	private ALL_FONTS: GoogleFont[] = [];
 
-	fonts$ = new BehaviorSubject<Font[]>([]);
+	fonts$ = new BehaviorSubject<GoogleFont[]>([]);
 
 	get fonts() {
 		return this.fonts$.getValue()
 	}
 
-	set fonts(fonts: Font[]) {
+	set fonts(fonts: GoogleFont[]) {
 		this.fonts$.next(fonts);
 	}
 
@@ -56,7 +89,10 @@ export class FontManagerService {
 		return this.ALL_FONTS.length;
 	}
 
-  constructor(private http: HttpClient) {}
+  constructor(
+		private http: HttpClient,
+    private fontManager: FontManagerService,
+  ) {}
 
   loadFonts() {
 		const params = new HttpParams()
@@ -66,7 +102,7 @@ export class FontManagerService {
     return this.http.get(this.BASE_URL, {params})
 		.pipe(pluck('items'))
 		.subscribe(fonts => {
-			this.ALL_FONTS = fonts as Font[];
+			this.ALL_FONTS = fonts as GoogleFont[];
 
 			if (
 				this.selectedCategories.length !== this.CATEGORIES.length
@@ -101,21 +137,20 @@ export class FontManagerService {
 	}
 
 	addStylesheet(options: {
-		fonts: Font[],
+		fonts: GoogleFont[],
 		onload?: () => void,
 		preview?: boolean
 	}) {
 		const {fonts, onload = () => {}, preview = true} = options;
-
     let familiesStr = fonts.map(font => (
       `${font.family}:${preview ? 'regular' : font.variants.join(",")}`
 		));
 
 		familiesStr = familiesStr.filter(familyStr => {
 			let str = `${familyStr}${preview ? ':preview': ''}`;
-			if (this.embeddedFonts.has(str)) return false;
+			if (this.fontManager.embeddedFonts.has(str)) return false;
 
-			this.embeddedFonts.add(str);
+			this.fontManager.embeddedFonts.add(str);
 			return true;
 		});
 
@@ -156,5 +191,44 @@ export class FontManagerService {
 			this.selectedCategories.includes(font.category as FontCategory)
 			&& font.family.toLowerCase().includes(this.fontFamily.toLowerCase().trim())
 		));
+	}
+}
+
+export class CustomFontsManager {
+	private customFontPreviewNode: HTMLStyleElement | null = null;
+
+	constructor(private fontManager: FontManagerService) {}
+
+	addCustomFontPreview(
+		data: string | ArrayBuffer,
+		fontFamily = "CustomFontPreview"
+	) {
+		if (!this.customFontPreviewNode) {
+			this.customFontPreviewNode = document.createElement("style");
+			document.head.appendChild(this.customFontPreviewNode);
+		}
+
+    const fontFace = `@font-face {
+      font-family : ${fontFamily};
+      src : url(${data});
+    }`;
+
+		this.customFontPreviewNode.innerHTML = fontFace;
+	}
+
+	addCustomFont(fontFamily: string, data: string | ArrayBuffer) {
+		if (this.fontManager.embeddedFonts.has(fontFamily)) {
+			return;
+		}
+
+		const stylesheetNode = document.createElement("style");
+
+		stylesheetNode.append(`@font-face {
+      font-family : ${fontFamily};
+      src : url(${data});
+    }`)
+	
+		document.head.appendChild(stylesheetNode);
+		this.fontManager.embeddedFonts.add(fontFamily);
 	}
 }

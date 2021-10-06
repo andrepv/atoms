@@ -3,7 +3,7 @@ import { ContentManagerService } from '../../services/content-manager.service';
 import { db } from '../../services/db.service';
 import { getContentManagerProvider } from '../../services/get-content-manager-provider';
 import { StoreService, Token, TokenGroup } from '../../services/store.service';
-import { Font, FontManagerService } from '../typeface-editor/font-manager.service';
+import { FontManagerService } from '../typeface-editor/font-manager.service';
 
 const {token, provider} = getContentManagerProvider(db.typeface);
 
@@ -28,16 +28,8 @@ export class TypefaceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.contentManager.load().then(() => {
-      let fonts: Font[];
-
-      this.groupList.map(group => group.tokens).forEach(tokens => {
-        fonts = tokens.map(item => item.value);
-      });
-
-      this.fontManager.addStylesheet({fonts, preview: false})
-
-    });
+    this.contentManager.onLoad = () => this.fontManager.load(this.groupList);
+    this.contentManager.load();
   }
 
   ngOnDestroy() {
