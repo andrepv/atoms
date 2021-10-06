@@ -1,9 +1,13 @@
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SectionNames, StoreService, Token, TokenGroup } from "./store.service";
 
 type EditableContent = {group: TokenGroup, token?: Token};
 
-export class Editor {
+@Injectable({
+  providedIn: 'root'
+})
+export class EditorService {
   section: SectionNames | '' = '';
 
   content$: BehaviorSubject<EditableContent | null> = new BehaviorSubject(null);

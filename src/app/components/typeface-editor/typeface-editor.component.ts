@@ -6,6 +6,7 @@ import { StoreService } from '../../services/store.service';
 import { Subscription } from 'rxjs';
 import { CustomFont } from './custom-fonts/custom-font.component';
 import { GoogleFont } from './google-fonts/google-fonts.component';
+import { EditorService } from '../../services/editor.service';
 
 const {token, provider} = getContentManagerProvider(db.typeface);
 
@@ -29,17 +30,18 @@ export class TypefaceEditorComponent implements OnInit {
   radioValue: FontType = "google-fonts";
 
   get content() {
-    return this.store.editor.content;
+    return this.editor.content;
   }
 
   constructor(
     @Inject(token) 
     public contentManager: ContentManagerService<TypefaceTokenTable, TypefaceGroupTable>,
     public store: StoreService,
+    public editor: EditorService,
   ) {}
 
   ngOnInit() {
-    this.subscription = this.store.editor.content$.subscribe(value => this.tokenName = value?.token.name ?? '');
+    this.subscription = this.editor.content$.subscribe(value => this.tokenName = value?.token.name ?? '');
   }
 
   ngOnDestroy() {

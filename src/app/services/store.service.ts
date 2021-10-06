@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Editor } from './editor';
 import { ThemeManagerService } from './theme-manager.service';
 
 export type SectionNames = "Type Face" | "Type Scale"; 
@@ -32,8 +31,6 @@ export class StoreService {
   isLoading = false;
   isClipboardActionsAvailable = true;
 
-  editor: Editor;
-
   _groups: {[key: string]: TokenGroup[]} = {}
 
   get groups(): TokenGroups {
@@ -62,8 +59,6 @@ export class StoreService {
         this.setClipboardActionsStatus(permissionStatus.state);
       };
     });
-
-    this.editor = new Editor(this);
   }
 
   loadTheme() {

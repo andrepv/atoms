@@ -5,6 +5,7 @@ import { Table, ITables, TokenGroupModel, TokenModel, db } from './db.service';
 import { StoreService, Token } from './store.service';
 import {Clipboard} from "./clipboard";
 import { getRandomChars } from '../utils/get-random-chars';
+import { EditorService } from './editor.service';
 
 @Injectable()
 export class ContentManagerService<T extends Table = any, G extends Table = any> {
@@ -37,6 +38,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     private tables: ITables<T, G>,
     public store: StoreService,
     private message: NzMessageService,
+    private editor: EditorService,
   ) {
     this.subscription = store.themeManager.selected$.subscribe(() => this.load())
   }
@@ -97,8 +99,8 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
       }).then(() => {
         this.store.updateGroup(this.sectionName, groupId,
           group => {
-            if (this.store.editor.isTokenEditable(tokenId, this.sectionName)) {
-              this.store.editor.disable();
+            if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
+              this.editor.disable();
             }
             return group.tokens = group.tokens.filter(({id}) => id !== tokenId)
           }
@@ -121,9 +123,9 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
       group => group.tokens.map(token => {
         if (token.id === tokenId) {
           token.name = tokenName;
-          if (this.store.editor.isTokenEditable(tokenId, this.sectionName)) {
-            const {token, group} = this.store.editor.content;
-            this.store.editor.content = {
+          if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
+            const {token, group} = this.editor.content;
+            this.editor.content = {
               token: {name: tokenName, ...token},
               group
             }
@@ -170,8 +172,8 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
       }
       this.store.deleteGroup(this.sectionName, groupId);
 
-      // if (this.store.editor.isGroupEditable(groupId, this.sectionName)) {
-      //   this.store.editor.disable();
+      // if (this.editor.isGroupEditable(groupId, this.sectionName)) {
+      //   this.editor.disable();
       // }
     });
   }
@@ -200,9 +202,9 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
         if (token.id === tokenId) {
           token.value = value;
         
-          if (this.store.editor.isTokenEditable(tokenId, this.sectionName)) {
-            const {token, group} = this.store.editor.content;
-            this.store.editor.content = {token: {value: value, ...token},group }
+          if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
+            const {token, group} = this.editor.content;
+            this.editor.content = {token: {value: value, ...token},group }
           }
         }
         return token;

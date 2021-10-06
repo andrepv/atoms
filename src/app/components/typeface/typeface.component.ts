@@ -4,6 +4,7 @@ import { db } from '../../services/db.service';
 import { getContentManagerProvider } from '../../utils/get-content-manager-provider';
 import { StoreService, Token, TokenGroup } from '../../services/store.service';
 import { FontManagerService } from '../typeface-editor/font-manager.service';
+import { EditorService } from '../../services/editor.service';
 
 const {token, provider} = getContentManagerProvider(db.typeface);
 
@@ -24,7 +25,8 @@ export class TypefaceComponent implements OnInit {
     @Inject(token) 
     public contentManager: ContentManagerService,
     public store: StoreService,
-    private fontManager: FontManagerService
+    private fontManager: FontManagerService,
+    private editor: EditorService,
   ) {}
 
   ngOnInit() {
@@ -47,6 +49,6 @@ export class TypefaceComponent implements OnInit {
   }
 
   openEditor(token: Token, group: TokenGroup) {
-    this.store.editor.enable(this.sectionName, {token, group})
+    this.editor.enable(this.sectionName, {token, group})
   }
 }
