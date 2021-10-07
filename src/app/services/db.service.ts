@@ -1,6 +1,6 @@
 import Dexie, { PromiseExtended } from 'dexie';
-import { CustomFont } from '../components/typeface-editor/custom-fonts/custom-font.component';
-import { GoogleFont } from '../components/typeface-editor/google-fonts/google-fonts.component';
+import { CustomFont } from '../editors/typeface-editor/custom-fonts/custom-font.component';
+import { GoogleFont } from '../editors/typeface-editor/google-fonts/google-fonts.component';
 import { SectionNames } from './store.service';
 
 export interface ThemeModel {

@@ -3,7 +3,7 @@ import { ContentManagerService } from '../../services/content-manager.service';
 import { db } from '../../services/db.service';
 import { getContentManagerProvider } from '../../utils/get-content-manager-provider';
 import { StoreService, Token, TokenGroup } from '../../services/store.service';
-import { FontManagerService } from '../typeface-editor/font-manager.service';
+import { FontManagerService } from '../../editors/typeface-editor/font-manager.service';
 import { EditorService } from '../../services/editor.service';
 
 const {token, provider} = getContentManagerProvider(db.typeface);

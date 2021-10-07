@@ -12,7 +12,7 @@ import { registerLocaleData } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { ToolbarComponent } from './layout/toolbar/toolbar.component';
 
 
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -34,20 +34,20 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 import { DBService } from './services/db.service';
 import { ThemeManagerService } from './services/theme-manager.service';
-import { HeaderComponent } from './components/header/header.component';
+import { HeaderComponent } from './layout/header/header.component';
 import { TypographyComponent } from './pages/typography.component';
 import { SpacingComponent } from './pages/spacing.component';
-import { ExplorerComponent } from './components/explorer/explorer.component';
+import { ExplorerComponent } from './layout/explorer/explorer.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
-import { TypefaceComponent } from './components/typeface/typeface.component';
-import { TypescaleComponent } from './components/typescale/typescale.component';
+import { TypefaceComponent } from './sections/typeface/typeface.component';
+import { TypescaleComponent } from './sections/typescale/typescale.component';
 import { GroupHeaderComponent } from './components/group-header/group-header.component';
 import { EditableTextComponent } from './components/editable-text/editable-text.component';
 import { TokenDropdownMenuComponent } from './components/token-dropdown-menu/token-dropdown-menu.component';
-import { TypefaceEditorComponent } from './components/typeface-editor/typeface-editor.component';
+import { TypefaceEditorComponent } from './editors/typeface-editor/typeface-editor.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
-import { GoogleFontsComponent } from './components/typeface-editor/google-fonts/google-fonts.component';
-import { CustomFontComponent } from './components/typeface-editor/custom-fonts/custom-font.component';
+import { GoogleFontsComponent } from './editors/typeface-editor/google-fonts/google-fonts.component';
+import { CustomFontComponent } from './editors/typeface-editor/custom-fonts/custom-font.component';
 
 registerLocaleData(en);
 
