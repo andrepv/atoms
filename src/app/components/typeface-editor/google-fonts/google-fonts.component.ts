@@ -37,6 +37,10 @@ export class GoogleFontsComponent implements OnInit {
 
   fontManager: GoogleFontsManager;
 
+  get sortOptions() {
+    return this.fontManager.SORT_OPTIONS.map(option => this.getSortOptionName(option));
+  }
+
   constructor(fontManager: FontManagerService) {
     this.fontManager = fontManager.googleFonts;
   }
@@ -65,6 +69,14 @@ export class GoogleFontsComponent implements OnInit {
     this.searchChange$.next(this.searchValue);
   }
 
+  sort(option: string) {
+    this.fontManager.sort(this.getSortOptionValue(option))
+  }
+
+  get sortOption() {
+    return this.getSortOptionName(this.fontManager.sortOption);
+  }
+
   selectFont(font: GoogleFont) {
     const {variants, subsets, category, family} = font;
     this.fontManager.addStylesheet({
@@ -80,6 +92,29 @@ export class GoogleFontsComponent implements OnInit {
       },
       preview: false
     });
+  }
+
+  private getSortOptionName(option: string) {
+    const map = {
+      popularity: 'Popular',
+      date: 'Newest',
+      alpha: 'Name',
+      style: 'Number of styles',
+      trending: 'Trending',
+    }
+
+    return map[option];
+  }
+
+  private getSortOptionValue(option: string) {
+    const map = {
+      'Popular': 'popularity',
+      'Newest': 'date',
+      'Name': 'alpha',
+      'Number of styles': 'style',
+      'Trending': 'trending',
+    }
+    return map[option];
   }
 }
 

@@ -1,9 +1,9 @@
 <nz-select
-  [ngModel]="fontManager.sortOption"
-  (ngModelChange)="fontManager.sort($event)"
+  [ngModel]="sortOption"
+  (ngModelChange)="sort($event)"
 >
   <nz-option 
-    *ngFor="let option of fontManager.SORT_OPTIONS"
+    *ngFor="let option of sortOptions"
     [nzValue]="option"
     [nzLabel]="option"
   ></nz-option>
@@ -34,7 +34,9 @@
           <p>{{ font.family }}</p><p>{{ font.variants.length }} styles</p>
         </div>
         <div class="font-family-preview">
-          <p [style.font-family]="font.family">{{ fontManager.PREVIEW_TEXT }}</p>
+          <p [style.font-family]="font.family">
+            {{ fontManager.PREVIEW_TEXT }}
+          </p>
         </div>
       </div>
     </nz-list-item>

@@ -44,7 +44,11 @@ export class TypefaceComponent implements OnInit {
   }
 
   addToken(groupId: number) {
-    const token = this.contentManager.createToken(groupId, '');
+    const token = this.contentManager.createToken(groupId, {
+      family: 'Arial',
+      type: "custom-font",
+      data: '',
+    });
     this.contentManager.addToken(token, groupId);
   }
 

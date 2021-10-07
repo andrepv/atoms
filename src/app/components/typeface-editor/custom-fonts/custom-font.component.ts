@@ -79,7 +79,7 @@ export class CustomFontComponent implements OnInit {
       if (!regexp.test(file.name)) {
         return;
       }
-      
+
       const reader = new FileReader();
       reader.readAsDataURL(file);
 

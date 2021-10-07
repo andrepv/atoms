@@ -95,6 +95,7 @@ export class GoogleFontsManager {
   ) {}
 
   loadFonts() {
+		this.isLoading = true;
 		const params = new HttpParams()
 		.set("sort", this.sortOption)
 		.set("key", this.API_KEY);
@@ -112,6 +113,8 @@ export class GoogleFontsManager {
 			} else {
 				this.fonts = this.ALL_FONTS;
 			}
+
+			this.isLoading = false;
 		})
   }
 
@@ -217,7 +220,7 @@ export class CustomFontsManager {
 	}
 
 	addCustomFont(fontFamily: string, data: string | ArrayBuffer) {
-		if (this.fontManager.embeddedFonts.has(fontFamily)) {
+		if (this.fontManager.embeddedFonts.has(fontFamily) || !data) {
 			return;
 		}
 
