@@ -27,7 +27,7 @@ export class TypefaceEditorComponent implements OnInit {
   tokenName = '';
   subscription: Subscription;
 
-  radioValue: FontType = "google-fonts";
+  radioValue: FontType | "loaded-fonts" = "google-fonts";
 
   get content() {
     return this.editor.content;

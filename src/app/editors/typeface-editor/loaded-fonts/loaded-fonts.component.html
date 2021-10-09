@@ -1,0 +1,12 @@
+<div *ngFor="let themeFonts of fonts">
+  <h5>{{ themeFonts.theme }}</h5>
+  
+  <nz-list>
+    <nz-list-item *ngFor="let font of themeFonts.fonts">
+      <p [style.font-family]="font.family" (click)="save.emit(font)">
+        {{ font.family }}
+      </p>
+    </nz-list-item>
+  </nz-list>
+
+</div>

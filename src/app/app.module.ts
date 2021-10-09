@@ -48,6 +48,7 @@ import { TypefaceEditorComponent } from './editors/typeface-editor/typeface-edit
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { GoogleFontsComponent } from './editors/typeface-editor/google-fonts/google-fonts.component';
 import { CustomFontComponent } from './editors/typeface-editor/custom-fonts/custom-font.component';
+import { LoadedFontsComponent } from './editors/typeface-editor/loaded-fonts/loaded-fonts.component';
 
 registerLocaleData(en);
 
@@ -68,6 +69,7 @@ registerLocaleData(en);
     TypefaceEditorComponent,
     GoogleFontsComponent,
     CustomFontComponent,
+    LoadedFontsComponent,
   ],
   imports: [
     CommonModule,

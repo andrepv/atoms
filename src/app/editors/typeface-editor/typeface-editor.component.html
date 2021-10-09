@@ -18,6 +18,7 @@
     <input id="name" nz-input [(ngModel)]="tokenName" (blur)="onBlur()" />
 
     <nz-radio-group [(ngModel)]="radioValue">
+      <label nz-radio-button nzValue="loaded-fonts">Loaded Fonts</label>
       <label nz-radio-button nzValue="google-fonts">Google Fonts</label>
       <label nz-radio-button nzValue="custom-font">Custom Font</label>
     </nz-radio-group>
@@ -31,5 +32,11 @@
       (save)="saveFont($event)"
       *ngIf="radioValue === 'custom-font'"
     ></app-custom-font>
+
+    <app-loaded-fonts
+      *ngIf="radioValue === 'loaded-fonts'"
+      (save)="saveFont($event)"
+      [tokenTable]="contentManager.tokenTable"
+    ></app-loaded-fonts>
   </div>
 </div>

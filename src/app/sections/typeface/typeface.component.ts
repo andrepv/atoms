@@ -30,7 +30,12 @@ export class TypefaceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.contentManager.onLoad = () => this.fontManager.load(this.groupList);
+    this.contentManager.onLoad = () => {
+      for (let group of this.groupList) {
+        const fonts = group.tokens.map(token => token.value);
+        this.fontManager.load(fonts);
+      }
+    };
     this.contentManager.load();
   }
 

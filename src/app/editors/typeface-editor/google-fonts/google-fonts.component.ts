@@ -1,9 +1,10 @@
 import { Component, EventEmitter,OnInit, Output } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
-import { Font, FontCategory, FontManagerService, GoogleFontsManager } from '../font-manager.service';
+import { Font, FontCategory, FontManagerService } from '../font-manager.service';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { FontModel } from '../typeface-editor.component';
+import { GoogleFontsManager } from './google-fonts-manager';
 
 export interface GoogleFont extends FontModel {
 	variants: string[];
