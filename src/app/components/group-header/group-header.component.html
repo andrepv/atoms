@@ -4,37 +4,38 @@
     [text]="group.name"
     [customTemplate]="textTemplate"
     (blur)="onBlur($event)"
-  ></app-editable-text>
-
-  <ng-template #textTemplate let-text>
-    <h3>{{ text }}</h3>
-  </ng-template>
+  >
+    <ng-template #textTemplate let-text>
+      <h3>{{ text }}</h3>
+    </ng-template>
+  </app-editable-text>
 
   <i
     nz-icon nzType="more" nzTheme="outline"
     nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
-  ></i>
+  >
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li
+          nz-menu-item
+          (click)="contentManager.deleteGroup(group.id)"
+        >Delete</li>
+        <li
+          nz-menu-item
+          (click)="editableText.makeEditable()"
+        >Rename</li>
+        <li
+          *ngIf="store.isClipboardActionsAvailable"
+          nz-menu-item
+          (click)="contentManager.clipboard.pastToken(group.id)"
+        >Past Token</li>
+        <li
+          *ngIf="store.isClipboardActionsAvailable"
+          nz-menu-item
+          (click)="contentManager.clipboard.copy(group)"
+        >Copy Group</li>
+      </ul>
+    </nz-dropdown-menu>
+  </i>
 
-  <nz-dropdown-menu #menu="nzDropdownMenu">
-    <ul nz-menu>
-      <li
-        nz-menu-item
-        (click)="contentManager.deleteGroup(group.id)"
-      >Delete</li>
-      <li
-        nz-menu-item
-        (click)="editableText.makeEditable()"
-      >Rename</li>
-      <li
-        *ngIf="store.isClipboardActionsAvailable"
-        nz-menu-item
-        (click)="contentManager.clipboard.pastToken(group.id)"
-      >Past Token</li>
-      <li
-        *ngIf="store.isClipboardActionsAvailable"
-        nz-menu-item
-        (click)="contentManager.clipboard.copy(group)"
-      >Copy Group</li>
-    </ul>
-  </nz-dropdown-menu>
 </header>

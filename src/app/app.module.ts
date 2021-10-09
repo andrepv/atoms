@@ -43,12 +43,12 @@ import { TypefaceComponent } from './sections/typeface/typeface.component';
 import { TypescaleComponent } from './sections/typescale/typescale.component';
 import { GroupHeaderComponent } from './components/group-header/group-header.component';
 import { EditableTextComponent } from './components/editable-text/editable-text.component';
-import { TokenDropdownMenuComponent } from './components/token-dropdown-menu/token-dropdown-menu.component';
 import { TypefaceEditorComponent } from './editors/typeface-editor/typeface-editor.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { GoogleFontsComponent } from './editors/typeface-editor/google-fonts/google-fonts.component';
 import { CustomFontComponent } from './editors/typeface-editor/custom-fonts/custom-font.component';
 import { LoadedFontsComponent } from './editors/typeface-editor/loaded-fonts/loaded-fonts.component';
+import { GroupComponent } from './components/groups/groups.component';
 
 registerLocaleData(en);
 
@@ -65,11 +65,11 @@ registerLocaleData(en);
     TypescaleComponent,
     GroupHeaderComponent,
     EditableTextComponent,
-    TokenDropdownMenuComponent,
     TypefaceEditorComponent,
     GoogleFontsComponent,
     CustomFontComponent,
     LoadedFontsComponent,
+    GroupComponent,
   ],
   imports: [
     CommonModule,

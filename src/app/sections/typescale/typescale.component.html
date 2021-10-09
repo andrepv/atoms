@@ -1,42 +1,12 @@
-<div>
-  <header>
-    <h2>{{ sectionName }}</h2>
-    <p (click)="addGroup()">add group</p>
-    <p
-      *ngIf="store.isClipboardActionsAvailable"
-      (click)="contentManager.clipboard.pastGroup()"
-    >past group</p>
-  </header>
-
-  <div *ngFor="let group of groupList">
-    <div [id]="group.anchorLink" class="group">
-      <app-group-header
-        [group]="group"
-        [contentManager]="contentManager"
-      ></app-group-header>
-
-      <ul>
-        <li *ngFor="let token of group.tokens">
-          <app-editable-text
-            #editableText
-            [text]="token.name"
-            (blur)="contentManager.renameToken($event, token.id, group.id)"
-            [customTemplate]="textTemplate"
-          ></app-editable-text>
-          <ng-template #textTemplate let-text>
-            <span>{{ text }}</span>
-          </ng-template>
-
-          <app-token-dropdown-menu
-            (rename)="editableText.makeEditable()"
-            (delete)="contentManager.deleteToken(token.id, group.id)"
-            (copy)="contentManager.clipboard.copy(token)"
-          ></app-token-dropdown-menu>
-
-        </li>
-      </ul>
-
-      <h4 (click)="addToken(group.id)">Add Token</h4>
+<app-groups
+  [sectionName]="sectionName"
+  [contentManager]="contentManager"
+  [tokenTemplate]="tokenTemplateRef"
+  layout="list"
+>
+  <ng-template #tokenTemplateRef let-token>
+    <div class="token">
+      <p>{{ token.value }}</p>
     </div>
-  </div>
-</div>
+  </ng-template>
+</app-groups>

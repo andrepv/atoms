@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TokenDropdownMenuComponent } from './token-dropdown-menu.component';
+import { GroupComponent } from './groups.component';
 
-describe('TokenDropdownMenuComponent', () => {
-  let component: TokenDropdownMenuComponent;
-  let fixture: ComponentFixture<TokenDropdownMenuComponent>;
+describe('GroupComponent', () => {
+  let component: GroupComponent;
+  let fixture: ComponentFixture<GroupComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TokenDropdownMenuComponent ]
+      declarations: [ GroupComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TokenDropdownMenuComponent);
+    fixture = TestBed.createComponent(GroupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

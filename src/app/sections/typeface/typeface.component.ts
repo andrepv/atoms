@@ -2,62 +2,54 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ContentManagerService } from '../../services/content-manager.service';
 import { db } from '../../services/db.service';
 import { getContentManagerProvider } from '../../utils/get-content-manager-provider';
-import { StoreService, Token, TokenGroup } from '../../services/store.service';
+import { StoreService } from '../../services/store.service';
 import { FontManagerService } from '../../editors/typeface-editor/font-manager.service';
-import { EditorService } from '../../services/editor.service';
 
 const {token, provider} = getContentManagerProvider(db.typeface);
 
 @Component({
   selector: 'app-typeface',
-  templateUrl: './typeface.component.html',
+  template: `
+    <app-groups
+      [sectionName]="sectionName"
+      [contentManager]="contentManager"
+      [tokenTemplate]="tokenTemplateRef"
+    >
+      <ng-template #tokenTemplateRef let-token>
+        <div class="token" [style.font-family]="token.value.family">
+          <h1>Ag</h1>
+          <p>{{ token.value.family }}</p>
+        </div>
+      </ng-template>
+    </app-groups>
+  `,
   styleUrls: ['./typeface.component.less'],
   providers: [provider]
 })
 export class TypefaceComponent implements OnInit {
   readonly sectionName = "Type Face";
 
-  get groupList() {
-    return this.store.getGroupList(this.sectionName);
-  }
-
   constructor(
     @Inject(token) 
     public contentManager: ContentManagerService,
-    public store: StoreService,
+    private store: StoreService,
     private fontManager: FontManagerService,
-    private editor: EditorService,
   ) {}
 
   ngOnInit() {
-    this.contentManager.onLoad = () => {
-      for (let group of this.groupList) {
-        const fonts = group.tokens.map(token => token.value);
-        this.fontManager.load(fonts);
-      }
-    };
-    this.contentManager.load();
-  }
-
-  ngOnDestroy() {
-    this.contentManager.subscription.unsubscribe();
-  }
-
-  addGroup() {
-    const group = this.contentManager.createGroup();
-    this.contentManager.addGroup(group);
-  }
-
-  addToken(groupId: number) {
-    const token = this.contentManager.createToken(groupId, {
+    this.contentManager.onLoad = () => this.loadFonts();
+    this.contentManager.getDefaultTokenValue = () => ({
       family: 'Arial',
       type: "custom-font",
       data: '',
-    });
-    this.contentManager.addToken(token, groupId);
+    })
   }
 
-  openEditor(token: Token, group: TokenGroup) {
-    this.editor.enable(this.sectionName, {token, group})
+  private loadFonts() {
+    const groupList = this.store.getGroupList(this.sectionName);
+    for (let group of groupList) {
+      const fonts = group.tokens.map(token => token.value);
+      this.fontManager.load(fonts);
+    }
   }
 }

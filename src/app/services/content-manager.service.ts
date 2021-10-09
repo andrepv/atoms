@@ -34,6 +34,8 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     this._onLoad = onLoadCallback;
   }
 
+  getDefaultTokenValue: () => any = () => "";
+
   constructor(
     private tables: ITables<T, G>,
     public store: StoreService,
@@ -138,7 +140,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
 
   createToken(
     groupId: number,
-    value: any,
+    value = this.getDefaultTokenValue(),
     name = `token-${getRandomChars()}`
   ) {
     return {

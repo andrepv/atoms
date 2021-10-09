@@ -1,78 +1,10 @@
-.group {
-  background: #27272f;
-  border-radius: 8px;
-  padding: 25px 31px;
-  margin-bottom: 31px;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.actions {
-  i:first-child {
-    margin-right: 15px;
-  }
-
-  &::ng-deep svg {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-  }
-}
-
-.add-token-btn {
-  border: 1px solid #363636;
-  cursor: pointer;
-  padding: 20px;
-  text-align: center;
-
-  &::ng-deep svg {
-    width: 20px;
-    height: 20px;
-    fill: #6948cb;
-  }
-
-  &:hover {
-    border: 1px solid #6948cb;
-    transition: all 0.3s;
-  }
-}
-
-.container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-row-gap: 30px;
-  grid-column-gap: 50px;
-  margin-bottom: 30px;
-}
-
 .token {
-  background: #35343d;
-  border-radius: 7px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  position: relative;
-  padding: 20px 0;
-  margin-bottom: 15px;
-
   h1 {
     font-size: 44px;
   }
-
-  .dropdown-menu {
-    position: absolute;
-    right: 10px;
-    top: 5px;
-  }
 }
 
-.group-header {
-  margin-bottom: 20px;
-}

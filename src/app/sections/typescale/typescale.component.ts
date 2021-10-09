@@ -15,10 +15,6 @@ const {token, provider} = getContentManagerProvider(db.typescale)
 export class TypescaleComponent implements OnInit {
   readonly sectionName = "Type Scale";
 
-  get groupList() {
-    return this.store.getGroupList(this.sectionName);
-  }
-
   constructor(
     @Inject(token) 
     public contentManager: ContentManagerService,
@@ -26,20 +22,6 @@ export class TypescaleComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.contentManager.load();
-  }
-
-  ngOnDestroy() {
-    this.contentManager.subscription.unsubscribe();
-  }
-
-  addGroup() {
-    const group = this.contentManager.createGroup();
-    this.contentManager.addGroup(group);
-  }
-
-  addToken(groupId: number) {
-    const token = this.contentManager.createToken(groupId, '');
-    this.contentManager.addToken(token, groupId);
+    this.contentManager.getDefaultTokenValue = () => '0px';
   }
 }
