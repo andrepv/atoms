@@ -31,6 +31,9 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+
 
 import { DBService } from './services/db.service';
 import { ThemeManagerService } from './services/theme-manager.service';
@@ -41,7 +44,6 @@ import { ExplorerComponent } from './layout/explorer/explorer.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { TypefaceComponent } from './sections/typeface/typeface.component';
 import { TypescaleComponent } from './sections/typescale/typescale.component';
-import { GroupHeaderComponent } from './components/group-header/group-header.component';
 import { EditableTextComponent } from './components/editable-text/editable-text.component';
 import { TypefaceEditorComponent } from './editors/typeface-editor/typeface-editor.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
@@ -49,6 +51,9 @@ import { GoogleFontsComponent } from './editors/typeface-editor/google-fonts/goo
 import { CustomFontComponent } from './editors/typeface-editor/custom-fonts/custom-font.component';
 import { LoadedFontsComponent } from './editors/typeface-editor/loaded-fonts/loaded-fonts.component';
 import { GroupComponent } from './components/groups/groups.component';
+import { TypescaleEditorComponent } from './editors/typescale-editor/typescale-editor.component';
+import { EditorComponent } from './layout/editor/editor.component';
+import { TypescaleTokenComponent } from './sections/typescale/typescale-token/typescale-token.component';
 
 registerLocaleData(en);
 
@@ -63,13 +68,15 @@ registerLocaleData(en);
     AutofocusDirective,
     TypefaceComponent,
     TypescaleComponent,
-    GroupHeaderComponent,
     EditableTextComponent,
     TypefaceEditorComponent,
     GoogleFontsComponent,
     CustomFontComponent,
     LoadedFontsComponent,
     GroupComponent,
+    TypescaleEditorComponent,
+    EditorComponent,
+    TypescaleTokenComponent,
   ],
   imports: [
     CommonModule,
@@ -93,7 +100,9 @@ registerLocaleData(en);
     ScrollingModule,
     NzListModule,
     NzSwitchModule,
-    NzRadioModule
+    NzRadioModule,
+    NzSliderModule,
+    NzInputNumberModule
   ],
   providers: [
     DBService,

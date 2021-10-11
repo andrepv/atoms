@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { ContentManagerService } from '../../services/content-manager.service';
-import { EditorService } from '../../services/editor.service';
+import { EditorService } from '../../layout/editor/editor.service';
 import { SectionNames, StoreService, Token, TokenGroup } from '../../services/store.service';
 
 @Component({
@@ -13,6 +13,7 @@ export class GroupComponent implements OnInit {
   @Input() contentManager: ContentManagerService;
   @Input() tokenTemplate: TemplateRef<any>;
   @Input() isTokenEditable = true;
+  @Input() isGroupEditable = false;
   @Input() layout: "list" | "grid" = "grid";
 
   get groupList() {
@@ -20,7 +21,7 @@ export class GroupComponent implements OnInit {
   }
 
   constructor(
-    private editor: EditorService,
+    public editor: EditorService,
     public store: StoreService
   ) {}
 
@@ -32,9 +33,6 @@ export class GroupComponent implements OnInit {
     this.contentManager.subscription.unsubscribe();
   }
 
-  openEditor(token: Token, group: TokenGroup) {
-    this.editor.enable(this.sectionName, {token, group})
-  }
 
   addGroup() {
     const group = this.contentManager.createGroup();
@@ -45,5 +43,12 @@ export class GroupComponent implements OnInit {
     const tokenValue = this.contentManager.getDefaultTokenValue();
     const token = this.contentManager.createToken(groupId, tokenValue);
     this.contentManager.addToken(token, groupId);
+  }
+
+  onBlur(value: string, group: TokenGroup) {
+    if (!value.length || value === group.name) {
+      return;
+    }
+    this.contentManager.renameGroup(value, group.id)
   }
 }

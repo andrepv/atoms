@@ -6,7 +6,7 @@ import { StoreService } from '../../services/store.service';
 import { Subscription } from 'rxjs';
 import { CustomFont } from './custom-fonts/custom-font.component';
 import { GoogleFont } from './google-fonts/google-fonts.component';
-import { EditorService } from '../../services/editor.service';
+import { EditorService } from '../../layout/editor/editor.service';
 
 const {token, provider} = getContentManagerProvider(db.typeface);
 

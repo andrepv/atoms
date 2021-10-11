@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EditorService } from '../../services/editor.service';
+import { EditorService } from '../editor/editor.service';
 import { StoreService } from '../../services/store.service';
 
 @Component({

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { SectionNames, StoreService, Token, TokenGroup } from "./store.service";
+import { SectionNames, StoreService, Token, TokenGroup } from "../../services/store.service";
 
 type EditableContent = {group: TokenGroup, token?: Token};
 
@@ -18,7 +18,11 @@ export class EditorService {
 
   get content() {
     return this.content$.getValue();
-  } 
+  }
+
+  get isActive() {
+    return Boolean(this.section)
+  }
 
   constructor(private store: StoreService) {
     this.store.themeManager.selected$.subscribe(() => this.disable())
@@ -30,8 +34,11 @@ export class EditorService {
   }
 
   isTokenEditable(tokenId: number, sectionName: SectionNames) {
-    const {token} = this.content;
-    return tokenId === token?.id && this.section === sectionName;
+    if (this.content?.token) {
+      const {token} = this.content;
+      return tokenId === token?.id && this.section === sectionName;
+    }
+    return false;
   }
 
   enable(sectionName: SectionNames, content: EditableContent) {

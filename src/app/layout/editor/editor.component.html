@@ -1,0 +1,11 @@
+<header class="editor-heading">
+  <div class="heading" (click)="editor.disable()">
+    <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
+    <h3>{{ editor.section }}</h3>
+  </div>
+</header>
+
+<div [ngSwitch]="editor.section" class="content-wrapper">
+  <app-typeface-editor *ngSwitchCase="'Type Face'"></app-typeface-editor>
+  <app-typescale-editor *ngSwitchCase="'Type Scale'"></app-typescale-editor>
+</div>

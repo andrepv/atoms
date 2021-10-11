@@ -1,32 +1,25 @@
-<div>
-  <div class="content">
-    <div
-      [ngSwitch]="editor.section"
-      class="content-wrapper"
-    >
+<div class="content">
+  <div class="content-wrapper">
+    <app-editor *ngIf="editor.isActive"></app-editor>
 
-      <app-typeface-editor *ngSwitchCase="'Type Face'"></app-typeface-editor>
+    <div class="anchor-list" *ngIf="!editor.isActive">
+      <header>
+        <h5 nz-typography>{{ store.section.name }}</h5>
+      </header>
 
-      <div class="anchor-list" *ngSwitchDefault>
-    
-        <header>
-          <h5 nz-typography>{{ store.section.name }}</h5>
-        </header>
-
-        <div class="main">
-          <div *ngFor="let groups of store.section.content">
-            <h5 nz-typography>{{ groups.name }}</h5>
-            <nz-anchor [nzAffix]="false">
-              <nz-link
-                *ngFor="let group of groups.content"
-                [nzHref]="'#' + group.anchorLink"
-                [nzTitle]="group.name"
-              ></nz-link>
-            </nz-anchor>
-          </div>
+      <div class="main">
+        <div *ngFor="let groups of store.section.content">
+          <h5 nz-typography>{{ groups.name }}</h5>
+          <nz-anchor [nzAffix]="false">
+            <nz-link
+              *ngFor="let group of groups.content"
+              [nzHref]="'#' + group.anchorLink"
+              [nzTitle]="group.name"
+            ></nz-link>
+          </nz-anchor>
         </div>
-
       </div>
+
     </div>
   </div>
 </div>

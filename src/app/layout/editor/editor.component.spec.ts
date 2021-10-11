@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GroupHeaderComponent } from './group-header.component';
+import { EditorComponent } from './editor.component';
 
-describe('GroupHeaderComponent', () => {
-  let component: GroupHeaderComponent;
-  let fixture: ComponentFixture<GroupHeaderComponent>;
+describe('EditorComponent', () => {
+  let component: EditorComponent;
+  let fixture: ComponentFixture<EditorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GroupHeaderComponent ]
+      declarations: [ EditorComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GroupHeaderComponent);
+    fixture = TestBed.createComponent(EditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

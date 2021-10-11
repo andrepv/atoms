@@ -5,7 +5,7 @@ import { Table, ITables, TokenGroupModel, TokenModel, db } from './db.service';
 import { StoreService, Token } from './store.service';
 import {Clipboard} from "./clipboard";
 import { getRandomChars } from '../utils/get-random-chars';
-import { EditorService } from './editor.service';
+import { EditorService } from '../layout/editor/editor.service';
 
 @Injectable()
 export class ContentManagerService<T extends Table = any, G extends Table = any> {

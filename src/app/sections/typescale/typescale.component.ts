@@ -22,6 +22,10 @@ export class TypescaleComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.contentManager.getDefaultTokenValue = () => '0px';
+    this.contentManager.getDefaultTokenValue = () => '16px';
+  }
+
+  onAfterChange(value: number, tokenId: number, groupId: number) {
+    this.contentManager.setTokenValue(value, tokenId, groupId)
   }
 }

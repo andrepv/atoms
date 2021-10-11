@@ -1,0 +1,15 @@
+<div class="token">
+  <p [style.font-size]="value + 'px'">Text Preview</p>
+  <nz-slider
+    [nzMin]="1"
+    [nzMax]="100"
+    [(ngModel)]="value"
+    (nzOnAfterChange)="onAfterChange.emit($event)"
+  ></nz-slider>
+  <nz-input-number
+    [nzMin]="1"
+    [nzMax]="100"
+    [(ngModel)]="value"
+    (ngModelChange)="onAfterChange.emit($event)"
+  ></nz-input-number>
+</div>
