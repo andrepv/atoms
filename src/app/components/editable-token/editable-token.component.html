@@ -4,6 +4,7 @@
       [nzMin]="minValue"
       [nzMax]="maxValue"
       [(ngModel)]="_value"
+      [nzStep]="step"
       (nzOnAfterChange)="onAfterChange.emit($event)"
     ></nz-slider>
     <nz-input-number

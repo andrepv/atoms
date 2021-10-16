@@ -54,6 +54,7 @@ import { GroupComponent } from './components/groups/groups.component';
 import { TypescaleEditorComponent } from './editors/typescale-editor/typescale-editor.component';
 import { EditorComponent } from './layout/editor/editor.component';
 import { EditableTokenComponent } from './components/editable-token/editable-token.component';
+import { LineHeightComponent } from './sections/line-height/line-height.component';
 
 registerLocaleData(en);
 
@@ -77,6 +78,7 @@ registerLocaleData(en);
     TypescaleEditorComponent,
     EditorComponent,
     EditableTokenComponent,
+    LineHeightComponent,
   ],
   imports: [
     CommonModule,

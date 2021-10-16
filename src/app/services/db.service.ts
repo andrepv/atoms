@@ -29,8 +29,11 @@ export type ThemeTable = Dexie.Table<ThemeModel, number>;
 export type TypefaceTokenTable = Dexie.Table<TokenModel<CustomFont | GoogleFont>, number>;
 export type TypefaceGroupTable = Dexie.Table<TokenGroupModel, number>;
 
-export type TypescaleTokenTable = Dexie.Table<TokenModel<string>, number>;
+export type TypescaleTokenTable = Dexie.Table<TokenModel<number>, number>;
 export type TypescaleGroupTable = Dexie.Table<TokenGroupModel, number>;
+
+export type LineHeightTokenTable = Dexie.Table<TokenModel<number>, number>;
+export type LineHeightGroupTable = Dexie.Table<TokenGroupModel, number>;
 
 export type Table = Dexie.Table;
 
@@ -46,6 +49,7 @@ export class DBService extends Dexie {
   theme: ThemeTable;
   typeface: ITables<TypefaceTokenTable, TypefaceGroupTable>;
   typescale: ITables<TypescaleTokenTable, TypescaleGroupTable>;
+  lineHeight: ITables<LineHeightTokenTable, LineHeightGroupTable>;
 
   get sections() {
     return [this.typeface, this.typescale];
@@ -57,13 +61,16 @@ export class DBService extends Dexie {
     const token = "++id, name, themeId";
     const group = "++id, name, themeId, *tokensId";
 
-    this.version(3).stores({
+    this.version(4).stores({
       theme: '++id, name',
       typefaceToken: token,
       typefaceGroup: group,
 
       typescaleToken: token,
       typescaleGroup: group,
+
+      lineHeightToken: token,
+      lineHeightGroup: group,
     });
 
     this.theme = this.table("theme");
@@ -78,6 +85,12 @@ export class DBService extends Dexie {
       "Type Scale",
       this.table("typescaleToken"),
       this.table("typescaleGroup")
+    )
+
+    this.lineHeight = new Tables(
+      "Line Height",
+      this.table("lineHeightToken"),
+      this.table("lineHeightGroup")
     )
   }
 

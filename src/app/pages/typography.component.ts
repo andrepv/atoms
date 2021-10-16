@@ -9,6 +9,7 @@ import { StoreService } from '../services/store.service';
     <div>
       <app-typeface></app-typeface>
       <app-typescale></app-typescale>
+      <app-line-height></app-line-height>
     </div>
   </div>
   `,

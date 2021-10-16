@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, Template
 })
 export class EditableTokenComponent implements OnInit {
   @Input() isEditable = true;
+  @Input() step = 1;
   @Input() minValue = 1;
   @Input() maxValue = 100;
   @Input() value: number;
