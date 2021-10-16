@@ -1,18 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subscription } from 'rxjs';
 import { Table, ITables, TokenGroupModel, TokenModel, db } from './db.service';
-import { StoreService, Token } from './store.service';
+import { StoreService, Token, TokenGroup } from './store.service';
 import {Clipboard} from "./clipboard";
 import { getRandomChars } from '../utils/get-random-chars';
 import { EditorService } from '../layout/editor/editor.service';
+
+interface ConfigureOptions {
+  onLoad: () => any;
+  getDefaultTokenValue: (groupId: number) => any;
+  getDefaultGroupState: false | (() => any);
+}
 
 @Injectable()
 export class ContentManagerService<T extends Table = any, G extends Table = any> {
   isLoading = false;
   subscription: Subscription;
   clipboard = new Clipboard(this, this.message);
-  private _onLoad = () => {};
 
   get groupTable() {
     return this.tables.group;
@@ -30,19 +35,23 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     return this.store.themeManager.selected.id;
   }
 
-  set onLoad(onLoadCallback: () => any) {
-    this._onLoad = onLoadCallback;
+  configs: ConfigureOptions = {
+    onLoad: () => {},
+    getDefaultTokenValue: () => "",
+    getDefaultGroupState: false,
   }
 
-  getDefaultTokenValue: () => any = () => "";
-
   constructor(
-    private tables: ITables<T, G>,
+    @Inject('tables') private tables: ITables<T, G>,
     public store: StoreService,
     private message: NzMessageService,
     private editor: EditorService,
   ) {
     this.subscription = store.themeManager.selected$.subscribe(() => this.load())
+  }
+
+  configure(options: Partial<ConfigureOptions>) {
+    this.configs = Object.assign(this.configs, options)
   }
 
   async load() {
@@ -67,19 +76,25 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
       .anyOf(group.tokensId)
       .toArray();
 
-      groupList.push({
+      const transformedGroup: TokenGroup = {
         name: group.name,
         id: group.id,
         tokens,
         anchorLink: getRandomChars(),
-      })
+      }
+
+      if (group.state) {
+        transformedGroup.state = group.state;
+      }
+
+      groupList.push(transformedGroup)
     }
 
     this.store.setGroupList(this.sectionName, groupList)
 
     this.isLoading = false;
 
-    this._onLoad();
+    this.configs.onLoad();
   }
 
   async addToken(token: TokenModel, groupId: number) {
@@ -140,7 +155,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
 
   createToken(
     groupId: number,
-    value = this.getDefaultTokenValue(),
+    value = this.configs.getDefaultTokenValue(groupId),
     name = `token-${getRandomChars()}`
   ) {
     return {
@@ -153,12 +168,15 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
 
   async addGroup(group: TokenGroupModel) {
     const groupId: number = await this.groupTable.add(group);
-    const newGroup = {
+    const newGroup: TokenGroup = {
       id: groupId,
       name: group.name,
       tokens: [],
       anchorLink: getRandomChars(),
     }
+
+    if (group.state) newGroup.state = group.state;
+
     this.store.addGroup(this.sectionName, newGroup)
     return groupId;
   }
@@ -188,12 +206,26 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     );
   }
 
+  async setGroupState(
+    groupId: number,
+    state: {scaleRatio: number, baseFontSize: number} | false
+  ) {
+    await this.groupTable.update(groupId, {state});
+    this.store.updateGroup(this.sectionName, groupId, group => group.state = state)
+  }
+
   createGroup(name = "group", tokensId = []) {
-    return {
+    const group = {
       name,
       themeId: this.selectedThemeId,
       tokensId,
-    } as TokenGroupModel
+    } as TokenGroupModel;
+
+    if (this.configs.getDefaultGroupState) {
+      group.state = this.configs.getDefaultGroupState();
+    }
+
+    return group;
   }
 
   async setTokenValue(value: any, tokenId: number, groupId: number) {

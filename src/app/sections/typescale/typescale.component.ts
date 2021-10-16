@@ -1,31 +1,67 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DEFAULT_BASE_FONT_SIZE } from '../../editors/typescale-editor/typescale-editor.component';
 import { ContentManagerService } from '../../services/content-manager.service';
 import { db } from '../../services/db.service';
-import { getContentManagerProvider } from '../../utils/get-content-manager-provider';
 import { StoreService } from '../../services/store.service';
-
-const {token, provider} = getContentManagerProvider(db.typescale)
+import { getScaleValue } from '../../utils/get-type-scale-value';
 
 @Component({
   selector: 'app-typescale',
-  templateUrl: './typescale.component.html',
-  styleUrls: ['./typescale.component.less'],
-  providers: [provider]
+  template: `
+  <app-groups
+    [tokenTemplate]="tokenTemplateRef"
+    [isTokenEditable]="false"
+    [isGroupEditable]="true"
+    layout="list"
+  >
+    <ng-template #tokenTemplateRef let-token let-group="group">
+      <app-editable-token
+        [isEditable]="!group.state"
+        [minValue]="MIN_FONT_SIZE"
+        [maxValue]="MAX_FONT_SIZE"
+        [value]="token.value"
+        [previewTemplate]="tokenPreviewRef"
+        (onAfterChange)="contentManager.setTokenValue($event, token.id, group.id)"
+      >
+        <ng-template #tokenPreviewRef let-value>
+          <p [style.font-size]="value + 'px'">
+            The quick brown fox jumps
+          </p>
+          <p *ngIf="group.state">{{ value + 'px' }}</p>
+        </ng-template>
+      </app-editable-token>
+    </ng-template>
+  </app-groups>
+  `,
+  providers: [
+    {provide: 'tables', useValue: db.typescale},
+    ContentManagerService,
+  ]
 })
 export class TypescaleComponent implements OnInit {
-  readonly sectionName = "Type Scale";
+  readonly MIN_FONT_SIZE = 1;
+  readonly MAX_FONT_SIZE = 150;
 
   constructor(
-    @Inject(token) 
     public contentManager: ContentManagerService,
-    public store: StoreService,
+    private store: StoreService,
   ) {}
 
   ngOnInit() {
-    this.contentManager.getDefaultTokenValue = () => '16px';
+    this.contentManager.configure({
+      getDefaultTokenValue: groupId => this.getDefaultTokenValue(groupId),
+      getDefaultGroupState: () => false
+    })
   }
 
-  onAfterChange(value: number, tokenId: number, groupId: number) {
-    this.contentManager.setTokenValue(value, tokenId, groupId)
+  private getDefaultTokenValue(groupId: number) {
+    const group = this.store.getGroup(
+      this.contentManager.sectionName,
+      groupId
+    );
+    if (group.state) {  
+      return getScaleValue(group.tokens.length, group.state);
+    }
+    return DEFAULT_BASE_FONT_SIZE;
   }
 }

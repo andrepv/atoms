@@ -1,0 +1,19 @@
+<div class="token">
+  <div *ngIf="isEditable">
+    <nz-slider
+      [nzMin]="minValue"
+      [nzMax]="maxValue"
+      [(ngModel)]="_value"
+      (nzOnAfterChange)="onAfterChange.emit($event)"
+    ></nz-slider>
+    <nz-input-number
+      [nzMin]="minValue"
+      [nzMax]="maxValue"
+      [(ngModel)]="_value"
+      (ngModelChange)="onAfterChange.emit($event)"
+    ></nz-input-number>
+  </div>
+  <ng-container
+    *ngTemplateOutlet=" previewTemplate; context: {$implicit: _value}"
+  ></ng-container>
+</div>

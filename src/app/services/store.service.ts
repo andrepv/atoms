@@ -14,6 +14,7 @@ export interface TokenGroup {
   id: number;
   tokens: Token<any>[];
   anchorLink: string;
+  state?: any;
 }
 
 export type TokenGroups = {

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TypescaleTokenComponent } from './typescale-token.component';
+import { EditableTokenComponent } from './editable-token.component';
 
-describe('TypescaleTokenComponent', () => {
-  let component: TypescaleTokenComponent;
-  let fixture: ComponentFixture<TypescaleTokenComponent>;
+describe('EditableTokenComponent', () => {
+  let component: EditableTokenComponent;
+  let fixture: ComponentFixture<EditableTokenComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TypescaleTokenComponent ]
+      declarations: [ EditableTokenComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TypescaleTokenComponent);
+    fixture = TestBed.createComponent(EditableTokenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

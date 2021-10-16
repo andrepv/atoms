@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { ContentManagerService } from '../../services/content-manager.service';
 import { EditorService } from '../../layout/editor/editor.service';
-import { SectionNames, StoreService, Token, TokenGroup } from '../../services/store.service';
+import { StoreService, TokenGroup } from '../../services/store.service';
 
 @Component({
   selector: 'app-groups',
@@ -9,18 +9,21 @@ import { SectionNames, StoreService, Token, TokenGroup } from '../../services/st
   styleUrls: ['./groups.component.less']
 })
 export class GroupComponent implements OnInit {
-  @Input() sectionName: SectionNames;
-  @Input() contentManager: ContentManagerService;
   @Input() tokenTemplate: TemplateRef<any>;
   @Input() isTokenEditable = true;
   @Input() isGroupEditable = false;
   @Input() layout: "list" | "grid" = "grid";
 
   get groupList() {
-    return this.store.getGroupList(this.sectionName);
+    return this.store.getGroupList(this.contentManager.sectionName);
+  }
+
+  get sectionName() {
+    return this.contentManager.sectionName;
   }
 
   constructor(
+    public contentManager: ContentManagerService,
     public editor: EditorService,
     public store: StoreService
   ) {}
@@ -33,15 +36,13 @@ export class GroupComponent implements OnInit {
     this.contentManager.subscription.unsubscribe();
   }
 
-
   addGroup() {
     const group = this.contentManager.createGroup();
     this.contentManager.addGroup(group);
   }
 
   addToken(groupId: number) {
-    const tokenValue = this.contentManager.getDefaultTokenValue();
-    const token = this.contentManager.createToken(groupId, tokenValue);
+    const token = this.contentManager.createToken(groupId);
     this.contentManager.addToken(token, groupId);
   }
 

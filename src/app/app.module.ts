@@ -53,7 +53,7 @@ import { LoadedFontsComponent } from './editors/typeface-editor/loaded-fonts/loa
 import { GroupComponent } from './components/groups/groups.component';
 import { TypescaleEditorComponent } from './editors/typescale-editor/typescale-editor.component';
 import { EditorComponent } from './layout/editor/editor.component';
-import { TypescaleTokenComponent } from './sections/typescale/typescale-token/typescale-token.component';
+import { EditableTokenComponent } from './components/editable-token/editable-token.component';
 
 registerLocaleData(en);
 
@@ -76,7 +76,7 @@ registerLocaleData(en);
     GroupComponent,
     TypescaleEditorComponent,
     EditorComponent,
-    TypescaleTokenComponent,
+    EditableTokenComponent,
   ],
   imports: [
     CommonModule,

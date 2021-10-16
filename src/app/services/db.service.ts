@@ -21,6 +21,7 @@ export interface TokenGroupModel {
   name: string;
   themeId: number;
   tokensId: number[];
+  state?: any;
 }
 
 export type ThemeTable = Dexie.Table<ThemeModel, number>;

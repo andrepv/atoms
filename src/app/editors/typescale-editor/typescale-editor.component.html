@@ -1,1 +1,31 @@
-<p>typescale-editor works!</p>
+<span> Enable Modular Scale </span>
+<nz-switch
+  [(ngModel)]="isModularScaleEnabled"
+  (ngModelChange)="updateModularScale()"
+></nz-switch>
+
+<div *ngIf="isModularScaleEnabled">
+  <div>
+    <span>Scale Ratio</span>
+    <nz-select
+      [ngModel]="scaleRatio"
+      (ngModelChange)="onScaleRatioChange($event)"
+    >
+      <nz-option
+        *ngFor="let option of MODULAR_SCALE_OPTIONS"
+        [nzValue]="option"
+        [nzLabel]="option.name"
+      ></nz-option>
+    </nz-select>
+  </div>
+
+  <div>
+    <span>Base Font Size</span>
+    <nz-input-number
+      [nzMin]="4"
+      [nzMax]="100"
+      [(ngModel)]="baseFontSize"
+      (ngModelChange)="updateModularScale()"
+    ></nz-input-number>
+  </div>
+</div>

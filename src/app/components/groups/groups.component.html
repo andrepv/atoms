@@ -21,7 +21,7 @@
           #editableText
           [text]="group.name"
           [customTemplate]="textTemplate"
-          (blur)="onBlur($event)"
+          (blur)="onBlur($event, group)"
         >
           <ng-template #textTemplate let-text><h3>{{ text }}</h3></ng-template>
         </app-editable-text>
