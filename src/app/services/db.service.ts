@@ -35,6 +35,9 @@ export type TypescaleGroupTable = Dexie.Table<TokenGroupModel, number>;
 export type LineHeightTokenTable = Dexie.Table<TokenModel<number>, number>;
 export type LineHeightGroupTable = Dexie.Table<TokenGroupModel, number>;
 
+export type LetterSpacingTokenTable = Dexie.Table<TokenModel<number>, number>;
+export type LetterSpacingGroupTable = Dexie.Table<TokenGroupModel, number>;
+
 export type Table = Dexie.Table;
 
 export interface ITables<T, G> {
@@ -50,6 +53,7 @@ export class DBService extends Dexie {
   typeface: ITables<TypefaceTokenTable, TypefaceGroupTable>;
   typescale: ITables<TypescaleTokenTable, TypescaleGroupTable>;
   lineHeight: ITables<LineHeightTokenTable, LineHeightGroupTable>;
+  letterSpacing: ITables<LetterSpacingTokenTable, LetterSpacingGroupTable>;
 
   get sections() {
     return [this.typeface, this.typescale];
@@ -61,7 +65,7 @@ export class DBService extends Dexie {
     const token = "++id, name, themeId";
     const group = "++id, name, themeId, *tokensId";
 
-    this.version(4).stores({
+    this.version(5).stores({
       theme: '++id, name',
       typefaceToken: token,
       typefaceGroup: group,
@@ -71,6 +75,9 @@ export class DBService extends Dexie {
 
       lineHeightToken: token,
       lineHeightGroup: group,
+
+      letterSpacingToken: token,
+      letterSpacingGroup: group,
     });
 
     this.theme = this.table("theme");
@@ -91,6 +98,12 @@ export class DBService extends Dexie {
       "Line Height",
       this.table("lineHeightToken"),
       this.table("lineHeightGroup")
+    )
+
+    this.letterSpacing = new Tables(
+      "Letter Spacing",
+      this.table("letterSpacingToken"),
+      this.table("letterSpacingGroup")
     )
   }
 

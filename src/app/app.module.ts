@@ -55,6 +55,7 @@ import { TypescaleEditorComponent } from './editors/typescale-editor/typescale-e
 import { EditorComponent } from './layout/editor/editor.component';
 import { EditableTokenComponent } from './components/editable-token/editable-token.component';
 import { LineHeightComponent } from './sections/line-height/line-height.component';
+import { LetterSpacingComponent } from './sections/letter-spacing/letter-spacing.component';
 
 registerLocaleData(en);
 
@@ -79,6 +80,7 @@ registerLocaleData(en);
     EditorComponent,
     EditableTokenComponent,
     LineHeightComponent,
+    LetterSpacingComponent,
   ],
   imports: [
     CommonModule,

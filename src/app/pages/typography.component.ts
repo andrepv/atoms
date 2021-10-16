@@ -10,6 +10,7 @@ import { StoreService } from '../services/store.service';
       <app-typeface></app-typeface>
       <app-typescale></app-typescale>
       <app-line-height></app-line-height>
+      <app-letter-spacing></app-letter-spacing>
     </div>
   </div>
   `,
@@ -28,6 +29,8 @@ export class TypographyComponent implements OnInit {
     this.store.setSection(this.PAGE_NAME, {
       "Type Face": [],
       "Type Scale": [],
+      "Line Height": [],
+      "Letter Spacing": [],
     })
   }
 }
