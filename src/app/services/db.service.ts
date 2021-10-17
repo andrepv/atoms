@@ -3,6 +3,14 @@ import { CustomFont } from '../editors/typeface-editor/custom-fonts/custom-font.
 import { GoogleFont } from '../editors/typeface-editor/google-fonts/google-fonts.component';
 import { SectionNames } from './store.service';
 
+interface TextStyles {
+  fontFamily?: number,
+  fontSize?: number,
+  lineHeight?: number,
+  letterSpacing?: number,
+  text: string,
+}
+
 export interface ThemeModel {
   id?: number;
   name: string;
@@ -38,6 +46,10 @@ export type LineHeightGroupTable = Dexie.Table<TokenGroupModel, number>;
 export type LetterSpacingTokenTable = Dexie.Table<TokenModel<number>, number>;
 export type LetterSpacingGroupTable = Dexie.Table<TokenGroupModel, number>;
 
+export type TextStylesTokenTable = Dexie.Table<TokenModel<TextStyles>, number>;
+export type TextStylesGroupTable = Dexie.Table<TokenGroupModel, number>;
+
+
 export type Table = Dexie.Table;
 
 export interface ITables<T, G> {
@@ -54,9 +66,10 @@ export class DBService extends Dexie {
   typescale: ITables<TypescaleTokenTable, TypescaleGroupTable>;
   lineHeight: ITables<LineHeightTokenTable, LineHeightGroupTable>;
   letterSpacing: ITables<LetterSpacingTokenTable, LetterSpacingGroupTable>;
+  textStyles: ITables<TextStylesTokenTable, TextStylesGroupTable>;
 
   get sections() {
-    return [this.typeface, this.typescale];
+    return [this.typeface, this.typescale, this.lineHeight, this.letterSpacing, this.textStyles];
   }
 
   constructor() {
@@ -65,7 +78,7 @@ export class DBService extends Dexie {
     const token = "++id, name, themeId";
     const group = "++id, name, themeId, *tokensId";
 
-    this.version(5).stores({
+    this.version(6).stores({
       theme: '++id, name',
       typefaceToken: token,
       typefaceGroup: group,
@@ -78,6 +91,9 @@ export class DBService extends Dexie {
 
       letterSpacingToken: token,
       letterSpacingGroup: group,
+
+      textStylesToken: token,
+      textStylesGroup: group,
     });
 
     this.theme = this.table("theme");
@@ -104,6 +120,12 @@ export class DBService extends Dexie {
       "Letter Spacing",
       this.table("letterSpacingToken"),
       this.table("letterSpacingGroup")
+    )
+
+    this.textStyles = new Tables(
+      "Text Styles",
+      this.table("textStylesToken"),
+      this.table("textStylesGroup")
     )
   }
 

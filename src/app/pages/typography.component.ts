@@ -11,6 +11,7 @@ import { StoreService } from '../services/store.service';
       <app-typescale></app-typescale>
       <app-line-height></app-line-height>
       <app-letter-spacing></app-letter-spacing>
+      <app-text-styles></app-text-styles>
     </div>
   </div>
   `,
@@ -31,6 +32,7 @@ export class TypographyComponent implements OnInit {
       "Type Scale": [],
       "Line Height": [],
       "Letter Spacing": [],
+      "Text Styles": [],
     })
   }
 }

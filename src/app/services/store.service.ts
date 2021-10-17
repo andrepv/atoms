@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ThemeManagerService } from './theme-manager.service';
 
-export type SectionNames = "Type Face" | "Type Scale" | "Line Height" | "Letter Spacing"; 
+export type SectionNames = "Type Face" | "Type Scale" | "Line Height" | "Letter Spacing" | "Text Styles"; 
 
 export interface Token<T = any> {
   name: string;

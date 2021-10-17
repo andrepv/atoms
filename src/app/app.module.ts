@@ -56,6 +56,7 @@ import { EditorComponent } from './layout/editor/editor.component';
 import { EditableTokenComponent } from './components/editable-token/editable-token.component';
 import { LineHeightComponent } from './sections/line-height/line-height.component';
 import { LetterSpacingComponent } from './sections/letter-spacing/letter-spacing.component';
+import { TextStylesComponent } from './sections/text-styles/text-styles.component';
 
 registerLocaleData(en);
 
@@ -81,6 +82,7 @@ registerLocaleData(en);
     EditableTokenComponent,
     LineHeightComponent,
     LetterSpacingComponent,
+    TextStylesComponent,
   ],
   imports: [
     CommonModule,
