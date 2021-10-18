@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FontModel } from '../../editors/typeface-editor/typeface-editor.component';
 import { ContentManagerService } from '../../services/content-manager.service';
 import { db } from '../../services/db.service';
+import { StoreService, Token} from '../../services/store.service';
 
 export const DEFAULT_TEXT_STYLES = {
   fontFamily: 'Arial',
@@ -15,13 +17,7 @@ export const DEFAULT_TEXT_STYLES = {
   template: `
     <app-groups [tokenTemplate]="tokenTemplateRef" layout="list">
       <ng-template #tokenTemplateRef let-token>
-        <div
-          class="token"
-          [style.fontFamily]="token.value.fontFamily"
-          [style.fontSize]="token.value.fontSize + 'px'"
-          [style.lineHeight]="token.value.lineHeight"
-          [style.letterSpacing]="token.value.letterSpacing + 'em'"
-        >
+        <div class="token" [style]="getStyles(token)">
           <p>{{ token.value.text }}</p>
         </div>
       </ng-template>
@@ -34,11 +30,64 @@ export const DEFAULT_TEXT_STYLES = {
   ]
 })
 export class TextStylesComponent implements OnInit {
-  constructor(public contentManager: ContentManagerService) {}
+  STYLES = {
+    fontFamily: {
+      get: (value: string | FontModel) => typeof value  === 'string' ? value : value.family,
+      section: "Type Face"
+    },
+    fontSize: {
+      get: (value: number) => `${value}px`,
+      section: "Type Scale"
+    },
+    lineHeight: {
+      get: (value: number) => value,
+      section: "Line Height"
+    },
+    letterSpacing: {
+      get: (value: number) => `${value}em`,
+      section: "Letter Spacing"
+    }
+  }
+
+  constructor(
+    public contentManager: ContentManagerService,
+    private store: StoreService,
+  ) {}
 
   ngOnInit() {
+    const defaultTokenValue = {};
+    Object.entries(DEFAULT_TEXT_STYLES).map(([key, value]) => (
+      defaultTokenValue[key] = key !== "text" ? 0 : value
+    ))
+
     this.contentManager.configure({
-      getDefaultTokenValue: () => DEFAULT_TEXT_STYLES,
+      getDefaultTokenValue: () => defaultTokenValue,
     })
+  }
+
+  getStyles(token: Token) {
+    const styles = {}
+
+    for (let style in token.value) {
+      const id = token.value[style];
+      if (!isNaN(id)) {
+        styles[style] = id === 0
+          ? this.STYLES[style].get(DEFAULT_TEXT_STYLES[style])
+          : this.getStyle(style, id)
+      }
+    }
+
+    return styles;
+  }
+
+  private getStyle(prop: string, value: number) {
+    const section = this.STYLES[prop].section;
+    const tokens = this.store.getSectionTokens(section);
+    const token = tokens.find(token => token.id === value);
+
+    if (token) {
+      return this.STYLES[prop].get(token.value);
+    }
+    return this.STYLES[prop].get(DEFAULT_TEXT_STYLES[prop]);
   }
 }

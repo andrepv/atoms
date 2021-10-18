@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ThemeManagerService } from './theme-manager.service';
 
+export const SECTIONS = ["Type Face", "Type Scale", "Line Height", "Letter Spacing", "Text Styles"] as const;
+
 export type SectionNames = "Type Face" | "Type Scale" | "Line Height" | "Letter Spacing" | "Text Styles"; 
 
 export interface Token<T = any> {
@@ -113,6 +115,14 @@ export class StoreService {
   setGroupList(sectionName: SectionNames, groupList: TokenGroup[]) {
     this._groups[sectionName] = groupList;
     this.updateSection();
+  }
+
+  getSectionTokens(sectionName: SectionNames) {
+    const tokens: Token[] = [];
+    this.getGroupList(sectionName).forEach(group => {
+      tokens.push(...group.tokens);
+    })
+    return tokens;
   }
 
   private setClipboardActionsStatus(permissionStatus: PermissionState) {

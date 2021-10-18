@@ -1,0 +1,20 @@
+<div>
+  <div *ngFor="let option of options">
+    <span>{{ option.section }}</span>
+
+    <div *ngIf="option.isActive">
+      <nz-select
+        [(ngModel)]="option.selected"
+        [nzPlaceHolder]="option.placeHolder"
+        (ngModelChange)="onOptionChange(option.style, $event)"
+      >
+        <nz-option
+          *ngFor="let token of option.tokens"
+          [nzValue]="token.id"
+          [nzLabel]="token.name"
+        ></nz-option>
+      </nz-select>
+    </div>
+
+  </div>
+</div>
