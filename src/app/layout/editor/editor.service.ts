@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SectionNames, StoreService, Token, TokenGroup } from "../../services/store.service";
 
-type EditableContent = {group: TokenGroup, token?: Token};
+export type EditableContent = {group: TokenGroup, token?: Token};
 
 @Injectable({
   providedIn: 'root'

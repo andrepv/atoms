@@ -58,6 +58,7 @@ import { LineHeightComponent } from './sections/line-height/line-height.componen
 import { LetterSpacingComponent } from './sections/letter-spacing/letter-spacing.component';
 import { TextStylesComponent } from './sections/text-styles/text-styles.component';
 import { TextStylesEditorComponent } from './editors/text-styles-editor/text-styles-editor.component';
+import { TextStyleSelectComponent } from './editors/text-styles-editor/text-style-select/text-style-select.component';
 
 registerLocaleData(en);
 
@@ -85,6 +86,7 @@ registerLocaleData(en);
     LetterSpacingComponent,
     TextStylesComponent,
     TextStylesEditorComponent,
+    TextStyleSelectComponent,
   ],
   imports: [
     CommonModule,

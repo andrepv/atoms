@@ -238,7 +238,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
         
           if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
             const {token, group} = this.editor.content;
-            this.editor.content = {token: {value: value, ...token},group }
+            this.editor.content = {token: {...token, value: value},group }
           }
         }
         return token;

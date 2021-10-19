@@ -50,7 +50,7 @@ export class TextStylesComponent implements OnInit {
   }
 
   constructor(
-    public contentManager: ContentManagerService,
+    private contentManager: ContentManagerService,
     private store: StoreService,
   ) {}
 
@@ -68,26 +68,31 @@ export class TextStylesComponent implements OnInit {
   getStyles(token: Token) {
     const styles = {}
 
-    for (let style in token.value) {
-      const id = token.value[style];
+    for (let styleProp in token.value) {
+      const id = token.value[styleProp];
       if (!isNaN(id)) {
-        styles[style] = id === 0
-          ? this.STYLES[style].get(DEFAULT_TEXT_STYLES[style])
-          : this.getStyle(style, id)
+        styles[styleProp] = id === 0
+          ? this.getDefaultStyle(styleProp)
+          : this.getStyle(styleProp, id)
       }
     }
 
     return styles;
   }
 
-  private getStyle(prop: string, value: number) {
-    const section = this.STYLES[prop].section;
+  private getStyle(styleProp: string, value: number) {
+    const section = this.STYLES[styleProp].section;
     const tokens = this.store.getSectionTokens(section);
     const token = tokens.find(token => token.id === value);
 
     if (token) {
-      return this.STYLES[prop].get(token.value);
+      return this.STYLES[styleProp].get(token.value);
     }
-    return this.STYLES[prop].get(DEFAULT_TEXT_STYLES[prop]);
+
+    return this.getDefaultStyle(styleProp);
+  }
+
+  private getDefaultStyle(styleProp: string) {
+    return this.STYLES[styleProp].get(DEFAULT_TEXT_STYLES[styleProp])
   }
 }

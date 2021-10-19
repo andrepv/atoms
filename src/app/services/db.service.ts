@@ -3,7 +3,7 @@ import { CustomFont } from '../editors/typeface-editor/custom-fonts/custom-font.
 import { GoogleFont } from '../editors/typeface-editor/google-fonts/google-fonts.component';
 import { SectionNames } from './store.service';
 
-interface TextStyles {
+export interface TextStyles {
   fontFamily?: number,
   fontSize?: number,
   lineHeight?: number,
