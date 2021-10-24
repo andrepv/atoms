@@ -125,6 +125,15 @@ export class StoreService {
     return tokens;
   }
 
+  getSectionToken(sectionName: SectionNames, tokenId: number) {
+    for (let group of this.getGroupList(sectionName)) {
+      for (let token of group.tokens) {
+        if (token.id === tokenId) return token;
+      }
+    }
+    return false;
+  }
+
   private setClipboardActionsStatus(permissionStatus: PermissionState) {
     if (permissionStatus === 'denied') {
       this.isClipboardActionsAvailable = false;

@@ -29,3 +29,9 @@
     ></nz-input-number>
   </div>
 </div>
+
+<app-section-tokens-select
+  [selectedTokenId]="editor.content.group.state.textPreviewId"
+  section="Text Styles"
+  (change)="onTextPreviewChange($event)"
+></app-section-tokens-select>

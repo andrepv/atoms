@@ -206,12 +206,16 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     );
   }
 
-  async setGroupState(
-    groupId: number,
-    state: {scaleRatio: number, baseFontSize: number} | false
-  ) {
-    await this.groupTable.update(groupId, {state});
-    this.store.updateGroup(this.sectionName, groupId, group => group.state = state)
+  async setGroupState(groupId: number, state: {[key: string]: any}) {
+    const group = this.store.getGroup(this.sectionName, groupId);
+    const prevState = group.state || {};
+    const nextState = {...prevState, ...state};
+
+    await this.groupTable.update(groupId, {state: nextState});
+    this.store.updateGroup(
+      this.sectionName,
+      groupId, group => group.state = nextState
+    );
   }
 
   createGroup(name = "group", tokensId = []) {

@@ -4,6 +4,7 @@ import { ContentManagerService } from '../../services/content-manager.service';
 import { db } from '../../services/db.service';
 import { StoreService } from '../../services/store.service';
 import { getScaleValue } from '../../utils/get-type-scale-value';
+import { TextStylesService } from '../text-styles/text-styles.service';
 
 @Component({
   selector: 'app-typescale',
@@ -16,7 +17,7 @@ import { getScaleValue } from '../../utils/get-type-scale-value';
   >
     <ng-template #tokenTemplateRef let-token let-group="group">
       <app-editable-token
-        [isEditable]="!group.state"
+        [isEditable]="!group.state.scale"
         [minValue]="MIN_FONT_SIZE"
         [maxValue]="MAX_FONT_SIZE"
         [value]="token.value"
@@ -24,10 +25,12 @@ import { getScaleValue } from '../../utils/get-type-scale-value';
         (onAfterChange)="contentManager.setTokenValue($event, token.id, group.id)"
       >
         <ng-template #tokenPreviewRef let-value>
-          <p [style.font-size]="value + 'px'">
-            The quick brown fox jumps
-          </p>
-          <p *ngIf="group.state">{{ value + 'px' }}</p>
+          <app-text-preview
+            [data]="textPreview.getGroupTextStyles(group.id, sectionName)"
+            [excludedStyles]="['fontSize']"
+            [customStyles]="{'fontSize': value + 'px'}"
+          ></app-text-preview>
+          <p *ngIf="group.state.scale">{{ value + 'px' }}</p>
         </ng-template>
       </app-editable-token>
     </ng-template>
@@ -42,25 +45,27 @@ export class TypescaleComponent implements OnInit {
   readonly MIN_FONT_SIZE = 1;
   readonly MAX_FONT_SIZE = 150;
 
+  get sectionName() {
+    return this.contentManager.sectionName;
+  }
+
   constructor(
     public contentManager: ContentManagerService,
+    public textPreview: TextStylesService,
     private store: StoreService,
   ) {}
-
+    
   ngOnInit() {
     this.contentManager.configure({
       getDefaultTokenValue: groupId => this.getDefaultTokenValue(groupId),
-      getDefaultGroupState: () => false
+      getDefaultGroupState: () => ({textPreviewId: 0, scale: false})
     })
   }
 
   private getDefaultTokenValue(groupId: number) {
-    const group = this.store.getGroup(
-      this.contentManager.sectionName,
-      groupId
-    );
-    if (group.state) {  
-      return getScaleValue(group.tokens.length, group.state);
+    const group = this.store.getGroup(this.sectionName, groupId);
+    if (group.state.scale) {  
+      return getScaleValue(group.tokens.length, group.state.scale);
     }
     return DEFAULT_BASE_FONT_SIZE;
   }

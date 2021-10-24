@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ContentManagerService } from '../../services/content-manager.service';
 import { db } from '../../services/db.service';
+import { TextStylesService } from '../text-styles/text-styles.service';
 
 @Component({
   selector: 'app-line-height',
@@ -8,7 +9,7 @@ import { db } from '../../services/db.service';
     <app-groups
       [tokenTemplate]="tokenTemplateRef"
       [isTokenEditable]="false"
-      [isGroupEditable]="false"
+      [isGroupEditable]="true"
       layout="list"
     >
       <ng-template #tokenTemplateRef let-token let-group="group">
@@ -21,9 +22,12 @@ import { db } from '../../services/db.service';
           (onAfterChange)="contentManager.setTokenValue($event, token.id, group.id)"
         >
           <ng-template #tokenPreviewRef let-value>
-            <h1 [style.line-height]="value">
-              Lorem ipsum dolor sit amet, consectetur adipiscing
-            </h1>
+            <app-text-preview
+              [data]="textPreview.getGroupTextStyles(group.id, sectionName)"
+              [excludedStyles]="['lineHeight']"
+              [customStyles]="{'lineHeight': value}"
+            ></app-text-preview>
+
           </ng-template>
         </app-editable-token>
       </ng-template>
@@ -35,11 +39,19 @@ import { db } from '../../services/db.service';
   ]
 })
 export class LineHeightComponent implements OnInit {
-  constructor(public contentManager: ContentManagerService) {}
+  get sectionName() {
+    return this.contentManager.sectionName;
+  }
+
+  constructor(
+    public contentManager: ContentManagerService,
+    public textPreview: TextStylesService,
+  ) {}
 
   ngOnInit() {
     this.contentManager.configure({
       getDefaultTokenValue: () => 1,
+      getDefaultGroupState: () => ({textPreviewId: 0})
     })
   }
 

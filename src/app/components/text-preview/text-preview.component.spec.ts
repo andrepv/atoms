@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TextStyleSelectComponent } from './text-style-select.component';
+import { TextPreviewComponent } from './text-preview.component';
 
-describe('TextStyleSelectComponent', () => {
-  let component: TextStyleSelectComponent;
-  let fixture: ComponentFixture<TextStyleSelectComponent>;
+describe('TextPreviewComponent', () => {
+  let component: TextPreviewComponent;
+  let fixture: ComponentFixture<TextPreviewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TextStyleSelectComponent ]
+      declarations: [ TextPreviewComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TextStyleSelectComponent);
+    fixture = TestBed.createComponent(TextPreviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

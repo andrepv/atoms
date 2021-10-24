@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ContentManagerService } from '../../services/content-manager.service';
 import { db } from '../../services/db.service';
+import { TextStylesService } from '../text-styles/text-styles.service';
 
 @Component({
   selector: 'app-letter-spacing',
@@ -8,7 +9,7 @@ import { db } from '../../services/db.service';
     <app-groups
       [tokenTemplate]="tokenTemplateRef"
       [isTokenEditable]="false"
-      [isGroupEditable]="false"
+      [isGroupEditable]="true"
       layout="list"
     >
       <ng-template #tokenTemplateRef let-token let-group="group">
@@ -21,9 +22,11 @@ import { db } from '../../services/db.service';
           (onAfterChange)="contentManager.setTokenValue($event, token.id, group.id)"
         >
           <ng-template #tokenPreviewRef let-value>
-            <p [style.letter-spacing]="value + 'em'">
-              The quick brown fox jumps
-            </p>
+            <app-text-preview
+              [data]="textPreview.getGroupTextStyles(group.id, sectionName)"
+              [excludedStyles]="['letterSpacing']"
+              [customStyles]="{'letterSpacing': value + 'em'}"
+            ></app-text-preview>
           </ng-template>
         </app-editable-token>
       </ng-template>
@@ -35,12 +38,19 @@ import { db } from '../../services/db.service';
   ]
 })
 export class LetterSpacingComponent implements OnInit {
+  get sectionName() {
+    return this.contentManager.sectionName;
+  }
 
-  constructor(public contentManager: ContentManagerService) {}
+  constructor(
+    public contentManager: ContentManagerService,
+    public textPreview: TextStylesService,
+  ) {}
 
   ngOnInit() {
     this.contentManager.configure({
       getDefaultTokenValue: () => 0.01,
+      getDefaultGroupState: () => ({textPreviewId: 0})
     })
   }
 }

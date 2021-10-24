@@ -6,7 +6,23 @@
 </header>
 
 <div [ngSwitch]="editor.section" class="content-wrapper">
-  <app-typeface-editor *ngSwitchCase="'Type Face'"></app-typeface-editor>
-  <app-typescale-editor *ngSwitchCase="'Type Scale'"></app-typescale-editor>
-  <app-text-styles-editor *ngSwitchCase="'Text Styles'"></app-text-styles-editor>
+  <app-typeface-editor
+    *ngSwitchCase="'Type Face'"
+  ></app-typeface-editor>
+
+  <app-typescale-editor
+    *ngSwitchCase="'Type Scale'"
+  ></app-typescale-editor>
+
+  <app-line-height-editor
+    *ngSwitchCase="'Line Height'"
+  ></app-line-height-editor>
+
+  <app-letter-spacing-editor
+    *ngSwitchCase="'Letter Spacing'"
+  ></app-letter-spacing-editor>
+
+  <app-text-styles-editor
+    *ngSwitchCase="'Text Styles'"
+  ></app-text-styles-editor>
 </div>

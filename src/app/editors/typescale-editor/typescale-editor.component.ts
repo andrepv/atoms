@@ -67,14 +67,18 @@ export class TypescaleEditorComponent implements OnInit {
     }
   }
 
+  get textStyles() {
+    return this.store.getSectionTokens("Text Styles");
+  }
+
   private get sectionName() {
     return this.contentManager.sectionName;
   }
 
   constructor(
-    private editor: EditorService,
-    private store: StoreService,
+    public editor: EditorService,
     public contentManager: ContentManagerService,
+    private store: StoreService,
   ) {}
 
   ngOnInit() {
@@ -82,7 +86,7 @@ export class TypescaleEditorComponent implements OnInit {
       takeUntil(this.destroy$)
     ).subscribe(content => {
         this.resetState();
-        this.setState(content.group.state);
+        this.setState(content.group.state.scale);
     })
   }
 
@@ -94,6 +98,10 @@ export class TypescaleEditorComponent implements OnInit {
   onScaleRatioChange(ratio: ModularScaleOption) {
     this.scaleRatio = ratio;
     this.updateModularScale();
+  }
+
+  onTextPreviewChange(textPreviewId: number) {
+    this.contentManager.setGroupState(this.editableGroupId, {textPreviewId});
   }
 
   private setState(state: ModularScaleState | undefined) {
@@ -116,7 +124,7 @@ export class TypescaleEditorComponent implements OnInit {
     const groupId = this.editableGroupId;
 
     if (!this.state.isModularScaleEnabled) {
-      this.contentManager.setGroupState(groupId, false);
+      this.contentManager.setGroupState(groupId, {scale: false});
       return;
     }
     const group = this.store.getGroup(this.sectionName, groupId);
@@ -126,9 +134,9 @@ export class TypescaleEditorComponent implements OnInit {
       this.contentManager.setTokenValue(value, token.id, groupId);
     })
 
-    this.contentManager.setGroupState(groupId, {
+    this.contentManager.setGroupState(groupId, {scale: {
       scaleRatio: this.state.scaleRatio,
       baseFontSize: this.state.baseFontSize,
-    })
+    }})
   }
 }
