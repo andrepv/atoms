@@ -12,9 +12,6 @@ import { db } from '../../services/db.service';
   ]
 })
 export class SpacingEditorComponent implements OnInit {
-
   constructor() {}
-
   ngOnInit() {}
-
 }

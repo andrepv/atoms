@@ -1,18 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ContentManagerService } from '../../services/content-manager.service';
-import { db, TypefaceGroupTable, TypefaceTokenTable } from '../../services/db.service';
+import { db } from '../../services/db.service';
 import { StoreService } from '../../services/store.service';
 import { Subscription } from 'rxjs';
-import { CustomFont } from './custom-fonts/custom-font.component';
-import { GoogleFont } from './google-fonts/google-fonts.component';
 import { EditorService } from '../../layout/editor/editor.service';
-
-export type FontType = 'google-fonts' | 'custom-font';
-
-export interface FontModel {
-  family: string,
-  type: FontType
-}
+import { FontType, TypefaceGroupTable, TypefaceTokenTable, TypefaceTokenValue } from '../../sections/typeface/typeface.model';
 
 @Component({
   selector: 'app-typeface-editor',
@@ -60,7 +52,7 @@ export class TypefaceEditorComponent implements OnInit {
     }
   }
 
-  saveFont(font: CustomFont | GoogleFont) {
+  saveFont(font: TypefaceTokenValue) {
     this.contentManager.setTokenValue(
       font,
       this.content.token.id,

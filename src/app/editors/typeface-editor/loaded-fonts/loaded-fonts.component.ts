@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TypefaceTokenTable } from '../../../services/db.service';
+import { GoogleFont, TypefaceTokenTable } from '../../../sections/typeface/typeface.model';
 import { FontManagerService } from '../font-manager.service';
-import { GoogleFont } from '../google-fonts/google-fonts.component';
 import { LoadedFontsManager } from './loaded-fonts-manager';
 
 @Component({

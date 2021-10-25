@@ -1,7 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ThemeManagerService } from '../../services/theme-manager.service';
+import { ThemeManagerService, ThemeModel } from '../../services/theme-manager.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { ThemeModel } from '../../services/db.service';
 
 @Component({
   selector: 'app-header',

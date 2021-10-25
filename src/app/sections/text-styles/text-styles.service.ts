@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FontModel } from '../../editors/typeface-editor/typeface-editor.component';
 import { SectionNames, StoreService } from '../../services/store.service';
+import { FontModel } from '../typeface/typeface.model';
 
 @Injectable({providedIn: 'root'})
 export class TextStylesService {

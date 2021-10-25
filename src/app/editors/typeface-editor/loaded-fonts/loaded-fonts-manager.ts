@@ -1,9 +1,8 @@
 import { PromiseExtended } from "dexie";
+import { CustomFont, GoogleFont, TypefaceTokenValue } from "../../../sections/typeface/typeface.model";
 import { TokenModel } from "../../../services/db.service";
 import { ThemeManagerService } from "../../../services/theme-manager.service";
-import { CustomFont } from "../custom-fonts/custom-font.component";
 import { FontManagerService } from "../font-manager.service";
-import { GoogleFont } from "../google-fonts/google-fonts.component";
 
 export class LoadedFontsManager {
   constructor(
@@ -15,7 +14,7 @@ export class LoadedFontsManager {
 
   fonts: {
     [themeName: string]: {
-      [fontFamily: string]: CustomFont | GoogleFont
+      [fontFamily: string]: TypefaceTokenValue
     }
   } = {};
 
@@ -50,7 +49,7 @@ export class LoadedFontsManager {
     this.themeId = this.themeManager.selected.id;
 	}
 
-  private addFont(themeName: string, font: CustomFont | GoogleFont) {
+  private addFont(themeName: string, font: TypefaceTokenValue) {
     if (!this.fonts[themeName]) {
       this.fonts[themeName] = {};
     }

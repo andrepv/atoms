@@ -1,11 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { CustomFont } from '../../../sections/typeface/typeface.model';
 import { FontManagerService } from '../font-manager.service';
-import { FontModel} from '../typeface-editor.component';
 import { CustomFontsManager } from './custom-fonts-manager';
-
-export interface CustomFont extends FontModel {
-  data: string | ArrayBuffer
-}
 
 type FontPreview = {
   isActive: boolean;

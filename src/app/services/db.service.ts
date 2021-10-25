@@ -1,22 +1,32 @@
 import Dexie, { PromiseExtended } from 'dexie';
-import { CustomFont } from '../editors/typeface-editor/custom-fonts/custom-font.component';
-import { GoogleFont } from '../editors/typeface-editor/google-fonts/google-fonts.component';
+import { ColorPaletteTables, COLORPALETTE_DB_DATA } from '../sections/color-palette/color-palette.model';
+import { LetterSpacingTables, LETTERSPACING_DB_DATA } from '../sections/letter-spacing/letter-spacing.model';
+import { LineHeightTables, LINEHEIGHT_DB_DATA } from '../sections/line-height/line-height.model';
+import { SpacingTables, SPACING_DB_DATA } from '../sections/spacing/spacing.model';
+import { TextStylesTables, TEXTSTYLES_DB_DATA } from '../sections/text-styles/text-styles.model';
+import { TypefaceTables, TYPEFACE_DB_DATA } from '../sections/typeface/typeface.model';
+import { TypescaleTables, TYPESCALE_DB_DATA } from '../sections/typescale/typescale.model';
 import { SectionNames } from './store.service';
+import { ThemeTable } from './theme-manager.service';
 
-export interface TextStyles {
-  fontFamily?: number,
-  fontSize?: number,
-  lineHeight?: number,
-  letterSpacing?: number,
-  text: string,
+export type DBSectionData = {
+  tableGroupName: string;
+  tokenTableName: string;
+  groupTableName: string;
+  name: SectionNames;
 }
 
-export interface ThemeModel {
-  id?: number;
-  name: string;
-}
+const SECTIONS: DBSectionData[] = [
+  TYPEFACE_DB_DATA,
+  TYPESCALE_DB_DATA,
+  LINEHEIGHT_DB_DATA,
+  LETTERSPACING_DB_DATA,
+  TEXTSTYLES_DB_DATA,
+  SPACING_DB_DATA,
+  COLORPALETTE_DB_DATA
+];
 
-export interface TokenModel<T = any> {
+export type TokenModel<T = any> = {
   id: number;
   name: string;
   value: T;
@@ -24,33 +34,13 @@ export interface TokenModel<T = any> {
   themeId: number;
 }
 
-export interface TokenGroupModel {
+export type TokenGroupModel<T = any> = {
   id: number;
   name: string;
   themeId: number;
   tokensId: number[];
-  state?: any;
+  state?: T;
 }
-
-export type ThemeTable = Dexie.Table<ThemeModel, number>;
-
-export type TypefaceTokenTable = Dexie.Table<TokenModel<CustomFont | GoogleFont>, number>;
-export type TypefaceGroupTable = Dexie.Table<TokenGroupModel, number>;
-
-export type TypescaleTokenTable = Dexie.Table<TokenModel<number>, number>;
-export type TypescaleGroupTable = Dexie.Table<TokenGroupModel, number>;
-
-export type LineHeightTokenTable = Dexie.Table<TokenModel<number>, number>;
-export type LineHeightGroupTable = Dexie.Table<TokenGroupModel, number>;
-
-export type LetterSpacingTokenTable = Dexie.Table<TokenModel<number>, number>;
-export type LetterSpacingGroupTable = Dexie.Table<TokenGroupModel, number>;
-
-export type TextStylesTokenTable = Dexie.Table<TokenModel<TextStyles>, number>;
-export type TextStylesGroupTable = Dexie.Table<TokenGroupModel, number>;
-
-export type SpacingTokenTable = Dexie.Table<TokenModel<number>, number>;
-export type SpacingGroupTable = Dexie.Table<TokenGroupModel, number>;
 
 export type Table = Dexie.Table;
 
@@ -64,15 +54,17 @@ export interface ITables<T, G> {
 
 export class DBService extends Dexie {
   theme: ThemeTable;
-  typeface: ITables<TypefaceTokenTable, TypefaceGroupTable>;
-  typescale: ITables<TypescaleTokenTable, TypescaleGroupTable>;
-  lineHeight: ITables<LineHeightTokenTable, LineHeightGroupTable>;
-  letterSpacing: ITables<LetterSpacingTokenTable, LetterSpacingGroupTable>;
-  textStyles: ITables<TextStylesTokenTable, TextStylesGroupTable>;
-  spacing: ITables<SpacingTokenTable, SpacingGroupTable>;
+  typeface: TypefaceTables;
+  typescale: TypescaleTables;
+  lineHeight: LineHeightTables;
+  letterSpacing: LetterSpacingTables;
+  textStyles: TextStylesTables;
+  spacing: SpacingTables;
+  colorPalette: ColorPaletteTables;
+  
 
   get sections() {
-    return [this.typeface, this.typescale, this.lineHeight, this.letterSpacing, this.textStyles, this.spacing];
+    return [this.typeface, this.typescale, this.lineHeight, this.letterSpacing, this.textStyles, this.spacing, this.colorPalette];
   }
 
   constructor() {
@@ -81,64 +73,24 @@ export class DBService extends Dexie {
     const token = "++id, name, themeId";
     const group = "++id, name, themeId, *tokensId";
 
-    this.version(7).stores({
-      theme: '++id, name',
-      typefaceToken: token,
-      typefaceGroup: group,
+    const schema = {theme: '++id, name'}
 
-      typescaleToken: token,
-      typescaleGroup: group,
+    for (let section of SECTIONS) {
+      schema[section.tokenTableName] = token;
+      schema[section.groupTableName] = group;
+    }
 
-      lineHeightToken: token,
-      lineHeightGroup: group,
-
-      letterSpacingToken: token,
-      letterSpacingGroup: group,
-
-      textStylesToken: token,
-      textStylesGroup: group,
-
-      spacingToken: token,
-      spacingGroup: group,
-    });
-
+    this.version(8).stores(schema);
+    
     this.theme = this.table("theme");
 
-    this.typeface = new Tables(
-      "Type Face",
-      this.table("typefaceToken"),
-      this.table("typefaceGroup")
-    )
-
-    this.typescale = new Tables(
-      "Type Scale",
-      this.table("typescaleToken"),
-      this.table("typescaleGroup")
-    )
-
-    this.lineHeight = new Tables(
-      "Line Height",
-      this.table("lineHeightToken"),
-      this.table("lineHeightGroup")
-    )
-
-    this.letterSpacing = new Tables(
-      "Letter Spacing",
-      this.table("letterSpacingToken"),
-      this.table("letterSpacingGroup")
-    )
-
-    this.textStyles = new Tables(
-      "Text Styles",
-      this.table("textStylesToken"),
-      this.table("textStylesGroup")
-    )
-
-    this.spacing = new Tables(
-      "Spacing",
-      this.table("spacingToken"),
-      this.table("spacingGroup")
-    )
+    for (let section of SECTIONS) {
+      this[section.tableGroupName] = new Tables(
+        section.name,
+        this.table(section.tokenTableName),
+        this.table(section.groupTableName)
+      )
+    }
   }
 
   async deleteData(themeId: number) {

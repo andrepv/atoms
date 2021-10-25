@@ -1,13 +1,10 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CustomFont, FontCategory, GoogleFont } from '../../sections/typeface/typeface.model';
 import { ThemeManagerService } from '../../services/theme-manager.service';
-import { CustomFont } from './custom-fonts/custom-font.component';
 import { CustomFontsManager } from './custom-fonts/custom-fonts-manager';
 import { GoogleFontsManager } from './google-fonts/google-fonts-manager';
-import { GoogleFont } from './google-fonts/google-fonts.component';
 import { LoadedFontsManager } from './loaded-fonts/loaded-fonts-manager';
-
-export type FontCategory = "sans-serif" | "serif" | "display" | "handwriting" | "monospace";
 
 export interface Font {
 	kind?: string;

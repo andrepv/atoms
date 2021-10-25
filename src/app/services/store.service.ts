@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ThemeManagerService } from './theme-manager.service';
 
-export const SECTIONS = ["Type Face", "Type Scale", "Line Height", "Letter Spacing", "Text Styles", "Spacing"] as const;
+export const SECTIONS = ["Type Face", "Type Scale", "Line Height", "Letter Spacing", "Text Styles", "Spacing", "Color Palette"] as const;
 
-export type SectionNames = "Type Face" | "Type Scale" | "Line Height" | "Letter Spacing" | "Text Styles" | "Spacing"; 
+export type SectionNames = "Type Face" | "Type Scale" | "Line Height" | "Letter Spacing" | "Text Styles" | "Spacing" | "Color Palette";
 
 export interface Token<T = any> {
   name: string;

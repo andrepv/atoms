@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { BehaviorSubject } from "rxjs";
 import { pluck } from "rxjs/operators";
-import { FontCategory, FontManagerService } from "../font-manager.service";
-import { GoogleFont } from "./google-fonts.component";
+import { FontCategory, GoogleFont } from "../../../sections/typeface/typeface.model";
+import { FontManagerService } from "../font-manager.service";
 
 type SortOption = 'popularity' | 'date' | 'alpha' | 'style' | 'trending';
 

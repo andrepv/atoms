@@ -65,6 +65,8 @@ import { SectionTokensSelectComponent } from './components/section-tokens-select
 import { SpacingGroupsComponent } from './sections/spacing/spacing.component';
 import { ModularScaleEditorComponent } from './editors/modular-scale-editor/modular-scale-editor.component';
 import { SpacingEditorComponent } from './editors/spacing-editor/spacing-editor.component';
+import { ColorsComponent } from './pages/colors.component';
+import { ColorPaletteComponent } from './sections/color-palette/color-palette.component';
 
 registerLocaleData(en);
 
@@ -99,6 +101,8 @@ registerLocaleData(en);
     SpacingGroupsComponent,
     ModularScaleEditorComponent,
     SpacingEditorComponent,
+    ColorsComponent,
+    ColorPaletteComponent,
   ],
   imports: [
     CommonModule,

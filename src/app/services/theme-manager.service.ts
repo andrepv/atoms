@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, from, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, switchMap, tap } from 'rxjs/operators';
-import { db, ThemeModel, ThemeTable } from './db.service';
+import { db } from './db.service';
+
+export type ThemeModel = {id?: number; name: string}
+export type ThemeTable = Dexie.Table<ThemeModel, number>;
 
 @Injectable({providedIn: 'root'})
 export class ThemeManagerService {
