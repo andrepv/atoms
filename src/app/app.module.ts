@@ -62,6 +62,9 @@ import { TextPreviewComponent } from './components/text-preview/text-preview.com
 import { LineHeightEditorComponent } from './editors/line-height-editor/line-height-editor.component';
 import { LetterSpacingEditorComponent } from './editors/letter-spacing-editor/line-height-editor.component';
 import { SectionTokensSelectComponent } from './components/section-tokens-select/section-tokens-select.component';
+import { SpacingGroupsComponent } from './sections/spacing/spacing.component';
+import { ModularScaleEditorComponent } from './editors/modular-scale-editor/modular-scale-editor.component';
+import { SpacingEditorComponent } from './editors/spacing-editor/spacing-editor.component';
 
 registerLocaleData(en);
 
@@ -93,6 +96,9 @@ registerLocaleData(en);
     LineHeightEditorComponent,
     LetterSpacingEditorComponent,
     SectionTokensSelectComponent,
+    SpacingGroupsComponent,
+    ModularScaleEditorComponent,
+    SpacingEditorComponent,
   ],
   imports: [
     CommonModule,

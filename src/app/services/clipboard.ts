@@ -39,9 +39,9 @@ export class Clipboard {
     try {
       const data: CopiedContent<TokenGroup> = await this.getCopiedData();
       if (data.section === this.contentManager.sectionName) {
-        const {name, tokens} = data.content;
+        const {name, tokens, state = false} = data.content;
 
-        const group = this.contentManager.createGroup(name);
+        const group = this.contentManager.createGroup(name, state);
         const groupId = await this.contentManager.addGroup(group);
 
         for (let token of tokens) {

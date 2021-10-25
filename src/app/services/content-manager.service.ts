@@ -10,7 +10,7 @@ import { EditorService } from '../layout/editor/editor.service';
 interface ConfigureOptions {
   onLoad: () => any;
   getDefaultTokenValue: (groupId: number) => any;
-  getDefaultGroupState: false | (() => any);
+  getDefaultGroupState: () => any;
 }
 
 @Injectable()
@@ -38,7 +38,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
   configs: ConfigureOptions = {
     onLoad: () => {},
     getDefaultTokenValue: () => "",
-    getDefaultGroupState: false,
+    getDefaultGroupState: () => false,
   }
 
   constructor(
@@ -218,15 +218,19 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     );
   }
 
-  createGroup(name = "group", tokensId = []) {
+  createGroup(
+    name = "group",
+    state = this.configs.getDefaultGroupState(),
+    tokensId = []
+  ) {
     const group = {
       name,
       themeId: this.selectedThemeId,
       tokensId,
     } as TokenGroupModel;
 
-    if (this.configs.getDefaultGroupState) {
-      group.state = this.configs.getDefaultGroupState();
+    if (state) {
+      group.state = state;
     }
 
     return group;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DEFAULT_BASE_FONT_SIZE } from '../../editors/typescale-editor/typescale-editor.component';
+import { DEFAULT_BASE } from '../../editors/modular-scale-editor/modular-scale-editor.component';
 import { ContentManagerService } from '../../services/content-manager.service';
 import { db } from '../../services/db.service';
 import { StoreService } from '../../services/store.service';
@@ -67,6 +67,6 @@ export class TypescaleComponent implements OnInit {
     if (group.state.scale) {  
       return getScaleValue(group.tokens.length, group.state.scale);
     }
-    return DEFAULT_BASE_FONT_SIZE;
+    return DEFAULT_BASE;
   }
 }

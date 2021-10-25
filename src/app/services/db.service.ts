@@ -49,6 +49,8 @@ export type LetterSpacingGroupTable = Dexie.Table<TokenGroupModel, number>;
 export type TextStylesTokenTable = Dexie.Table<TokenModel<TextStyles>, number>;
 export type TextStylesGroupTable = Dexie.Table<TokenGroupModel, number>;
 
+export type SpacingTokenTable = Dexie.Table<TokenModel<number>, number>;
+export type SpacingGroupTable = Dexie.Table<TokenGroupModel, number>;
 
 export type Table = Dexie.Table;
 
@@ -67,9 +69,10 @@ export class DBService extends Dexie {
   lineHeight: ITables<LineHeightTokenTable, LineHeightGroupTable>;
   letterSpacing: ITables<LetterSpacingTokenTable, LetterSpacingGroupTable>;
   textStyles: ITables<TextStylesTokenTable, TextStylesGroupTable>;
+  spacing: ITables<SpacingTokenTable, SpacingGroupTable>;
 
   get sections() {
-    return [this.typeface, this.typescale, this.lineHeight, this.letterSpacing, this.textStyles];
+    return [this.typeface, this.typescale, this.lineHeight, this.letterSpacing, this.textStyles, this.spacing];
   }
 
   constructor() {
@@ -78,7 +81,7 @@ export class DBService extends Dexie {
     const token = "++id, name, themeId";
     const group = "++id, name, themeId, *tokensId";
 
-    this.version(6).stores({
+    this.version(7).stores({
       theme: '++id, name',
       typefaceToken: token,
       typefaceGroup: group,
@@ -94,6 +97,9 @@ export class DBService extends Dexie {
 
       textStylesToken: token,
       textStylesGroup: group,
+
+      spacingToken: token,
+      spacingGroup: group,
     });
 
     this.theme = this.table("theme");
@@ -126,6 +132,12 @@ export class DBService extends Dexie {
       "Text Styles",
       this.table("textStylesToken"),
       this.table("textStylesGroup")
+    )
+
+    this.spacing = new Tables(
+      "Spacing",
+      this.table("spacingToken"),
+      this.table("spacingGroup")
     )
   }
 

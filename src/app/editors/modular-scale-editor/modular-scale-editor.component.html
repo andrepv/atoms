@@ -1,4 +1,4 @@
-<span> Enable Modular Scale </span>
+<span>Enable Modular Scale</span>
 <nz-switch
   [(ngModel)]="isModularScaleEnabled"
   (ngModelChange)="updateModularScale()"
@@ -20,18 +20,12 @@
   </div>
 
   <div>
-    <span>Base Font Size</span>
+    <span>Base</span>
     <nz-input-number
       [nzMin]="4"
       [nzMax]="100"
-      [(ngModel)]="baseFontSize"
+      [(ngModel)]="base"
       (ngModelChange)="updateModularScale()"
     ></nz-input-number>
   </div>
 </div>
-
-<app-section-tokens-select
-  [selectedTokenId]="editor.content.group.state.textPreviewId"
-  section="Text Styles"
-  (change)="onTextPreviewChange($event)"
-></app-section-tokens-select>
