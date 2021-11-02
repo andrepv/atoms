@@ -11,6 +11,7 @@ interface ConfigureOptions {
   onLoad: () => any;
   getDefaultTokenValue: (groupId: number) => any;
   getDefaultGroupState: () => any;
+  onTokenDelete: (token: Token, group: TokenGroup) => any;
 }
 
 @Injectable()
@@ -37,6 +38,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
 
   configs: ConfigureOptions = {
     onLoad: () => {},
+    onTokenDelete: () => {},
     getDefaultTokenValue: () => "",
     getDefaultGroupState: () => false,
   }
@@ -107,11 +109,18 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
   deleteToken(tokenId: number, groupId: number) {
     db.transaction('rw', [this.tokenTable, this.groupTable], async () => {
         await this.tokenTable.delete(tokenId);
-    
+
+        const group = this.store.getGroup(this.sectionName, groupId);
+        const token = group.tokens.find(({id}) => id === tokenId);
+
         const tokenIds = this.store.getGroupTokenIds(this.sectionName, groupId);
         const nextTokenIds = tokenIds.filter(id => id !== tokenId)
     
-        await this.groupTable.update(groupId, {tokensId: nextTokenIds})
+        await this.groupTable.update(groupId, {tokensId: nextTokenIds});
+
+        if (token) {
+          this.configs.onTokenDelete(token, group);
+        }
     
       }).then(() => {
         this.store.updateGroup(this.sectionName, groupId,
@@ -140,6 +149,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
       group => group.tokens.map(token => {
         if (token.id === tokenId) {
           token.name = tokenName;
+          // ???
           if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
             const {token, group} = this.editor.content;
             this.editor.content = {

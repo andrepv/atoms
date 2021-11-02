@@ -1,10 +1,17 @@
 import { DBSectionData, ITables, TokenGroupModel, TokenModel } from "../../services/db.service";
 
+export type Variant = "tint" | "shade";
+export type ColorVariantField = "tints" | "shades";
+
 export type ColorPaletteTokenValue = {
   color: string,
+  isPrimary: boolean,
   tints?: number[], 
   shades?: number[],
+  primaryColorId?: number,
+  type?: Variant,
 };
+
 export type ColorPaletteTokenModel = TokenModel<ColorPaletteTokenValue>;
 
 export type ColorPaletteTokenTable = Dexie.Table<ColorPaletteTokenModel, number>;

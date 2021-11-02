@@ -67,6 +67,9 @@ import { ModularScaleEditorComponent } from './editors/modular-scale-editor/modu
 import { SpacingEditorComponent } from './editors/spacing-editor/spacing-editor.component';
 import { ColorsComponent } from './pages/colors.component';
 import { ColorPaletteComponent } from './sections/color-palette/color-palette.component';
+import { ColorPaletteEditorComponent } from './editors/color-palette-editor/color-palette-editor.component';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { ColorVariantsComponent } from './editors/color-palette-editor/color-variants/color-variants.component';
 
 registerLocaleData(en);
 
@@ -103,6 +106,8 @@ registerLocaleData(en);
     SpacingEditorComponent,
     ColorsComponent,
     ColorPaletteComponent,
+    ColorPaletteEditorComponent,
+    ColorVariantsComponent,
   ],
   imports: [
     CommonModule,
@@ -128,7 +133,8 @@ registerLocaleData(en);
     NzSwitchModule,
     NzRadioModule,
     NzSliderModule,
-    NzInputNumberModule
+    NzInputNumberModule,
+    ColorPickerModule
   ],
   providers: [
     DBService,

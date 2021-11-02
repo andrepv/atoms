@@ -1,0 +1,33 @@
+<div class="color-info">
+  <input
+    [(colorPicker)]="color"
+    [cpOutputFormat]="'rgba'"
+    [cpToggle]="true"
+    [cpDialogDisplay]="'inline'"
+    [style.background]="color"
+    [cpCancelButton]="true"
+    (colorPickerChange)="onColorChange($event)"
+  />
+</div>
+
+<div *ngIf="token.value.isPrimary">
+  <app-color-variants
+    type="tint"
+    [variants]="getVariants('tints')"
+    [primaryColor]="color"
+    [debounceTime]="DEBOUNCE_TIME"
+    (onAddVariant)="addVariant($event)"
+    (onRemoveVariant)="removeVariant($event)"
+    (onColorChange)="updateVariant($event)"
+  ></app-color-variants>
+  
+  <app-color-variants
+    type="shade"
+    [variants]="getVariants('shades')"
+    [primaryColor]="color"
+    [debounceTime]="DEBOUNCE_TIME"
+    (onAddVariant)="addVariant($event)"
+    (onRemoveVariant)="removeVariant($event)"
+    (onColorChange)="updateVariant($event)"
+  ></app-color-variants>
+</div>

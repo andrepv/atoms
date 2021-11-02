@@ -6,7 +6,7 @@ import { StoreService } from '../services/store.service';
   template: `
   <div>
     <h1 class="page-title">{{ PAGE_NAME }}</h1>
-    <div></div>
+    <div><app-color-palette></app-color-palette></div>
   </div>
   `,
   styles: [`
