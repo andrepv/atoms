@@ -3,7 +3,7 @@ import { from, Subject } from 'rxjs';
 import { debounceTime, map, mergeMap, takeUntil } from 'rxjs/operators';
 // @ts-ignore
 import Values from 'values.js';
-import { EditorService } from '../../../layout/editor/editor.service';
+import { EditableContent, EditorService } from '../../../layout/editor/editor.service';
 import { ColorPaletteTokenModel, Variant as VariantType } from '../../../sections/color-palette/color-palette.model';
 
 export type AddVariantEvent = {color: string, type: VariantType};
@@ -14,7 +14,7 @@ type Variant = {id?: number, value: string};
 @Component({
   selector: 'app-color-variants',
   template: `
-  <div>
+  <div *ngIf="editor.content.token.value.isPrimary">
     <span>{{ type }}</span>
 
     <div>
@@ -53,6 +53,22 @@ export class ColorVariantsComponent implements OnInit {
   @Input() variants: ColorPaletteTokenModel[];
   @Input() debounceTime: number;
 
+  @Input() set editableContent(content: EditableContent) {
+    const variants = content.token.value[`${this.type}s`];
+
+    if (!this.editableTokenId) {
+      this.editableTokenId = content.token.id
+    }
+
+    if (variants && variants.length < this._variants.length) {
+      this.setState();
+    }
+
+    if (content.token.id !== this.editableTokenId) {
+      this.onEditableTokenChange(content);
+    }
+  };
+
   @Output() onAddVariant: EventEmitter<AddVariantEvent> = new EventEmitter();
   @Output() onRemoveVariant: EventEmitter<RemoveVariantEvent> = new EventEmitter();
   @Output() onColorChange: EventEmitter<VariantValueChangeEvent> = new EventEmitter();
@@ -69,8 +85,9 @@ export class ColorVariantsComponent implements OnInit {
 
   private _prevVariantCount = this.variantCount;
   private _primaryColor: Values;
+  private editableTokenId: number;
 
-  constructor(private editor: EditorService) {}
+  constructor(public editor: EditorService) {}
 
   ngOnInit() {
     this.setState();
@@ -90,15 +107,6 @@ export class ColorVariantsComponent implements OnInit {
         color: variant.value,
       }))
     ).subscribe();
-
-    this.editor.content$.pipe(
-      takeUntil(this.destroy$),
-    ).subscribe(editableContent => {
-      const variants = editableContent.token.value[`${this.type}s`];
-      if (variants && variants.length < this._variants.length) {
-        this.setState();
-      }
-    });
   }
 
   ngOnDestroy() {
@@ -138,6 +146,8 @@ export class ColorVariantsComponent implements OnInit {
   }
 
   private updateVariantsValue() {
+    if (!this.editableTokenId) return;
+
     for (let i = 0; i < this.variantCount; i++) {
       const variant = this._variants[i];
       const value = this.getVariantValue(i + 1);
@@ -184,5 +194,11 @@ export class ColorVariantsComponent implements OnInit {
     this.variantCount = this.variants.length;
     this._prevVariantCount = this.variantCount;
     this._variants = this.getVariants();
+  }
+
+  private onEditableTokenChange(content: EditableContent) {
+    this.editableTokenId = content.token.id;
+    this._primaryColor = new Values(content.token.value.color);
+    this.setState();
   }
 }

@@ -10,12 +10,13 @@
   />
 </div>
 
-<div *ngIf="token.value.isPrimary">
+<div>
   <app-color-variants
     type="tint"
     [variants]="getVariants('tints')"
-    [primaryColor]="color"
+    [primaryColor]="_color"
     [debounceTime]="DEBOUNCE_TIME"
+    [editableContent]="editor.content"
     (onAddVariant)="addVariant($event)"
     (onRemoveVariant)="removeVariant($event)"
     (onColorChange)="updateVariant($event)"
@@ -24,8 +25,9 @@
   <app-color-variants
     type="shade"
     [variants]="getVariants('shades')"
-    [primaryColor]="color"
+    [primaryColor]="_color"
     [debounceTime]="DEBOUNCE_TIME"
+    [editableContent]="editor.content"
     (onAddVariant)="addVariant($event)"
     (onRemoveVariant)="removeVariant($event)"
     (onColorChange)="updateVariant($event)"

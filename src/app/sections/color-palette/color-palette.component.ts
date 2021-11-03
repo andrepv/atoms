@@ -3,12 +3,18 @@ import { db } from '../../services/db.service';
 import { ContentManagerService } from '../../services/content-manager.service';
 
 import tinycolor from "tinycolor2";
-import { Token, TokenGroup } from '../../services/store.service';
+import { StoreService, Token, TokenGroup } from '../../services/store.service';
 
 @Component({
   selector: 'app-color-palette',
   template: `
-    <app-groups [tokenTemplate]="tokenTemplateRef" layout="list">
+    <app-groups
+      [tokenTemplate]="tokenTemplateRef"
+      layout="list"
+      [isTokenVisible]="isTokenVisible"
+      [getPreviousTokens]="getTints"
+      [getNextTokens]="getShades"
+    >
       <ng-template #tokenTemplateRef let-token>
         <div class="token" [style.background]="token.value.color"></div>
         <p>HEX: {{ getHex(token.value.color) }}</p>
@@ -25,7 +31,10 @@ import { Token, TokenGroup } from '../../services/store.service';
 })
 export class ColorPaletteComponent implements OnInit {
 
-  constructor(public cm: ContentManagerService) {}
+  constructor(
+    public cm: ContentManagerService,
+    private store: StoreService
+  ) {}
   
   ngOnInit() {
     this.cm.configure({
@@ -47,6 +56,20 @@ export class ColorPaletteComponent implements OnInit {
 
   getHsl(rgba: string) {
     return tinycolor(rgba).toHslString();
+  }
+
+  isTokenVisible(token: Token) {
+    return token.value.isPrimary;
+  }
+
+  getTints = (token: Token, group: TokenGroup) => {
+    if (!token.value.isPrimary || !token.value.tints) return [];
+    return this.store.getGroup(this.cm.sectionName, group.id).tokens.filter(({id}) => token.value.tints.includes(id)).reverse()
+  }
+
+  getShades = (token: Token, group: TokenGroup) => {
+    if (!token.value.isPrimary || !token.value.shades) return [];
+    return this.store.getGroup(this.cm.sectionName, group.id).tokens.filter(({id}) => token.value.shades.includes(id))
   }
 
   private onVariantColorDelete(deletedToken: Token, group: TokenGroup) {

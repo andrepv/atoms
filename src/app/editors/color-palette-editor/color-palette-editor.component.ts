@@ -19,6 +19,7 @@ import { AddVariantEvent, RemoveVariantEvent, VariantValueChangeEvent } from './
 })
 export class ColorPaletteEditorComponent implements OnInit {
   color = this.token.value.color;
+  _color = this.color;
   
   get token() {
     return this.editor.content.token;
@@ -44,6 +45,12 @@ export class ColorPaletteEditorComponent implements OnInit {
       distinctUntilChanged(),
       tap(color => this.saveColor(color)),
     ).subscribe();
+
+    this.editor.content$.pipe(
+      takeUntil(this.destroy$),
+    ).subscribe(() => {
+      this.color = this.token.value.color;
+    });
   }
 
   ngOnInit() {}
@@ -55,6 +62,7 @@ export class ColorPaletteEditorComponent implements OnInit {
 
   onColorChange(value: string) {
     this.colorChange$.next(value);
+    this._color = this.color;
   }
 
   saveColor(color: string) {

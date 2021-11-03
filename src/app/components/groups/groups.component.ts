@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { ContentManagerService } from '../../services/content-manager.service';
 import { EditorService } from '../../layout/editor/editor.service';
-import { StoreService, TokenGroup } from '../../services/store.service';
+import { StoreService, Token, TokenGroup } from '../../services/store.service';
 
 @Component({
   selector: 'app-groups',
@@ -13,6 +13,9 @@ export class GroupComponent implements OnInit {
   @Input() isTokenEditable = true;
   @Input() isGroupEditable = false;
   @Input() layout: "list" | "grid" = "grid";
+  @Input() isTokenVisible: (token: Token) => boolean = () => true;
+  @Input() getPreviousTokens: ((token: Token, group: TokenGroup) => Token[]) | false = false;
+  @Input() getNextTokens: ((token: Token, group: TokenGroup) => Token[]) | false = false;
 
   get groupList() {
     return this.store.getGroupList(this.contentManager.sectionName);

@@ -64,59 +64,28 @@
       </header>
   
       <div class="container" [ngClass]="layout">
-        <div *ngFor="let token of group.tokens" class="token-wrapper">
-          <div class="token">
-            
-            <ng-container *ngTemplateOutlet="
-            tokenTemplate;
-            context: {$implicit: token, group: group}"
-            ></ng-container>
-            
-            <div class="dropdown-menu">
-              <i
-                *ngIf="isTokenEditable"
-                nz-icon nzType="edit"
-                nzTheme="outline"
-                (click)="editor.enable(sectionName, {group: group, token: token})"
-              ></i>
-              <i
-                nz-icon nzType="more" nzTheme="outline"
-                nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
-              >
-                <nz-dropdown-menu #menu="nzDropdownMenu">
-                  <ul nz-menu>
-                    <li
-                      nz-menu-item
-                      (click)="editableText.makeEditable()"
-                    >Rename</li>
-                    <li
-                      nz-menu-item
-                      (click)="contentManager.deleteToken(token.id, group.id)"
-                    >Delete</li>
-                    <li
-                      *ngIf="store.isClipboardActionsAvailable"
-                      nz-menu-item
-                      (click)="contentManager.clipboard.copy(token)"
-                    >Copy</li>
-                  </ul>
-                </nz-dropdown-menu>
-              </i>
-            </div>
+        <div
+          *ngFor="let token of group.tokens"
+          class="token-wrapper"
+        >
+          <ng-container *ngIf="getPreviousTokens">
+            <ng-container *ngFor="let tokenBefore of getPreviousTokens(token, group)">
+              <ng-container *ngTemplateOutlet="tokenWrapper; context: {$implicit: tokenBefore, group: group}"></ng-container>
+            </ng-container>
+          </ng-container>
+
+          <div *ngIf="isTokenVisible(token)">
+            <ng-container *ngTemplateOutlet="tokenWrapper; context: {$implicit: token, group: group}"></ng-container>
           </div>
 
-          <app-editable-text
-            #editableText
-            [text]="token.name"
-            (blur)="contentManager.renameToken($event, token.id, group.id)"
-            [customTemplate]="textTemplate"
-          >
-            <ng-template #textTemplate let-text>
-              <p class="token-name">{{ text }}</p>
-            </ng-template>
-          </app-editable-text>
-  
+          <ng-container *ngIf="getNextTokens">
+            <ng-container *ngFor="let tokenAfter of getNextTokens(token, group)">
+              <ng-container *ngTemplateOutlet="tokenWrapper; context: {$implicit: tokenAfter, group: group}"></ng-container>
+            </ng-container>
+          </ng-container>
+
+          </div>
         </div>
-      </div>
   
       <div class="add-token-btn" (click)="addToken(group.id)">
         <i nz-icon nzType="plus" nzTheme="outline"></i>
@@ -124,6 +93,57 @@
     </div>
   </div>
 
+  <ng-template #tokenWrapper let-token let-group="group">
+    
+      <div class="token">
+      
+        <ng-container *ngTemplateOutlet="tokenTemplate; context: {$implicit: token, group: group}"></ng-container>
+      
+        <div class="dropdown-menu">
+          <i
+            *ngIf="isTokenEditable"
+            nz-icon nzType="edit"
+            nzTheme="outline"
+            (click)="editor.enable(sectionName, {group: group, token: token})"
+          ></i>
+          <i
+            nz-icon nzType="more" nzTheme="outline"
+            nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
+          >
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu>
+                <li
+                  nz-menu-item
+                  (click)="editableText.makeEditable()"
+                >Rename</li>
+                <li
+                  nz-menu-item
+                  (click)="contentManager.deleteToken(token.id, group.id)"
+                >Delete</li>
+                <li
+                  *ngIf="store.isClipboardActionsAvailable"
+                  nz-menu-item
+                  (click)="contentManager.clipboard.copy(token)"
+                >Copy</li>
+              </ul>
+            </nz-dropdown-menu>
+          </i>
+        </div>
+      </div>
+  
+      <app-editable-text
+        #editableText
+        [text]="token.name"
+        (blur)="contentManager.renameToken($event, token.id, group.id)"
+        [customTemplate]="textTemplate"
+      >
+        <ng-template #textTemplate let-text>
+          <p class="token-name">{{ text }}</p>
+        </ng-template>
+      </app-editable-text>
+  </ng-template>
 </div>
 
 <div *ngIf="contentManager.isLoading">Loading</div>
+
+
