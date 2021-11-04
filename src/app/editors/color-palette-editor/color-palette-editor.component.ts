@@ -4,8 +4,9 @@ import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operato
 import { EditorService } from '../../layout/editor/editor.service';
 import { ColorVariantField, Variant } from '../../sections/color-palette/color-palette.model';
 import { ContentManagerService } from '../../services/content-manager.service';
-import { db } from '../../services/db.service';
+import { db, TokenModel } from '../../services/db.service';
 import { StoreService } from '../../services/store.service';
+import { ThemeManagerService } from '../../services/theme-manager.service';
 import { AddVariantEvent, RemoveVariantEvent, VariantValueChangeEvent } from './color-variants/color-variants.component';
 
 @Component({
@@ -34,10 +35,13 @@ export class ColorPaletteEditorComponent implements OnInit {
 
   readonly DEBOUNCE_TIME = 500;
 
+  palettes: {themeName: string, list: TokenModel[]}[] = [];
+
   constructor(
     public cm: ContentManagerService,
     public editor: EditorService,
     private store: StoreService,
+    private themeManager: ThemeManagerService
   ) {
     this.colorChange$.pipe(
       takeUntil(this.destroy$),
@@ -53,7 +57,9 @@ export class ColorPaletteEditorComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  async ngOnInit() {
+    this.palettes = await this.getAllPalettes();
+  }
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -79,6 +85,34 @@ export class ColorPaletteEditorComponent implements OnInit {
       this.cm.sectionName,
       this.group.id
     ).tokens.filter(({id}) => ids.includes(id))
+  }
+
+  getPresetColors() {
+    return this.store.getSectionTokens(this.cm.sectionName)
+    .filter(({id}) => id !== this.token.id)
+    .map(token => token.value.color)
+  }
+
+  setColor(value: string) {
+    this.color = value;
+    this.onColorChange(value);
+  }
+
+  async getAllPalettes() {
+    const tokens: TokenModel[] = await this.cm.tokenTable.toArray();
+    const themes = this.themeManager.list;
+    const palettes = [];
+
+    for (let theme of themes) {
+      if (theme.id !== this.themeManager.selected.id) {
+        const palette = tokens.filter(token => token.themeId === theme.id);
+        if (palette.length) {
+          palettes.push({themeName: theme.name, list: palette})
+        }
+      }
+    }
+
+    return palettes;
   }
 
   async addVariant({color, type}: AddVariantEvent) {

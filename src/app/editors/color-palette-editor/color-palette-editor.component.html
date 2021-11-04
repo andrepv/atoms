@@ -1,35 +1,49 @@
-<div class="color-info">
-  <input
-    [(colorPicker)]="color"
-    [cpOutputFormat]="'rgba'"
-    [cpToggle]="true"
-    [cpDialogDisplay]="'inline'"
-    [style.background]="color"
-    [cpCancelButton]="true"
-    (colorPickerChange)="onColorChange($event)"
-  />
-</div>
-
-<div>
-  <app-color-variants
-    type="tint"
-    [variants]="getVariants('tints')"
-    [primaryColor]="_color"
-    [debounceTime]="DEBOUNCE_TIME"
-    [editableContent]="editor.content"
-    (onAddVariant)="addVariant($event)"
-    (onRemoveVariant)="removeVariant($event)"
-    (onColorChange)="updateVariant($event)"
-  ></app-color-variants>
+<div class="wrapper">
+  <div class="color-info">
+    <input
+      [(colorPicker)]="color"
+      [cpOutputFormat]="'rgba'"
+      [cpToggle]="true"
+      [cpDialogDisplay]="'inline'"
+      [style.background]="color"
+      [cpCancelButton]="true"
+      [cpPresetColors]="getPresetColors()"
+      (colorPickerChange)="onColorChange($event)"
+    />
+  </div>
   
-  <app-color-variants
-    type="shade"
-    [variants]="getVariants('shades')"
-    [primaryColor]="_color"
-    [debounceTime]="DEBOUNCE_TIME"
-    [editableContent]="editor.content"
-    (onAddVariant)="addVariant($event)"
-    (onRemoveVariant)="removeVariant($event)"
-    (onColorChange)="updateVariant($event)"
-  ></app-color-variants>
+  <div>
+    <app-color-variants
+      type="tint"
+      [variants]="getVariants('tints')"
+      [primaryColor]="_color"
+      [debounceTime]="DEBOUNCE_TIME"
+      [editableContent]="editor.content"
+      (onAddVariant)="addVariant($event)"
+      (onRemoveVariant)="removeVariant($event)"
+      (onColorChange)="updateVariant($event)"
+    ></app-color-variants>
+    
+    <app-color-variants
+      type="shade"
+      [variants]="getVariants('shades')"
+      [primaryColor]="_color"
+      [debounceTime]="DEBOUNCE_TIME"
+      [editableContent]="editor.content"
+      (onAddVariant)="addVariant($event)"
+      (onRemoveVariant)="removeVariant($event)"
+      (onColorChange)="updateVariant($event)"
+    ></app-color-variants>
+  </div>
+
+  <div *ngFor="let palette of palettes">
+    <p>{{ palette.themeName }}</p>
+    <div class="palette">
+      <div
+        *ngFor="let token of palette.list"
+        [style.background]="token.value.color"
+        (click)="setColor(token.value.color)"
+      ></div>
+    </div>
+  </div>
 </div>

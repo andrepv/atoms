@@ -16,7 +16,9 @@ import { StoreService, Token, TokenGroup } from '../../services/store.service';
       [getNextTokens]="getShades"
     >
       <ng-template #tokenTemplateRef let-token>
-        <div class="token" [style.background]="token.value.color"></div>
+        <div class="token" [style.background]="token.value.color">
+          <p style.color="#fff">{{ getReadability(token.value.color) }}</p>
+        </div>
         <p>HEX: {{ getHex(token.value.color) }}</p>
         <p>RGBA: {{ token.value.color }}</p>
         <p>HSLA: {{ getHsl(token.value.color) }}</p>
@@ -56,6 +58,10 @@ export class ColorPaletteComponent implements OnInit {
 
   getHsl(rgba: string) {
     return tinycolor(rgba).toHslString();
+  }
+
+  getReadability(color: string) {
+    return tinycolor.readability(color, "#fff").toFixed(2);
   }
 
   isTokenVisible(token: Token) {
