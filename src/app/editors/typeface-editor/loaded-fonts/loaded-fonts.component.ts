@@ -1,33 +1,40 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { GoogleFont, TypefaceTokenTable } from '../../../sections/typeface/typeface.model';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ThemeTokens } from '../../../components/themes-section-tokens/themes-section-tokens.component';
+import { GoogleFont } from '../../../sections/typeface/typeface.model';
 import { FontManagerService } from '../font-manager.service';
-import { LoadedFontsManager } from './loaded-fonts-manager';
 
 @Component({
   selector: 'app-loaded-fonts',
-  templateUrl: './loaded-fonts.component.html',
+  template: `
+  <app-themes-section-tokens
+    [themeTokensTemplate]="templateRef"
+    (onLoad)="onThemeFontsLoad($event)"
+  >
+    <ng-template #templateRef let-tokens let-themeName="themeName">
+      <h5>{{ themeName }}</h5>
+      <nz-list>
+        <nz-list-item *ngFor="let token of tokens">
+          <p [style.font-family]="token.value.family" (click)="save.emit(token.value)">
+            {{ token.value.family }}
+          </p>
+        </nz-list-item>
+      </nz-list>
+    </ng-template>
+  </app-themes-section-tokens>
+  `,
   styleUrls: ['./loaded-fonts.component.less']
 })
 export class LoadedFontsComponent implements OnInit {
   @Output() save: EventEmitter<GoogleFont> = new EventEmitter();
-  @Input() tokenTable: TypefaceTokenTable;
 
-  get fonts() {
-    return Object.entries(this.fontsManager.fonts).map(
-      ([themeName, fonts]) => (
-        {theme: themeName, fonts: Object.values(fonts)}
-      )
-    )
-  }
+  constructor(private fontsManager: FontManagerService) {}
 
-  private fontsManager: LoadedFontsManager;
+  ngOnInit() {}
 
-  constructor(fontManager: FontManagerService) {
-    this.fontsManager = fontManager.loadedFonts;
-  }
-
-  ngOnInit() {
-    const loadTokens = () => this.tokenTable.toArray();
-    this.fontsManager.loadFonts(loadTokens)
+  onThemeFontsLoad(data: ThemeTokens[]) {
+    for (let themeTokens of data) {
+      const fonts = Object.values(themeTokens.tokens.map(token => token.value));
+			this.fontsManager.load(fonts);
+		}
   }
 }

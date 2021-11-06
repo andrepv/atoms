@@ -36,14 +36,16 @@
     ></app-color-variants>
   </div>
 
-  <div *ngFor="let palette of palettes">
-    <p>{{ palette.themeName }}</p>
-    <div class="palette">
-      <div
-        *ngFor="let token of palette.list"
-        [style.background]="token.value.color"
-        (click)="setColor(token.value.color)"
-      ></div>
-    </div>
-  </div>
+  <app-themes-section-tokens [themeTokensTemplate]="themePalettesTemplateRef">
+    <ng-template #themePalettesTemplateRef let-palettes let-themeName="themeName">
+      <p>{{ themeName }}</p>
+      <div class="palette">
+        <div
+          *ngFor="let palette of palettes"
+          [style.background]="palette.value.color"
+          (click)="setColor(palette.value.color)"
+        ></div>
+      </div>
+    </ng-template>
+  </app-themes-section-tokens>
 </div>

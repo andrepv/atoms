@@ -70,6 +70,7 @@ import { ColorPaletteComponent } from './sections/color-palette/color-palette.co
 import { ColorPaletteEditorComponent } from './editors/color-palette-editor/color-palette-editor.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ColorVariantsComponent } from './editors/color-palette-editor/color-variants/color-variants.component';
+import { ThemesSectionTokensComponent } from './components/themes-section-tokens/themes-section-tokens.component';
 
 registerLocaleData(en);
 
@@ -108,6 +109,7 @@ registerLocaleData(en);
     ColorPaletteComponent,
     ColorPaletteEditorComponent,
     ColorVariantsComponent,
+    ThemesSectionTokensComponent,
   ],
   imports: [
     CommonModule,
