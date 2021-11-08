@@ -1,0 +1,25 @@
+<app-group-list [groupTemplate]="groupTemplate">
+  <ng-template #groupTemplate let-group>
+    <app-group [group]="group" [tokenPreviewTemplate]="tokenTemplate">
+      <ng-template #tokenTemplate let-token let-group="group">
+        <app-token-editable
+          [isEditable]="!group.state.scale"
+          [minValue]="MIN_FONT_SIZE"
+          [maxValue]="MAX_FONT_SIZE"
+          [value]="token.value"
+          [previewTemplate]="tokenPreviewRef"
+          (onAfterChange)="contentManager.setTokenValue($event, token.id, group.id)"
+        >
+          <ng-template #tokenPreviewRef let-value>
+            <app-text-preview
+              [data]="textPreview.getGroupTextStyles(group.id, sectionName)"
+              [excludedStyles]="['fontSize']"
+              [customStyles]="{'fontSize': value + 'px'}"
+            ></app-text-preview>
+            <p *ngIf="group.state.scale">{{ value + 'px' }}</p>
+          </ng-template>
+        </app-token-editable>
+      </ng-template>
+    </app-group>
+  </ng-template>
+</app-group-list>

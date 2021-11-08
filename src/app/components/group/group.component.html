@@ -1,0 +1,30 @@
+<div [id]="group.anchorLink" class="group">
+
+  <app-group-header [group]="group"></app-group-header>
+
+  <div class="container">
+    <div *ngFor="let token of group.tokens" class="token-wrapper">
+
+      <div *ngIf="tokenTemplate">
+        <ng-container *ngTemplateOutlet="tokenTemplate; context: {$implicit: token, group: group, tokenTemplateWrapper: tokenTemplateWrapper}"></ng-container>
+      </div>
+
+      <div *ngIf="!tokenTemplate">
+        <ng-container *ngTemplateOutlet="tokenTemplateWrapper; context: {$implicit: token, group: group}"></ng-container>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="add-token-btn" (click)="addToken()">
+    <i nz-icon nzType="plus" nzTheme="outline"></i>
+  </div>
+</div>
+
+<ng-template #tokenTemplateWrapper let-token let-group="group">
+  <app-token
+    [token]="token"
+    [group]="group"
+    [previewTemplate]="tokenPreviewTemplate"
+  ></app-token>
+</ng-template>

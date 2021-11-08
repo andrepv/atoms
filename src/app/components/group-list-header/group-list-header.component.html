@@ -1,0 +1,13 @@
+<header class="section-header">
+  <h2>{{ sectionName }}</h2>
+  <div class="actions">
+    <i
+      nz-tooltip nzTooltipTitle="add a group" nzTooltipPlacement="bottom"
+      nz-icon nzType="plus" nzTheme="outline" (click)="addGroup()"></i>
+    <i
+      *ngIf="canUseClipboard()"
+      nz-icon nzType="snippets" nzTheme="outline"
+      nz-tooltip nzTooltipTitle="past a group" nzTooltipPlacement="bottom"
+      (click)="pastGroup()"></i>
+  </div>
+</header>

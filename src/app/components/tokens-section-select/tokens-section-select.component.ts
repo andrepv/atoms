@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SectionNames, StoreService } from '../../services/store.service';
 
 @Component({
-  selector: 'app-section-tokens-select',
+  selector: 'app-tokens-section-select',
   template: `
     <div>
       <span>{{ section }}</span>
@@ -19,9 +19,9 @@ import { SectionNames, StoreService } from '../../services/store.service';
       </nz-select>
     </div>
   `,
-  styleUrls: ['./section-tokens-select.component.less']
+  styleUrls: ['./tokens-section-select.component.less']
 })
-export class SectionTokensSelectComponent implements OnInit {
+export class TokensSectionSelectComponent implements OnInit {
   @Input() selectedTokenId: number;
   @Input() section: SectionNames;
   @Input() placeholder = `select ...`;

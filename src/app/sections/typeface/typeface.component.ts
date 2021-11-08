@@ -6,16 +6,7 @@ import { FontManagerService } from '../../editors/typeface-editor/font-manager.s
 
 @Component({
   selector: 'app-typeface',
-  template: `
-    <app-groups [tokenTemplate]="tokenTemplateRef">
-      <ng-template #tokenTemplateRef let-token>
-        <div class="token" [style.font-family]="token.value.family">
-          <h1>Ag</h1>
-          <p>{{ token.value.family }}</p>
-        </div>
-      </ng-template>
-    </app-groups>
-  `,
+  templateUrl: './typeface.component.html',
   styleUrls: ['./typeface.component.less'],
   providers: [
     {provide: 'tables', useValue: db.typeface},
@@ -31,12 +22,14 @@ export class TypefaceComponent implements OnInit {
 
   ngOnInit() {
     this.contentManager.configure({
-      onLoad: () => this.loadFonts(),
-      getDefaultTokenValue: () => ({
-        family: 'Arial',
-        type: "custom-font",
-        data: '',
-      })
+      contentManagerConfigs: {
+        onLoad: () => this.loadFonts(),
+        getDefaultTokenValue: () => ({
+          family: 'Arial',
+          type: "custom-font",
+          data: '',
+        })
+      }
     })
   }
 

@@ -7,29 +7,7 @@ import { getScaleValue } from '../../utils/get-type-scale-value';
 
 @Component({
   selector: 'app-spacing-groups',
-  template: `
-    <app-groups
-      [tokenTemplate]="tokenTemplateRef"
-      [isTokenEditable]="false"
-      [isGroupEditable]="true"
-      layout="list"
-    >
-      <ng-template #tokenTemplateRef let-token let-group="group">
-        <app-editable-token
-          [isEditable]="!group.state.scale"
-          [minValue]="MIN_VALUE"
-          [maxValue]="MAX_VALUE"
-          [value]="token.value"
-          [previewTemplate]="tokenPreviewRef"
-          (onAfterChange)="contentManager.setTokenValue($event, token.id, group.id)"
-       >
-        <ng-template #tokenPreviewRef let-value>
-          <p>{{ value + 'px' }}</p>
-        </ng-template>
-      </app-editable-token>
-    </ng-template>
-  </app-groups>
-  `,
+  templateUrl: './spacing.component.html',
   styleUrls: ['./spacing.component.less'],
   providers: [
     {provide: 'tables', useValue: db.spacing},
@@ -51,8 +29,14 @@ export class SpacingGroupsComponent implements OnInit {
 
   ngOnInit() {
     this.contentManager.configure({
-      getDefaultTokenValue: groupId => this.getDefaultTokenValue(groupId),
-      getDefaultGroupState: () => ({scale: false})
+      contentManagerConfigs: {
+        getDefaultTokenValue: groupId => this.getDefaultTokenValue(groupId),
+        getDefaultGroupState: () => ({scale: false})
+      },
+      sectionViewConfigs: {
+        isTokenEditable: false,
+        isGroupEditable: true,
+      }
     })
   }
 

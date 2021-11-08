@@ -1,0 +1,33 @@
+<header class="group-header">
+  <app-text-editable
+    #editableText
+    [text]="group.name"
+    [customTemplate]="textTemplate"
+    (blur)="renameGroup($event)"
+  >
+    <ng-template #textTemplate let-text><h3>{{ text }}</h3></ng-template>
+  </app-text-editable>
+
+  <div>
+    <i
+      *ngIf="isGroupEditable"
+      nz-icon nzType="edit"
+      nzTheme="outline"
+      (click)="openEditor()"
+    ></i>
+  
+    <i
+      nz-icon nzType="more" nzTheme="outline"
+      nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
+    >
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item (click)="deleteGroup()">Delete</li>
+          <li nz-menu-item (click)="editableText.makeEditable()">Rename</li>
+          <li *ngIf="canUseClipboard()" nz-menu-item (click)="pastToken()">Past Token</li>
+          <li *ngIf="canUseClipboard()" nz-menu-item (click)="copyGroup()">Copy Group</li>
+        </ul>
+      </nz-dropdown-menu>
+    </i>
+  </div>
+</header>

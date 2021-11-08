@@ -4,13 +4,7 @@ import { db } from '../../services/db.service';
 
 @Component({
   selector: 'app-text-styles',
-  template: `
-    <app-groups [tokenTemplate]="tokenTemplateRef" layout="list">
-      <ng-template #tokenTemplateRef let-token>
-        <app-text-preview [data]="token.value"></app-text-preview>
-      </ng-template>
-    </app-groups>
-  `,
+  templateUrl: './text-styles.component.html',
   styleUrls: ['./text-styles.component.less'],
   providers: [
     {provide: 'tables', useValue: db.textStyles},
@@ -22,7 +16,9 @@ export class TextStylesComponent implements OnInit {
 
   ngOnInit() {
     this.contentManager.configure({
-      getDefaultTokenValue: () => ({}),
+      contentManagerConfigs: {
+        getDefaultTokenValue: () => ({}),
+      }
     })
   }
 }

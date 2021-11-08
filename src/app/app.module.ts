@@ -44,16 +44,16 @@ import { ExplorerComponent } from './layout/explorer/explorer.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { TypefaceComponent } from './sections/typeface/typeface.component';
 import { TypescaleComponent } from './sections/typescale/typescale.component';
-import { EditableTextComponent } from './components/editable-text/editable-text.component';
+import { TextEditableComponent } from './components/text-editable/text-editable.component';
 import { TypefaceEditorComponent } from './editors/typeface-editor/typeface-editor.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { GoogleFontsComponent } from './editors/typeface-editor/google-fonts/google-fonts.component';
 import { CustomFontComponent } from './editors/typeface-editor/custom-fonts/custom-font.component';
 import { LoadedFontsComponent } from './editors/typeface-editor/loaded-fonts/loaded-fonts.component';
-import { GroupComponent } from './components/groups/groups.component';
+import { GroupListComponent } from './components/group-list/group-list.component';
 import { TypescaleEditorComponent } from './editors/typescale-editor/typescale-editor.component';
 import { EditorComponent } from './layout/editor/editor.component';
-import { EditableTokenComponent } from './components/editable-token/editable-token.component';
+import { TokenEditableComponent } from './components/token-editable/token-editable.component';
 import { LineHeightComponent } from './sections/line-height/line-height.component';
 import { LetterSpacingComponent } from './sections/letter-spacing/letter-spacing.component';
 import { TextStylesComponent } from './sections/text-styles/text-styles.component';
@@ -61,7 +61,7 @@ import { TextStylesEditorComponent } from './editors/text-styles-editor/text-sty
 import { TextPreviewComponent } from './components/text-preview/text-preview.component';
 import { LineHeightEditorComponent } from './editors/line-height-editor/line-height-editor.component';
 import { LetterSpacingEditorComponent } from './editors/letter-spacing-editor/line-height-editor.component';
-import { SectionTokensSelectComponent } from './components/section-tokens-select/section-tokens-select.component';
+import { TokensSectionSelectComponent } from './components/tokens-section-select/tokens-section-select.component';
 import { SpacingGroupsComponent } from './sections/spacing/spacing.component';
 import { ModularScaleEditorComponent } from './editors/modular-scale-editor/modular-scale-editor.component';
 import { SpacingEditorComponent } from './editors/spacing-editor/spacing-editor.component';
@@ -70,7 +70,11 @@ import { ColorPaletteComponent } from './sections/color-palette/color-palette.co
 import { ColorPaletteEditorComponent } from './editors/color-palette-editor/color-palette-editor.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ColorVariantsComponent } from './editors/color-palette-editor/color-variants/color-variants.component';
-import { ThemesSectionTokensComponent } from './components/themes-section-tokens/themes-section-tokens.component';
+import { TokensSectionListComponent } from './components/tokens-section-list/tokens-section-list.component';
+import { GroupListHeaderComponent } from './components/group-list-header/group-list-header.component';
+import { GroupHeaderComponent } from './components/group-header/group-header.component';
+import { TokenComponent } from './components/token/token.component';
+import { GroupComponent } from './components/group/group.component';
 
 registerLocaleData(en);
 
@@ -85,15 +89,15 @@ registerLocaleData(en);
     AutofocusDirective,
     TypefaceComponent,
     TypescaleComponent,
-    EditableTextComponent,
+    TextEditableComponent,
     TypefaceEditorComponent,
     GoogleFontsComponent,
     CustomFontComponent,
     LoadedFontsComponent,
-    GroupComponent,
+    GroupListComponent,
     TypescaleEditorComponent,
     EditorComponent,
-    EditableTokenComponent,
+    TokenEditableComponent,
     LineHeightComponent,
     LetterSpacingComponent,
     TextStylesComponent,
@@ -101,7 +105,7 @@ registerLocaleData(en);
     TextPreviewComponent,
     LineHeightEditorComponent,
     LetterSpacingEditorComponent,
-    SectionTokensSelectComponent,
+    TokensSectionSelectComponent,
     SpacingGroupsComponent,
     ModularScaleEditorComponent,
     SpacingEditorComponent,
@@ -109,7 +113,11 @@ registerLocaleData(en);
     ColorPaletteComponent,
     ColorPaletteEditorComponent,
     ColorVariantsComponent,
-    ThemesSectionTokensComponent,
+    TokensSectionListComponent,
+    GroupListHeaderComponent,
+    GroupHeaderComponent,
+    TokenComponent,
+    GroupComponent
   ],
   imports: [
     CommonModule,

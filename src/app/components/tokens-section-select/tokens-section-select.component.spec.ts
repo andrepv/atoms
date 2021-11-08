@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SectionTokensSelectComponent } from './section-tokens-select.component';
+import { TokensSectionSelectComponent } from './tokens-section-select.component';
 
 describe('SectionTokensSelectComponent', () => {
-  let component: SectionTokensSelectComponent;
-  let fixture: ComponentFixture<SectionTokensSelectComponent>;
+  let component: TokensSectionSelectComponent;
+  let fixture: ComponentFixture<TokensSectionSelectComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SectionTokensSelectComponent ]
+      declarations: [ TokensSectionSelectComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SectionTokensSelectComponent);
+    fixture = TestBed.createComponent(TokensSectionSelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

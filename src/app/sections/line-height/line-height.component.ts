@@ -5,34 +5,7 @@ import { TextStylesService } from '../text-styles/text-styles.service';
 
 @Component({
   selector: 'app-line-height',
-  template: `
-    <app-groups
-      [tokenTemplate]="tokenTemplateRef"
-      [isTokenEditable]="false"
-      [isGroupEditable]="true"
-      layout="list"
-    >
-      <ng-template #tokenTemplateRef let-token let-group="group">
-        <app-editable-token
-          [step]="0.1"
-          [minValue]="1"
-          [maxValue]="4"
-          [value]="token.value"
-          [previewTemplate]="tokenPreviewRef"
-          (onAfterChange)="contentManager.setTokenValue($event, token.id, group.id)"
-        >
-          <ng-template #tokenPreviewRef let-value>
-            <app-text-preview
-              [data]="textPreview.getGroupTextStyles(group.id, sectionName)"
-              [excludedStyles]="['lineHeight']"
-              [customStyles]="{'lineHeight': value}"
-            ></app-text-preview>
-
-          </ng-template>
-        </app-editable-token>
-      </ng-template>
-    </app-groups>
-  `,
+  templateUrl: './line-height.component.html',
   providers: [
     {provide: 'tables', useValue: db.lineHeight},
     ContentManagerService,
@@ -50,8 +23,14 @@ export class LineHeightComponent implements OnInit {
 
   ngOnInit() {
     this.contentManager.configure({
-      getDefaultTokenValue: () => 1,
-      getDefaultGroupState: () => ({textPreviewId: 0})
+      contentManagerConfigs: {
+        getDefaultTokenValue: () => 1,
+        getDefaultGroupState: () => ({textPreviewId: 0})
+      },
+      sectionViewConfigs: {
+        isTokenEditable: false,
+        isGroupEditable: true,
+      }
     })
   }
 

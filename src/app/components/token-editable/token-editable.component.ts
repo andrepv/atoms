@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
 
 @Component({
-  selector: 'app-editable-token',
-  templateUrl: './editable-token.component.html',
-  styleUrls: ['./editable-token.component.less']
+  selector: 'app-token-editable',
+  templateUrl: './token-editable.component.html',
+  styleUrls: ['./token-editable.component.less']
 })
-export class EditableTokenComponent implements OnInit {
+export class TokenEditableComponent implements OnInit {
   @Input() isEditable = true;
   @Input() step = 1;
   @Input() minValue = 1;

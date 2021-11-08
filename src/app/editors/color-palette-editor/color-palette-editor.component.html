@@ -36,7 +36,7 @@
     ></app-color-variants>
   </div>
 
-  <app-themes-section-tokens [themeTokensTemplate]="themePalettesTemplateRef">
+  <app-tokens-section-list [themeTokensTemplate]="themePalettesTemplateRef">
     <ng-template #themePalettesTemplateRef let-palettes let-themeName="themeName">
       <p>{{ themeName }}</p>
       <div class="palette">
@@ -47,5 +47,5 @@
         ></div>
       </div>
     </ng-template>
-  </app-themes-section-tokens>
+  </app-tokens-section-list>
 </div>

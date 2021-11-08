@@ -8,11 +8,11 @@ import { db } from '../../services/db.service';
   template:  `
     <app-modular-scale-editor></app-modular-scale-editor>
 
-    <app-section-tokens-select
+    <app-tokens-section-select
       section="Text Styles"
       [selectedTokenId]="editableGroup.state.textPreviewId"
       (change)="contentManager.setGroupState(this.editableGroup.id, {textPreviewId: $event})"
-    ></app-section-tokens-select>
+    ></app-tokens-section-select>
   `,
   styleUrls: ['./typescale-editor.component.less'],
   providers: [

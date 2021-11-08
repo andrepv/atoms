@@ -1,0 +1,9 @@
+<app-group-list [groupTemplate]="groupTemplate">
+  <ng-template #groupTemplate let-group>
+    <app-group [group]="group" [tokenPreviewTemplate]="tokenTemplate">
+      <ng-template #tokenTemplate let-token>
+        <app-text-preview [data]="token.value"></app-text-preview>
+      </ng-template>
+    </app-group>
+  </ng-template>
+</app-group-list>

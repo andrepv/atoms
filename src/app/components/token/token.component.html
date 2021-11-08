@@ -1,0 +1,38 @@
+<div>
+  <div class="token">
+    <ng-container *ngTemplateOutlet="previewTemplate; context: {$implicit: token, group: group}"></ng-container>
+  
+    <div class="dropdown-menu">
+      <i
+        *ngIf="isEditable"
+        nz-icon nzType="edit"
+        nzTheme="outline"
+        (click)="openEditor()"
+      ></i>
+      <i
+        nz-icon nzType="more" nzTheme="outline"
+        nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
+      >
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item (click)="editableText.makeEditable()">Rename</li>
+            <li nz-menu-item (click)="delete()">Delete</li>
+            <li *ngIf="canCopy()" nz-menu-item (click)="copy()">Copy</li>
+          </ul>
+        </nz-dropdown-menu>
+      </i>
+    </div>
+  </div>
+
+  <app-text-editable
+    #editableText
+    [text]="token.name"
+    (blur)="rename($event)"
+    [customTemplate]="textTemplate"
+  >
+    <ng-template #textTemplate let-text>
+      <p class="token-name">{{ text }}</p>
+    </ng-template>
+  </app-text-editable>
+
+</div>

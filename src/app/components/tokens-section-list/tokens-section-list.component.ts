@@ -6,7 +6,7 @@ import { ThemeManagerService } from '../../services/theme-manager.service';
 export type ThemeTokens = {themeName: string, tokens: TokenModel[]};
 
 @Component({
-  selector: 'app-themes-section-tokens',
+  selector: 'app-tokens-section-list',
   template: `
     <div *ngFor="let themeTokens of themesTokens">
       <ng-container *ngIf="themesTokens.length">
@@ -14,9 +14,9 @@ export type ThemeTokens = {themeName: string, tokens: TokenModel[]};
       </ng-container>
     </div>
   `,
-  styleUrls: ['./themes-section-tokens.component.less']
+  styleUrls: ['./tokens-section-list.component.less']
 })
-export class ThemesSectionTokensComponent implements OnInit {
+export class TokensSectionListComponent implements OnInit {
   @Input() themeTokensTemplate: TemplateRef<any>;
   @Output() onLoad: EventEmitter<ThemeTokens[]> = new EventEmitter();
 

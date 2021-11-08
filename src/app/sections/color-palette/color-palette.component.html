@@ -1,0 +1,34 @@
+<app-group-list [groupTemplate]="groupTemplate">
+  <ng-template #groupTemplate let-group>
+    <app-group
+      [group]="group"
+      [tokenPreviewTemplate]="tokenPreviewTemplate"
+      [tokenTemplate]="tokenTemplate"
+    >
+      <ng-template #tokenTemplate let-token let-group="group" let-tokenTemplateWrapper="tokenTemplateWrapper">
+
+        <ng-container *ngFor="let tints of getTints(token, group)">
+          <ng-container *ngTemplateOutlet="tokenTemplateWrapper; context: {$implicit: tints, group: group}"></ng-container>
+        </ng-container>
+
+        <div *ngIf="isTokenVisible(token)">
+          <ng-container *ngTemplateOutlet="tokenTemplateWrapper; context: {$implicit: token, group: group}"></ng-container>
+        </div>
+
+        <ng-container *ngFor="let shades of getShades(token, group)">
+          <ng-container *ngTemplateOutlet="tokenTemplateWrapper; context: {$implicit: shades, group: group}"></ng-container>
+        </ng-container>
+      </ng-template>
+ 
+      <ng-template #tokenPreviewTemplate let-token>
+        <div class="token" [style.background]="token.value.color">
+          <p style.color="#fff">{{ getReadability(token.value.color) }}</p>
+        </div>
+        <p>HEX: {{ getHex(token.value.color) }}</p>
+        <p>RGBA: {{ token.value.color }}</p>
+        <p>HSLA: {{ getHsl(token.value.color) }}</p>
+      </ng-template>
+    </app-group>
+
+  </ng-template>
+</app-group-list>

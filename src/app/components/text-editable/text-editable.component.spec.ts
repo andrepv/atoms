@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditableTextComponent } from './editable-text.component';
+import { TextEditableComponent } from './text-editable.component';
 
 describe('EditableTextComponent', () => {
-  let component: EditableTextComponent;
-  let fixture: ComponentFixture<EditableTextComponent>;
+  let component: TextEditableComponent;
+  let fixture: ComponentFixture<TextEditableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditableTextComponent ]
+      declarations: [ TextEditableComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditableTextComponent);
+    fixture = TestBed.createComponent(TextEditableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

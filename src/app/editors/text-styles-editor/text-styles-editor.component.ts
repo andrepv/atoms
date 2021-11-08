@@ -10,29 +10,29 @@ import { db } from '../../services/db.service';
   selector: 'app-text-styles-editor',
   template: `
     <div>
-      <app-section-tokens-select
+      <app-tokens-section-select
         section="Type Face"
         [selectedTokenId]="getStyleTokenId('fontFamily')"
         (change)="onChange($event, 'fontFamily')"
-      ></app-section-tokens-select>
+      ></app-tokens-section-select>
 
-      <app-section-tokens-select
+      <app-tokens-section-select
         section="Type Scale"
         [selectedTokenId]="getStyleTokenId('fontSize')"
         (change)="onChange($event, 'fontSize')"
-      ></app-section-tokens-select>
+      ></app-tokens-section-select>
 
-      <app-section-tokens-select
+      <app-tokens-section-select
         section="Line Height"
         [selectedTokenId]="getStyleTokenId('lineHeight')"
         (change)="onChange($event, 'lineHeight')"
-      ></app-section-tokens-select>
+      ></app-tokens-section-select>
 
-      <app-section-tokens-select
+      <app-tokens-section-select
         section="Letter Spacing"
         [selectedTokenId]="getStyleTokenId('letterSpacing')"
         (change)="onChange($event, 'letterSpacing')"
-      ></app-section-tokens-select>
+      ></app-tokens-section-select>
 
       <p>Text</p>
       <textarea rows="4" nz-input [(ngModel)]="text" (blur)="onBlur()"></textarea>

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditableTokenComponent } from './editable-token.component';
+import { GroupHeaderComponent } from './group-header.component';
 
-describe('EditableTokenComponent', () => {
-  let component: EditableTokenComponent;
-  let fixture: ComponentFixture<EditableTokenComponent>;
+describe('GroupHeaderComponent', () => {
+  let component: GroupHeaderComponent;
+  let fixture: ComponentFixture<GroupHeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditableTokenComponent ]
+      declarations: [ GroupHeaderComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditableTokenComponent);
+    fixture = TestBed.createComponent(GroupHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

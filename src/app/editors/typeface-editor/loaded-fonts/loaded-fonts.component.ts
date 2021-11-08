@@ -1,12 +1,12 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ThemeTokens } from '../../../components/themes-section-tokens/themes-section-tokens.component';
+import { ThemeTokens } from '../../../components/tokens-section-list/tokens-section-list.component';
 import { GoogleFont } from '../../../sections/typeface/typeface.model';
 import { FontManagerService } from '../font-manager.service';
 
 @Component({
   selector: 'app-loaded-fonts',
   template: `
-  <app-themes-section-tokens
+  <app-tokens-section-list
     [themeTokensTemplate]="templateRef"
     (onLoad)="onThemeFontsLoad($event)"
   >
@@ -20,7 +20,7 @@ import { FontManagerService } from '../font-manager.service';
         </nz-list-item>
       </nz-list>
     </ng-template>
-  </app-themes-section-tokens>
+  </app-tokens-section-list>
   `,
   styleUrls: ['./loaded-fonts.component.less']
 })

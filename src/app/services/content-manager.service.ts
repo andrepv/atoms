@@ -7,6 +7,11 @@ import {Clipboard} from "./clipboard";
 import { getRandomChars } from '../utils/get-random-chars';
 import { EditorService } from '../layout/editor/editor.service';
 
+type SectionViewConfigs = {
+  isTokenEditable?: boolean;
+  isGroupEditable?: boolean;
+}
+
 interface ConfigureOptions {
   onLoad: () => any;
   getDefaultTokenValue: (groupId: number) => any;
@@ -43,6 +48,11 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     getDefaultGroupState: () => false,
   }
 
+  sectionViewConfigs: SectionViewConfigs = {
+    isTokenEditable: true,
+    isGroupEditable: false,
+  }
+
   constructor(
     @Inject('tables') private tables: ITables<T, G>,
     public store: StoreService,
@@ -52,8 +62,15 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     this.subscription = store.themeManager.selected$.subscribe(() => this.load())
   }
 
-  configure(options: Partial<ConfigureOptions>) {
-    this.configs = Object.assign(this.configs, options)
+  configure({
+    contentManagerConfigs,
+    sectionViewConfigs,
+  }: {
+    contentManagerConfigs: Partial<ConfigureOptions>,
+    sectionViewConfigs?: SectionViewConfigs
+  }) {
+    this.configs = Object.assign(this.configs, contentManagerConfigs);
+    this.sectionViewConfigs = Object.assign(this.sectionViewConfigs, sectionViewConfigs)
   }
 
   async load() {

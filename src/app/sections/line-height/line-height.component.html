@@ -1,0 +1,25 @@
+<app-group-list [groupTemplate]="groupTemplate">
+  <ng-template #groupTemplate let-group>
+    <app-group [group]="group" [tokenPreviewTemplate]="tokenTemplate">
+      <ng-template #tokenTemplate let-token let-group="group">
+        <app-token-editable
+          [step]="0.1"
+          [minValue]="1"
+          [maxValue]="4"
+          [value]="token.value"
+          [previewTemplate]="tokenPreviewRef"
+          (onAfterChange)="contentManager.setTokenValue($event, token.id, group.id)"
+        >
+          <ng-template #tokenPreviewRef let-value>
+            <app-text-preview
+              [data]="textPreview.getGroupTextStyles(group.id, sectionName)"
+              [excludedStyles]="['lineHeight']"
+              [customStyles]="{'lineHeight': value}"
+            ></app-text-preview>
+
+          </ng-template>
+        </app-token-editable>
+      </ng-template>
+    </app-group>
+  </ng-template>
+</app-group-list>

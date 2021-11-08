@@ -7,24 +7,7 @@ import { StoreService, Token, TokenGroup } from '../../services/store.service';
 
 @Component({
   selector: 'app-color-palette',
-  template: `
-    <app-groups
-      [tokenTemplate]="tokenTemplateRef"
-      layout="list"
-      [isTokenVisible]="isTokenVisible"
-      [getPreviousTokens]="getTints"
-      [getNextTokens]="getShades"
-    >
-      <ng-template #tokenTemplateRef let-token>
-        <div class="token" [style.background]="token.value.color">
-          <p style.color="#fff">{{ getReadability(token.value.color) }}</p>
-        </div>
-        <p>HEX: {{ getHex(token.value.color) }}</p>
-        <p>RGBA: {{ token.value.color }}</p>
-        <p>HSLA: {{ getHsl(token.value.color) }}</p>
-      </ng-template>
-    </app-groups>
-  `,
+  templateUrl: './color-palette.component.html',
   styleUrls: ['./color-palette.component.less'],
   providers: [
     {provide: 'tables', useValue: db.colorPalette},
@@ -32,7 +15,6 @@ import { StoreService, Token, TokenGroup } from '../../services/store.service';
   ]
 })
 export class ColorPaletteComponent implements OnInit {
-
   constructor(
     public cm: ContentManagerService,
     private store: StoreService
@@ -40,13 +22,15 @@ export class ColorPaletteComponent implements OnInit {
   
   ngOnInit() {
     this.cm.configure({
-      getDefaultTokenValue: () => ({
-        color: 'rgba(255,255,255,1)',
-        isPrimary: true
-      }),
-      onTokenDelete: (deletedToken, group) => {
-        if (!deletedToken.value.isPrimary) {
-          this.onVariantColorDelete(deletedToken, group);
+      contentManagerConfigs: {
+        getDefaultTokenValue: () => ({
+          color: 'rgba(255,255,255,1)',
+          isPrimary: true
+        }),
+        onTokenDelete: (deletedToken, group) => {
+          if (!deletedToken.value.isPrimary) {
+            this.onVariantColorDelete(deletedToken, group);
+          }
         }
       }
     })
@@ -64,7 +48,7 @@ export class ColorPaletteComponent implements OnInit {
     return tinycolor.readability(color, "#fff").toFixed(2);
   }
 
-  isTokenVisible(token: Token) {
+  isTokenVisible = (token: Token) => {
     return token.value.isPrimary;
   }
 

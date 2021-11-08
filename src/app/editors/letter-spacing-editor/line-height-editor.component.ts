@@ -6,11 +6,11 @@ import { db } from '../../services/db.service';
 @Component({
   selector: 'app-letter-spacing-editor',
   template:`
-    <app-section-tokens-select
+    <app-tokens-section-select
       section="Text Styles"
       [selectedTokenId]="editableGroup.state.textPreviewId"
       (change)="setTextStyles($event)"
-    ></app-section-tokens-select>`,
+    ></app-tokens-section-select>`,
   providers: [
     {provide: 'tables', useValue: db.letterSpacing},
     ContentManagerService,

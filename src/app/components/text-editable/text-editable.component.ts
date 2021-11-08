@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 
 @Component({
-  selector: 'app-editable-text',
+  selector: 'app-text-editable',
   template: `
     <ng-container *ngIf="!isEditable">
       <ng-container *ngTemplateOutlet="customTemplate; context: {$implicit: text}"></ng-container>
@@ -16,9 +16,9 @@ import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@an
       />
     </ng-container>
   `,
-  styleUrls: ['./editable-text.component.less']
+  styleUrls: ['./text-editable.component.less']
 })
-export class EditableTextComponent implements OnInit {
+export class TextEditableComponent implements OnInit {
   @Input() isEditable = false;
   @Input() text = "";
   @Input() customTemplate: TemplateRef<any>;
