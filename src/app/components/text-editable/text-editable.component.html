@@ -1,0 +1,21 @@
+<ng-container *ngIf="!isEditable">
+  <ng-content></ng-content>
+</ng-container>
+
+<ng-container *ngIf="isEditable">
+  <input
+    *ngIf="!isLoading"
+    nz-input
+    [(ngModel)]="inputValue"
+    (blur)="onBlur()"
+    [appAutofocus]
+  />
+
+  <nz-input-group [nzSuffix]="suffixTemplateLoading" *ngIf="isLoading">
+    <input nz-input [(ngModel)]="inputValue" [disabled]="true"/>
+    <ng-template #suffixTemplateLoading>
+      <i nz-icon nzType="loading" nzTheme="outline"></i>
+    </ng-template>
+  </nz-input-group>
+
+</ng-container>

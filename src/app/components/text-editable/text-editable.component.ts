@@ -2,28 +2,17 @@ import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@an
 
 @Component({
   selector: 'app-text-editable',
-  template: `
-    <ng-container *ngIf="!isEditable">
-      <ng-container *ngTemplateOutlet="customTemplate; context: {$implicit: text}"></ng-container>
-    </ng-container>
-
-    <ng-container *ngIf="isEditable">
-      <input
-        nz-input
-        [(ngModel)]="inputValue"
-        (blur)="onBlur()"
-        [appAutofocus]
-      />
-    </ng-container>
-  `,
+  templateUrl: './text-editable.component.html',
   styleUrls: ['./text-editable.component.less']
 })
 export class TextEditableComponent implements OnInit {
-  @Input() isEditable = false;
   @Input() text = "";
-  @Input() customTemplate: TemplateRef<any>;
+  @Input() makeUneditableOnBlur = true;
   @Output() blur: EventEmitter<string> = new EventEmitter();
+  
   inputValue = this.text;
+  isEditable = false;
+  isLoading = false;
 
   constructor() {}
  
@@ -34,11 +23,20 @@ export class TextEditableComponent implements OnInit {
     this.inputValue = this.text;
   }
 
+  makeUneditable() {
+    this.isEditable = false;
+  }
+
   onBlur() {
     const inputValue = this.inputValue.trim();
     if (inputValue.length && inputValue !== this.text) {
       this.blur.emit(inputValue);
+
+      if (this.makeUneditableOnBlur) {
+        this.makeUneditable();
+      }
+    } else {
+      this.makeUneditable();
     }
-    this.isEditable = false;
   }
 }

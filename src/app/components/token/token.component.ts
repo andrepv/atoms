@@ -2,6 +2,7 @@ import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { EditorService } from '../../layout/editor/editor.service';
 import { ContentManagerService } from '../../services/content-manager.service';
 import { StoreService, Token, TokenGroup } from '../../services/store.service';
+import { TextEditableComponent } from '../text-editable/text-editable.component';
 
 @Component({
   selector: 'app-token',
@@ -35,8 +36,14 @@ export class TokenComponent implements OnInit {
     this.contentManager.deleteToken(this.token.id, this.group.id)
   }
 
-  rename(value: string) {
-    this.contentManager.renameToken(value, this.token.id, this.group.id)
+  async rename(value: string, editableText: TextEditableComponent) {
+    editableText.isLoading = true;
+    try {
+      await this.contentManager.renameToken(value, this.token.id, this.group.id)
+    } finally {
+      editableText.isLoading = false;
+      editableText.makeUneditable();
+    }
   }
   
   copy() {

@@ -2,10 +2,10 @@
   <app-text-editable
     #editableText
     [text]="group.name"
-    [customTemplate]="textTemplate"
-    (blur)="renameGroup($event)"
+    (blur)="renameGroup($event, editableText)"
+    [makeUneditableOnBlur]="false"
   >
-    <ng-template #textTemplate let-text><h3>{{ text }}</h3></ng-template>
+    <h3>{{ group.name }}</h3>
   </app-text-editable>
 
   <div>

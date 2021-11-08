@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { EditorService } from '../../layout/editor/editor.service';
 import { ContentManagerService } from '../../services/content-manager.service';
 import { StoreService, TokenGroup } from '../../services/store.service';
+import { TextEditableComponent } from '../text-editable/text-editable.component';
 
 @Component({
   selector: 'app-group-header',
@@ -26,9 +27,14 @@ export class GroupHeaderComponent implements OnInit {
     this.editor.enable(this.contentManager.sectionName, {group: this.group})
   }
 
-  renameGroup(value: string) {
-    if (!value.length || value === this.group.name) return;
-    this.contentManager.renameGroup(value, this.group.id)
+  async renameGroup(value: string, editableText: TextEditableComponent) {
+    editableText.isLoading = true;
+    try {
+      await this.contentManager.renameGroup(value, this.group.id);
+    } finally {
+      editableText.isLoading = false;
+      editableText.makeUneditable();
+    }
   }
 
   deleteGroup() {

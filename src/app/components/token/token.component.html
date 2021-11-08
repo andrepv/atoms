@@ -27,12 +27,10 @@
   <app-text-editable
     #editableText
     [text]="token.name"
-    (blur)="rename($event)"
-    [customTemplate]="textTemplate"
+    (blur)="rename($event, editableText)"
+    [makeUneditableOnBlur]="false"
   >
-    <ng-template #textTemplate let-text>
-      <p class="token-name">{{ text }}</p>
-    </ng-template>
+    <p class="token-name">{{ token.name }}</p>
   </app-text-editable>
 
 </div>
