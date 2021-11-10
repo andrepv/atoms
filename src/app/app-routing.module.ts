@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ColorsComponent } from './pages/colors.component';
-import { SpacingComponent } from './pages/spacing.component';
-import { TypographyComponent } from './pages/typography.component';
+import { ColorsComponent } from '@colors/colors.component';
+import { SpacingComponent } from '@spacing/spacing.component';
+import { TypographyComponent } from '@typography/typography.component';
 
 const routes: Routes = [
   {path: 'typography', component: TypographyComponent},
@@ -12,7 +12,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes),
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

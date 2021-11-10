@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EditorService } from './editor.service';
+import { EditorService } from '@core/services/editor.service';
 
 @Component({
   selector: 'app-editor',

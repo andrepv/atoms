@@ -1,0 +1,7 @@
+<app-modular-scale-editor></app-modular-scale-editor>
+
+<app-tokens-section-select
+  section="Text Styles"
+  [selectedTokenId]="editableGroup.state.textPreviewId"
+  (change)="contentManager.setGroupState(this.editableGroup.id, {textPreviewId: $event})"
+></app-tokens-section-select>

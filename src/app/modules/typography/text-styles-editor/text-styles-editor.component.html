@@ -1,0 +1,28 @@
+<div>
+  <app-tokens-section-select
+    section="Type Face"
+    [selectedTokenId]="getStyleTokenId('fontFamily')"
+    (change)="onChange($event, 'fontFamily')"
+  ></app-tokens-section-select>
+
+  <app-tokens-section-select
+    section="Type Scale"
+    [selectedTokenId]="getStyleTokenId('fontSize')"
+    (change)="onChange($event, 'fontSize')"
+  ></app-tokens-section-select>
+
+  <app-tokens-section-select
+    section="Line Height"
+    [selectedTokenId]="getStyleTokenId('lineHeight')"
+    (change)="onChange($event, 'lineHeight')"
+  ></app-tokens-section-select>
+
+  <app-tokens-section-select
+    section="Letter Spacing"
+    [selectedTokenId]="getStyleTokenId('letterSpacing')"
+    (change)="onChange($event, 'letterSpacing')"
+  ></app-tokens-section-select>
+
+  <p>Text</p>
+  <textarea rows="4" nz-input [(ngModel)]="text" (blur)="onBlur()"></textarea>
+</div>

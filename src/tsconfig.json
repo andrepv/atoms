@@ -18,13 +18,13 @@
       "dom"
     ],
     "paths": {
-      "@core/*": ["src/app/core/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@utils/*": ["src/app/utils/*"],
-      "@utils": ["src/app/utils/index"],
-      "@colors/*": ["src/app/modules/colors/*"],
-      "@spacing/*": ["src/app/modules/spacing/*"],
-      "@typography/*": ["src/app/modules/typography/*"],
+      "@core/*": ["app/core/*"],
+      "@shared/*": ["app/shared/*"],
+      "@utils/*": ["app/utils/*"],
+      "@utils": ["app/utils/index"],
+      "@colors/*": ["app/modules/colors/*"],
+      "@spacing/*": ["app/modules/spacing/*"],
+      "@typography/*": ["app/modules/typography/*"],
     }
   }
 }

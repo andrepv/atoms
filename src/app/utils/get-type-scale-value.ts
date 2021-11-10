@@ -1,4 +1,4 @@
-import { ModularScaleState } from "../editors/modular-scale-editor/modular-scale-editor.component";
+import { ModularScaleState } from "@shared/components/modular-scale-editor/modular-scale-editor.component";
 
 export function getScaleValue(index: number, state: ModularScaleState) {
   const n = index - 2;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { EditorService } from '../editor/editor.service';
-import { StoreService } from '../../services/store.service';
+import { EditorService } from '@core/services//editor.service';
+import { StoreService } from '@core/services/store.service';
 
 @Component({
   selector: 'app-explorer',

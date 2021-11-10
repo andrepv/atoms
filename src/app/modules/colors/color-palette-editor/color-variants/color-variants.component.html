@@ -1,0 +1,24 @@
+<div *ngIf="editor.content.token.value.isPrimary">
+  <span>{{ type }}</span>
+
+  <div>
+    <nz-slider
+      [nzMin]="MIN_VARIANTS"
+      [nzMax]="MAX_VARIANTS"
+      [(ngModel)]="variantCount"
+      (ngModelChange)="changeVariantCount()"
+    ></nz-slider>
+
+    <div
+      *ngIf="variantCount"
+      class="variants"
+    >
+      <div
+        *ngFor="let variant of _variants"
+        [style.background]="variant.value"
+        class="color-preview"
+      ></div>
+    </div>
+
+  </div>
+</div>
