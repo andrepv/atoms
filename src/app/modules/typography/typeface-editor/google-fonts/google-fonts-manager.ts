@@ -18,12 +18,10 @@ export class GoogleFontsManager {
 	readonly PREVIEW_TEXT = 'Almost before we knew it, we had left the ground.';
 
 	sortOption = this.SORT_OPTIONS[0];
+	isLoading = false;
 
 	private selectedCategories = this.CATEGORIES;
 	private fontFamily = '';
-
-	isLoading = false;
-
 	private ALL_FONTS: GoogleFont[] = [];
 
 	fonts$ = new BehaviorSubject<GoogleFont[]>([]);

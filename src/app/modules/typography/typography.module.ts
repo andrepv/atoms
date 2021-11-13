@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { SharedModule } from '@shared/shared.module';
-import { LetterSpacingEditorComponent } from './letter-spacing-editor/line-height-editor.component';
+import { LetterSpacingEditorComponent } from './letter-spacing-editor/letter-spacing-editor.component';
 import { LetterSpacingComponent } from './letter-spacing/letter-spacing.component';
 import { LineHeightEditorComponent } from './line-height-editor/line-height-editor.component';
 import { LineHeightComponent } from './line-height/line-height.component';

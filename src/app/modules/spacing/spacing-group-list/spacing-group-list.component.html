@@ -8,7 +8,7 @@
           [maxValue]="MAX_VALUE"
           [value]="token.value"
           [previewTemplate]="tokenPreviewRef"
-          (onAfterChange)="contentManager.setTokenValue($event, token.id, group.id)"
+          (onAfterChange)="section.setTokenValue($event, token.id, group.id)"
         >
           <ng-template #tokenPreviewRef let-value>
             <p>{{ value + 'px' }}</p>

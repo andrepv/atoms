@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
-import { ContentManagerService } from '@core/services/content-manager.service';
-import { TokenModel } from '@core/indexedDB';
+import { DBToken } from '@core/core.model';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
 
-export type ThemeTokens = {themeName: string, tokens: TokenModel[]};
+export type ThemeTokens = {themeName: string, tokens: DBToken[]};
 
 @Component({
   selector: 'app-tokens-section-list',
@@ -18,7 +18,7 @@ export class TokensSectionListComponent implements OnInit {
 
   constructor(
     private themeManager: ThemeManagerService,
-    private cm: ContentManagerService,
+    private section: SectionContentManagerService,
   ) {}
  
   async ngOnInit() {
@@ -27,7 +27,7 @@ export class TokensSectionListComponent implements OnInit {
   }
 
   async getTokens() {
-    const tokens: TokenModel[] = await this.cm.tokenTable.toArray();
+    const tokens: DBToken[] = await this.section.tokenTable.toArray();
     const themes = this.themeManager.list;
     const data: ThemeTokens[] = [];
 

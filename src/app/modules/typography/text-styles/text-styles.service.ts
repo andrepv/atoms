@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SectionNames, StoreService } from '@core/services/store.service';
+import { SectionNames } from '@core/core.model';
+import { StoreService } from '@core/services/store.service';
 import { FontModel } from '../typeface/typeface.model';
 
 @Injectable({providedIn: 'root'})

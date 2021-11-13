@@ -1,42 +1,33 @@
 import { Injectable } from '@angular/core';
+import { SectionNames, StoreGroup, PageName, DBToken, DBGroup } from '@core/core.model';
 import { ThemeManagerService } from './theme-manager.service';
 
 export const SECTIONS = ["Type Face", "Type Scale", "Line Height", "Letter Spacing", "Text Styles", "Spacing", "Color Palette"] as const;
 
-export type SectionNames = "Type Face" | "Type Scale" | "Line Height" | "Letter Spacing" | "Text Styles" | "Spacing" | "Color Palette";
 
-export interface Token<T = any> {
-  name: string;
-  id: number;
-  value: T;
+interface StoreNormalizedPageContent<G extends DBGroup = any, T extends DBToken = any> {
+  [sectionName: string]: StoreGroup<G, T>[]
 }
 
-export interface TokenGroup {
-  name: string;
-  id: number;
-  tokens: Token<any>[];
-  anchorLink: string;
-  state?: any;
+interface StorePage {
+  name: PageName | '';
+  content: StoreGroupList;
 }
 
-export type TokenGroups = {
+type StoreGroupList = {
   name: string;
-  content: TokenGroup[];
+  content: StoreGroup[];
 }[];
 
-export interface Section {
-  name: string;
-  content: TokenGroups;
-}
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {
   isLoading = false;
   isClipboardActionsAvailable = true;
 
-  _groups: {[key: string]: TokenGroup[]} = {}
+  _groups: {[sectionName: string]: StoreGroup[]} = {}
 
-  get groups(): TokenGroups {
+  get groups(): StoreGroupList {
     const groups = Object.entries(this._groups);
     if (!groups.length) {
       return [];
@@ -44,7 +35,7 @@ export class StoreService {
     return groups.map(([name, content]) => ({name, content}))
   }
 
-  section: Section = {
+  page: StorePage = {
     name: "",
     content: this.groups,
   };
@@ -68,13 +59,16 @@ export class StoreService {
     return this.themeManager.loadList();
   }
 
-  setSection(sectionName: string, content: {[key: string]: TokenGroup[]}) {
-    this.section.name = sectionName;
+  setPageStructure(
+    pageName: PageName,
+    content: StoreNormalizedPageContent
+  ) {
+    this.page.name = pageName;
     this._groups = content;
     this.updateSection();
   }
 
-  addGroup(sectionName: SectionNames, group: TokenGroup) {
+  addGroup(sectionName: SectionNames, group: StoreGroup) {
     this.getGroupList(sectionName).push(group);
     this.updateSection();
   }
@@ -88,10 +82,11 @@ export class StoreService {
     return this.getGroupList(sectionName).find(group => group.id === groupId)
   }
 
+  // ???
   updateGroup(
     sectionName: SectionNames,
     groupId: number,
-    callback: (group: TokenGroup) => void,
+    callback: (group: StoreGroup) => void,
   ) {
     this._groups[sectionName] = this.getGroupList(sectionName).map(group => {
       if (group.id === groupId) {
@@ -112,13 +107,13 @@ export class StoreService {
     return this._groups[sectionName];
   }
 
-  setGroupList(sectionName: SectionNames, groupList: TokenGroup[]) {
+  setGroupList(sectionName: SectionNames, groupList: StoreGroup[]) {
     this._groups[sectionName] = groupList;
     this.updateSection();
   }
 
   getSectionTokens(sectionName: SectionNames) {
-    const tokens: Token[] = [];
+    const tokens = [];
     this.getGroupList(sectionName).forEach(group => {
       tokens.push(...group.tokens);
     })
@@ -141,6 +136,6 @@ export class StoreService {
   }
 
   private updateSection() {
-    this.section.content = this.groups;
+    this.page.content = this.groups;
   }
 }

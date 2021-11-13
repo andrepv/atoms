@@ -1,29 +1,24 @@
 import { Injectable } from '@angular/core';
+import { ThemeModel, ThemeTable } from '@core/core.model';
 import { BehaviorSubject, from, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, switchMap, tap } from 'rxjs/operators';
 import { db } from '../indexedDB';
-
-export type ThemeModel = {id?: number; name: string}
-export type ThemeTable = Dexie.Table<ThemeModel, number>;
 
 @Injectable({providedIn: 'root'})
 export class ThemeManagerService {
   table: ThemeTable;
   isLoading = false;
   
-  private _selected: ThemeModel = null;
   selected$ = new Subject<ThemeModel>();
   
   set selected(theme: ThemeModel) {
     this._selected = theme;
     this.selected$.next(theme);
   }
-  
+
   get selected() {
     return this._selected;
   }
-
-  private _list: ThemeModel[] = [];
 
   set list(themeList: ThemeModel[]) {
     this._list = themeList;
@@ -32,7 +27,9 @@ export class ThemeManagerService {
   get list() {
     return this._list;
   }
-
+  
+  private _selected: ThemeModel = null;
+  private _list: ThemeModel[] = [];
   private searchChange$ = new BehaviorSubject('');
   private isSearching = false;
   private canSearch = false;

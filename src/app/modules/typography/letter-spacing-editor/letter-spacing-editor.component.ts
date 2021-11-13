@@ -2,27 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { db } from '@core/indexedDB';
-import { LineHeightTokenModel, LineHeightGroupModel } from '@typography/line-height/line-height.model';
+import { LetterSpacingGroupModel, LetterSpacingTokenModel } from '@typography/letter-spacing/letter-spacing.model';
 
 @Component({
-  selector: 'app-line-height-editor',
-  templateUrl: './line-height-editor.component.html',
+  selector: 'app-letter-spacing-editor',
+  templateUrl: './letter-spacing-editor.component.html',
   providers: [
-    {provide: 'tables', useValue: db.lineHeight},
+    {provide: 'tables', useValue: db.letterSpacing},
     SectionContentManagerService,
   ]
 })
-export class LineHeightEditorComponent implements OnInit {
+export class LetterSpacingEditorComponent implements OnInit {
   get textPreviewId() {
     return this.editor.content.group.state.textPreviewId;
   }
 
   constructor(
-    private editor: EditorService<LineHeightTokenModel,
-    LineHeightGroupModel>,
-    private section: SectionContentManagerService<LineHeightTokenModel,
-    LineHeightGroupModel>,
-  ) { }
+    private editor: EditorService<LetterSpacingTokenModel, LetterSpacingGroupModel>,
+    private section: SectionContentManagerService<LetterSpacingTokenModel, LetterSpacingGroupModel>,
+  ) {}
 
   ngOnInit() {}
 

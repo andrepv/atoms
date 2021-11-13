@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ThemeManagerService, ThemeModel } from '@core/services/theme-manager.service';
+import { ThemeModel } from '@core/core.model';
+import { ThemeManagerService } from '@core/services/theme-manager.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({

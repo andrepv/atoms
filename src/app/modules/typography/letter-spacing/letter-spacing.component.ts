@@ -1,28 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentManagerService } from '@core/services/content-manager.service';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { db } from '@core/indexedDB';
 import { TextStylesService } from '../text-styles/text-styles.service';
+import { LetterSpacingGroupModel, LetterSpacingTokenModel } from './letter-spacing.model';
 
 @Component({
   selector: 'app-letter-spacing',
   templateUrl: './letter-spacing.component.html',
   providers: [
     {provide: 'tables', useValue: db.letterSpacing},
-    ContentManagerService,
+    SectionContentManagerService,
   ]
 })
 export class LetterSpacingComponent implements OnInit {
-  get sectionName() {
-    return this.contentManager.sectionName;
-  }
-
   constructor(
-    public contentManager: ContentManagerService,
-    public textPreview: TextStylesService,
+    private section: SectionContentManagerService<LetterSpacingTokenModel, LetterSpacingGroupModel>,
+    private textPreview: TextStylesService,
   ) {}
 
   ngOnInit() {
-    this.contentManager.configure({
+    this.section.configure({
       contentManagerConfigs: {
         getDefaultTokenValue: () => 0.01,
         getDefaultGroupState: () => ({textPreviewId: 0})
@@ -32,5 +29,13 @@ export class LetterSpacingComponent implements OnInit {
         isGroupEditable: true,
       }
     })
+  }
+
+  getTextStyles(groupId: number) {
+    return this.textPreview.getGroupTextStyles(groupId, this.section.sectionName)
+  }
+
+  setTokenValue(value: LetterSpacingTokenModel['value'], tokenId: number, groupId: number) {
+    this.section.setTokenValue(value, tokenId, groupId)
   }
 }

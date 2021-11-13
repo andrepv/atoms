@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SectionNames, StoreService } from '@core/services/store.service';
+import { SectionNames } from '@core/core.model';
+import { StoreService } from '@core/services/store.service';
 
 @Component({
   selector: 'app-tokens-section-select',

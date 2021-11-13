@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { ContentManagerService } from '@core/services/content-manager.service';
-import { StoreService } from '@core/services/store.service';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 
 @Component({
   selector: 'app-group-list',
@@ -11,19 +10,16 @@ export class GroupListComponent implements OnInit {
   @Input() groupTemplate: TemplateRef<any>;
 
   get groupList() {
-    return this.store.getGroupList(this.contentManager.sectionName);
+    return this.cm.getGroupList();
   }
 
-  constructor(
-    public contentManager: ContentManagerService,
-    private store: StoreService
-  ) {}
+  constructor(public cm: SectionContentManagerService) {}
 
   ngOnInit() {
-    this.contentManager.load();
+    this.cm.load();
   }
 
   ngOnDestroy() {
-    this.contentManager.subscription.unsubscribe();
+    this.cm.subscription.unsubscribe();
   }
 }

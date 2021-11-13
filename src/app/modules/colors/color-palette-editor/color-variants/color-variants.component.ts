@@ -3,8 +3,9 @@ import { from, Subject } from 'rxjs';
 import { debounceTime, map, mergeMap, takeUntil } from 'rxjs/operators';
 // @ts-ignore
 import Values from 'values.js';
-import { EditableContent, EditorService } from '@core/services/editor.service';
+import { EditorService } from '@core/services/editor.service';
 import { ColorPaletteTokenModel, Variant as VariantType } from '../../color-palette/color-palette.model';
+import { DBGroup, EditableContent } from '@core/core.model';
 
 export type AddVariantEvent = {color: string, type: VariantType};
 export type RemoveVariantEvent = {id: number, type: VariantType};
@@ -62,7 +63,7 @@ export class ColorVariantsComponent implements OnInit {
   private _primaryColor: Values;
   private editableTokenId: number;
 
-  constructor(public editor: EditorService) {}
+  constructor(public editor: EditorService<ColorPaletteTokenModel, DBGroup>) {}
 
   ngOnInit() {
     this.setState();

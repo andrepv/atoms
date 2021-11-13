@@ -6,15 +6,7 @@ import { TypescaleTables, TYPESCALE_DB_DATA } from '@typography/typescale/typesc
 import { LineHeightTables, LINEHEIGHT_DB_DATA } from '@typography/line-height/line-height.model';
 import { ColorPaletteTables, COLORPALETTE_DB_DATA } from '@colors/color-palette/color-palette.model';
 import { SpacingTables, SPACING_DB_DATA } from '@spacing/spacing.model';
-import { SectionNames } from '@core/services/store.service';
-import { ThemeTable } from '@core/services/theme-manager.service';
-
-export type DBSectionData = {
-  tableGroupName: string;
-  tokenTableName: string;
-  groupTableName: string;
-  name: SectionNames;
-}
+import { DBSectionData, SectionNames, ThemeTable } from '@core/core.model';
 
 const SECTIONS: DBSectionData[] = [
   TYPEFACE_DB_DATA,
@@ -25,32 +17,6 @@ const SECTIONS: DBSectionData[] = [
   SPACING_DB_DATA,
   COLORPALETTE_DB_DATA
 ];
-
-export type TokenModel<T = any> = {
-  id: number;
-  name: string;
-  value: T;
-  groupId: number;
-  themeId: number;
-}
-
-export type TokenGroupModel<T = any> = {
-  id: number;
-  name: string;
-  themeId: number;
-  tokensId: number[];
-  state?: T;
-}
-
-export type Table = Dexie.Table;
-
-export interface ITables<T, G> {
-  name: SectionNames;
-  token: T;
-  group: G;
-  deleteData: (themeId: number) => PromiseExtended<void>;
-  isTokenNameUnique: (name: string, themeId: number) => Promise<boolean>;
-}
 
 export class DBService extends Dexie {
   theme: ThemeTable;
@@ -100,7 +66,7 @@ export class DBService extends Dexie {
   }
 }
 
-class Tables<T extends Table, G extends Table> {
+class Tables<T extends Dexie.Table, G extends Dexie.Table> {
   constructor(
     public name: SectionNames,
     public token: T,

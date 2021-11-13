@@ -1,4 +1,4 @@
-import { DBSectionData, ITables, TokenGroupModel, TokenModel } from "@core/indexedDB";
+import { DBSectionData, DBTables, DBGroup, DBToken } from "@core/core.model";
 
 export type TextStylesTokenValue = {
   styles?: {
@@ -9,12 +9,12 @@ export type TextStylesTokenValue = {
   },
   text?: string;
 };
-export type TextStylesTokenModel = TokenModel<TextStylesTokenValue>;
+export type TextStylesTokenModel = DBToken<TextStylesTokenValue>;
 
 export type TextStylesTokenTable = Dexie.Table<TextStylesTokenModel, number>;
-export type TextStylesGroupTable = Dexie.Table<TokenGroupModel, number>;
+export type TextStylesGroupTable = Dexie.Table<DBGroup, number>;
 
-export type TextStylesTables = ITables<TextStylesTokenTable, TextStylesGroupTable>
+export type TextStylesTables = DBTables<TextStylesTokenTable, TextStylesGroupTable>
 
 export const TEXTSTYLES_DB_DATA: DBSectionData = {
   tableGroupName: 'textStyles',

@@ -1,8 +1,8 @@
 import { NzMessageService } from "ng-zorro-antd/message";
 import { getRandomChars } from "@utils";
-import { ContentManagerService } from "./services/content-manager.service";
-import { TokenGroupModel, TokenModel } from "./indexedDB";
-import { SectionNames, StoreService, TokenGroup } from "./services/store.service";
+import { SectionContentManagerService } from "./services/section-content-manager.service";
+import { StoreService } from "./services/store.service";
+import { SectionNames, StoreGroup, DBGroup, DBToken } from "@core/core.model";
 
 interface CopiedContent<T> {
   section: SectionNames;
@@ -13,7 +13,7 @@ export class Clipboard {
   store: StoreService;
 
   constructor(
-    private contentManager: ContentManagerService,
+    private contentManager: SectionContentManagerService,
     private message: NzMessageService,
   ) {
     this.store = contentManager.store;
@@ -21,7 +21,7 @@ export class Clipboard {
 
   async pastToken(groupId: number) {
     try {
-      const data: CopiedContent<TokenModel> = await this.getCopiedData();
+      const data: CopiedContent<DBToken> = await this.getCopiedData();
       if (data.section === this.contentManager.sectionName) {
         let {value, name} = data.content;
         name = `${name}-${getRandomChars(4)}`;
@@ -37,7 +37,7 @@ export class Clipboard {
   async pastGroup() {
     const id = this.message.loading('Action in progress..').messageId;
     try {
-      const data: CopiedContent<TokenGroup> = await this.getCopiedData();
+      const data: CopiedContent<StoreGroup> = await this.getCopiedData();
       if (data.section === this.contentManager.sectionName) {
         const {name, tokens, state = false} = data.content;
 
@@ -58,7 +58,7 @@ export class Clipboard {
     }
   }
 
-  async copy(content: CopiedContent<TokenModel | TokenGroupModel>) {
+  async copy(content: CopiedContent<DBToken | DBGroup>) {
     try {
       await navigator.clipboard.writeText(
         JSON.stringify({

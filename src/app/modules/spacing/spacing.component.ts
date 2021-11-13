@@ -12,7 +12,7 @@ export class SpacingComponent implements OnInit {
   constructor(public store: StoreService) {}
 
   ngOnInit(): void {
-    this.store.setSection(this.PAGE_NAME, {
+    this.store.setPageStructure(this.PAGE_NAME, {
       "Spacing": [],
     })
   }

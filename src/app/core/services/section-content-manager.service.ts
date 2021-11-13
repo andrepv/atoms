@@ -1,26 +1,27 @@
 import { Inject, Injectable } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subscription } from 'rxjs';
-import { Table, ITables, TokenGroupModel, TokenModel, db } from '../indexedDB';
-import { StoreService, Token, TokenGroup } from '@core/services/store.service';
+import { db } from '../indexedDB';
+import { StoreService } from '@core/services/store.service';
 import { EditorService } from '@core/services/editor.service';
 import { Clipboard } from "../clipboard";
 import { getRandomChars } from '@utils';
+import { StoreToken, StoreGroup, DBToken, DBTables, DBGroup } from '@core/core.model';
 
-type SectionViewConfigs = {
+interface SectionViewConfigs {
   isTokenEditable?: boolean;
   isGroupEditable?: boolean;
 }
 
-interface ConfigureOptions {
-  onLoad: () => any;
-  getDefaultTokenValue: (groupId: number) => any;
-  getDefaultGroupState: () => any;
-  onTokenDelete: (token: Token, group: TokenGroup) => any;
+interface ConfigureOptions<T extends DBToken, G extends DBGroup> {
+  onLoad: () => void;
+  getDefaultTokenValue: (groupId: number) => T['value'];
+  getDefaultGroupState: () => G['state'];
+  onTokenDelete: (token: StoreToken<T>, group: StoreGroup<G, T>) => void;
 }
 
 @Injectable()
-export class ContentManagerService<T extends Table = any, G extends Table = any> {
+export class SectionContentManagerService<T extends DBToken = any, G extends DBGroup = any> {
   isLoading = false;
   subscription: Subscription;
   clipboard = new Clipboard(this, this.message);
@@ -41,7 +42,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     return this.store.themeManager.selected.id;
   }
 
-  configs: ConfigureOptions = {
+  configs: ConfigureOptions<T, G> = {
     onLoad: () => {},
     onTokenDelete: () => {},
     getDefaultTokenValue: () => "",
@@ -54,7 +55,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
   }
 
   constructor(
-    @Inject('tables') private tables: ITables<T, G>,
+    @Inject('tables') private tables: DBTables<Dexie.Table<T, number>, Dexie.Table<G, number>>,
     public store: StoreService,
     private message: NzMessageService,
     private editor: EditorService,
@@ -66,7 +67,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     contentManagerConfigs,
     sectionViewConfigs,
   }: {
-    contentManagerConfigs: Partial<ConfigureOptions>,
+    contentManagerConfigs: Partial<ConfigureOptions<T, G>>, // ???
     sectionViewConfigs?: SectionViewConfigs
   }) {
     this.configs = Object.assign(this.configs, contentManagerConfigs);
@@ -93,9 +94,9 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
       const tokens = await this.tokenTable
       .where("id")
       .anyOf(group.tokensId)
-      .toArray();
+      .toArray() as StoreToken[];
 
-      const transformedGroup: TokenGroup = {
+      const transformedGroup: StoreGroup = {
         name: group.name,
         id: group.id,
         tokens,
@@ -116,11 +117,12 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     this.configs.onLoad();
   }
 
-  async addToken(token: TokenModel, groupId: number) {
+  async addToken(token: T, groupId: number) {
     const newToken = await this.saveTokenToDB(token, groupId);
     this.store.updateGroup(this.sectionName, groupId,
       group => group.tokens.push(newToken)
     );
+    return newToken;
   }
 
   deleteToken(tokenId: number, groupId: number) {
@@ -184,18 +186,44 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     groupId: number,
     value = this.configs.getDefaultTokenValue(groupId),
     name = `token-${getRandomChars()}`
-  ) {
+  ): Omit<DBToken, 'id'> {
     return {
       name,
       value,
       groupId,
       themeId: this.selectedThemeId,
-    } as TokenModel;
+    };
   }
 
-  async addGroup(group: TokenGroupModel) {
+  async setTokenValue(value: T['value'], tokenId: number, groupId: number) {
+    await this.tokenTable.update(tokenId, {value});
+
+    this.store.updateGroup(this.sectionName, groupId,
+      group => group.tokens.map(token => {
+        if (token.id === tokenId) {
+          token.value = value;
+        
+          if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
+            const {token, group} = this.editor.content;
+            this.editor.content = {token: {...token, value: value},group }
+          }
+        }
+        return token;
+      }),
+    );
+  }
+
+  getTokenList(): StoreToken<T>[] {
+    return this.store.getSectionTokens(this.sectionName);
+  }
+
+  getToken(tokenId: number): StoreToken<T> | false {
+    return this.store.getSectionToken(this.sectionName, tokenId)
+  }
+
+  async addGroup(group: G) {
     const groupId: number = await this.groupTable.add(group);
-    const newGroup: TokenGroup = {
+    const newGroup: StoreGroup<G, T> = {
       id: groupId,
       name: group.name,
       tokens: [],
@@ -233,10 +261,13 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     );
   }
 
-  async setGroupState(groupId: number, state: {[key: string]: any}) {
+  async setGroupState(
+    groupId: number,
+    stateChunk: Partial<G['state']>
+  ) {
     const group = this.store.getGroup(this.sectionName, groupId);
     const prevState = group.state || {};
-    const nextState = {...prevState, ...state};
+    const nextState = {...prevState, ...stateChunk};
 
     await this.groupTable.update(groupId, {state: nextState});
     this.store.updateGroup(
@@ -254,7 +285,7 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
       name,
       themeId: this.selectedThemeId,
       tokensId,
-    } as TokenGroupModel;
+    } as DBGroup;
 
     if (state) {
       group.state = state;
@@ -263,25 +294,15 @@ export class ContentManagerService<T extends Table = any, G extends Table = any>
     return group;
   }
 
-  async setTokenValue(value: any, tokenId: number, groupId: number) {
-    await this.tokenTable.update(tokenId, {value});
-
-    this.store.updateGroup(this.sectionName, groupId,
-      group => group.tokens.map(token => {
-        if (token.id === tokenId) {
-          token.value = value;
-        
-          if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
-            const {token, group} = this.editor.content;
-            this.editor.content = {token: {...token, value: value},group }
-          }
-        }
-        return token;
-      }),
-    );
+  getGroup(groupId: number): StoreGroup<G, T> {
+    return this.store.getGroup(this.sectionName, groupId);
   }
 
-  private async saveTokenToDB<T>(token: TokenModel<T>, groupId: number): Promise<Token<T>>
+  getGroupList(): StoreGroup<G, T>[] {
+    return this.store.getGroupList(this.sectionName)
+  }
+
+  private async saveTokenToDB(token: T, groupId: number): Promise<StoreToken<T>>
   {
     return db.transaction('rw', [this.tokenTable, this.groupTable], async () => {
       const tokenId = await this.tokenTable.add(token);

@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { EditorService } from '@core/services/editor.service';
-import { ContentManagerService } from '@core/services/content-manager.service';
-import { TokenGroup, StoreService, Token } from '@core/services/store.service';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
+import { StoreService } from '@core/services/store.service';
 import { TextEditableComponent } from '../text-editable/text-editable.component';
+import { StoreToken, StoreGroup } from '@core/core.model';
 
 @Component({
   selector: 'app-token',
@@ -10,36 +11,36 @@ import { TextEditableComponent } from '../text-editable/text-editable.component'
   styleUrls: ['./token.component.less']
 })
 export class TokenComponent implements OnInit {
-  @Input() token: Token;
-  @Input() group: TokenGroup;
+  @Input() token: StoreToken;
+  @Input() group: StoreGroup;
   @Input() previewTemplate: TemplateRef<any>;
   isEditable = true;
 
   constructor(
-    private contentManager: ContentManagerService,
+    private section: SectionContentManagerService,
     private editor: EditorService,
     private store: StoreService
   ) {
-    this.isEditable = this.contentManager.sectionViewConfigs.isTokenEditable;
+    this.isEditable = this.section.sectionViewConfigs.isTokenEditable;
   }
 
   ngOnInit() {}
 
   openEditor() {
     this.editor.enable(
-      this.contentManager.sectionName,
+      this.section.sectionName,
       {group: this.group, token: this.token}
     )
   }
 
   delete() {
-    this.contentManager.deleteToken(this.token.id, this.group.id)
+    this.section.deleteToken(this.token.id, this.group.id)
   }
 
   async rename(value: string, editableText: TextEditableComponent) {
     editableText.isLoading = true;
     try {
-      await this.contentManager.renameToken(value, this.token.id, this.group.id)
+      await this.section.renameToken(value, this.token.id, this.group.id)
     } finally {
       editableText.isLoading = false;
       editableText.makeUneditable();
@@ -47,7 +48,7 @@ export class TokenComponent implements OnInit {
   }
   
   copy() {
-    this.contentManager.clipboard.copy(this.token)
+    this.section.clipboard.copy(this.token)
   }
   
   canCopy() {

@@ -2,13 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { EditorService } from '@core/services/editor.service';
-import { ContentManagerService } from '@core/services/content-manager.service';
-import { StoreService } from '@core/services/store.service';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { getScaleValue } from '@utils';
 
 export type ModularScaleOption = {name: string, value: number}
 
-export type ModularScaleState = {
+export interface ModularScaleState {
   scaleRatio: number;
   base: number;
   isModularScaleEnabled: boolean;
@@ -37,7 +36,6 @@ export const MODULAR_SCALE_OPTIONS: ModularScaleOption[] = [
 export const DEFAULT_BASE = 16;
 export const DEFAULT_SCALE_RATIO = MODULAR_SCALE_OPTIONS[0];
 
-
 @Component({
   selector: 'app-modular-scale-editor',
   templateUrl: './modular-scale-editor.component.html',
@@ -63,14 +61,9 @@ export class ModularScaleEditorComponent implements OnInit {
     }
   }
 
-  private get sectionName() {
-    return this.contentManager.sectionName;
-  }
-
   constructor(
-    public editor: EditorService,
-    public contentManager: ContentManagerService,
-    private store: StoreService,
+    private editor: EditorService,
+    private section: SectionContentManagerService,
   ) {}
 
   ngOnInit() {
@@ -92,6 +85,26 @@ export class ModularScaleEditorComponent implements OnInit {
     this.updateModularScale();
   }
 
+  updateModularScale() {
+    const groupId = this.editableGroupId;
+
+    if (!this.state.isModularScaleEnabled) {
+      this.section.setGroupState(groupId, {scale: false});
+      return;
+    }
+    const group = this.section.getGroup(groupId);
+
+    group.tokens.forEach((token, index) => {
+      const value = getScaleValue(index, this.state);
+      this.section.setTokenValue(value, token.id, groupId);
+    })
+
+    this.section.setGroupState(groupId, {scale: {
+      scaleRatio: this.state.scaleRatio,
+      base: this.state.base,
+    }})
+  }
+
   private setState(state: ModularScaleState | undefined) {
     if (state) {
       this.isModularScaleEnabled = true;
@@ -106,26 +119,6 @@ export class ModularScaleEditorComponent implements OnInit {
     this.isModularScaleEnabled = true;
     this.scaleRatio = DEFAULT_SCALE_RATIO;
     this.base = DEFAULT_BASE;
-  }
-
-  updateModularScale() {
-    const groupId = this.editableGroupId;
-
-    if (!this.state.isModularScaleEnabled) {
-      this.contentManager.setGroupState(groupId, {scale: false});
-      return;
-    }
-    const group = this.store.getGroup(this.sectionName, groupId);
-
-    group.tokens.forEach((token, index) => {
-      const value = getScaleValue(index, this.state);
-      this.contentManager.setTokenValue(value, token.id, groupId);
-    })
-
-    this.contentManager.setGroupState(groupId, {scale: {
-      scaleRatio: this.state.scaleRatio,
-      base: this.state.base,
-    }})
   }
 
 }

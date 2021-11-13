@@ -11,13 +11,13 @@
     </nz-radio-group>
 
     <app-google-fonts
-      (save)="saveFont($event)"
       *ngIf="radioValue === 'google-fonts'"
+      (save)="saveFont($event)"
     ></app-google-fonts>
 
     <app-custom-font
-      (save)="saveFont($event)"
       *ngIf="radioValue === 'custom-font'"
+      (save)="saveFont($event)"
     ></app-custom-font>
 
     <app-loaded-fonts

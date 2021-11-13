@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentManagerService } from '@core/services/content-manager.service';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { db } from '@core/indexedDB';
 
 @Component({
@@ -8,7 +8,7 @@ import { db } from '@core/indexedDB';
   styleUrls: ['./spacing-editor.component.less'],
   providers: [
     {provide: 'tables', useValue: db.spacing},
-    ContentManagerService,
+    SectionContentManagerService,
   ]
 })
 export class SpacingEditorComponent implements OnInit {

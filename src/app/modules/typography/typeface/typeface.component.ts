@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentManagerService } from '@core/services/content-manager.service';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { db } from '@core/indexedDB';
-import { StoreService } from '@core/services/store.service';
 import { FontManagerService } from '../typeface-editor/font-manager.service';
+import { DBGroup } from '@core/core.model';
+import { TypefaceTokenModel } from './typeface.model';
 
 @Component({
   selector: 'app-typeface',
@@ -10,18 +11,17 @@ import { FontManagerService } from '../typeface-editor/font-manager.service';
   styleUrls: ['./typeface.component.less'],
   providers: [
     {provide: 'tables', useValue: db.typeface},
-    ContentManagerService
+    SectionContentManagerService
   ]
 })
 export class TypefaceComponent implements OnInit {
   constructor(
-    public contentManager: ContentManagerService,
-    private store: StoreService,
+    private section: SectionContentManagerService<TypefaceTokenModel, DBGroup>,
     private fontManager: FontManagerService,
   ) {}
 
   ngOnInit() {
-    this.contentManager.configure({
+    this.section.configure({
       contentManagerConfigs: {
         onLoad: () => this.loadFonts(),
         getDefaultTokenValue: () => ({
@@ -34,7 +34,7 @@ export class TypefaceComponent implements OnInit {
   }
 
   private loadFonts() {
-    const groupList = this.store.getGroupList(this.contentManager.sectionName);
+    const groupList = this.section.getGroupList();
     for (let group of groupList) {
       const fonts = group.tokens.map(token => token.value);
       this.fontManager.load(fonts);

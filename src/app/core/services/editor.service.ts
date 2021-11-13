@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { SectionNames, StoreService, Token, TokenGroup } from "@core/services/store.service";
-
-export type EditableContent = {group: TokenGroup, token?: Token};
+import { DBGroup, DBToken, EditableContent, SectionNames } from '@core/core.model';
+import { ThemeManagerService } from './theme-manager.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EditorService {
+export class EditorService<T extends DBToken = any, G extends DBGroup = any> {
   section: SectionNames | '' = '';
 
-  content$: BehaviorSubject<EditableContent | null> = new BehaviorSubject(null);
+  content$: BehaviorSubject<EditableContent<G, T> | null> = new BehaviorSubject(null);
 
-  set content(data: EditableContent) {
+  set content(data: EditableContent<G, T>) {
     this.content$.next(data);
   }
 
@@ -24,8 +23,8 @@ export class EditorService {
     return Boolean(this.section)
   }
 
-  constructor(private store: StoreService) {
-    this.store.themeManager.selected$.subscribe(() => this.disable())
+  constructor(private themeManager: ThemeManagerService) {
+    this.themeManager.selected$.subscribe(() => this.disable())
   }
 
   isGroupEditable(groupId: number, sectionName: SectionNames) {
@@ -41,7 +40,7 @@ export class EditorService {
     return false;
   }
 
-  enable(sectionName: SectionNames, content: EditableContent) {
+  enable(sectionName: SectionNames, content: EditableContent<G, T>) {
     this.section = sectionName;
     this.content = content;
   }

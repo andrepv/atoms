@@ -12,7 +12,7 @@ export class TypographyComponent implements OnInit {
   constructor(public store: StoreService) {}
 
   ngOnInit() {
-    this.store.setSection(this.PAGE_NAME, {
+    this.store.setPageStructure(this.PAGE_NAME, {
       "Type Face": [],
       "Type Scale": [],
       "Line Height": [],

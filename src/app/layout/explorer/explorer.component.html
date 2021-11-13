@@ -4,11 +4,11 @@
 
     <div class="anchor-list" *ngIf="!editor.isActive">
       <header>
-        <h5 nz-typography>{{ store.section.name }}</h5>
+        <h5 nz-typography>{{ store.page.name }}</h5>
       </header>
 
       <div class="main">
-        <div *ngFor="let groups of store.section.content">
+        <div *ngFor="let groups of store.page.content">
           <h5 nz-typography>{{ groups.name }}</h5>
           <nz-anchor [nzAffix]="false">
             <nz-link

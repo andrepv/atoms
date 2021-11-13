@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 import { EditorService } from '@core/services/editor.service';
-import { ContentManagerService } from '@core/services/content-manager.service';
-import { ColorVariantField, Variant } from '../color-palette/color-palette.model';
-import { db, TokenModel } from '@core/indexedDB';
-import { StoreService } from '@core/services/store.service';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
+import { ColorPaletteTokenModel, ColorVariantField, Variant } from '../color-palette/color-palette.model';
+import { db } from '@core/indexedDB';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
 import { AddVariantEvent, RemoveVariantEvent, VariantValueChangeEvent } from './color-variants/color-variants.component';
+import { DBGroup, DBToken } from '@core/core.model';
 
 @Component({
   selector: 'app-color-palette-editor',
@@ -15,7 +15,7 @@ import { AddVariantEvent, RemoveVariantEvent, VariantValueChangeEvent } from './
   styleUrls: ['./color-palette-editor.component.less'],
   providers: [
     {provide: 'tables', useValue: db.colorPalette},
-    ContentManagerService,
+    SectionContentManagerService,
   ]
 })
 export class ColorPaletteEditorComponent implements OnInit {
@@ -30,17 +30,16 @@ export class ColorPaletteEditorComponent implements OnInit {
     return this.editor.content.group;
   }
 
-  private colorChange$ = new BehaviorSubject('');
-  private destroy$ = new Subject();
+  palettes: {themeName: string, list: DBToken[]}[] = [];
 
   readonly DEBOUNCE_TIME = 500;
 
-  palettes: {themeName: string, list: TokenModel[]}[] = [];
+  private colorChange$ = new BehaviorSubject('');
+  private destroy$ = new Subject();
 
   constructor(
-    public cm: ContentManagerService,
-    public editor: EditorService,
-    private store: StoreService,
+    public editor: EditorService<ColorPaletteTokenModel, DBGroup>,
+    private section: SectionContentManagerService<ColorPaletteTokenModel, DBGroup>,
     private themeManager: ThemeManagerService
   ) {
     this.colorChange$.pipe(
@@ -74,21 +73,18 @@ export class ColorPaletteEditorComponent implements OnInit {
   saveColor(color: string) {
     if (color) {
       this.token.value.color = color;
-      this.cm.setTokenValue(this.token.value, this.token.id, this.group.id);
+      this.section.setTokenValue(this.token.value, this.token.id, this.group.id);
     }
   }
 
   getVariants(variant: ColorVariantField) {
     const ids = this.token.value[variant];
     if (!ids) return [];
-    return this.store.getGroup(
-      this.cm.sectionName,
-      this.group.id
-    ).tokens.filter(({id}) => ids.includes(id))
+    return this.section.getGroup(this.group.id).tokens.filter(({id}) => ids.includes(id))
   }
 
   getPresetColors() {
-    return this.store.getSectionTokens(this.cm.sectionName)
+    return this.section.getTokenList()
     .filter(({id}) => id !== this.token.id)
     .map(token => token.value.color)
   }
@@ -99,7 +95,7 @@ export class ColorPaletteEditorComponent implements OnInit {
   }
 
   async getAllPalettes() {
-    const tokens: TokenModel[] = await this.cm.tokenTable.toArray();
+    const tokens = await this.section.tokenTable.toArray();
     const themes = this.themeManager.list;
     const palettes = [];
 
@@ -124,16 +120,16 @@ export class ColorPaletteEditorComponent implements OnInit {
     const fieldName = `${type}s`;
     const tokenValue = this.token.value;
 
-    this.cm.deleteToken(id, this.group.id);
+    this.section.deleteToken(id, this.group.id);
     tokenValue[fieldName] = tokenValue[fieldName].filter((variantId: number) => id !== variantId);
-    this.cm.setTokenValue(tokenValue, this.token.id, this.group.id);
+    this.section.setTokenValue(tokenValue, this.token.id, this.group.id);
   }
 
   updateVariant({id, color}: VariantValueChangeEvent) {
-    const token = this.store.getSectionToken(this.cm.sectionName, id);
+    const token = this.section.getToken(id);
     if (token) {
       token.value.color = color;
-      this.cm.setTokenValue(token.value, id, this.group.id)
+      this.section.setTokenValue(token.value, id, this.group.id)
     }
   }
 
@@ -145,9 +141,9 @@ export class ColorPaletteEditorComponent implements OnInit {
       type 
     }
 
-    const token = this.cm.createToken(this.group.id, tokenValue);
-    await this.cm.addToken(token, this.group.id);
-    return token;
+    const token = this.section.createToken(this.group.id, tokenValue);
+    const {id} = await this.section.addToken(token, this.group.id);
+    return {id, ...token};
   }
 
   private addVariantToPrimaryColor(tokenId: number, type: Variant) {
@@ -156,6 +152,6 @@ export class ColorPaletteEditorComponent implements OnInit {
     if (!tokenValue[fieldName]) tokenValue[fieldName] = [];
     tokenValue[fieldName].push(tokenId);
 
-    return this.cm.setTokenValue(tokenValue, this.token.id, this.group.id);
+    return this.section.setTokenValue(tokenValue, this.token.id, this.group.id);
   }
 }

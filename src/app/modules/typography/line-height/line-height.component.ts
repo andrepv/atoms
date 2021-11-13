@@ -1,28 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentManagerService } from '@core/services/content-manager.service';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { db } from '@core/indexedDB';
 import { TextStylesService } from '../text-styles/text-styles.service';
+import { LineHeightTokenModel, LineHeightGroupModel } from './line-height.model';
 
 @Component({
   selector: 'app-line-height',
   templateUrl: './line-height.component.html',
   providers: [
     {provide: 'tables', useValue: db.lineHeight},
-    ContentManagerService,
+    SectionContentManagerService,
   ]
 })
 export class LineHeightComponent implements OnInit {
-  get sectionName() {
-    return this.contentManager.sectionName;
-  }
-
   constructor(
-    public contentManager: ContentManagerService,
-    public textPreview: TextStylesService,
+    private section: SectionContentManagerService<LineHeightTokenModel,
+    LineHeightGroupModel>,
+    private textPreview: TextStylesService,
   ) {}
 
   ngOnInit() {
-    this.contentManager.configure({
+    this.section.configure({
       contentManagerConfigs: {
         getDefaultTokenValue: () => 1,
         getDefaultGroupState: () => ({textPreviewId: 0})
@@ -34,4 +32,11 @@ export class LineHeightComponent implements OnInit {
     })
   }
 
+  getTextStyles(groupId: number) {
+    return this.textPreview.getGroupTextStyles(groupId, this.section.sectionName)
+  }
+
+  setTokenValue(value: LineHeightTokenModel['value'], tokenId: number, groupId: number) {
+    this.section.setTokenValue(value, tokenId, groupId)
+  }
 }

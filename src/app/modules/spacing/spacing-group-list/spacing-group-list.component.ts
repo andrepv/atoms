@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DEFAULT_BASE } from '@shared/components/modular-scale-editor/modular-scale-editor.component';
-import { ContentManagerService } from '@core/services/content-manager.service';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { db } from '@core/indexedDB';
-import { StoreService } from '@core/services/store.service';
 import { getScaleValue } from '@utils';
+import { SpacingGroupModel, SpacingTokenModel } from '@spacing/spacing.model';
 
 @Component({
   selector: 'app-spacing-group-list',
@@ -11,7 +11,7 @@ import { getScaleValue } from '@utils';
   styleUrls: ['./spacing-group-list.component.less'],
   providers: [
     {provide: 'tables', useValue: db.spacing},
-    ContentManagerService,
+    SectionContentManagerService,
   ]
 })
 export class SpacingGroupListComponent implements OnInit {
@@ -19,16 +19,13 @@ export class SpacingGroupListComponent implements OnInit {
   readonly MAX_VALUE = 150;
 
   get sectionName() {
-    return this.contentManager.sectionName;
+    return this.section.sectionName;
   }
 
-  constructor(
-    public contentManager: ContentManagerService,
-    private store: StoreService,
-  ) { }
+  constructor(public section: SectionContentManagerService<SpacingTokenModel, SpacingGroupModel>) {}
 
   ngOnInit() {
-    this.contentManager.configure({
+    this.section.configure({
       contentManagerConfigs: {
         getDefaultTokenValue: groupId => this.getDefaultTokenValue(groupId),
         getDefaultGroupState: () => ({scale: false})
@@ -41,8 +38,8 @@ export class SpacingGroupListComponent implements OnInit {
   }
 
   private getDefaultTokenValue(groupId: number) {
-    const group = this.store.getGroup(this.sectionName, groupId);
-    if (group.state.scale) {  
+    const group = this.section.getGroup(groupId);
+    if (group.state.scale) {
       return getScaleValue(group.tokens.length, group.state.scale);
     }
     return DEFAULT_BASE;

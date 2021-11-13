@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentManagerService } from '@core/services/content-manager.service';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { db } from '@core/indexedDB';
-import { StoreService } from '@core/services/store.service';
 import { Subscription } from 'rxjs';
 import { EditorService } from '@core/services/editor.service';
-import { FontType, TypefaceGroupTable, TypefaceTokenTable, TypefaceTokenValue } from '../typeface/typeface.model';
+import { FontType, TypefaceTokenModel, TypefaceTokenValue } from '../typeface/typeface.model';
+import { DBGroup } from '@core/core.model';
 
 @Component({
   selector: 'app-typeface-editor',
@@ -12,7 +12,7 @@ import { FontType, TypefaceGroupTable, TypefaceTokenTable, TypefaceTokenValue } 
   styleUrls: ['./typeface-editor.component.less'],
   providers: [
     {provide: 'tables', useValue: db.typeface},
-    ContentManagerService
+    SectionContentManagerService
   ]
 })
 export class TypefaceEditorComponent implements OnInit {
@@ -26,9 +26,8 @@ export class TypefaceEditorComponent implements OnInit {
   }
 
   constructor(
-    public contentManager: ContentManagerService<TypefaceTokenTable, TypefaceGroupTable>,
-    public store: StoreService,
-    public editor: EditorService,
+    public section: SectionContentManagerService<TypefaceTokenModel, DBGroup>,
+    public editor: EditorService<TypefaceTokenModel, DBGroup>,
   ) {}
 
   ngOnInit() {
@@ -46,14 +45,14 @@ export class TypefaceEditorComponent implements OnInit {
       return;
     }
     try {
-      await this.contentManager.renameToken(this.tokenName, token.id, group.id);
+      await this.section.renameToken(this.tokenName, token.id, group.id);
     } catch {
       this.tokenName = token.name;
     }
   }
 
   saveFont(font: TypefaceTokenValue) {
-    this.contentManager.setTokenValue(
+    this.section.setTokenValue(
       font,
       this.content.token.id,
       this.content.group.id

@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EditorService } from '@core/services/editor.service';
-import { ContentManagerService } from '@core/services/content-manager.service';
-import { StoreService, TokenGroup } from '@core/services/store.service';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
+import { StoreService } from '@core/services/store.service';
 import { TextEditableComponent } from '../text-editable/text-editable.component';
+import { StoreGroup } from '@core/core.model';
 
 @Component({
   selector: 'app-group-header',
@@ -10,27 +11,27 @@ import { TextEditableComponent } from '../text-editable/text-editable.component'
   styleUrls: ['./group-header.component.less']
 })
 export class GroupHeaderComponent implements OnInit {
-  @Input() group: TokenGroup;
+  @Input() group: StoreGroup;
   isGroupEditable: boolean;
 
   constructor(
     private editor: EditorService,
-    private contentManager: ContentManagerService,
+    private section: SectionContentManagerService,
     private store: StoreService
   ) {
-    this.isGroupEditable = this.contentManager.sectionViewConfigs.isGroupEditable;
+    this.isGroupEditable = this.section.sectionViewConfigs.isGroupEditable;
   }
 
   ngOnInit() {}
 
   openEditor() {
-    this.editor.enable(this.contentManager.sectionName, {group: this.group})
+    this.editor.enable(this.section.sectionName, {group: this.group})
   }
 
   async renameGroup(value: string, editableText: TextEditableComponent) {
     editableText.isLoading = true;
     try {
-      await this.contentManager.renameGroup(value, this.group.id);
+      await this.section.renameGroup(value, this.group.id);
     } finally {
       editableText.isLoading = false;
       editableText.makeUneditable();
@@ -38,15 +39,15 @@ export class GroupHeaderComponent implements OnInit {
   }
 
   deleteGroup() {
-    this.contentManager.deleteGroup(this.group.id)
+    this.section.deleteGroup(this.group.id)
   }
 
   pastToken() {
-    this.contentManager.clipboard.pastToken(this.group.id)
+    this.section.clipboard.pastToken(this.group.id)
   }
 
   copyGroup() {
-    this.contentManager.clipboard.copy(this.group)
+    this.section.clipboard.copy(this.group)
   }
 
   canUseClipboard() {

@@ -1,11 +1,11 @@
 <app-group-list-header></app-group-list-header>
 
-<div *ngIf="!contentManager.isLoading">
+<div *ngIf="!cm.isLoading">
   <div *ngFor="let group of groupList">
     <ng-container *ngTemplateOutlet="groupTemplate; context: {$implicit: group}"></ng-container>
   </div>
 </div>
 
-<div *ngIf="contentManager.isLoading">Loading</div>
+<div *ngIf="cm.isLoading">Loading</div>
 
 

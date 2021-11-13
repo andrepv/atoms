@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ContentManagerService } from './content-manager.service';
+import { SectionContentManagerService } from './section-content-manager.service';
 
 describe('ContentManagerService', () => {
-  let service: ContentManagerService;
+  let service: SectionContentManagerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ContentManagerService);
+    service = TestBed.inject(SectionContentManagerService);
   });
 
   it('should be created', () => {

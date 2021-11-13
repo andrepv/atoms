@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentManagerService } from '@core/services/content-manager.service';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { db } from '@core/indexedDB';
+import { DBGroup } from '@core/core.model';
+import { TextStylesTokenModel } from './text-styles.model';
 
 @Component({
   selector: 'app-text-styles',
@@ -8,14 +10,14 @@ import { db } from '@core/indexedDB';
   styleUrls: ['./text-styles.component.less'],
   providers: [
     {provide: 'tables', useValue: db.textStyles},
-    ContentManagerService
+    SectionContentManagerService
   ]
 })
 export class TextStylesComponent implements OnInit {
-  constructor(private contentManager: ContentManagerService) {}
+  constructor(private section: SectionContentManagerService<TextStylesTokenModel, DBGroup>) {}
 
   ngOnInit() {
-    this.contentManager.configure({
+    this.section.configure({
       contentManagerConfigs: {
         getDefaultTokenValue: () => ({}),
       }

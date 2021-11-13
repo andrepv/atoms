@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { ContentManagerService } from '@core/services/content-manager.service';
-import { TokenGroup } from '@core/services/store.service';
+import { StoreGroup } from '@core/core.model';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 
 @Component({
   selector: 'app-group',
@@ -8,20 +8,20 @@ import { TokenGroup } from '@core/services/store.service';
   styleUrls: ['./group.component.less']
 })
 export class GroupComponent implements OnInit {
-  @Input() group: TokenGroup; 
+  @Input() group: StoreGroup; 
   @Input() tokenPreviewTemplate: TemplateRef<any>;
   @Input() tokenTemplate: TemplateRef<any> | false = false;
 
   isEditable: boolean;
 
-  constructor(private contentManager: ContentManagerService,) {
-    this.isEditable = contentManager.sectionViewConfigs.isGroupEditable;
+  constructor(private section: SectionContentManagerService,) {
+    this.isEditable = section.sectionViewConfigs.isGroupEditable;
   }
 
   ngOnInit() {}
 
   addToken() {
-    const token = this.contentManager.createToken(this.group.id);
-    this.contentManager.addToken(token, this.group.id);
+    const token = this.section.createToken(this.group.id);
+    this.section.addToken(token, this.group.id);
   }
 }

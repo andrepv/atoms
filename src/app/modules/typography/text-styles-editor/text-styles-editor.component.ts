@@ -3,8 +3,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { EditorService } from '@core/services/editor.service';
 import { TextStylesService } from '../text-styles/text-styles.service';
-import { ContentManagerService } from '@core/services/content-manager.service';
+import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { db } from '@core/indexedDB';
+import { DBGroup } from '@core/core.model';
+import { TextStylesTokenModel, TextStylesTokenValue } from '@typography/text-styles/text-styles.model';
 
 @Component({
   selector: 'app-text-styles-editor',
@@ -12,11 +14,10 @@ import { db } from '@core/indexedDB';
   styleUrls: ['./text-styles-editor.component.less'],
   providers: [
     {provide: 'tables', useValue: db.textStyles},
-    ContentManagerService
+    SectionContentManagerService
   ]
 })
 export class TextStylesEditorComponent implements OnInit {
-
   get editableToken() {
     return this.editor.content.token;
   }
@@ -24,9 +25,9 @@ export class TextStylesEditorComponent implements OnInit {
   private destroy$ = new Subject();
 
   constructor(
-    private cm: ContentManagerService,
+    public editor: EditorService<TextStylesTokenModel, DBGroup>,
+    private section: SectionContentManagerService<TextStylesTokenModel, DBGroup>,
     private service: TextStylesService,
-    public editor: EditorService,
   ) {}
 
   text = this.getTextValue();
@@ -47,17 +48,7 @@ export class TextStylesEditorComponent implements OnInit {
     return !styles ? null : styles[styleProp];
   }
 
-  private setTokenValue(obj: {[key: string]: any}) {
-    const {group} = this.editor.content;
-    const value = {...this.editableToken.value}
-
-    for (let key in obj) {
-      value[key] = obj[key];
-    }
-
-    this.cm.setTokenValue(value, this.editableToken.id, group.id);
-  }
-
+  
   onChange(tokenId: number, styleProp: string) {
     this.setTokenValue({styles: {
       ...this.editableToken.value.styles,
@@ -73,6 +64,17 @@ export class TextStylesEditorComponent implements OnInit {
     } else {
       this.text = this.getTextValue();
     }
+  }
+
+  private setTokenValue(obj: TextStylesTokenValue) {
+    const {group} = this.editor.content;
+    const value = {...this.editableToken.value}
+  
+    for (let key in obj) {
+      value[key] = obj[key];
+    }
+  
+    this.section.setTokenValue(value, this.editableToken.id, group.id);
   }
 
   private getTextValue() {
