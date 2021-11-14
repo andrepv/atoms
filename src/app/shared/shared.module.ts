@@ -17,7 +17,6 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
-import { TokensSectionListComponent } from './components/tokens-section-list/tokens-section-list.component';
 import { GroupListHeaderComponent } from './components/group-list-header/group-list-header.component';
 import { GroupHeaderComponent } from './components/group-header/group-header.component';
 import { GroupListComponent } from './components/group-list/group-list.component';
@@ -38,7 +37,6 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     GroupListHeaderComponent,
     TokenComponent,
     TokenEditableComponent,
-    TokensSectionListComponent,
     TokensSectionSelectComponent,
     TextEditableComponent,
     TextPreviewComponent,
@@ -71,7 +69,6 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     GroupListComponent,
     TokenComponent,
     TokenEditableComponent,
-    TokensSectionListComponent,
     TokensSectionSelectComponent,
     TextEditableComponent,
     TextPreviewComponent,

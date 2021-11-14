@@ -11,7 +11,7 @@
       (colorPickerChange)="onColorChange($event)"
     />
   </div>
-  
+
   <div>
     <app-color-variants
       type="tint"
@@ -36,16 +36,14 @@
     ></app-color-variants>
   </div>
 
-  <app-tokens-section-list [themeTokensTemplate]="themePalettesTemplateRef">
-    <ng-template #themePalettesTemplateRef let-palettes let-themeName="themeName">
-      <p>{{ themeName }}</p>
-      <div class="palette">
-        <div
-          *ngFor="let palette of palettes"
-          [style.background]="palette.value.color"
-          (click)="setColor(palette.value.color)"
-        ></div>
-      </div>
-    </ng-template>
-  </app-tokens-section-list>
+  <div *ngFor="let theme of colorsByTheme">
+    <p>{{ theme.themeName }}</p>
+    <div class="palette">
+      <div
+        *ngFor="let palette of theme.tokens"
+        [style.background]="palette.value.color"
+        (click)="setColor(palette.value.color)"
+      ></div>
+    </div>
+  </div>
 </div>

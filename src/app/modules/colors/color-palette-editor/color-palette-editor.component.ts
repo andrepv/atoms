@@ -5,9 +5,8 @@ import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { ColorPaletteTokenModel, ColorVariantField, Variant } from '../color-palette/color-palette.model';
 import { db } from '@core/indexedDB';
-import { ThemeManagerService } from '@core/services/theme-manager.service';
 import { AddVariantEvent, RemoveVariantEvent, VariantValueChangeEvent } from './color-variants/color-variants.component';
-import { DBGroup, DBToken } from '@core/core.model';
+import { DBGroup, TokensByTheme } from '@core/core.model';
 
 @Component({
   selector: 'app-color-palette-editor',
@@ -30,7 +29,7 @@ export class ColorPaletteEditorComponent implements OnInit {
     return this.editor.content.group;
   }
 
-  palettes: {themeName: string, list: DBToken[]}[] = [];
+  colorsByTheme: TokensByTheme<ColorPaletteTokenModel>
 
   readonly DEBOUNCE_TIME = 500;
 
@@ -40,7 +39,6 @@ export class ColorPaletteEditorComponent implements OnInit {
   constructor(
     public editor: EditorService<ColorPaletteTokenModel, DBGroup>,
     private section: SectionContentManagerService<ColorPaletteTokenModel, DBGroup>,
-    private themeManager: ThemeManagerService
   ) {
     this.colorChange$.pipe(
       takeUntil(this.destroy$),
@@ -57,7 +55,7 @@ export class ColorPaletteEditorComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.palettes = await this.getAllPalettes();
+    this.colorsByTheme = await this.section.getTokensByTheme();
   }
 
   ngOnDestroy() {
@@ -84,7 +82,7 @@ export class ColorPaletteEditorComponent implements OnInit {
   }
 
   getPresetColors() {
-    return this.section.getTokenList()
+    return this.section.getTokens()
     .filter(({id}) => id !== this.token.id)
     .map(token => token.value.color)
   }
@@ -92,23 +90,6 @@ export class ColorPaletteEditorComponent implements OnInit {
   setColor(value: string) {
     this.color = value;
     this.onColorChange(value);
-  }
-
-  async getAllPalettes() {
-    const tokens = await this.section.tokenTable.toArray();
-    const themes = this.themeManager.list;
-    const palettes = [];
-
-    for (let theme of themes) {
-      if (theme.id !== this.themeManager.selected.id) {
-        const palette = tokens.filter(token => token.themeId === theme.id);
-        if (palette.length) {
-          palettes.push({themeName: theme.name, list: palette})
-        }
-      }
-    }
-
-    return palettes;
   }
 
   async addVariant({color, type}: AddVariantEvent) {

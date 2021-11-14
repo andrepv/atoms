@@ -1,5 +1,0 @@
-<div *ngFor="let themeTokens of themesTokens">
-  <ng-container *ngIf="themesTokens.length">
-    <ng-container *ngTemplateOutlet="themeTokensTemplate; context: {$implicit: themeTokens.tokens, themeName: themeTokens.themeName}"></ng-container>
-  </ng-container>
-</div>

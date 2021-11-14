@@ -1,15 +1,10 @@
-<app-tokens-section-list
-  [themeTokensTemplate]="templateRef"
-  (onLoad)="onThemeFontsLoad($event)"
->
-  <ng-template #templateRef let-tokens let-themeName="themeName">
-    <h5>{{ themeName }}</h5>
-    <nz-list>
-      <nz-list-item *ngFor="let token of tokens">
-        <p [style.font-family]="token.value.family" (click)="save.emit(token.value)">
-          {{ token.value.family }}
-        </p>
-      </nz-list-item>
-    </nz-list>
-  </ng-template>
-</app-tokens-section-list>
+<div *ngFor="let theme of fontsByTheme">
+  <h5>{{ theme.themeName }}</h5>
+  <nz-list>
+    <nz-list-item *ngFor="let token of theme.tokens">
+      <p [style.font-family]="token.value.family" (click)="save.emit(token.value)">
+        {{ token.value.family }}
+      </p>
+    </nz-list-item>
+  </nz-list>
+</div>

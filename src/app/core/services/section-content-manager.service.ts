@@ -6,7 +6,8 @@ import { StoreService } from '@core/services/store.service';
 import { EditorService } from '@core/services/editor.service';
 import { Clipboard } from "../clipboard";
 import { getRandomChars } from '@utils';
-import { StoreToken, StoreGroup, DBToken, DBTables, DBGroup } from '@core/core.model';
+import { StoreToken, StoreGroup, DBToken, DBTables, DBGroup, TokensByTheme } from '@core/core.model';
+import { ThemeManagerService } from './theme-manager.service';
 
 interface SectionViewConfigs {
   isTokenEditable?: boolean;
@@ -59,6 +60,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     public store: StoreService,
     private message: NzMessageService,
     private editor: EditorService,
+    private themeManager: ThemeManagerService,
   ) {
     this.subscription = store.themeManager.selected$.subscribe(() => this.load())
   }
@@ -213,8 +215,25 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     );
   }
 
-  getTokenList(): StoreToken<T>[] {
+  getTokens(): StoreToken<T>[] {
     return this.store.getSectionTokens(this.sectionName);
+  }
+
+  async getTokensByTheme(exclude = [this.themeManager.selected.id]) {
+    const tokens = await this.tokenTable.toArray();
+    const themes = await this.themeManager.table.toArray();
+    const data: TokensByTheme<T> = [];
+
+    for (let theme of themes) {
+      if (!exclude.includes(theme.id)) {
+        const themeTokens = tokens.filter(token => token.themeId === theme.id);
+        if (themeTokens.length) {
+          data.push({themeName: theme.name, tokens: themeTokens})
+        }
+      }
+    }
+
+    return data;
   }
 
   getToken(tokenId: number): StoreToken<T> | false {

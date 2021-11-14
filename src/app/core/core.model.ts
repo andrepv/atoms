@@ -61,3 +61,7 @@ export interface ThemeModel {
 
 export type ThemeTable = Dexie.Table<ThemeModel, number>;
 
+export type TokensByTheme<T extends DBToken> = {
+  themeName: string,
+  tokens: T[]
+}[]
