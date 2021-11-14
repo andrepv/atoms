@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ClipboardService } from '@core/services/clipboard.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { StoreService } from '@core/services/store.service';
 
@@ -12,6 +13,7 @@ export class GroupListHeaderComponent implements OnInit {
 
   constructor(
     private section: SectionContentManagerService,
+    private clipboard: ClipboardService,
     private store: StoreService
   ) {}
 
@@ -25,7 +27,7 @@ export class GroupListHeaderComponent implements OnInit {
   }
 
   pastGroup() {
-    this.section.clipboard.pastGroup();
+    this.clipboard.pastGroup();
   }
 
   canUseClipboard() {

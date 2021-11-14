@@ -4,6 +4,7 @@ import { SectionContentManagerService } from '@core/services/section-content-man
 import { db } from '@core/indexedDB';
 import { ColorPaletteTokenModel as Token } from './color-palette.model';
 import { StoreToken, StoreGroup, DBGroup as Group } from '@core/core.model';
+import { ClipboardService } from '@core/services/clipboard.service';
 
 @Component({
   selector: 'app-color-palette',
@@ -11,7 +12,8 @@ import { StoreToken, StoreGroup, DBGroup as Group } from '@core/core.model';
   styleUrls: ['./color-palette.component.less'],
   providers: [
     {provide: 'tables', useValue: db.colorPalette},
-    SectionContentManagerService
+    SectionContentManagerService,
+    ClipboardService,
   ]
 })
 export class ColorPaletteComponent implements OnInit {

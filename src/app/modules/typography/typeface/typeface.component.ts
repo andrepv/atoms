@@ -4,6 +4,7 @@ import { db } from '@core/indexedDB';
 import { FontManagerService } from '../typeface-editor/font-manager.service';
 import { DBGroup } from '@core/core.model';
 import { TypefaceTokenModel } from './typeface.model';
+import { ClipboardService } from '@core/services/clipboard.service';
 
 @Component({
   selector: 'app-typeface',
@@ -11,7 +12,8 @@ import { TypefaceTokenModel } from './typeface.model';
   styleUrls: ['./typeface.component.less'],
   providers: [
     {provide: 'tables', useValue: db.typeface},
-    SectionContentManagerService
+    SectionContentManagerService,
+    ClipboardService,
   ]
 })
 export class TypefaceComponent implements OnInit {

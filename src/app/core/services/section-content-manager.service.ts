@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { db } from '../indexedDB';
 import { StoreService } from '@core/services/store.service';
 import { EditorService } from '@core/services/editor.service';
-import { Clipboard } from "../clipboard";
 import { getRandomChars } from '@utils';
 import { StoreToken, StoreGroup, DBToken, DBTables, DBGroup, TokensByTheme } from '@core/core.model';
 import { ThemeManagerService } from './theme-manager.service';
@@ -25,7 +24,6 @@ interface ConfigureOptions<T extends DBToken, G extends DBGroup> {
 export class SectionContentManagerService<T extends DBToken = any, G extends DBGroup = any> {
   isLoading = false;
   subscription: Subscription;
-  clipboard = new Clipboard(this, this.message);
 
   get groupTable() {
     return this.tables.group;
@@ -188,13 +186,14 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     groupId: number,
     value = this.configs.getDefaultTokenValue(groupId),
     name = `token-${getRandomChars()}`
-  ): Omit<DBToken, 'id'> {
-    return {
+  ): T {
+    const token = {
       name,
       value,
       groupId,
       themeId: this.selectedThemeId,
     };
+    return token as T;
   }
 
   async setTokenValue(value: T['value'], tokenId: number, groupId: number) {
@@ -304,7 +303,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
       name,
       themeId: this.selectedThemeId,
       tokensId,
-    } as DBGroup;
+    } as G;
 
     if (state) {
       group.state = state;

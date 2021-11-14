@@ -1,27 +1,24 @@
 import { NzMessageService } from "ng-zorro-antd/message";
 import { getRandomChars } from "@utils";
-import { SectionContentManagerService } from "./services/section-content-manager.service";
-import { StoreService } from "./services/store.service";
-import { SectionNames, StoreGroup, DBGroup, DBToken } from "@core/core.model";
+import { SectionContentManagerService } from "./section-content-manager.service";
+import { SectionNames, StoreGroup, DBGroup, DBToken, StoreToken } from "@core/core.model";
+import { Injectable } from "@angular/core";
 
 interface CopiedContent<T> {
   section: SectionNames;
   content: T
 }
 
-export class Clipboard {
-  store: StoreService;
-
+@Injectable()
+export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> {
   constructor(
-    private contentManager: SectionContentManagerService,
+    private contentManager: SectionContentManagerService<T, G>,
     private message: NzMessageService,
-  ) {
-    this.store = contentManager.store;
-  }
+  ) {}
 
   async pastToken(groupId: number) {
     try {
-      const data: CopiedContent<DBToken> = await this.getCopiedData();
+      const data: CopiedContent<StoreToken<T>> = await this.getCopiedData();
       if (data.section === this.contentManager.sectionName) {
         let {value, name} = data.content;
         name = `${name}-${getRandomChars(4)}`;
@@ -37,7 +34,7 @@ export class Clipboard {
   async pastGroup() {
     const id = this.message.loading('Action in progress..').messageId;
     try {
-      const data: CopiedContent<StoreGroup> = await this.getCopiedData();
+      const data: CopiedContent<StoreGroup<G, T>> = await this.getCopiedData();
       if (data.section === this.contentManager.sectionName) {
         const {name, tokens, state = false} = data.content;
 
@@ -58,7 +55,7 @@ export class Clipboard {
     }
   }
 
-  async copy(content: CopiedContent<DBToken | DBGroup>) {
+  async copy(content: T | G) {
     try {
       await navigator.clipboard.writeText(
         JSON.stringify({

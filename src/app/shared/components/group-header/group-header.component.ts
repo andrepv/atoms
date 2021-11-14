@@ -4,6 +4,7 @@ import { SectionContentManagerService } from '@core/services/section-content-man
 import { StoreService } from '@core/services/store.service';
 import { TextEditableComponent } from '../text-editable/text-editable.component';
 import { StoreGroup } from '@core/core.model';
+import { ClipboardService } from '@core/services/clipboard.service';
 
 @Component({
   selector: 'app-group-header',
@@ -17,6 +18,7 @@ export class GroupHeaderComponent implements OnInit {
   constructor(
     private editor: EditorService,
     private section: SectionContentManagerService,
+    private clipboard: ClipboardService,
     private store: StoreService
   ) {
     this.isGroupEditable = this.section.sectionViewConfigs.isGroupEditable;
@@ -43,11 +45,11 @@ export class GroupHeaderComponent implements OnInit {
   }
 
   pastToken() {
-    this.section.clipboard.pastToken(this.group.id)
+    this.clipboard.pastToken(this.group.id)
   }
 
   copyGroup() {
-    this.section.clipboard.copy(this.group)
+    this.clipboard.copy(this.group)
   }
 
   canUseClipboard() {

@@ -3,6 +3,7 @@ import { SectionContentManagerService } from '@core/services/section-content-man
 import { db } from '@core/indexedDB';
 import { DBGroup } from '@core/core.model';
 import { TextStylesTokenModel } from './text-styles.model';
+import { ClipboardService } from '@core/services/clipboard.service';
 
 @Component({
   selector: 'app-text-styles',
@@ -10,7 +11,8 @@ import { TextStylesTokenModel } from './text-styles.model';
   styleUrls: ['./text-styles.component.less'],
   providers: [
     {provide: 'tables', useValue: db.textStyles},
-    SectionContentManagerService
+    SectionContentManagerService,
+    ClipboardService,
   ]
 })
 export class TextStylesComponent implements OnInit {

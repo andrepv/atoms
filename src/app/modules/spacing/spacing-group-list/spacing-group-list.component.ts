@@ -4,6 +4,7 @@ import { SectionContentManagerService } from '@core/services/section-content-man
 import { db } from '@core/indexedDB';
 import { getScaleValue } from '@utils';
 import { SpacingGroupModel, SpacingTokenModel } from '@spacing/spacing.model';
+import { ClipboardService } from '@core/services/clipboard.service';
 
 @Component({
   selector: 'app-spacing-group-list',
@@ -12,6 +13,7 @@ import { SpacingGroupModel, SpacingTokenModel } from '@spacing/spacing.model';
   providers: [
     {provide: 'tables', useValue: db.spacing},
     SectionContentManagerService,
+    ClipboardService,
   ]
 })
 export class SpacingGroupListComponent implements OnInit {

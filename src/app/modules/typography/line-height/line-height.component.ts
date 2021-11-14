@@ -3,6 +3,7 @@ import { SectionContentManagerService } from '@core/services/section-content-man
 import { db } from '@core/indexedDB';
 import { TextStylesService } from '../text-styles/text-styles.service';
 import { LineHeightTokenModel, LineHeightGroupModel } from './line-height.model';
+import { ClipboardService } from '@core/services/clipboard.service';
 
 @Component({
   selector: 'app-line-height',
@@ -10,6 +11,7 @@ import { LineHeightTokenModel, LineHeightGroupModel } from './line-height.model'
   providers: [
     {provide: 'tables', useValue: db.lineHeight},
     SectionContentManagerService,
+    ClipboardService,
   ]
 })
 export class LineHeightComponent implements OnInit {

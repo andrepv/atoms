@@ -3,6 +3,7 @@ import { SectionContentManagerService } from '@core/services/section-content-man
 import { db } from '@core/indexedDB';
 import { TextStylesService } from '../text-styles/text-styles.service';
 import { LetterSpacingGroupModel, LetterSpacingTokenModel } from './letter-spacing.model';
+import { ClipboardService } from '@core/services/clipboard.service';
 
 @Component({
   selector: 'app-letter-spacing',
@@ -10,6 +11,7 @@ import { LetterSpacingGroupModel, LetterSpacingTokenModel } from './letter-spaci
   providers: [
     {provide: 'tables', useValue: db.letterSpacing},
     SectionContentManagerService,
+    ClipboardService,
   ]
 })
 export class LetterSpacingComponent implements OnInit {

@@ -4,6 +4,7 @@ import { SectionContentManagerService } from '@core/services/section-content-man
 import { StoreService } from '@core/services/store.service';
 import { TextEditableComponent } from '../text-editable/text-editable.component';
 import { StoreToken, StoreGroup } from '@core/core.model';
+import { ClipboardService } from '@core/services/clipboard.service';
 
 @Component({
   selector: 'app-token',
@@ -18,6 +19,7 @@ export class TokenComponent implements OnInit {
 
   constructor(
     private section: SectionContentManagerService,
+    private clipboard: ClipboardService,
     private editor: EditorService,
     private store: StoreService
   ) {
@@ -48,7 +50,7 @@ export class TokenComponent implements OnInit {
   }
   
   copy() {
-    this.section.clipboard.copy(this.token)
+    this.clipboard.copy(this.token)
   }
   
   canCopy() {

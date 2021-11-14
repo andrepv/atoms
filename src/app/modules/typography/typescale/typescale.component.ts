@@ -5,6 +5,7 @@ import { db } from '@core/indexedDB';
 import { getScaleValue } from '@utils';
 import { TextStylesService } from '../text-styles/text-styles.service';
 import { TypescaleTokenModel, TypescaleGroupModel } from './typescale.model';
+import { ClipboardService } from '@core/services/clipboard.service';
 
 @Component({
   selector: 'app-typescale',
@@ -12,6 +13,7 @@ import { TypescaleTokenModel, TypescaleGroupModel } from './typescale.model';
   providers: [
     {provide: 'tables', useValue: db.typescale},
     SectionContentManagerService,
+    ClipboardService,
   ]
 })
 export class TypescaleComponent implements OnInit {
