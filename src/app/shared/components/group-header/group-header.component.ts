@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { StoreService } from '@core/services/store.service';
 import { TextEditableComponent } from '../text-editable/text-editable.component';
 import { StoreGroup } from '@core/core.model';
 import { ClipboardService } from '@core/services/clipboard.service';
@@ -19,7 +18,6 @@ export class GroupHeaderComponent implements OnInit {
     private editor: EditorService,
     private section: SectionContentManagerService,
     private clipboard: ClipboardService,
-    private store: StoreService
   ) {
     this.isGroupEditable = this.section.sectionViewConfigs.isGroupEditable;
   }
@@ -53,6 +51,6 @@ export class GroupHeaderComponent implements OnInit {
   }
 
   canUseClipboard() {
-    return this.store.isClipboardActionsAvailable
+    return this.clipboard.isAvailable;
   }
 }

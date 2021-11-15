@@ -23,7 +23,7 @@ type StoreGroupList = {
 @Injectable({ providedIn: 'root' })
 export class StoreService {
   isLoading = false;
-  isClipboardActionsAvailable = true;
+  canUseClipboard = true;
 
   _groups: {[sectionName: string]: StoreGroup[]} = {}
 
@@ -131,7 +131,7 @@ export class StoreService {
 
   private setClipboardActionsStatus(permissionStatus: PermissionState) {
     if (permissionStatus === 'denied') {
-      this.isClipboardActionsAvailable = false;
+      this.canUseClipboard = false;
     }
   }
 

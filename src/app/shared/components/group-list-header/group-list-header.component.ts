@@ -31,6 +31,6 @@ export class GroupListHeaderComponent implements OnInit {
   }
 
   canUseClipboard() {
-    return this.store.isClipboardActionsAvailable
+    return this.store.canUseClipboard
   }
 }

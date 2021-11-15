@@ -3,6 +3,7 @@ import { getRandomChars } from "@utils";
 import { SectionContentManagerService } from "./section-content-manager.service";
 import { SectionNames, StoreGroup, DBGroup, DBToken, StoreToken } from "@core/core.model";
 import { Injectable } from "@angular/core";
+import { StoreService } from "./store.service";
 
 interface CopiedContent<T> {
   section: SectionNames;
@@ -11,9 +12,14 @@ interface CopiedContent<T> {
 
 @Injectable()
 export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> {
+  get isAvailable() {
+    return this.store.canUseClipboard;
+  }
+
   constructor(
     private contentManager: SectionContentManagerService<T, G>,
     private message: NzMessageService,
+    private store: StoreService,
   ) {}
 
   async pastToken(groupId: number) {
