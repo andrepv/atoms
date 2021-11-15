@@ -1,4 +1,4 @@
-import Dexie, { PromiseExtended } from 'dexie';
+import Dexie from 'dexie';
 import { TEXTSTYLES_DB_DATA, TextStylesTables } from '@typography/text-styles/text-styles.model';
 import { TYPEFACE_DB_DATA, TypefaceTables } from '@typography/typeface/typeface.model';
 import { LetterSpacingTables, LETTERSPACING_DB_DATA } from '@typography/letter-spacing/letter-spacing.model';

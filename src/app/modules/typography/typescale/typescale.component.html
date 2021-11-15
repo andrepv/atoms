@@ -8,7 +8,7 @@
           [maxValue]="MAX_FONT_SIZE"
           [value]="token.value"
           [previewTemplate]="tokenPreviewRef"
-          (onAfterChange)="cm.setTokenValue($event, token.id, group.id)"
+          (onAfterChange)="section.setTokenValue($event, token.id, group.id)"
         >
           <ng-template #tokenPreviewRef let-value>
             <app-text-preview

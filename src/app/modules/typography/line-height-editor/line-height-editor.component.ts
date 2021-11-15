@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { db } from '@core/indexedDB';
-import { LineHeightTokenModel, LineHeightGroupModel } from '@typography/line-height/line-height.model';
+import { LineHeightTokenModel, LineHeightGroupModel, LINEHEIGHT_DB_DATA } from '@typography/line-height/line-height.model';
+import { provideEditorDeps } from '@utils/provide-editor-deps';
 
 @Component({
   selector: 'app-line-height-editor',
   templateUrl: './line-height-editor.component.html',
-  providers: [
-    {provide: 'tables', useValue: db.lineHeight},
-    SectionContentManagerService,
-  ]
+  providers: [...provideEditorDeps(LINEHEIGHT_DB_DATA.tableGroupName)]
 })
 export class LineHeightEditorComponent implements OnInit {
   get textPreviewId() {

@@ -2,16 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { db } from '@core/indexedDB';
-import { TypescaleTokenModel, TypescaleGroupModel } from '@typography/typescale/typescale.model';
+import { TypescaleTokenModel, TypescaleGroupModel, TYPESCALE_DB_DATA } from '@typography/typescale/typescale.model';
+import { provideEditorDeps } from '@utils/provide-editor-deps';
 
 @Component({
   selector: 'app-typescale-editor',
   templateUrl: './typescale-editor.component.html',
   styleUrls: ['./typescale-editor.component.less'],
-  providers: [
-    {provide: 'tables', useValue: db.typescale},
-    SectionContentManagerService,
-  ]
+  providers: [...provideEditorDeps(TYPESCALE_DB_DATA.tableGroupName)]
 })
 export class TypescaleEditorComponent implements OnInit {
   get textPreviewId() {

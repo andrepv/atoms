@@ -1,20 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import tinycolor from "tinycolor2";
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { db } from '@core/indexedDB';
-import { ColorPaletteTokenModel as Token } from './color-palette.model';
+import { ColorPaletteTokenModel as Token, COLORPALETTE_DB_DATA } from './color-palette.model';
 import { StoreToken, StoreGroup, DBGroup as Group } from '@core/core.model';
-import { ClipboardService } from '@core/services/clipboard.service';
+import { provideSectionDeps } from '@utils/provide-section-deps';
 
 @Component({
   selector: 'app-color-palette',
   templateUrl: './color-palette.component.html',
   styleUrls: ['./color-palette.component.less'],
-  providers: [
-    {provide: 'tables', useValue: db.colorPalette},
-    SectionContentManagerService,
-    ClipboardService,
-  ]
+  providers: [...provideSectionDeps(COLORPALETTE_DB_DATA.tableGroupName)]
 })
 export class ColorPaletteComponent implements OnInit {
   constructor(private section: SectionContentManagerService<Token, Group>) {}

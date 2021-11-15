@@ -3,19 +3,16 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { ColorPaletteTokenModel, ColorVariantField, Variant } from '../color-palette/color-palette.model';
-import { db } from '@core/indexedDB';
+import { ColorPaletteTokenModel, COLORPALETTE_DB_DATA, ColorVariantField, Variant } from '../color-palette/color-palette.model';
 import { AddVariantEvent, RemoveVariantEvent, VariantValueChangeEvent } from './color-variants/color-variants.component';
 import { DBGroup, TokensByTheme } from '@core/core.model';
+import { provideEditorDeps } from '@utils/provide-editor-deps';
 
 @Component({
   selector: 'app-color-palette-editor',
   templateUrl: './color-palette-editor.component.html',
   styleUrls: ['./color-palette-editor.component.less'],
-  providers: [
-    {provide: 'tables', useValue: db.colorPalette},
-    SectionContentManagerService,
-  ]
+  providers: [...provideEditorDeps(COLORPALETTE_DB_DATA.tableGroupName)]
 })
 export class ColorPaletteEditorComponent implements OnInit {
   color = this.token.value.color;

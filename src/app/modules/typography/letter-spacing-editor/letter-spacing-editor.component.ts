@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { db } from '@core/indexedDB';
-import { LetterSpacingGroupModel, LetterSpacingTokenModel } from '@typography/letter-spacing/letter-spacing.model';
+import { LetterSpacingGroupModel, LetterSpacingTokenModel, LETTERSPACING_DB_DATA } from '@typography/letter-spacing/letter-spacing.model';
+import { provideEditorDeps } from '@utils/provide-editor-deps';
 
 @Component({
   selector: 'app-letter-spacing-editor',
   templateUrl: './letter-spacing-editor.component.html',
-  providers: [
-    {provide: 'tables', useValue: db.letterSpacing},
-    SectionContentManagerService,
-  ]
+  providers: [...provideEditorDeps(LETTERSPACING_DB_DATA.tableGroupName)]
 })
 export class LetterSpacingEditorComponent implements OnInit {
   get textPreviewId() {

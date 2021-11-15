@@ -1,20 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { db } from '@core/indexedDB';
 import { FontManagerService } from '../typeface-editor/font-manager.service';
 import { DBGroup } from '@core/core.model';
-import { TypefaceTokenModel } from './typeface.model';
-import { ClipboardService } from '@core/services/clipboard.service';
+import { TypefaceTokenModel, TYPEFACE_DB_DATA } from './typeface.model';
+import { provideSectionDeps } from '@utils/provide-section-deps';
 
 @Component({
   selector: 'app-typeface',
   templateUrl: './typeface.component.html',
   styleUrls: ['./typeface.component.less'],
-  providers: [
-    {provide: 'tables', useValue: db.typeface},
-    SectionContentManagerService,
-    ClipboardService,
-  ]
+  providers: [...provideSectionDeps(TYPEFACE_DB_DATA.tableGroupName)]
 })
 export class TypefaceComponent implements OnInit {
   constructor(

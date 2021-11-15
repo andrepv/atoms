@@ -1,18 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { db } from '@core/indexedDB';
 import { TextStylesService } from '../text-styles/text-styles.service';
-import { LetterSpacingGroupModel, LetterSpacingTokenModel } from './letter-spacing.model';
-import { ClipboardService } from '@core/services/clipboard.service';
+import { LetterSpacingGroupModel, LetterSpacingTokenModel, LETTERSPACING_DB_DATA } from './letter-spacing.model';
+import { provideSectionDeps } from '@utils/provide-section-deps';
 
 @Component({
   selector: 'app-letter-spacing',
   templateUrl: './letter-spacing.component.html',
-  providers: [
-    {provide: 'tables', useValue: db.letterSpacing},
-    SectionContentManagerService,
-    ClipboardService,
-  ]
+  providers: [...provideSectionDeps(LETTERSPACING_DB_DATA.tableGroupName)]
 })
 export class LetterSpacingComponent implements OnInit {
   constructor(

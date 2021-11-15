@@ -1,20 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { DEFAULT_BASE } from '@shared/components/modular-scale-editor/modular-scale-editor.component';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { db } from '@core/indexedDB';
 import { getScaleValue } from '@utils';
-import { SpacingGroupModel, SpacingTokenModel } from '@spacing/spacing.model';
-import { ClipboardService } from '@core/services/clipboard.service';
+import { SpacingGroupModel, SpacingTokenModel, SPACING_DB_DATA } from '@spacing/spacing.model';
+import { provideSectionDeps } from '@utils/provide-section-deps';
 
 @Component({
   selector: 'app-spacing-group-list',
   templateUrl: './spacing-group-list.component.html',
   styleUrls: ['./spacing-group-list.component.less'],
-  providers: [
-    {provide: 'tables', useValue: db.spacing},
-    SectionContentManagerService,
-    ClipboardService,
-  ]
+  providers: [...provideSectionDeps(SPACING_DB_DATA.tableGroupName)]
 })
 export class SpacingGroupListComponent implements OnInit {
   readonly MIN_VALUE = 1;

@@ -1,18 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { db } from '@core/indexedDB';
 import { TextStylesService } from '../text-styles/text-styles.service';
-import { LineHeightTokenModel, LineHeightGroupModel } from './line-height.model';
-import { ClipboardService } from '@core/services/clipboard.service';
+import { LineHeightTokenModel, LineHeightGroupModel, LINEHEIGHT_DB_DATA } from './line-height.model';
+import { provideSectionDeps } from '@utils/provide-section-deps';
 
 @Component({
   selector: 'app-line-height',
   templateUrl: './line-height.component.html',
-  providers: [
-    {provide: 'tables', useValue: db.lineHeight},
-    SectionContentManagerService,
-    ClipboardService,
-  ]
+  providers: [...provideSectionDeps(LINEHEIGHT_DB_DATA.tableGroupName)]
 })
 export class LineHeightComponent implements OnInit {
   constructor(

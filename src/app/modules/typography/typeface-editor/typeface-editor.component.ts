@@ -1,19 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { db } from '@core/indexedDB';
 import { Subscription } from 'rxjs';
 import { EditorService } from '@core/services/editor.service';
-import { FontType, TypefaceTokenModel, TypefaceTokenValue } from '../typeface/typeface.model';
+import { FontType, TypefaceTokenModel, TypefaceTokenValue, TYPEFACE_DB_DATA } from '../typeface/typeface.model';
 import { DBGroup } from '@core/core.model';
+import { provideEditorDeps } from '@utils/provide-editor-deps';
 
 @Component({
   selector: 'app-typeface-editor',
   templateUrl: './typeface-editor.component.html',
   styleUrls: ['./typeface-editor.component.less'],
-  providers: [
-    {provide: 'tables', useValue: db.typeface},
-    SectionContentManagerService
-  ]
+  providers: [...provideEditorDeps(TYPEFACE_DB_DATA.tableGroupName)]
 })
 export class TypefaceEditorComponent implements OnInit {
   tokenName = '';

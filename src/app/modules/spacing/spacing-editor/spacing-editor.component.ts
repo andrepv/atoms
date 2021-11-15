@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { db } from '@core/indexedDB';
+import { SPACING_DB_DATA } from '@spacing/spacing.model';
+import { provideEditorDeps } from '@utils/provide-editor-deps';
 
 @Component({
   selector: 'app-spacing-editor',
   template: `<app-modular-scale-editor></app-modular-scale-editor>`,
   styleUrls: ['./spacing-editor.component.less'],
-  providers: [
-    {provide: 'tables', useValue: db.spacing},
-    SectionContentManagerService,
-  ]
+  providers: [...provideEditorDeps(SPACING_DB_DATA.tableGroupName)]
 })
 export class SpacingEditorComponent implements OnInit {
   constructor() {}

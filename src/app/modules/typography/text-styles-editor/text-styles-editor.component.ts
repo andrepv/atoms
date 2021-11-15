@@ -4,18 +4,15 @@ import { takeUntil } from 'rxjs/operators';
 import { EditorService } from '@core/services/editor.service';
 import { TextStylesService } from '../text-styles/text-styles.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { db } from '@core/indexedDB';
 import { DBGroup } from '@core/core.model';
-import { TextStylesTokenModel, TextStylesTokenValue } from '@typography/text-styles/text-styles.model';
+import { TextStylesTokenModel, TextStylesTokenValue, TEXTSTYLES_DB_DATA } from '@typography/text-styles/text-styles.model';
+import { provideEditorDeps } from '@utils/provide-editor-deps';
 
 @Component({
   selector: 'app-text-styles-editor',
   templateUrl: './text-styles-editor.component.html',
   styleUrls: ['./text-styles-editor.component.less'],
-  providers: [
-    {provide: 'tables', useValue: db.textStyles},
-    SectionContentManagerService
-  ]
+  providers: [...provideEditorDeps(TEXTSTYLES_DB_DATA.tableGroupName)]
 })
 export class TextStylesEditorComponent implements OnInit {
   get editableToken() {

@@ -1,20 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { DEFAULT_BASE } from '@shared/components/modular-scale-editor/modular-scale-editor.component';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { db } from '@core/indexedDB';
 import { getScaleValue } from '@utils';
 import { TextStylesService } from '../text-styles/text-styles.service';
-import { TypescaleTokenModel, TypescaleGroupModel } from './typescale.model';
-import { ClipboardService } from '@core/services/clipboard.service';
+import { TypescaleTokenModel, TypescaleGroupModel, TYPESCALE_DB_DATA } from './typescale.model';
+import { provideSectionDeps } from '@utils/provide-section-deps';
 
 @Component({
   selector: 'app-typescale',
   templateUrl: './typescale.component.html',
-  providers: [
-    {provide: 'tables', useValue: db.typescale},
-    SectionContentManagerService,
-    ClipboardService,
-  ]
+  providers: [...provideSectionDeps(TYPESCALE_DB_DATA.tableGroupName)]
 })
 export class TypescaleComponent implements OnInit {
   readonly MIN_FONT_SIZE = 1;
