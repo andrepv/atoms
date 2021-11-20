@@ -12,9 +12,12 @@ export class ColorsComponent implements OnInit {
   constructor(public store: StoreService) {}
 
   ngOnInit() {
-    this.store.setPageStructure(this.PAGE_NAME, {
-      "Palette": [],
-      "Gradients": [],
+    this.store.setPageStructure({
+      name: this.PAGE_NAME,
+      content: {
+        "Palette": [],
+        "Gradients": [],
+      }
     })
   }
 }

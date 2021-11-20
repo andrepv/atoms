@@ -8,6 +8,10 @@ import { StoreService } from '@core/services/store.service';
   styleUrls: ['./explorer.component.less']
 })
 export class ExplorerComponent implements OnInit {
+  // get pageContent() {
+  //   return Object.entries(this.store.page.content).map(([name, content]) => ({name, content}))
+  // }
+
   constructor(
     public store: StoreService,
     public editor: EditorService

@@ -15,9 +15,10 @@ interface SectionViewConfigs {
 
 interface ConfigureOptions<T extends DBToken, G extends DBGroup> {
   onLoad: () => void;
+  onTokenDelete: (token: StoreToken<T>, group: StoreGroup<G, T>) => void;
+  onTokenValueChange: (value: T['value'], token: StoreToken<T>, group: StoreGroup<G, T>) => void;
   getDefaultTokenValue: (groupId: number) => T['value'];
   getDefaultGroupState: () => G['state'];
-  onTokenDelete: (token: StoreToken<T>, group: StoreGroup<G, T>) => void;
 }
 
 @Injectable()
@@ -44,6 +45,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
   configs: ConfigureOptions<T, G> = {
     onLoad: () => {},
     onTokenDelete: () => {},
+    onTokenValueChange: () => {},
     getDefaultTokenValue: () => "",
     getDefaultGroupState: () => false,
   }
@@ -83,12 +85,13 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     .toArray();
 
     if (!groups.length) {
-      this.store.setGroupList(this.sectionName, [])
+      this.store.setSectionContent(this.sectionName, [])
       this.isLoading = false;
+      this.configs.onLoad();
       return;
     }
 
-    let groupList = [];
+    let groupList: StoreGroup[] = [];
 
     for (let group of groups) {
       const tokens = await this.tokenTable
@@ -110,7 +113,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
       groupList.push(transformedGroup)
     }
 
-    this.store.setGroupList(this.sectionName, groupList)
+    this.store.setSectionContent(this.sectionName, groupList)
 
     this.isLoading = false;
 
@@ -119,9 +122,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
 
   async addToken(token: T, groupId: number) {
     const newToken = await this.saveTokenToDB(token, groupId);
-    this.store.updateGroup(this.sectionName, groupId,
-      group => group.tokens.push(newToken)
-    );
+    this.store.getGroup(this.sectionName, groupId).tokens.push(newToken)
     return newToken;
   }
 
@@ -132,7 +133,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
         const group = this.store.getGroup(this.sectionName, groupId);
         const token = group.tokens.find(({id}) => id === tokenId);
 
-        const tokenIds = this.store.getGroupTokenIds(this.sectionName, groupId);
+        const tokenIds = this.getGroupTokenIds(groupId);
         const nextTokenIds = tokenIds.filter(id => id !== tokenId)
     
         await this.groupTable.update(groupId, {tokensId: nextTokenIds});
@@ -142,14 +143,11 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
         }
     
       }).then(() => {
-        this.store.updateGroup(this.sectionName, groupId,
-          group => {
-            if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
-              this.editor.disable();
-            }
-            return group.tokens = group.tokens.filter(({id}) => id !== tokenId)
-          }
-        );
+        if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
+          this.editor.disable();
+        }
+        const group = this.store.getGroup(this.sectionName, groupId);
+        group.tokens = group.tokens.filter(({id}) => id !== tokenId)
     });
   }
 
@@ -162,24 +160,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
 
     await this.tokenTable.update(tokenId, {name: tokenName});
 
-    this.store.updateGroup(
-      this.sectionName,
-      groupId,
-      group => group.tokens.map(token => {
-        if (token.id === tokenId) {
-          token.name = tokenName;
-          // ???
-          if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
-            const {token, group} = this.editor.content;
-            this.editor.content = {
-              token: {name: tokenName, ...token},
-              group
-            }
-          }
-        }
-        return token;
-      }),
-    );
+    this.store.getGroupToken(this.sectionName, groupId, tokenId).name = tokenName
   }
 
   createToken(
@@ -199,19 +180,17 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
   async setTokenValue(value: T['value'], tokenId: number, groupId: number) {
     await this.tokenTable.update(tokenId, {value});
 
-    this.store.updateGroup(this.sectionName, groupId,
-      group => group.tokens.map(token => {
-        if (token.id === tokenId) {
-          token.value = value;
-        
-          if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
-            const {token, group} = this.editor.content;
-            this.editor.content = {token: {...token, value: value},group }
-          }
-        }
-        return token;
-      }),
-    );
+    const group = this.store.getGroup(this.sectionName, groupId);
+    const token = this.store.getGroupToken(this.sectionName, groupId, tokenId);
+
+    token.value = value;
+    this.configs.onTokenValueChange(value, token, group);
+
+    // ???
+    if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
+      const {token, group} = this.editor.content;
+      this.editor.content = {token: {...token, value: value},group }
+    }
   }
 
   getTokens(): StoreToken<T>[] {
@@ -256,12 +235,16 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
 
   deleteGroup(groupId: number) {
     db.transaction('rw', [this.tokenTable, this.groupTable], async () => {
-      const tokenIds = this.store.getGroupTokenIds(this.sectionName, groupId);
+      const tokenIds = this.getGroupTokenIds(groupId);
+      const group = this.store.getGroup(this.sectionName, groupId);
 
       await this.groupTable.delete(groupId);
 
       for (let tokenId of tokenIds) {
         await this.tokenTable.delete(tokenId);
+
+        const token = group.tokens.find(({id}) => id === tokenId)
+        this.configs.onTokenDelete(token, group);
       }
       this.store.deleteGroup(this.sectionName, groupId);
 
@@ -273,10 +256,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
 
   async renameGroup(groupName: string, groupId: number) {
     await this.groupTable.update(groupId, {name: groupName});
-
-    this.store.updateGroup(this.sectionName, groupId,
-      group => group.name = groupName,
-    );
+    this.store.getGroup(this.sectionName, groupId).name = groupName
   }
 
   async setGroupState(
@@ -288,10 +268,10 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     const nextState = {...prevState, ...stateChunk};
 
     await this.groupTable.update(groupId, {state: nextState});
-    this.store.updateGroup(
-      this.sectionName,
-      groupId, group => group.state = nextState
-    );
+
+    group.state = nextState;
+
+    this.store.updateGroup(group, this.sectionName);
   }
 
   createGroup(
@@ -324,7 +304,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
   {
     return db.transaction('rw', [this.tokenTable, this.groupTable], async () => {
       const tokenId = await this.tokenTable.add(token);
-      const tokenIds = this.store.getGroupTokenIds(this.sectionName, groupId);
+      const tokenIds = this.getGroupTokenIds(groupId);
       const nextTokenIds = [...tokenIds, tokenId]
       await this.groupTable.update(groupId, {tokensId: nextTokenIds});
       return {id: tokenId, ...token};
@@ -339,5 +319,10 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
       }
     }
     return true;
+  }
+
+  private getGroupTokenIds(groupId: number) {
+    const {tokens} = this.store.getGroup(this.sectionName, groupId);
+    return tokens.map(token => token.id);
   }
 }

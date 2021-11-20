@@ -2,7 +2,7 @@
   <ng-template #groupTemplate let-group>
     <app-group [group]="group" [tokenPreviewTemplate]="tokenTemplate">
       <ng-template #tokenTemplate let-token>
-        <app-text-preview [data]="token.value"></app-text-preview>
+        <app-text-styles-token [token]="token"></app-text-styles-token>
       </ng-template>
     </app-group>
   </ng-template>

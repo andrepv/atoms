@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { TextStylesService } from '../text-styles/text-styles.service';
+import { TextPreviewService } from '../text-preview/text-preview.service';
 import { LineHeightTokenModel, LineHeightGroupModel, LINEHEIGHT_DB_DATA } from './line-height.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
 
@@ -13,24 +13,35 @@ export class LineHeightComponent implements OnInit {
   constructor(
     private section: SectionContentManagerService<LineHeightTokenModel,
     LineHeightGroupModel>,
-    private textPreview: TextStylesService,
-  ) {}
+    private preview: TextPreviewService,
+  ) {
+    this.preview.registerStyleSource<LineHeightTokenModel>(
+      'lineHeight',
+      {
+        getValue: value => value,
+        section: this.section.sectionName
+      }
+    )
+  }
 
   ngOnInit() {
     this.section.configure({
       contentManagerConfigs: {
         getDefaultTokenValue: () => 1,
-        getDefaultGroupState: () => ({textPreviewId: 0})
+        getDefaultGroupState: () => ({textPreviewId: 0}),
+        onLoad: () => this.preview.loadedSections$.next(true),
+        onTokenValueChange: (value, token) => {
+          this.preview.setPreviewStyleValue({lineHeight: value}, token.id)
+        },
+        onTokenDelete: token => {
+          this.preview.deletePreviewStyle('lineHeight', token.id)
+        }
       },
       sectionViewConfigs: {
         isTokenEditable: false,
         isGroupEditable: true,
       }
     })
-  }
-
-  getTextStyles(groupId: number) {
-    return this.textPreview.getGroupTextStyles(groupId, this.section.sectionName)
   }
 
   setTokenValue(value: LineHeightTokenModel['value'], tokenId: number, groupId: number) {

@@ -12,10 +12,13 @@
         >
           <ng-template #tokenPreviewRef let-value>
             <app-text-preview
-              [data]="getTextStyles(group.id)"
-              [excludedStyles]="['letterSpacing']"
-              [customStyles]="{'letterSpacing': value + 'em'}"
-            ></app-text-preview>
+              [group]="group"
+              [templateRef]="textPreview"
+            >
+              <ng-template #textPreview let-text>
+                <p [style]="{'letterSpacing': value + 'em'}">{{text}}</p>
+              </ng-template>
+            </app-text-preview>
           </ng-template>
         </app-token-editable>
       </ng-template>

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { StoreGroup } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 
 @Component({
@@ -8,15 +9,13 @@ import { SectionContentManagerService } from '@core/services/section-content-man
 })
 export class GroupListComponent implements OnInit {
   @Input() groupTemplate: TemplateRef<any>;
-
-  get groupList() {
-    return this.cm.getGroupList();
-  }
+  groupList: StoreGroup[] = [];
 
   constructor(public cm: SectionContentManagerService) {}
 
-  ngOnInit() {
-    this.cm.load();
+  async ngOnInit() {
+    await this.cm.load();
+    this.groupList = this.cm.getGroupList();
   }
 
   ngOnDestroy() {

@@ -4,6 +4,7 @@ import { FontManagerService } from '../typeface-editor/font-manager.service';
 import { DBGroup } from '@core/core.model';
 import { TypefaceTokenModel, TYPEFACE_DB_DATA } from './typeface.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
+import { TextPreviewService } from '@typography/text-preview/text-preview.service';
 
 @Component({
   selector: 'app-typeface',
@@ -15,12 +16,27 @@ export class TypefaceComponent implements OnInit {
   constructor(
     private section: SectionContentManagerService<TypefaceTokenModel, DBGroup>,
     private fontManager: FontManagerService,
-  ) {}
+    private preview: TextPreviewService,
+  ) {
+    this.preview.registerStyleSource<TypefaceTokenModel>(
+      'fontFamily',
+      {
+        getValue: value => typeof value  === 'string' ? value : value.family,
+        section: this.section.sectionName
+      }
+    )
+  }
 
   ngOnInit() {
     this.section.configure({
       contentManagerConfigs: {
-        onLoad: () => this.loadFonts(),
+        onLoad: () => {
+          this.preview.loadedSections$.next(true);
+          this.loadFonts()
+        },
+        onTokenDelete: token => {
+          this.preview.deletePreviewStyle('fontFamily', token.id)
+        },
         getDefaultTokenValue: () => ({
           family: 'Arial',
           type: "custom-font",

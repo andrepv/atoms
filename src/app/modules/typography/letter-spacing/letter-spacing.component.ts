@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { TextStylesService } from '../text-styles/text-styles.service';
+import { TextPreviewService } from '../text-preview/text-preview.service';
 import { LetterSpacingGroupModel, LetterSpacingTokenModel, LETTERSPACING_DB_DATA } from './letter-spacing.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
 
@@ -12,14 +12,32 @@ import { provideSectionDeps } from '@utils/provide-section-deps';
 export class LetterSpacingComponent implements OnInit {
   constructor(
     private section: SectionContentManagerService<LetterSpacingTokenModel, LetterSpacingGroupModel>,
-    private textPreview: TextStylesService,
-  ) {}
+    private preview: TextPreviewService,
+  ) {
+    this.preview.registerStyleSource<LetterSpacingTokenModel>(
+      'letterSpacing',
+      {
+        getValue: value => `${value}em`,
+        section: this.section.sectionName
+      }
+    )
+  }
 
   ngOnInit() {
     this.section.configure({
       contentManagerConfigs: {
         getDefaultTokenValue: () => 0.01,
-        getDefaultGroupState: () => ({textPreviewId: 0})
+        getDefaultGroupState: () => ({textPreviewId: 0}),
+        onLoad: () => this.preview.loadedSections$.next(true),
+        onTokenValueChange: (value, token) => {
+          this.preview.setPreviewStyleValue(
+            {'letterSpacing': `${value}em`},
+            token.id
+          )
+        },
+        onTokenDelete: token => {
+          this.preview.deletePreviewStyle('letterSpacing', token.id)
+        }
       },
       sectionViewConfigs: {
         isTokenEditable: false,
@@ -28,11 +46,11 @@ export class LetterSpacingComponent implements OnInit {
     })
   }
 
-  getTextStyles(groupId: number) {
-    return this.textPreview.getGroupTextStyles(groupId, this.section.sectionName)
-  }
-
-  setTokenValue(value: LetterSpacingTokenModel['value'], tokenId: number, groupId: number) {
+  setTokenValue(
+    value: LetterSpacingTokenModel['value'],
+    tokenId: number,
+    groupId: number
+  ) {
     this.section.setTokenValue(value, tokenId, groupId)
   }
 }

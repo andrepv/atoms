@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TextStylesService } from './text-styles.service';
+import { TextPreviewService } from './text-preview.service';
 
 describe('TextStylesService', () => {
-  let service: TextStylesService;
+  let service: TextPreviewService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TextStylesService);
+    service = TestBed.inject(TextPreviewService);
   });
 
   it('should be created', () => {

@@ -19,6 +19,9 @@ import { TypescaleEditorComponent } from './typescale-editor/typescale-editor.co
 import { TypescaleComponent } from './typescale/typescale.component';
 import { TypographyComponent } from './typography.component';
 import { FontManagerService } from './typeface-editor/font-manager.service';
+import { TextPreviewComponent } from './text-preview/text-preview.component';
+import { TextPreviewService } from './text-preview/text-preview.service';
+import { TextStylesTokenComponent } from './text-styles/text-styles-token/text-styles-token.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,11 @@ import { FontManagerService } from './typeface-editor/font-manager.service';
     CustomFontComponent,
 
     TypescaleComponent,
-    TypescaleEditorComponent
+    TypescaleEditorComponent,
+
+    TextPreviewComponent,
+
+    TextStylesTokenComponent
   ],
   imports: [
     CommonModule,
@@ -56,6 +63,6 @@ import { FontManagerService } from './typeface-editor/font-manager.service';
     TypefaceEditorComponent,
     TypescaleEditorComponent,
   ],
-  providers: [FontManagerService] // TextStylesService
+  providers: [FontManagerService, TextPreviewService]
 })
 export class TypographyModule {}

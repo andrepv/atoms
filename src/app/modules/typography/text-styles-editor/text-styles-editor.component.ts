@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { EditorService } from '@core/services/editor.service';
-import { TextStylesService } from '../text-styles/text-styles.service';
+import { TextPreviewService } from '../text-preview/text-preview.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { DBGroup } from '@core/core.model';
 import { TextStylesTokenModel, TextStylesTokenValue, TEXTSTYLES_DB_DATA } from '@typography/text-styles/text-styles.model';
 import { provideEditorDeps } from '@utils/provide-editor-deps';
+import { TextPreviewStyleProps } from '@typography/text-preview/text-preview.model';
 
 @Component({
   selector: 'app-text-styles-editor',
@@ -24,7 +25,7 @@ export class TextStylesEditorComponent implements OnInit {
   constructor(
     public editor: EditorService<TextStylesTokenModel, DBGroup>,
     private section: SectionContentManagerService<TextStylesTokenModel, DBGroup>,
-    private service: TextStylesService,
+    private preview: TextPreviewService,
   ) {}
 
   text = this.getTextValue();
@@ -46,24 +47,34 @@ export class TextStylesEditorComponent implements OnInit {
   }
 
   
-  onChange(tokenId: number, styleProp: string) {
-    this.setTokenValue({styles: {
-      ...this.editableToken.value.styles,
-      [styleProp]: tokenId
-    }});
+  async onChange(tokenId: number, styleProp: TextPreviewStyleProps) {
+    await this.setTokenValue({
+      styles: {
+        ...this.editableToken.value.styles,
+        [styleProp]: tokenId
+      }
+    });
+
+    this.preview.setPreviewStyleRef(
+      this.editableToken.id,
+      styleProp,
+      tokenId
+    )
   }
 
-  onBlur() {
+  async onBlur() {
     const inputValue = this.text.trim();
 
     if (inputValue.length && inputValue !== this.editableToken.value.text) {
-      this.setTokenValue({text: inputValue});
+      await this.setTokenValue({text: inputValue});
+      this.preview.setPreviewText(this.editableToken.id, inputValue)
+
     } else {
       this.text = this.getTextValue();
     }
   }
 
-  private setTokenValue(obj: TextStylesTokenValue) {
+  private async setTokenValue(obj: TextStylesTokenValue) {
     const {group} = this.editor.content;
     const value = {...this.editableToken.value}
   
@@ -71,10 +82,10 @@ export class TextStylesEditorComponent implements OnInit {
       value[key] = obj[key];
     }
   
-    this.section.setTokenValue(value, this.editableToken.id, group.id);
+    await this.section.setTokenValue(value, this.editableToken.id, group.id);
   }
 
   private getTextValue() {
-    return this.editableToken.value.text || this.service.getDefaultText();
+    return this.editableToken.value.text || this.preview.DEFAULT_PREVIEW.text;
   }
 }

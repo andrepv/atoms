@@ -5,7 +5,7 @@ import { SectionContentManagerService } from '@core/services/section-content-man
 @Component({
   selector: 'app-group',
   templateUrl: './group.component.html',
-  styleUrls: ['./group.component.less']
+  styleUrls: ['./group.component.less'],
 })
 export class GroupComponent implements OnInit {
   @Input() group: StoreGroup; 

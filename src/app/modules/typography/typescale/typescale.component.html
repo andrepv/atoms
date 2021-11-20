@@ -12,10 +12,13 @@
         >
           <ng-template #tokenPreviewRef let-value>
             <app-text-preview
-              [data]="textPreview.getGroupTextStyles(group.id, sectionName)"
-              [excludedStyles]="['fontSize']"
-              [customStyles]="{'fontSize': value + 'px'}"
-            ></app-text-preview>
+              [group]="group"
+              [templateRef]="textPreview"
+            >
+              <ng-template #textPreview let-text>
+                <p [style]="{'fontSize': value + 'px'}">{{text}}</p>
+              </ng-template>
+            </app-text-preview>
             <p *ngIf="group.state.scale">{{ value + 'px' }}</p>
           </ng-template>
         </app-token-editable>

@@ -5,6 +5,7 @@ import { EditorService } from '@core/services/editor.service';
 import { FontType, TypefaceTokenModel, TypefaceTokenValue, TYPEFACE_DB_DATA } from '../typeface/typeface.model';
 import { DBGroup } from '@core/core.model';
 import { provideEditorDeps } from '@utils/provide-editor-deps';
+import { TextPreviewService } from '@typography/text-preview/text-preview.service';
 
 @Component({
   selector: 'app-typeface-editor',
@@ -25,10 +26,22 @@ export class TypefaceEditorComponent implements OnInit {
   constructor(
     public section: SectionContentManagerService<TypefaceTokenModel, DBGroup>,
     public editor: EditorService<TypefaceTokenModel, DBGroup>,
+    private textPreview: TextPreviewService,
   ) {}
 
   ngOnInit() {
     this.subscription = this.editor.content$.subscribe(value => this.tokenName = value?.token.name ?? '');
+
+    this.section.configure({
+      contentManagerConfigs: {
+        onTokenValueChange: (value, token) => {
+          this.textPreview.setPreviewStyleValue(
+            {fontFamily: value.family},
+            token.id
+          )
+        },
+      }
+    })
   }
 
   ngOnDestroy() {

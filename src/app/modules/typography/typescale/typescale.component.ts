@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DEFAULT_BASE } from '@shared/components/modular-scale-editor/modular-scale-editor.component';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { getScaleValue } from '@utils';
-import { TextStylesService } from '../text-styles/text-styles.service';
+import { TextPreviewService } from '../text-preview/text-preview.service';
 import { TypescaleTokenModel, TypescaleGroupModel, TYPESCALE_DB_DATA } from './typescale.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
 
@@ -15,20 +15,34 @@ export class TypescaleComponent implements OnInit {
   readonly MIN_FONT_SIZE = 1;
   readonly MAX_FONT_SIZE = 150;
 
-  get sectionName() {
-    return this.section.sectionName;
-  }
-
   constructor(
     public section: SectionContentManagerService<TypescaleTokenModel, TypescaleGroupModel>,
-    public textPreview: TextStylesService,
-  ) {}
+    public preview: TextPreviewService,
+  ) {
+    this.preview.registerStyleSource<TypescaleTokenModel>(
+      'fontSize',
+      {
+        getValue: value => `${value}px`,
+        section: this.section.sectionName
+      }
+    )
+  }
     
   ngOnInit() {
     this.section.configure({
       contentManagerConfigs: {
         getDefaultTokenValue: groupId => this.getDefaultTokenValue(groupId),
-        getDefaultGroupState: () => ({textPreviewId: 0, scale: false})
+        getDefaultGroupState: () => ({textPreviewId: 0, scale: false}),
+        onLoad: () => this.preview.loadedSections$.next(true),
+        onTokenValueChange: (value, token) => {
+          this.preview.setPreviewStyleValue(
+            {fontSize: `${value}px`},
+            token.id
+          )
+        },
+        onTokenDelete: token => {
+          this.preview.deletePreviewStyle('fontSize', token.id)
+        }
       },
       sectionViewConfigs: {
         isTokenEditable: false,

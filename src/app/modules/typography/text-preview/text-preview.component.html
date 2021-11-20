@@ -1,0 +1,10 @@
+<div [style]="preview.styles">
+
+  <ng-container *ngIf="templateRef">
+    <ng-container *ngTemplateOutlet="templateRef; context: {$implicit: preview.text}"></ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="!templateRef">
+    <p>{{ preview.text }}</p>
+  </ng-container>
+</div>

@@ -24,7 +24,6 @@ import { TextEditableComponent } from './components/text-editable/text-editable.
 import { TokenComponent } from './components/token/token.component';
 import { GroupComponent } from './components/group/group.component';
 import { ModularScaleEditorComponent } from './components/modular-scale-editor/modular-scale-editor.component';
-import { TextPreviewComponent } from './components/text-preview/text-preview.component';
 import { TokensSectionSelectComponent } from './components/tokens-section-select/tokens-section-select.component';
 import { TokenEditableComponent } from './components/token-editable/token-editable.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
@@ -39,7 +38,6 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     TokenEditableComponent,
     TokensSectionSelectComponent,
     TextEditableComponent,
-    TextPreviewComponent,
     ModularScaleEditorComponent,
     AutofocusDirective,
   ],
@@ -71,7 +69,6 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     TokenEditableComponent,
     TokensSectionSelectComponent,
     TextEditableComponent,
-    TextPreviewComponent,
     ModularScaleEditorComponent,
 
     NzToolTipModule,

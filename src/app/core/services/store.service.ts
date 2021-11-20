@@ -1,44 +1,25 @@
 import { Injectable } from '@angular/core';
-import { SectionNames, StoreGroup, PageName, DBToken, DBGroup } from '@core/core.model';
+import { SectionNames, StoreGroup, PageName } from '@core/core.model';
 import { ThemeManagerService } from './theme-manager.service';
 
-export const SECTIONS = ["Type Face", "Type Scale", "Line Height", "Letter Spacing", "Text Styles", "Spacing", "Color Palette"] as const;
-
-
-interface StoreNormalizedPageContent<G extends DBGroup = any, T extends DBToken = any> {
-  [sectionName: string]: StoreGroup<G, T>[]
-}
+interface StorePageContent {
+  [sectionName: string]: StoreGroup[]
+} 
 
 interface StorePage {
   name: PageName | '';
-  content: StoreGroupList;
+  content: StorePageContent;
 }
-
-type StoreGroupList = {
-  name: string;
-  content: StoreGroup[];
-}[];
-
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {
   isLoading = false;
   canUseClipboard = true;
 
-  _groups: {[sectionName: string]: StoreGroup[]} = {}
-
-  get groups(): StoreGroupList {
-    const groups = Object.entries(this._groups);
-    if (!groups.length) {
-      return [];
-    }
-    return groups.map(([name, content]) => ({name, content}))
-  }
-
   page: StorePage = {
     name: "",
-    content: this.groups,
-  };
+    content: {},
+  }
 
   constructor(public themeManager: ThemeManagerService) {
     const queryOpts = {
@@ -59,57 +40,43 @@ export class StoreService {
     return this.themeManager.loadList();
   }
 
-  setPageStructure(
-    pageName: PageName,
-    content: StoreNormalizedPageContent
-  ) {
-    this.page.name = pageName;
-    this._groups = content;
-    this.updateSection();
+  setPageStructure(page: StorePage) {
+    this.page = page;
   }
 
+  setSectionContent(
+    sectionName: SectionNames,
+    groupList: StoreGroup[]
+  ) {
+    this.page.content[sectionName] = groupList;
+  }
+
+
   addGroup(sectionName: SectionNames, group: StoreGroup) {
-    this.getGroupList(sectionName).push(group);
-    this.updateSection();
+    this.page.content[sectionName].push(group);
   }
 
   deleteGroup(sectionName: SectionNames, groupId: number) {
-    const nextGroups = this.getGroupList(sectionName).filter(group => group.id !== groupId);
-    this.setGroupList(sectionName, nextGroups)
+    const group = this.getGroup(sectionName, groupId);
+    const index = this.page.content[sectionName].indexOf(group);
+    if (index > -1) {
+      this.page.content[sectionName].splice(index, 1);
+    }
   }
 
   getGroup(sectionName: SectionNames, groupId: number) {
-    return this.getGroupList(sectionName).find(group => group.id === groupId)
+    return this.getGroupList(sectionName).find(({id}) => id === groupId)
   }
-
-  // ???
-  updateGroup(
-    sectionName: SectionNames,
-    groupId: number,
-    callback: (group: StoreGroup) => void,
-  ) {
-    this._groups[sectionName] = this.getGroupList(sectionName).map(group => {
-      if (group.id === groupId) {
-        callback(group);
-      }
-      return group;
-    });
-
-    this.updateSection();
-  }
-
-  getGroupTokenIds(sectionName: SectionNames, groupId: number) {
-    const group = this.getGroup(sectionName, groupId);
-    return group.tokens.map(token => token.id);
-  }
-
+  
   getGroupList(sectionName: SectionNames) {
-    return this._groups[sectionName];
+    return this.page.content[sectionName];
   }
 
-  setGroupList(sectionName: SectionNames, groupList: StoreGroup[]) {
-    this._groups[sectionName] = groupList;
-    this.updateSection();
+  updateGroup(group: StoreGroup, sectionName: SectionNames) {
+    const index = this.page.content[sectionName].indexOf(group);
+    if (index > -1) {
+      this.page.content[sectionName][index] = {...group};
+    }
   }
 
   getSectionTokens(sectionName: SectionNames) {
@@ -129,13 +96,18 @@ export class StoreService {
     return false;
   }
 
+  getGroupToken(
+    sectionName: SectionNames,
+    groupId: number,
+    tokenId: number
+  ) {
+    const {tokens} = this.getGroup(sectionName, groupId)
+    return tokens.find(({id}) => id === tokenId)
+  }
+
   private setClipboardActionsStatus(permissionStatus: PermissionState) {
     if (permissionStatus === 'denied') {
       this.canUseClipboard = false;
     }
-  }
-
-  private updateSection() {
-    this.page.content = this.groups;
   }
 }
