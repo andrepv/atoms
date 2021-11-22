@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { DEFAULT_BASE } from '@shared/components/modular-scale-editor/modular-scale-editor.component';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { getScaleValue } from '@utils';
 import { SpacingGroupModel, SpacingTokenModel, SPACING_DB_DATA } from '@spacing/spacing.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
+import { DEFAULT_SCALE_BASE } from '@shared/components/modular-scale-editor/modular-scale-editor.model';
 
 @Component({
   selector: 'app-spacing-group-list',
@@ -39,7 +39,7 @@ export class SpacingGroupListComponent implements OnInit {
     if (group.state.scale) {
       return getScaleValue(group.tokens.length, group.state.scale);
     }
-    return DEFAULT_BASE;
+    return DEFAULT_SCALE_BASE;
   }
 
 }

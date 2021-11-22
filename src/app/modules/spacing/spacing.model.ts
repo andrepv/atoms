@@ -1,5 +1,5 @@
 import { DBToken, DBGroup, DBTables, DBSectionData } from "@core/core.model";
-import { ModularScaleState } from "@shared/components/modular-scale-editor/modular-scale-editor.component";
+import { ModularScaleState } from "@shared/components/modular-scale-editor/modular-scale-editor.model";
 
 export type SpacingTokenValue = number;
 export type SpacingGroupState = {scale: Pick<ModularScaleState, 'scaleRatio' | 'base'> | false};
