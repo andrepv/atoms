@@ -28,7 +28,9 @@ export class LetterSpacingComponent implements OnInit {
       contentManagerConfigs: {
         getDefaultTokenValue: () => 0.01,
         getDefaultGroupState: () => ({textPreviewId: 0}),
-        onLoad: () => this.preview.loadedSections$.next(true),
+        onLoad: () => {
+          this.preview.isStyleSourceLoaded$.next(true);
+        },
         onTokenValueChange: (value, token) => {
           this.preview.setPreviewStyleValue(
             {'letterSpacing': `${value}em`},

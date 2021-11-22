@@ -16,9 +16,9 @@ export class TextStylesTokenComponent implements OnInit {
   constructor(private previewManager: TextPreviewService) {}
 
   ngOnInit() {
-    this.previewManager.loadedSections$.pipe(
+    this.previewManager.isStyleSourceLoaded$.pipe(
       take(this.previewManager.sectionsToLoadCount),
-      finalize(() => this.onSectionsLoad())
+      finalize(() => setTimeout(() => this.onSectionsLoad(), 0))
     ).subscribe()
   }
 

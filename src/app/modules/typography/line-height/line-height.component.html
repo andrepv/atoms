@@ -15,8 +15,8 @@
               [group]="group"
               [templateRef]="textPreview"
             >
-              <ng-template #textPreview let-text>
-                <p [style]="{'lineHeight': value}">{{text}}</p>
+              <ng-template #textPreview let-preview>
+                <p [style]="{'lineHeight': value}">{{preview.text}}</p>
               </ng-template>
             </app-text-preview>
           </ng-template>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StoreService } from '@core/services/store.service';
+import { TextPreviewService } from './text-preview/text-preview.service';
 
 @Component({
   selector: 'app-typography',
@@ -9,7 +10,10 @@ import { StoreService } from '@core/services/store.service';
 export class TypographyComponent implements OnInit {
   readonly PAGE_NAME = "Typography";
 
-  constructor(public store: StoreService) {}
+  constructor(
+    public store: StoreService,
+    private preview: TextPreviewService
+  ) {}
 
   ngOnInit() {
     this.store.setPageStructure({
@@ -22,5 +26,9 @@ export class TypographyComponent implements OnInit {
         "Text Styles": [],
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.preview.onDestroy();
   }
 }

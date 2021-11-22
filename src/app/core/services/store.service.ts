@@ -16,7 +16,7 @@ export class StoreService {
   isLoading = false;
   canUseClipboard = true;
 
-  page: StorePage = {
+  private page: StorePage = {
     name: "",
     content: {},
   }

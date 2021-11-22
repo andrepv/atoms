@@ -29,7 +29,9 @@ export class LineHeightComponent implements OnInit {
       contentManagerConfigs: {
         getDefaultTokenValue: () => 1,
         getDefaultGroupState: () => ({textPreviewId: 0}),
-        onLoad: () => this.preview.loadedSections$.next(true),
+        onLoad: () => {
+          this.preview.isStyleSourceLoaded$.next(true)
+        },
         onTokenValueChange: (value, token) => {
           this.preview.setPreviewStyleValue({lineHeight: value}, token.id)
         },

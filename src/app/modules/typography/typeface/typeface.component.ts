@@ -31,7 +31,7 @@ export class TypefaceComponent implements OnInit {
     this.section.configure({
       contentManagerConfigs: {
         onLoad: () => {
-          this.preview.loadedSections$.next(true);
+          this.preview.isStyleSourceLoaded$.next(true);
           this.loadFonts()
         },
         onTokenDelete: token => {

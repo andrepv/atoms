@@ -33,7 +33,9 @@ export class TypescaleComponent implements OnInit {
       contentManagerConfigs: {
         getDefaultTokenValue: groupId => this.getDefaultTokenValue(groupId),
         getDefaultGroupState: () => ({textPreviewId: 0, scale: false}),
-        onLoad: () => this.preview.loadedSections$.next(true),
+        onLoad: () => {
+          this.preview.isStyleSourceLoaded$.next(true);
+        },
         onTokenValueChange: (value, token) => {
           this.preview.setPreviewStyleValue(
             {fontSize: `${value}px`},

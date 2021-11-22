@@ -24,7 +24,6 @@ interface ConfigureOptions<T extends DBToken, G extends DBGroup> {
 @Injectable()
 export class SectionContentManagerService<T extends DBToken = any, G extends DBGroup = any> {
   isLoading = false;
-  subscription: Subscription;
 
   get groupTable() {
     return this.tables.group;
@@ -61,9 +60,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     private message: NzMessageService,
     private editor: EditorService,
     private themeManager: ThemeManagerService,
-  ) {
-    this.subscription = store.themeManager.selected$.subscribe(() => this.load())
-  }
+  ) {}
 
   configure({
     contentManagerConfigs,

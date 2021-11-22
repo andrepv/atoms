@@ -15,8 +15,8 @@
               [group]="group"
               [templateRef]="textPreview"
             >
-              <ng-template #textPreview let-text>
-                <p [style]="{'fontSize': value + 'px'}">{{text}}</p>
+              <ng-template #textPreview let-preview>
+                <p [style]="{'fontSize': value + 'px'}">{{preview.text}}</p>
               </ng-template>
             </app-text-preview>
             <p *ngIf="group.state.scale">{{ value + 'px' }}</p>

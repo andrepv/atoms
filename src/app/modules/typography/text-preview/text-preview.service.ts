@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DBToken, SectionNames } from '@core/core.model';
 import { StoreService } from '@core/services/store.service';
+import { ThemeManagerService } from '@core/services/theme-manager.service';
 import { ReplaySubject } from 'rxjs';
 import { TextPreview, TextPreviewStyleProps, TextPreviewStyles, TextPreviewStyleValue } from './text-preview.model';
 
@@ -14,7 +15,7 @@ type StyleSource<T extends DBToken = any> = {
 @Injectable()
 export class TextPreviewService {
   sectionsToLoadCount = 4;
-  loadedSections$ = new ReplaySubject<boolean>(this.sectionsToLoadCount);
+  isStyleSourceLoaded$ = new ReplaySubject<boolean>(this.sectionsToLoadCount);
 
   readonly DEFAULT_PREVIEW: TextPreview = {
     styles: {
@@ -33,7 +34,19 @@ export class TextPreviewService {
     [previewId: number]: TextPreview
   } = {};
 
-  constructor(private store: StoreService) {}
+  constructor(
+    private store: StoreService,
+    private themeManager: ThemeManagerService,
+  ) {
+    this.themeManager.selected$.subscribe(() => {
+      this.onDestroy();
+    })
+  }
+
+  onDestroy() {
+    this.isStyleSourceLoaded$ = new ReplaySubject<boolean>(this.sectionsToLoadCount);
+    this.previewList = {};
+  }
 
   addPreview(id: number, value: TextPreview) {
     this.previewList[id] = value;

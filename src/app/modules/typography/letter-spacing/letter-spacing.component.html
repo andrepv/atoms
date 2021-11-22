@@ -15,8 +15,8 @@
               [group]="group"
               [templateRef]="textPreview"
             >
-              <ng-template #textPreview let-text>
-                <p [style]="{'letterSpacing': value + 'em'}">{{text}}</p>
+              <ng-template #textPreview let-preview>
+                <p [style]="{'letterSpacing': value + 'em'}">{{preview.text}}</p>
               </ng-template>
             </app-text-preview>
           </ng-template>
