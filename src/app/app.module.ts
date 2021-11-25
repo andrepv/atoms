@@ -23,6 +23,7 @@ import { SharedModule } from '@shared/shared.module';
 import { ColorsModule } from '@colors/colors.module';
 import { SpacingModule } from '@spacing/spacing.module';
 import { TypographyModule } from '@typography/typography.module';
+import { ShadowsModule } from './modules/shadows/shadows.module';
 
 registerLocaleData(en);
 
@@ -39,6 +40,7 @@ registerLocaleData(en);
     ColorsModule,
     SpacingModule,
     TypographyModule,
+    ShadowsModule,
     NzGridModule,
     NzAnchorModule,
     CommonModule,

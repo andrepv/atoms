@@ -1,0 +1,47 @@
+<div class="wrapper">
+  <p>Block Color</p>
+  <app-color-picker
+    [color]="token.value.blockColor"
+    (colorChange)="onBlockColorChange($event)"
+    (colorSave)="updateTokenValue()"
+  ></app-color-picker>
+  <br />
+  <p>Background Color</p>
+  <app-color-picker
+    [color]="token.value.backgroundColor"
+    (colorChange)="onBackgroundColorChange($event)"
+    (colorSave)="updateTokenValue()"
+  ></app-color-picker>
+  <br />
+
+  <div class="layers-container">
+    <div class="layers-header">
+      <p>Layers</p>
+      <i
+        nz-tooltip nzTooltipTitle="add a layer" nzTooltipPlacement="bottom"
+        nz-icon nzType="plus" nzTheme="outline" (click)="addLayer()"></i>
+    </div>
+    <div
+      class="layers-list"
+      cdkDropList
+      (cdkDropListDropped)="dropLayer($event)"
+    >
+      <div
+        class="layer-wrapper"
+        cdkDragBoundary=".layers-container"
+        *ngFor="let layer of token.value.layers; let i = index"
+        cdkDrag
+      >
+        <div class="layer">
+          <div cdkDragHandle>
+            <i nz-icon nzType="drag" nzTheme="outline"></i>
+          </div>
+          <app-box-shadow-layer
+            [layer]="layer"
+            [index]="i"
+          ></app-box-shadow-layer>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<app-group-list [groupTemplate]="groupTemplate">
+  <ng-template #groupTemplate let-group>
+    <app-group [group]="group" [tokenPreviewTemplate]="tokenTemplate">
+      <ng-template #tokenTemplate let-token>
+        <div
+          class="token"
+          [style.background-color]="token.value.backgroundColor"
+        >
+          <div class="block" [style]="getBlockStyle(token)"></div>
+        </div>
+      </ng-template>
+    </app-group>
+  </ng-template>
+</app-group-list>

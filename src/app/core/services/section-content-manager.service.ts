@@ -38,7 +38,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
   }
 
   get selectedThemeId() {
-    return this.store.themeManager.selected.id;
+    return this.themeManager.selected.id;
   }
 
   configs: ConfigureOptions<T, G> = {
@@ -243,11 +243,12 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
         const token = group.tokens.find(({id}) => id === tokenId)
         this.configs.onTokenDelete(token, group);
       }
-      this.store.deleteGroup(this.sectionName, groupId);
 
-      // if (this.editor.isGroupEditable(groupId, this.sectionName)) {
-      //   this.editor.disable();
-      // }
+      if (this.editor.isGroupEditable(groupId, this.sectionName)) {
+        this.editor.disable();
+      }
+
+      this.store.deleteGroup(this.sectionName, groupId);
     });
   }
 

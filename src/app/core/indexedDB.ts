@@ -7,6 +7,8 @@ import { LineHeightTables, LINEHEIGHT_DB_DATA } from '@typography/line-height/li
 import { ColorPaletteTables, COLORPALETTE_DB_DATA } from '@colors/color-palette/color-palette.model';
 import { SpacingTables, SPACING_DB_DATA } from '@spacing/spacing.model';
 import { DBSectionData, SectionNames, ThemeTable } from '@core/core.model';
+import { BoxShadowTables, BOX_SHADOW_DB_DATA } from '@shadows/box-shadow-section/box-shadow-section.model';
+
 
 const SECTIONS: DBSectionData[] = [
   TYPEFACE_DB_DATA,
@@ -15,7 +17,8 @@ const SECTIONS: DBSectionData[] = [
   LETTERSPACING_DB_DATA,
   TEXTSTYLES_DB_DATA,
   SPACING_DB_DATA,
-  COLORPALETTE_DB_DATA
+  COLORPALETTE_DB_DATA,
+  BOX_SHADOW_DB_DATA
 ];
 
 export class DBService extends Dexie {
@@ -27,10 +30,11 @@ export class DBService extends Dexie {
   textStyles: TextStylesTables;
   spacing: SpacingTables;
   colorPalette: ColorPaletteTables;
+  boxShadow: BoxShadowTables;
   
 
   get sections() {
-    return [this.typeface, this.typescale, this.lineHeight, this.letterSpacing, this.textStyles, this.spacing, this.colorPalette];
+    return [this.typeface, this.typescale, this.lineHeight, this.letterSpacing, this.textStyles, this.spacing, this.colorPalette, this.boxShadow];
   }
 
   constructor() {
@@ -46,7 +50,7 @@ export class DBService extends Dexie {
       schema[section.groupTableName] = group;
     }
 
-    this.version(8).stores(schema);
+    this.version(9).stores(schema);
     
     this.theme = this.table("theme");
 

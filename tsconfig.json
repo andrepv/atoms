@@ -25,6 +25,7 @@
       "@colors/*": ["src/app/modules/colors/*"],
       "@spacing/*": ["src/app/modules/spacing/*"],
       "@typography/*": ["src/app/modules/typography/*"],
+      "@shadows/*": ["src/app/modules/shadows/*"]
     }
   }
 }

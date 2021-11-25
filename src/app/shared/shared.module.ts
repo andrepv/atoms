@@ -27,6 +27,8 @@ import { ModularScaleEditorComponent } from './components/modular-scale-editor/m
 import { TokensSectionSelectComponent } from './components/tokens-section-select/tokens-section-select.component';
 import { TokenEditableComponent } from './components/token-editable/token-editable.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
+import { ColorPickerComponent } from './components/color-picker/color-picker.component';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,7 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     TextEditableComponent,
     ModularScaleEditorComponent,
     AutofocusDirective,
+    ColorPickerComponent,
   ],
   imports: [
     CommonModule,
@@ -59,6 +62,8 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     NzRadioModule,
     NzSliderModule,
     NzInputNumberModule,
+
+    ColorPickerModule
   ],
   exports: [
     FormsModule,
@@ -70,6 +75,7 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     TokensSectionSelectComponent,
     TextEditableComponent,
     ModularScaleEditorComponent,
+    ColorPickerComponent,
 
     NzToolTipModule,
     NzDropDownModule,
@@ -85,6 +91,8 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     NzRadioModule,
     NzSliderModule,
     NzInputNumberModule,
+
+    ColorPickerModule
   ]
 })
 export class SharedModule {}
