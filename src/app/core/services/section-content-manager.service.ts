@@ -1,11 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Subscription } from 'rxjs';
 import { db } from '../indexedDB';
 import { StoreService } from '@core/services/store.service';
 import { EditorService } from '@core/services/editor.service';
 import { getRandomChars } from '@utils';
-import { StoreToken, StoreGroup, DBToken, DBTables, DBGroup, TokensByTheme } from '@core/core.model';
+import { StoreToken, StoreGroup, DBToken, DBTables, DBGroup, TokensByTheme, SectionNames } from '@core/core.model';
 import { ThemeManagerService } from './theme-manager.service';
 
 interface SectionViewConfigs {
@@ -191,7 +190,17 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
   }
 
   getTokens(): StoreToken<T>[] {
-    return this.store.getSectionTokens(this.sectionName);
+    return this.store.getSectionTokens(this.sectionName)
+  }
+
+  // @TODO: cache results
+  async loadTokens(): Promise<StoreToken<T>[]> {
+    const tokens = await this.tokenTable
+    .where("themeId")
+    .equals(this.selectedThemeId)
+    .toArray() as StoreToken[]; //!!!
+
+    return tokens;
   }
 
   async getTokensByTheme(exclude = [this.themeManager.selected.id]) {

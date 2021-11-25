@@ -16,6 +16,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
 
 import { GroupListHeaderComponent } from './components/group-list-header/group-list-header.component';
 import { GroupHeaderComponent } from './components/group-header/group-header.component';
@@ -62,6 +63,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     NzRadioModule,
     NzSliderModule,
     NzInputNumberModule,
+    NzPopoverModule,
 
     ColorPickerModule
   ],
