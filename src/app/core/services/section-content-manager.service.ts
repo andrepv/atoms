@@ -194,11 +194,11 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
   }
 
   // @TODO: cache results
-  async loadTokens(): Promise<StoreToken<T>[]> {
+  async loadTokens(): Promise<T[]> {
     const tokens = await this.tokenTable
     .where("themeId")
     .equals(this.selectedThemeId)
-    .toArray() as StoreToken[]; //!!!
+    .toArray();
 
     return tokens;
   }

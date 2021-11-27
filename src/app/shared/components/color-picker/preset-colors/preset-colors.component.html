@@ -1,0 +1,31 @@
+<div class="preset-colors">
+  <ng-container *ngFor="let token of tokens">
+
+    <ng-container *ngIf="token.value.tints">
+      <ng-container *ngFor="let tint of getTintsByIds(token.value.tints)">
+        <ng-container *ngTemplateOutlet="presetColor; context: {$implicit: tint}"></ng-container>
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="token.value.isPrimary">
+      <ng-container *ngTemplateOutlet="presetColor; context: {$implicit: token}"></ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="token.value.shades">
+      <ng-container *ngFor="let shade of getShadesByIds(token.value.shades)">
+        <ng-container *ngTemplateOutlet="presetColor; context: {$implicit: shade}"></ng-container>
+      </ng-container>
+    </ng-container>
+
+  </ng-container>
+
+</div>
+
+<ng-template #presetColor let-token>
+  <div
+    class="preset-color"
+    (click)="colorSelect.emit(token.value.color)"
+    nz-tooltip [nzTooltipTitle]="token.name"
+    [style.background]="token.value.color">
+  </div>
+</ng-template>

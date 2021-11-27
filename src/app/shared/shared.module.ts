@@ -17,6 +17,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 import { GroupListHeaderComponent } from './components/group-list-header/group-list-header.component';
 import { GroupHeaderComponent } from './components/group-header/group-header.component';
@@ -30,6 +31,7 @@ import { TokenEditableComponent } from './components/token-editable/token-editab
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { PresetColorsComponent } from './components/color-picker/preset-colors/preset-colors.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     ModularScaleEditorComponent,
     AutofocusDirective,
     ColorPickerComponent,
+    PresetColorsComponent,
   ],
   imports: [
     CommonModule,
@@ -64,6 +67,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     NzSliderModule,
     NzInputNumberModule,
     NzPopoverModule,
+    NzTabsModule,
 
     ColorPickerModule
   ],

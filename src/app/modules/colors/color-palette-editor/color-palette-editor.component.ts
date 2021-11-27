@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { ColorPaletteTokenModel, COLORPALETTE_DB_DATA, ColorVariantField, Variant } from '../color-palette/color-palette.model';
 import { AddVariantEvent, RemoveVariantEvent, VariantValueChangeEvent } from './color-variants/color-variants.component';
-import { DBGroup, TokensByTheme } from '@core/core.model';
+import { DBGroup } from '@core/core.model';
 import { provideEditorDeps } from '@utils/provide-editor-deps';
 
 @Component({
@@ -26,24 +26,14 @@ export class ColorPaletteEditorComponent implements OnInit {
     return this.editor.content.group;
   }
 
-  colorsByTheme: TokensByTheme<ColorPaletteTokenModel>
-
   readonly DEBOUNCE_TIME = 500;
 
-  private colorChange$ = new BehaviorSubject('');
   private destroy$ = new Subject();
 
   constructor(
     public editor: EditorService<ColorPaletteTokenModel, DBGroup>,
     private section: SectionContentManagerService<ColorPaletteTokenModel, DBGroup>,
   ) {
-    this.colorChange$.pipe(
-      takeUntil(this.destroy$),
-      debounceTime(this.DEBOUNCE_TIME),
-      distinctUntilChanged(),
-      tap(color => this.saveColor(color)),
-    ).subscribe();
-
     this.editor.content$.pipe(
       takeUntil(this.destroy$),
     ).subscribe(() => {
@@ -51,9 +41,7 @@ export class ColorPaletteEditorComponent implements OnInit {
     });
   }
 
-  async ngOnInit() {
-    this.colorsByTheme = await this.section.getTokensByTheme();
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -61,15 +49,13 @@ export class ColorPaletteEditorComponent implements OnInit {
   }
 
   onColorChange(value: string) {
-    this.colorChange$.next(value);
+    this.color = value;
     this._color = this.color;
   }
 
   saveColor(color: string) {
-    if (color) {
-      this.token.value.color = color;
-      this.section.setTokenValue(this.token.value, this.token.id, this.group.id);
-    }
+    this.token.value.color = color;
+    this.section.setTokenValue(this.token.value, this.token.id, this.group.id);
   }
 
   getVariants(variant: ColorVariantField) {
@@ -79,14 +65,7 @@ export class ColorPaletteEditorComponent implements OnInit {
   }
 
   getPresetColors() {
-    return this.section.getTokens()
-    .filter(({id}) => id !== this.token.id)
-    .map(token => token.value.color)
-  }
-
-  setColor(value: string) {
-    this.color = value;
-    this.onColorChange(value);
+    return this.section.getTokens().filter(({id}) => id !== this.token.id)
   }
 
   async addVariant({color, type}: AddVariantEvent) {

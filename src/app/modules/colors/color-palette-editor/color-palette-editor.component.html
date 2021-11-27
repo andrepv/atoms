@@ -1,15 +1,11 @@
 <div class="wrapper">
   <div class="color-info">
-    <input
-      [(colorPicker)]="color"
-      [cpOutputFormat]="'rgba'"
-      [cpToggle]="true"
-      [cpDialogDisplay]="'inline'"
-      [style.background]="color"
-      [cpCancelButton]="true"
-      [cpPresetColors]="getPresetColors()"
-      (colorPickerChange)="onColorChange($event)"
-    />
+    <app-color-picker
+      [color]="color"
+      [currentThemeColors]="getPresetColors()"
+      (colorChange)="onColorChange($event)"
+      (colorSave)="saveColor($event)"
+    ></app-color-picker>
   </div>
 
   <div>
@@ -23,7 +19,7 @@
       (onRemoveVariant)="removeVariant($event)"
       (onColorChange)="updateVariant($event)"
     ></app-color-variants>
-    
+
     <app-color-variants
       type="shade"
       [variants]="getVariants('shades')"
@@ -34,16 +30,5 @@
       (onRemoveVariant)="removeVariant($event)"
       (onColorChange)="updateVariant($event)"
     ></app-color-variants>
-  </div>
-
-  <div *ngFor="let theme of colorsByTheme">
-    <p>{{ theme.themeName }}</p>
-    <div class="palette">
-      <div
-        *ngFor="let palette of theme.tokens"
-        [style.background]="palette.value.color"
-        (click)="setColor(palette.value.color)"
-      ></div>
-    </div>
   </div>
 </div>

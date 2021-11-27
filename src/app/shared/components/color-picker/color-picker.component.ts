@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ColorPaletteTokenModel, COLORPALETTE_DB_DATA } from '@colors/color-palette/color-palette.model';
-import { DBGroup, StoreToken } from '@core/core.model';
+import { DBGroup, TokensByTheme } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { provideEditorDeps } from '@utils/provide-editor-deps';
 import { Subject } from 'rxjs';
@@ -15,12 +15,13 @@ import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operato
 export class ColorPickerComponent implements OnInit {
   @Input() color: string;
   @Input() colorChangeDelay = 500;
+  @Input() currentThemeColors: ColorPaletteTokenModel[] = null;
 
   @Output() colorSave: EventEmitter<string> = new EventEmitter();
   @Output() colorChange: EventEmitter<string> = new EventEmitter();
 
   isPopoverVisible = false;
-  presetColors: StoreToken<ColorPaletteTokenModel>[] = [];
+  colorsByTheme: TokensByTheme<ColorPaletteTokenModel>;
 
   private colorChange$ = new Subject<string>();
   private destroy$ = new Subject();
@@ -35,7 +36,11 @@ export class ColorPickerComponent implements OnInit {
       tap(color => this.colorSave.emit(color)),
     ).subscribe();
 
-    this.presetColors = await this.colorPalettes.loadTokens();
+    if (!this.currentThemeColors) {
+      this.currentThemeColors = await this.colorPalettes.loadTokens();
+    }
+
+    this.colorsByTheme = await this.colorPalettes.getTokensByTheme();
   }
 
   ngOnDestroy() {
@@ -53,11 +58,7 @@ export class ColorPickerComponent implements OnInit {
     this.colorSave.emit(color);
   }
 
-  togglePopoverVisibility() {
+  togglePopover() {
     this.isPopoverVisible = !this.isPopoverVisible;
-  }
-
-  getColorsByIds(ids: number[]) {
-    return this.presetColors.filter(({id}) => ids.includes(id)).reverse()
-  }
+  }  
 }
