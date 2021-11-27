@@ -24,6 +24,7 @@ import { ColorsModule } from '@colors/colors.module';
 import { SpacingModule } from '@spacing/spacing.module';
 import { TypographyModule } from '@typography/typography.module';
 import { ShadowsModule } from './modules/shadows/shadows.module';
+import { BordersModule } from './modules/borders/borders.module';
 
 registerLocaleData(en);
 
@@ -41,6 +42,7 @@ registerLocaleData(en);
     SpacingModule,
     TypographyModule,
     ShadowsModule,
+    BordersModule,
     NzGridModule,
     NzAnchorModule,
     CommonModule,

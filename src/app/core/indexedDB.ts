@@ -8,6 +8,7 @@ import { ColorPaletteTables, COLORPALETTE_DB_DATA } from '@colors/color-palette/
 import { SpacingTables, SPACING_DB_DATA } from '@spacing/spacing.model';
 import { DBSectionData, SectionNames, ThemeTable } from '@core/core.model';
 import { BoxShadowTables, BOX_SHADOW_DB_DATA } from '@shadows/box-shadow-section/box-shadow-section.model';
+import { BorderRadiusTables, BORDER_RADIUS_DB_DATA } from '../modules/borders/border-radius/border-radius.model';
 
 
 const SECTIONS: DBSectionData[] = [
@@ -18,7 +19,8 @@ const SECTIONS: DBSectionData[] = [
   TEXTSTYLES_DB_DATA,
   SPACING_DB_DATA,
   COLORPALETTE_DB_DATA,
-  BOX_SHADOW_DB_DATA
+  BOX_SHADOW_DB_DATA,
+  BORDER_RADIUS_DB_DATA,
 ];
 
 export class DBService extends Dexie {
@@ -31,10 +33,10 @@ export class DBService extends Dexie {
   spacing: SpacingTables;
   colorPalette: ColorPaletteTables;
   boxShadow: BoxShadowTables;
-  
+  borderRadius: BorderRadiusTables;
 
   get sections() {
-    return [this.typeface, this.typescale, this.lineHeight, this.letterSpacing, this.textStyles, this.spacing, this.colorPalette, this.boxShadow];
+    return [this.typeface, this.typescale, this.lineHeight, this.letterSpacing, this.textStyles, this.spacing, this.colorPalette, this.boxShadow, this.borderRadius];
   }
 
   constructor() {
@@ -50,7 +52,7 @@ export class DBService extends Dexie {
       schema[section.groupTableName] = group;
     }
 
-    this.version(9).stores(schema);
+    this.version(10).stores(schema);
     
     this.theme = this.table("theme");
 
