@@ -10,6 +10,7 @@ import { DBSectionData, SectionNames, ThemeTable } from '@core/core.model';
 import { BoxShadowTables, BOX_SHADOW_DB_DATA } from '@shadows/box-shadow-section/box-shadow-section.model';
 import { BorderRadiusTables, BORDER_RADIUS_DB_DATA } from '../modules/borders/border-radius/border-radius.model';
 import { BorderTables, BORDER_DB_DATA } from '../modules/borders/borders.model';
+import { DurationsTables, DURATIONS_DB_DATA } from '../modules/durations/durations.model';
 
 const SECTIONS: DBSectionData[] = [
   TYPEFACE_DB_DATA,
@@ -22,6 +23,7 @@ const SECTIONS: DBSectionData[] = [
   BOX_SHADOW_DB_DATA,
   BORDER_RADIUS_DB_DATA,
   BORDER_DB_DATA,
+  DURATIONS_DB_DATA,
 ];
 
 export class DBService extends Dexie {
@@ -36,6 +38,7 @@ export class DBService extends Dexie {
   boxShadow: BoxShadowTables;
   borderRadius: BorderRadiusTables;
   border: BorderTables;
+  durations: DurationsTables;
 
   get sections() {
     return SECTIONS.map(section => this[section.tableGroupName])
@@ -54,7 +57,7 @@ export class DBService extends Dexie {
       schema[section.groupTableName] = group;
     }
 
-    this.version(11).stores(schema);
+    this.version(12).stores(schema);
     
     this.theme = this.table("theme");
 

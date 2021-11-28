@@ -21,9 +21,15 @@
 
   <div>
     <span>Base</span>
+    <nz-slider
+      [nzMin]="minBaseValue"
+      [nzMax]="maxBaseValue"
+      [(ngModel)]="base"
+      (nzOnAfterChange)="updateModularScale()"
+    ></nz-slider>
     <nz-input-number
-      [nzMin]="4"
-      [nzMax]="100"
+      [nzMin]="minBaseValue"
+      [nzMax]="maxBaseValue"
       [(ngModel)]="base"
       (ngModelChange)="updateModularScale()"
     ></nz-input-number>

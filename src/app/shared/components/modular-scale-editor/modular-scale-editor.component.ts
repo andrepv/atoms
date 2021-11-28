@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { EditorService } from '@core/services/editor.service';
@@ -12,11 +12,15 @@ import { DEFAULT_SCALE_BASE, DEFAULT_SCALE_RATIO, ModularScaleOption, ModularSca
   styleUrls: ['./modular-scale-editor.component.less']
 })
 export class ModularScaleEditorComponent implements OnInit {
+  @Input() private defaultBase = DEFAULT_SCALE_BASE;
+  @Input() minBaseValue = 4;
+  @Input() maxBaseValue = 100;
+
   readonly MODULAR_SCALE_OPTIONS = MODULAR_SCALE_OPTIONS
   isModularScaleEnabled = true;
   scaleRatio = DEFAULT_SCALE_RATIO;
-  base = DEFAULT_SCALE_BASE;
-
+  base = this.defaultBase;
+  
   private destroy$ = new Subject();
 
   get editableGroupId() {
@@ -88,7 +92,7 @@ export class ModularScaleEditorComponent implements OnInit {
   private resetState() {
     this.isModularScaleEnabled = true;
     this.scaleRatio = DEFAULT_SCALE_RATIO;
-    this.base = DEFAULT_SCALE_BASE;
+    this.base = this.defaultBase;
   }
 
 }

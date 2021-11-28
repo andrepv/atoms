@@ -5,9 +5,9 @@ export interface EditableContent<G extends DBGroup = any, T extends DBToken = an
   token?: StoreToken<T>
 }
 
-export type SectionNames = "Type Face" | "Type Scale" | "Line Height" | "Letter Spacing" | "Text Styles" | "Spacing" | "Color Palette" | "Box Shadow" | "Border Radius" | "Borders";
+export type SectionNames = "Type Face" | "Type Scale" | "Line Height" | "Letter Spacing" | "Text Styles" | "Spacing" | "Color Palette" | "Box Shadow" | "Border Radius" | "Borders" | "Durations";
 
-export type PageName = "Typography" | "Colors" | "Spacing" | "Shadows" | "Borders";
+export type PageName = "Typography" | "Colors" | "Spacing" | "Shadows" | "Borders" | "Durations";
 
 export interface StoreToken<T extends DBToken = any> {
   name: string;

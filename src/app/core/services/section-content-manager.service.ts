@@ -253,9 +253,9 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
         this.configs.onTokenDelete(token, group);
       }
 
-      if (this.editor.isGroupEditable(groupId, this.sectionName)) {
-        this.editor.disable();
-      }
+      // if (this.editor.isGroupEditable(groupId, this.sectionName)) {
+      //   this.editor.disable();
+      // }
 
       this.store.deleteGroup(this.sectionName, groupId);
     });

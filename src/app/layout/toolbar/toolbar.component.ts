@@ -14,7 +14,7 @@ export class ToolbarComponent implements OnInit {
     {name: 'Colors', url: '/colors', icon: '/assets/colors.svg'},
     {name: 'Spacing', url: '/spacing', icon: '/assets/spacing.svg'},
     {name: 'Shadows', url: '/shadows', icon: '/assets/shadow.svg'},
-    {name: 'Motion', url: '#', icon: '/assets/motion.svg'},
+    {name: 'Durations', url: 'durations', icon: '/assets/motion.svg'},
     {name: 'Borders', url: '/borders', icon: '/assets/border.svg'},
     {name: 'Z-Index', url: '#', icon: '/assets/z-index.svg'},
   ]

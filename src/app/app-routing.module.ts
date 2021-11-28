@@ -5,6 +5,7 @@ import { SpacingComponent } from '@spacing/spacing.component';
 import { TypographyComponent } from '@typography/typography.component';
 import { ShadowsComponent } from '@shadows/shadows.component';
 import { BordersComponent } from './modules/borders/borders.component';
+import { DurationsComponent } from './modules/durations/durations.component';
 
 const routes: Routes = [
   {path: 'typography', component: TypographyComponent},
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path: 'colors', component: ColorsComponent},
   {path: 'shadows', component: ShadowsComponent},
   {path: 'borders', component: BordersComponent},
+  {path: 'durations', component: DurationsComponent},
   {path: '**', redirectTo: 'typography'}
 ];
 
