@@ -7,7 +7,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { BoxShadowEditorComponent } from './box-shadow-editor/box-shadow-editor.component';
 import { BoxShadowSectionComponent } from './box-shadow-section/box-shadow-section.component';
 import { ShadowsComponent } from './shadows.component';
-import { BoxShadowLayerComponent } from './box-shadow-editor/box-shadow-layer/box-shadow-layer.component';
+import { BoxShadowLayerComponent } from './box-shadow-layer/box-shadow-layer.component';
 
 @NgModule({
   declarations: [

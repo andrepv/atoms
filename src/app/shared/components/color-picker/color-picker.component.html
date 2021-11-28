@@ -22,18 +22,18 @@
     <div class="preset-colors-wrapper">
       <nz-tabset>
         <nz-tab nzTitle="Current Theme">
-          <app-preset-colors
+          <app-color-picker-preset
             [tokens]="currentThemeColors"
             (colorSelect)="onPresetColorSelect($event)"
-          ></app-preset-colors>
+          ></app-color-picker-preset>
         </nz-tab>
         <nz-tab nzTitle="Other Themes">
           <div *ngFor="let theme of colorsByTheme" class="theme-colors">
             <p class="theme-name">{{ theme.themeName }}</p>
-            <app-preset-colors
+            <app-color-picker-preset
               [tokens]="theme.tokens"
               (colorSelect)="onPresetColorSelect($event)"
-            ></app-preset-colors>
+            ></app-color-picker-preset>
           </div>
         </nz-tab>
       </nz-tabset>

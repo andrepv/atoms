@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { LetterSpacingGroupModel, LetterSpacingTokenModel, LETTERSPACING_DB_DATA } from '@typography/letter-spacing/letter-spacing.model';
+import { LetterSpacingGroupModel, LetterSpacingTokenModel, LETTERSPACING_DB_DATA } from '@typography/letter-spacing-section/letter-spacing.model';
 import { provideEditorDeps } from '@utils/provide-editor-deps';
 
 @Component({

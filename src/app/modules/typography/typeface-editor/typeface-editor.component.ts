@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { Subscription } from 'rxjs';
 import { EditorService } from '@core/services/editor.service';
-import { FontType, TypefaceTokenModel, TypefaceTokenValue, TYPEFACE_DB_DATA } from '../typeface/typeface.model';
+import { FontType, TypefaceTokenModel, TypefaceTokenValue, TYPEFACE_DB_DATA } from '../typeface-section/typeface.model';
 import { DBGroup } from '@core/core.model';
 import { provideEditorDeps } from '@utils/provide-editor-deps';
 import { TextPreviewService } from '@typography/text-preview/text-preview.service';

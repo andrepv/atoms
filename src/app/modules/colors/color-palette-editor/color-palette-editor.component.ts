@@ -3,8 +3,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { ColorPaletteTokenModel, COLORPALETTE_DB_DATA, ColorVariantField, Variant } from '../color-palette/color-palette.model';
-import { AddVariantEvent, RemoveVariantEvent, VariantValueChangeEvent } from './color-variants/color-variants.component';
+import { ColorPaletteTokenModel, COLORPALETTE_DB_DATA, ColorVariantField, Variant } from '../color-palette-section/color-palette.model';
+import { AddVariantEvent, RemoveVariantEvent, VariantValueChangeEvent } from '../color-variants/color-variants.component';
 import { DBGroup } from '@core/core.model';
 import { provideEditorDeps } from '@utils/provide-editor-deps';
 

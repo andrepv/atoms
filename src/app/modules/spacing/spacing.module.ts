@@ -3,12 +3,12 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { SpacingEditorComponent } from './spacing-editor/spacing-editor.component';
 import { SpacingComponent } from './spacing.component';
-import { SpacingGroupListComponent } from './spacing-group-list/spacing-group-list.component';
+import { SpacingSectionComponent } from './spacing-section/spacing-section.component';
 
 @NgModule({
   declarations: [
     SpacingComponent,
-    SpacingGroupListComponent,
+    SpacingSectionComponent,
     SpacingEditorComponent
   ],
   imports: [

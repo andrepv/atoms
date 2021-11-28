@@ -31,7 +31,7 @@ import { TokenEditableComponent } from './components/token-editable/token-editab
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 import { ColorPickerModule } from 'ngx-color-picker';
-import { PresetColorsComponent } from './components/color-picker/preset-colors/preset-colors.component';
+import { ColorPickerPresetPresetComponent } from './components/color-picker-preset/color-picker-preset.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,7 @@ import { PresetColorsComponent } from './components/color-picker/preset-colors/p
     ModularScaleEditorComponent,
     AutofocusDirective,
     ColorPickerComponent,
-    PresetColorsComponent,
+    ColorPickerPresetPresetComponent,
   ],
   imports: [
     CommonModule,

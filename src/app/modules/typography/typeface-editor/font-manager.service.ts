@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CustomFont, FontCategory, GoogleFont } from '../typeface/typeface.model';
-import { CustomFontsManager } from './custom-fonts/custom-fonts-manager';
-import { GoogleFontsManager } from './google-fonts/google-fonts-manager';
+import { CustomFont, FontCategory, GoogleFont } from '../typeface-section/typeface.model';
+import { TypefaceDropzoneManager } from '../typeface-dropzone/typeface-dropzone-manager';
+import { TypefaceListGoogleManager } from '../typeface-list-google/typeface-list-google-manager';
 
 export interface Font {
 	kind?: string;
@@ -19,12 +19,12 @@ export interface Font {
 export class FontManagerService {
 	embeddedFonts = new Set<string>();
 
-	googleFonts: GoogleFontsManager;
-	customFonts: CustomFontsManager;
+	googleFonts: TypefaceListGoogleManager;
+	customFonts: TypefaceDropzoneManager;
 
   constructor(http: HttpClient) {
-		this.googleFonts = new GoogleFontsManager(http, this);
-		this.customFonts = new CustomFontsManager(this);
+		this.googleFonts = new TypefaceListGoogleManager(http, this);
+		this.customFonts = new TypefaceDropzoneManager(this);
 	}
 
 	load(fonts: (GoogleFont | CustomFont)[]) {

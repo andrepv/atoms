@@ -5,7 +5,7 @@ import { EditorService } from '@core/services/editor.service';
 import { TextPreviewService } from '../text-preview/text-preview.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { DBGroup } from '@core/core.model';
-import { TextStylesTokenModel, TextStylesTokenValue, TEXTSTYLES_DB_DATA } from '@typography/text-styles/text-styles.model';
+import { TextStylesTokenModel, TextStylesTokenValue, TEXTSTYLES_DB_DATA } from '@typography/text-styles-section/text-styles.model';
 import { provideEditorDeps } from '@utils/provide-editor-deps';
 import { TextPreviewStyleProps } from '@typography/text-preview/text-preview.model';
 

@@ -3,14 +3,14 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 
 import { BordersComponent } from './borders.component';
-import { BorderRadiusComponent } from './border-radius/border-radius.component';
+import { BorderRadiusSectionComponent } from './border-radius-section/border-radius-section.component';
 import { BordersSectionComponent } from './borders-section/borders-section.component';
 import { BordersEditorComponent } from './borders-editor/borders-editor.component';
 
 @NgModule({
   declarations: [
     BordersComponent,
-    BorderRadiusComponent,
+    BorderRadiusSectionComponent,
     BordersSectionComponent,
     BordersEditorComponent,
   ],

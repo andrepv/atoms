@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ColorPaletteTokenModel, COLORPALETTE_DB_DATA } from '@colors/color-palette/color-palette.model';
+import { ColorPaletteTokenModel, COLORPALETTE_DB_DATA } from '@colors/color-palette-section/color-palette.model';
 import { DBGroup, TokensByTheme } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { provideEditorDeps } from '@utils/provide-editor-deps';

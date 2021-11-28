@@ -1,14 +1,14 @@
 import Dexie from 'dexie';
-import { TEXTSTYLES_DB_DATA, TextStylesTables } from '@typography/text-styles/text-styles.model';
-import { TYPEFACE_DB_DATA, TypefaceTables } from '@typography/typeface/typeface.model';
-import { LetterSpacingTables, LETTERSPACING_DB_DATA } from '@typography/letter-spacing/letter-spacing.model';
-import { TypescaleTables, TYPESCALE_DB_DATA } from '@typography/typescale/typescale.model';
-import { LineHeightTables, LINEHEIGHT_DB_DATA } from '@typography/line-height/line-height.model';
-import { ColorPaletteTables, COLORPALETTE_DB_DATA } from '@colors/color-palette/color-palette.model';
+import { TEXTSTYLES_DB_DATA, TextStylesTables } from '@typography/text-styles-section/text-styles.model';
+import { TYPEFACE_DB_DATA, TypefaceTables } from '@typography/typeface-section/typeface.model';
+import { LetterSpacingTables, LETTERSPACING_DB_DATA } from '@typography/letter-spacing-section/letter-spacing.model';
+import { TypescaleTables, TYPESCALE_DB_DATA } from '@typography/typescale-section/typescale.model';
+import { LineHeightTables, LINEHEIGHT_DB_DATA } from '@typography/line-height-section/line-height.model';
+import { ColorPaletteTables, COLORPALETTE_DB_DATA } from '@colors/color-palette-section/color-palette.model';
 import { SpacingTables, SPACING_DB_DATA } from '@spacing/spacing.model';
 import { DBSectionData, SectionNames, ThemeTable } from '@core/core.model';
 import { BoxShadowTables, BOX_SHADOW_DB_DATA } from '@shadows/box-shadow-section/box-shadow-section.model';
-import { BorderRadiusTables, BORDER_RADIUS_DB_DATA } from '../modules/borders/border-radius/border-radius.model';
+import { BorderRadiusTables, BORDER_RADIUS_DB_DATA } from '../modules/borders/border-radius-section/border-radius.model';
 import { BorderTables, BORDER_DB_DATA } from '../modules/borders/borders.model';
 import { DurationsTables, DURATIONS_DB_DATA } from '../modules/durations/durations.model';
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { LineHeightTokenModel, LineHeightGroupModel, LINEHEIGHT_DB_DATA } from '@typography/line-height/line-height.model';
+import { LineHeightTokenModel, LineHeightGroupModel, LINEHEIGHT_DB_DATA } from '@typography/line-height-section/line-height.model';
 import { provideEditorDeps } from '@utils/provide-editor-deps';
 
 @Component({

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { TextPreviewService } from '@typography/text-preview/text-preview.service';
-import { TypescaleTokenModel, TypescaleGroupModel, TYPESCALE_DB_DATA } from '@typography/typescale/typescale.model';
+import { TypescaleTokenModel, TypescaleGroupModel, TYPESCALE_DB_DATA } from '@typography/typescale-section/typescale.model';
 import { provideEditorDeps } from '@utils/provide-editor-deps';
 
 @Component({

@@ -10,19 +10,19 @@
       <label nz-radio-button nzValue="custom-font">Custom Font</label>
     </nz-radio-group>
 
-    <app-google-fonts
+    <app-typeface-list-google
       *ngIf="radioValue === 'google-fonts'"
       (save)="saveFont($event)"
-    ></app-google-fonts>
+    ></app-typeface-list-google>
 
-    <app-custom-font
+    <app-typeface-dropzone
       *ngIf="radioValue === 'custom-font'"
       (save)="saveFont($event)"
-    ></app-custom-font>
+    ></app-typeface-dropzone>
 
-    <app-loaded-fonts
+    <app-typeface-list
       *ngIf="radioValue === 'loaded-fonts'"
       (save)="saveFont($event)"
-    ></app-loaded-fonts>
+    ></app-typeface-list>
   </div>
 </div>
