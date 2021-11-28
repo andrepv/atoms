@@ -1,0 +1,50 @@
+<div class="wrapper">
+  <div>
+    <p>Color</p>
+    <app-color-picker
+      [color]="token.value.color"
+      (colorChange)="changeColor($event)"
+      (colorSave)="updateTokenValue()"
+    ></app-color-picker>
+  </div>
+  <br />
+  <div>
+    <p>Width</p>
+    <nz-slider
+      [nzMin]="0"
+      [nzMax]="15"
+      [(ngModel)]="token.value.width"
+      (ngModelChange)="changeWidth($event)"
+      (nzOnAfterChange)="updateTokenValue()"
+    ></nz-slider>
+    <nz-input-number
+      [nzMin]="0"
+      [nzMax]="15"
+      [(ngModel)]="token.value.width"
+      (ngModelChange)="updateTokenValue()"
+    ></nz-input-number>
+  </div>
+  <br />
+  <div>
+    <p>Style</p>
+    <nz-select
+      [ngModel]="token.value.style"
+      (ngModelChange)="changeStyle($event)"
+    >
+      <nz-option 
+        *ngFor="let style of STYLES"
+        [nzValue]="style"
+        [nzLabel]="style"
+        nzCustomContent
+      >
+        <div class="style-option">
+          <p class="style-name">{{ style }}</p>
+          <div
+            class="style-preview"
+            [style.border-style]="style"
+          ></div>
+        </div>
+      </nz-option>
+    </nz-select>
+  </div>
+</div>

@@ -16,7 +16,7 @@
           [nzMin]="-15"
           [nzMax]="15"
           [(ngModel)]="offsetX"
-          (ngModelChange)="saveValue()"
+          (ngModelChange)="onInputChange('offsetX')"
         ></nz-input-number>
       </div>
       <nz-slider
@@ -35,7 +35,7 @@
           [nzMin]="-15"
           [nzMax]="15"
           [(ngModel)]="offsetY"
-          (ngModelChange)="saveValue()"
+          (ngModelChange)="onInputChange('offsetY')"
         ></nz-input-number>
       </div>
       <nz-slider
@@ -54,7 +54,7 @@
           [nzMin]="0"
           [nzMax]="20"
           [(ngModel)]="blur"
-          (ngModelChange)="saveValue()"
+          (ngModelChange)="onInputChange('blur')"
         ></nz-input-number>
       </div>
       <nz-slider
@@ -73,7 +73,7 @@
           [nzMin]="-15"
           [nzMax]="15"
           [(ngModel)]="spread"
-          (ngModelChange)="saveValue()"
+          (ngModelChange)="onInputChange('spread')"
         ></nz-input-number>
       </div>
       <nz-slider

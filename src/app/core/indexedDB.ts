@@ -9,7 +9,7 @@ import { SpacingTables, SPACING_DB_DATA } from '@spacing/spacing.model';
 import { DBSectionData, SectionNames, ThemeTable } from '@core/core.model';
 import { BoxShadowTables, BOX_SHADOW_DB_DATA } from '@shadows/box-shadow-section/box-shadow-section.model';
 import { BorderRadiusTables, BORDER_RADIUS_DB_DATA } from '../modules/borders/border-radius/border-radius.model';
-
+import { BorderTables, BORDER_DB_DATA } from '../modules/borders/borders.model';
 
 const SECTIONS: DBSectionData[] = [
   TYPEFACE_DB_DATA,
@@ -21,6 +21,7 @@ const SECTIONS: DBSectionData[] = [
   COLORPALETTE_DB_DATA,
   BOX_SHADOW_DB_DATA,
   BORDER_RADIUS_DB_DATA,
+  BORDER_DB_DATA,
 ];
 
 export class DBService extends Dexie {
@@ -34,9 +35,10 @@ export class DBService extends Dexie {
   colorPalette: ColorPaletteTables;
   boxShadow: BoxShadowTables;
   borderRadius: BorderRadiusTables;
+  border: BorderTables;
 
   get sections() {
-    return [this.typeface, this.typescale, this.lineHeight, this.letterSpacing, this.textStyles, this.spacing, this.colorPalette, this.boxShadow, this.borderRadius];
+    return SECTIONS.map(section => this[section.tableGroupName])
   }
 
   constructor() {
@@ -52,7 +54,7 @@ export class DBService extends Dexie {
       schema[section.groupTableName] = group;
     }
 
-    this.version(10).stores(schema);
+    this.version(11).stores(schema);
     
     this.theme = this.table("theme");
 

@@ -4,6 +4,8 @@ import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { BoxShadowLayer, BoxShadowTokenModel } from './../../box-shadow-section/box-shadow-section.model';
 
+type NumericPropertyNames = keyof Omit<BoxShadowLayer, 'inset' | 'color'>;
+
 @Component({
   selector: 'app-box-shadow-layer',
   templateUrl: './box-shadow-layer.component.html',
@@ -48,8 +50,13 @@ export class BoxShadowLayerComponent implements OnInit {
     this.color = this.layer.color;
   }
 
-  changeValue(valueName: keyof Omit<BoxShadowLayer, 'inset' | 'color'>) {
+  changeValue(valueName: NumericPropertyNames) {
     this.layer[valueName] = `${this[valueName]}px`;
+  }
+
+  onInputChange(valueName: NumericPropertyNames) {
+    this.changeValue(valueName);
+    this.saveValue();
   }
 
   toggleInset() {

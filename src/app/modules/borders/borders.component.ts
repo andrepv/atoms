@@ -15,6 +15,7 @@ export class BordersComponent implements OnInit {
     this.store.setPageStructure({
       name: this.PAGE_NAME,
       content: {
+        "Borders": [],
         "Border Radius": [],
       }
     });
