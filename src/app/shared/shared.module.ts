@@ -33,6 +33,7 @@ import { ColorPickerComponent } from './components/color-picker/color-picker.com
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ColorPickerPresetPresetComponent } from './components/color-picker-preset/color-picker-preset.component';
 import { SliderComponent } from './components/slider/slider.component';
+import { PageComponent } from './components/page/page.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { SliderComponent } from './components/slider/slider.component';
     ColorPickerComponent,
     ColorPickerPresetPresetComponent,
     SliderComponent,
+    PageComponent,
   ],
   imports: [
     CommonModule,
@@ -85,6 +87,7 @@ import { SliderComponent } from './components/slider/slider.component';
     ModularScaleEditorComponent,
     ColorPickerComponent,
     SliderComponent,
+    PageComponent,
 
     NzToolTipModule,
     NzDropDownModule,

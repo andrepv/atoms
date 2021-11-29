@@ -1,10 +1,7 @@
-<div>
-  <h1 class="page-title">{{ PAGE_NAME }}</h1>
-  <div>
-    <app-typeface-section></app-typeface-section>
-    <app-typescale-section></app-typescale-section>
-    <app-line-height-section></app-line-height-section>
-    <app-letter-spacing-section></app-letter-spacing-section>
-    <app-text-styles-section></app-text-styles-section>
-  </div>
-</div>
+<app-page [name]="PAGE_NAME">
+  <app-typeface-section></app-typeface-section>
+  <app-typescale-section></app-typescale-section>
+  <app-line-height-section></app-line-height-section>
+  <app-letter-spacing-section></app-letter-spacing-section>
+  <app-text-styles-section></app-text-styles-section>
+</app-page>
