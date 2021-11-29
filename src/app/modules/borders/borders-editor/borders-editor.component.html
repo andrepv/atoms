@@ -8,22 +8,14 @@
     ></app-color-picker>
   </div>
   <br />
-  <div>
-    <p>Width</p>
-    <nz-slider
-      [nzMin]="0"
-      [nzMax]="15"
-      [(ngModel)]="token.value.width"
-      (ngModelChange)="changeWidth($event)"
-      (nzOnAfterChange)="updateTokenValue()"
-    ></nz-slider>
-    <nz-input-number
-      [nzMin]="0"
-      [nzMax]="15"
-      [(ngModel)]="token.value.width"
-      (ngModelChange)="updateTokenValue()"
-    ></nz-input-number>
-  </div>
+  <app-slider
+    title="Width"
+    [min]="0"
+    [max]="15"
+    [(model)]="token.value.width"
+    (modelChange)="changeWidth($event)"
+    (afterModelChange)="updateTokenValue()"
+  ></app-slider>
   <br />
   <div>
     <p>Style</p>

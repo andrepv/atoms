@@ -54,11 +54,6 @@ export class BoxShadowLayerComponent implements OnInit {
     this.layer[valueName] = `${this[valueName]}px`;
   }
 
-  onInputChange(valueName: NumericPropertyNames) {
-    this.changeValue(valueName);
-    this.saveValue();
-  }
-
   toggleInset() {
     this.layer.inset = !this.inset ? "" : "inset";
   }

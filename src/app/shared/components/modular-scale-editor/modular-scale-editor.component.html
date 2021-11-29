@@ -19,19 +19,11 @@
     </nz-select>
   </div>
 
-  <div>
-    <span>Base</span>
-    <nz-slider
-      [nzMin]="minBaseValue"
-      [nzMax]="maxBaseValue"
-      [(ngModel)]="base"
-      (nzOnAfterChange)="updateModularScale()"
-    ></nz-slider>
-    <nz-input-number
-      [nzMin]="minBaseValue"
-      [nzMax]="maxBaseValue"
-      [(ngModel)]="base"
-      (ngModelChange)="updateModularScale()"
-    ></nz-input-number>
-  </div>
+  <app-slider
+    title="Base"
+    [min]="minBaseValue"
+    [max]="maxBaseValue"
+    [(model)]="base"
+    (afterModelChange)="updateModularScale()"
+  ></app-slider>
 </div>

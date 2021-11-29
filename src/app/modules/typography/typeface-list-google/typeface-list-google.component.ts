@@ -42,7 +42,9 @@ export class TypefaceListGoogleComponent implements OnInit {
   ngOnInit() {
     this.fontManager.loadFonts();
 
-    this.fontManager.fonts$.subscribe(() => {
+    this.fontManager.fonts$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
       this.ds = new MyDataSource(this.fontManager);
     })
 
@@ -53,7 +55,7 @@ export class TypefaceListGoogleComponent implements OnInit {
       tap(value => this.fontManager.filterByName(value))
     ).subscribe();
   }
-  
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();

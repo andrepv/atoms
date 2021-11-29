@@ -35,6 +35,11 @@
             "styles": [
               "src/styles.less"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "./src"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
@@ -66,11 +71,6 @@
                 }
               ]
             }
-          },
-          "stylePreprocessorOptions": {
-            "includePaths": [
-              "src/"
-            ]
           }
         },
         "serve": {
@@ -104,6 +104,11 @@
             "styles": [
               "src/styles.less"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "./src"
+              ]
+            },
             "scripts": []
           }
         },

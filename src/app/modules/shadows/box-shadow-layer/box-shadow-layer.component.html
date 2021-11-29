@@ -9,81 +9,41 @@
       (click)="toggleVisibility()"></i>
   </div>
   <div class="layer-body" [class.hidden]="isHidden">
-    <div>
-      <div class="control-header">
-        <p>Offset X</p>
-        <nz-input-number
-          [nzMin]="-15"
-          [nzMax]="15"
-          [(ngModel)]="offsetX"
-          (ngModelChange)="onInputChange('offsetX')"
-        ></nz-input-number>
-      </div>
-      <nz-slider
-        [nzMin]="-15"
-        [nzMax]="15"
-        [(ngModel)]="offsetX"
-        (ngModelChange)="changeValue('offsetX')"
-        (nzOnAfterChange)="saveValue()"
-      ></nz-slider>
-    </div>
+    <app-slider
+      title="Offset X"
+      [min]="-15"
+      [max]="15"
+      [(model)]="offsetX"
+      (modelChange)="changeValue('offsetX')"
+      (afterModelChange)="saveValue()"
+    ></app-slider>
+ 
+    <app-slider
+      title="Offset Y"
+      [min]="-15"
+      [max]="15"
+      [(model)]="offsetY"
+      (modelChange)="changeValue('offsetY')"
+      (afterModelChange)="saveValue()"
+    ></app-slider>
 
-    <div>
-      <div class="control-header">
-        <p>Offset Y</p>
-        <nz-input-number
-          [nzMin]="-15"
-          [nzMax]="15"
-          [(ngModel)]="offsetY"
-          (ngModelChange)="onInputChange('offsetY')"
-        ></nz-input-number>
-      </div>
-      <nz-slider
-        [nzMin]="-15"
-        [nzMax]="15"
-        [(ngModel)]="offsetY"
-        (ngModelChange)="changeValue('offsetY')"
-        (nzOnAfterChange)="saveValue()"
-      ></nz-slider>
-    </div>
+    <app-slider
+      title="Blur"
+      [min]="0"
+      [max]="20"
+      [(model)]="blur"
+      (modelChange)="changeValue('blur')"
+      (afterModelChange)="saveValue()"
+    ></app-slider>
 
-    <div>
-      <div class="control-header">
-        <p>Blur</p>
-        <nz-input-number
-          [nzMin]="0"
-          [nzMax]="20"
-          [(ngModel)]="blur"
-          (ngModelChange)="onInputChange('blur')"
-        ></nz-input-number>
-      </div>
-      <nz-slider
-        [nzMin]="0"
-        [nzMax]="20"
-        [(ngModel)]="blur"
-        (ngModelChange)="changeValue('blur')"
-        (nzOnAfterChange)="saveValue()"
-      ></nz-slider>
-    </div>
-
-    <div>
-      <div class="control-header">
-        <p>Spread</p>
-        <nz-input-number
-          [nzMin]="-15"
-          [nzMax]="15"
-          [(ngModel)]="spread"
-          (ngModelChange)="onInputChange('spread')"
-        ></nz-input-number>
-      </div>
-      <nz-slider
-        [nzMin]="-15"
-        [nzMax]="15"
-        [(ngModel)]="spread"
-        (ngModelChange)="changeValue('spread')"
-        (nzOnAfterChange)="saveValue()"
-      ></nz-slider>
-    </div>
+    <app-slider
+      title="Spread"
+      [min]="-15"
+      [max]="15"
+      [(model)]="spread"
+      (modelChange)="changeValue('spread')"
+      (afterModelChange)="saveValue()"
+    ></app-slider>
 
     <div class="control-header inset">
       <p>Inset</p>
@@ -96,11 +56,11 @@
     <div class="control-header shadow-color">
       <p>Color</p>
       <app-color-picker
-      [color]="color"
-      (colorChange)="changeColor($event)"
-      (colorSave)="saveValue()"
-    ></app-color-picker>
+        [color]="color"
+        (colorChange)="changeColor($event)"
+        (colorSave)="saveValue()"
+      ></app-color-picker>
     </div>
-    
+
   </div>
 </div>

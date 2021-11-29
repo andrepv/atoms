@@ -32,6 +32,7 @@ import { AutofocusDirective } from './directives/autofocus.directive';
 import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ColorPickerPresetPresetComponent } from './components/color-picker-preset/color-picker-preset.component';
+import { SliderComponent } from './components/slider/slider.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { ColorPickerPresetPresetComponent } from './components/color-picker-pres
     AutofocusDirective,
     ColorPickerComponent,
     ColorPickerPresetPresetComponent,
+    SliderComponent,
   ],
   imports: [
     CommonModule,
@@ -82,6 +84,7 @@ import { ColorPickerPresetPresetComponent } from './components/color-picker-pres
     TextEditableComponent,
     ModularScaleEditorComponent,
     ColorPickerComponent,
+    SliderComponent,
 
     NzToolTipModule,
     NzDropDownModule,

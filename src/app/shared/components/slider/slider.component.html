@@ -1,0 +1,18 @@
+<div class="slider">
+  <div class="slider-header">
+    <p>{{ title }}</p>
+    <nz-input-number
+      [nzMin]="min"
+      [nzMax]="max"
+      [(ngModel)]="model"
+      (ngModelChange)="onInputChange()"
+    ></nz-input-number>
+  </div>
+  <nz-slider
+    [nzMin]="min"
+    [nzMax]="max"
+    [(ngModel)]="model"
+    (ngModelChange)="modelChange.emit($event)"
+    (nzOnAfterChange)="afterModelChange.emit($event)"
+  ></nz-slider>
+</div>

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { StoreToken } from '@core/core.model';
 import { TextPreviewStyles } from '@typography/text-preview/text-preview.model';
 import { TextPreviewService } from '@typography/text-preview/text-preview.service';
+import { Subscription } from 'rxjs';
 import { finalize, take } from 'rxjs/operators';
 import { TextStylesTokenModel } from '../text-styles-section/text-styles.model';
 
@@ -13,13 +14,19 @@ export class TextStylesTokenComponent implements OnInit {
   @Input() token: StoreToken<TextStylesTokenModel>;
   preview = this.previewManager.DEFAULT_PREVIEW;
 
+  subscription: Subscription;
+
   constructor(private previewManager: TextPreviewService) {}
 
   ngOnInit() {
-    this.previewManager.isStyleSourceLoaded$.pipe(
+    this.subscription = this.previewManager.isStyleSourceLoaded$.pipe(
       take(this.previewManager.sectionsToLoadCount),
       finalize(() => setTimeout(() => this.onSectionsLoad(), 0))
     ).subscribe()
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   private onSectionsLoad() {
