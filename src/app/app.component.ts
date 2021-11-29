@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StoreService } from '@core/services/store.service';
+import { queryClipboardPermission } from '@utils/query-clipboard-permission';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,11 @@ export class AppComponent implements OnInit {
   isLoading = false;
 
   constructor(private store: StoreService) {}
-  
+
   async ngOnInit() {
     this.isLoading = true;
+
+    queryClipboardPermission();
 
     try {
       await this.store.loadTheme();

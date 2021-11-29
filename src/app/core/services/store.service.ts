@@ -14,27 +14,13 @@ interface StorePage {
 @Injectable({ providedIn: 'root' })
 export class StoreService {
   isLoading = false;
-  canUseClipboard = true;
 
   private page: StorePage = {
     name: "",
     content: {},
   }
 
-  constructor(public themeManager: ThemeManagerService) {
-    const queryOpts = {
-      name: 'clipboard-read' as PermissionName,
-      allowWithoutGesture: false
-    };
-    navigator.permissions.query(queryOpts).then(permissionStatus => {
-
-      this.setClipboardActionsStatus(permissionStatus.state);
-
-      permissionStatus.onchange = () => {
-        this.setClipboardActionsStatus(permissionStatus.state);
-      };
-    });
-  }
+  constructor(public themeManager: ThemeManagerService) {}
 
   loadTheme() {
     return this.themeManager.loadList();
@@ -103,11 +89,5 @@ export class StoreService {
   ) {
     const {tokens} = this.getGroup(sectionName, groupId)
     return tokens.find(({id}) => id === tokenId)
-  }
-
-  private setClipboardActionsStatus(permissionStatus: PermissionState) {
-    if (permissionStatus === 'denied') {
-      this.canUseClipboard = false;
-    }
   }
 }

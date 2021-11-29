@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ClipboardService } from '@core/services/clipboard.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { StoreService } from '@core/services/store.service';
 
 @Component({
   selector: 'app-group-list-header',
@@ -14,7 +13,6 @@ export class GroupListHeaderComponent implements OnInit {
   constructor(
     private section: SectionContentManagerService,
     private clipboard: ClipboardService,
-    private store: StoreService
   ) {}
 
   ngOnInit() {
@@ -31,6 +29,6 @@ export class GroupListHeaderComponent implements OnInit {
   }
 
   canUseClipboard() {
-    return this.store.canUseClipboard
+    return this.clipboard.isAvailable
   }
 }
