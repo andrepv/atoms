@@ -3,6 +3,7 @@ import { DBGroup, TokensByTheme } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { GoogleFont, TypefaceTokenModel } from '../typeface-section/typeface.model';
 import { FontManagerService } from '../typeface-editor/font-manager.service';
+import { ThemeManagerService } from '@core/services/theme-manager.service';
 
 @Component({
   selector: 'app-typeface-list',
@@ -16,10 +17,11 @@ export class TypefaceListComponent implements OnInit {
   constructor(
     private fontsManager: FontManagerService,
     private section: SectionContentManagerService<TypefaceTokenModel, DBGroup>,
+    private themeManager: ThemeManagerService,
   ) {}
 
   async ngOnInit() {
-    this.fontsByTheme = await this.section.getTokensByTheme();
+    this.fontsByTheme = await this.section.tables.getTokens([this.themeManager.selected.id]);
   }
 
   onThemeFontsLoad(data: TokensByTheme<TypefaceTokenModel>) {

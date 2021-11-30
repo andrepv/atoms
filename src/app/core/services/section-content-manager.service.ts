@@ -4,8 +4,9 @@ import { db } from '../indexedDB';
 import { StoreService } from '@core/services/store.service';
 import { EditorService } from '@core/services/editor.service';
 import { getRandomChars } from '@utils';
-import { StoreToken, StoreGroup, DBToken, DBTables, DBGroup, TokensByTheme, SectionNames } from '@core/core.model';
+import { StoreToken, StoreGroup, DBToken, DBGroup } from '@core/core.model';
 import { ThemeManagerService } from './theme-manager.service';
+import { SectionTables } from '@core/section-tables';
 
 interface SectionViewConfigs {
   isTokenEditable?: boolean;
@@ -25,11 +26,11 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
   isLoading = false;
 
   get groupTable() {
-    return this.tables.group;
+    return this.tables.groupTable;
   }
 
   get tokenTable() {
-    return this.tables.token;
+    return this.tables.tokenTable;
   }
 
   get sectionName() {
@@ -54,7 +55,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
   }
 
   constructor(
-    @Inject('tables') private tables: DBTables<Dexie.Table<T, number>, Dexie.Table<G, number>>,
+    @Inject('tables') public tables: SectionTables<T, G>,
     public store: StoreService,
     private message: NzMessageService,
     private editor: EditorService,
@@ -75,10 +76,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
   async load() {
     this.isLoading = true;
 
-    const groups = await this.groupTable
-    .where("themeId")
-    .equals(this.selectedThemeId)
-    .toArray();
+    const groups = await this.tables.getThemeGroups(this.selectedThemeId);
 
     if (!groups.length) {
       this.store.setSectionContent(this.sectionName, [])
@@ -90,10 +88,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     let groupList: StoreGroup[] = [];
 
     for (let group of groups) {
-      const tokens = await this.tokenTable
-      .where("id")
-      .anyOf(group.tokensId)
-      .toArray() as StoreToken[];
+      const tokens = await this.tables.getTokensByIds(group.tokensId) as StoreToken[];
 
       const transformedGroup: StoreGroup = {
         name: group.name,
@@ -117,41 +112,36 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
   }
 
   async addToken(token: T, groupId: number) {
-    const newToken = await this.saveTokenToDB(token, groupId);
-    this.store.getGroup(this.sectionName, groupId).tokens.push(newToken)
-    return newToken;
+    const tokenId = await this.tables.addToken(token, this.getDBGroup(groupId));
+    if (tokenId) {
+      const newToken = {id: tokenId, ...token};
+      this.store.getGroup(this.sectionName, groupId).tokens.push(newToken)
+      return newToken;
+    }
   }
 
-  deleteToken(tokenId: number, groupId: number) {
-    db.transaction('rw', [this.tokenTable, this.groupTable], async () => {
-        await this.tokenTable.delete(tokenId);
+  async deleteToken(tokenId: number, groupId: number) {
+    await this.tables.deleteToken(tokenId, this.getDBGroup(groupId));
 
-        const group = this.store.getGroup(this.sectionName, groupId);
-        const token = group.tokens.find(({id}) => id === tokenId);
+    const group = this.store.getGroup(this.sectionName, groupId);
+    const token = group.tokens.find(({id}) => id === tokenId);
 
-        const tokenIds = this.getGroupTokenIds(groupId);
-        const nextTokenIds = tokenIds.filter(id => id !== tokenId)
-    
-        await this.groupTable.update(groupId, {tokensId: nextTokenIds});
+    if (token) {
+      this.configs.onTokenDelete(token, group);
+    }
 
-        if (token) {
-          this.configs.onTokenDelete(token, group);
-        }
-    
-      }).then(() => {
-        if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
-          this.editor.disable();
-        }
-        const group = this.store.getGroup(this.sectionName, groupId);
-        group.tokens = group.tokens.filter(({id}) => id !== tokenId)
-    });
+    if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
+      this.editor.disable();
+    }
+
+    group.tokens = group.tokens.filter(({id}) => id !== tokenId)
   }
 
   async renameToken(tokenName: string, tokenId: number, groupId: number) {
-    const isUnique = await this.isTokenNameUnique(tokenName);
+    const isUnique = await db.isTokenNameUnique(tokenName, this.selectedThemeId);
     if (!isUnique) {
       this.message.error('The token name must be unique');
-      throw new Error('The token name must be unique');
+      return;
     }
 
     await this.tokenTable.update(tokenId, {name: tokenName});
@@ -193,33 +183,6 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     return this.store.getSectionTokens(this.sectionName)
   }
 
-  // @TODO: cache results
-  async loadTokens(): Promise<T[]> {
-    const tokens = await this.tokenTable
-    .where("themeId")
-    .equals(this.selectedThemeId)
-    .toArray();
-
-    return tokens;
-  }
-
-  async getTokensByTheme(exclude = [this.themeManager.selected.id]) {
-    const tokens = await this.tokenTable.toArray();
-    const themes = await this.themeManager.table.toArray();
-    const data: TokensByTheme<T> = [];
-
-    for (let theme of themes) {
-      if (!exclude.includes(theme.id)) {
-        const themeTokens = tokens.filter(token => token.themeId === theme.id);
-        if (themeTokens.length) {
-          data.push({themeName: theme.name, tokens: themeTokens})
-        }
-      }
-    }
-
-    return data;
-  }
-
   getToken(tokenId: number): StoreToken<T> | false {
     return this.store.getSectionToken(this.sectionName, tokenId)
   }
@@ -239,26 +202,16 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     return groupId;
   }
 
-  deleteGroup(groupId: number) {
-    db.transaction('rw', [this.tokenTable, this.groupTable], async () => {
-      const tokenIds = this.getGroupTokenIds(groupId);
-      const group = this.store.getGroup(this.sectionName, groupId);
+  async deleteGroup(groupId: number) {
+    await this.tables.deleteGroup(this.getDBGroup(groupId));
 
-      await this.groupTable.delete(groupId);
+    const group = this.store.getGroup(this.sectionName, groupId);
 
-      for (let tokenId of tokenIds) {
-        await this.tokenTable.delete(tokenId);
+    for (let token of group.tokens) {
+      this.configs.onTokenDelete(token, group);
+    }
 
-        const token = group.tokens.find(({id}) => id === tokenId)
-        this.configs.onTokenDelete(token, group);
-      }
-
-      // if (this.editor.isGroupEditable(groupId, this.sectionName)) {
-      //   this.editor.disable();
-      // }
-
-      this.store.deleteGroup(this.sectionName, groupId);
-    });
+    this.store.deleteGroup(this.sectionName, groupId);
   }
 
   async renameGroup(groupName: string, groupId: number) {
@@ -307,29 +260,12 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     return this.store.getGroupList(this.sectionName)
   }
 
-  private async saveTokenToDB(token: T, groupId: number): Promise<StoreToken<T>>
-  {
-    return db.transaction('rw', [this.tokenTable, this.groupTable], async () => {
-      const tokenId = await this.tokenTable.add(token);
-      const tokenIds = this.getGroupTokenIds(groupId);
-      const nextTokenIds = [...tokenIds, tokenId]
-      await this.groupTable.update(groupId, {tokensId: nextTokenIds});
-      return {id: tokenId, ...token};
-    });
-  }
-
-  private async isTokenNameUnique(name: string) {
-    for (let section of db.sections) {
-      const isUnique = await section.isTokenNameUnique(name, this.selectedThemeId);
-      if (!isUnique) {
-        return false;
-      }
+  private getDBGroup(groupId: number): any {
+    const group = this.store.getGroup(this.sectionName, groupId)
+    return {
+      ...group,
+      tokensId: group.tokens.map(token => token.id),
+      themeId: this.themeManager.selected.id,
     }
-    return true;
-  }
-
-  private getGroupTokenIds(groupId: number) {
-    const {tokens} = this.store.getGroup(this.sectionName, groupId);
-    return tokens.map(token => token.id);
   }
 }

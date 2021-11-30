@@ -3,6 +3,7 @@
     <app-slider
       [min]="minValue"
       [max]="maxValue"
+      [step]="step"
       [(model)]="_value"
       (afterModelChange)="onAfterChange.emit($event)"
     ></app-slider>

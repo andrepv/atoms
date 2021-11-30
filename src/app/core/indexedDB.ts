@@ -11,6 +11,7 @@ import { BoxShadowTables, BOX_SHADOW_DB_DATA } from '@shadows/box-shadow-section
 import { BorderRadiusTables, BORDER_RADIUS_DB_DATA } from '../modules/borders/border-radius-section/border-radius.model';
 import { BorderTables, BORDER_DB_DATA } from '../modules/borders/borders.model';
 import { DurationsTables, DURATIONS_DB_DATA } from '../modules/durations/durations.model';
+import { SectionTables } from './section-tables';
 
 const SECTIONS: DBSectionData[] = [
   TYPEFACE_DB_DATA,
@@ -62,10 +63,11 @@ export class DBService extends Dexie {
     this.theme = this.table("theme");
 
     for (let section of SECTIONS) {
-      this[section.tableGroupName] = new Tables(
+      this[section.tableGroupName] = new SectionTables(
         section.name,
         this.table(section.tokenTableName),
-        this.table(section.groupTableName)
+        this.table(section.groupTableName),
+        this,
       )
     }
   }
@@ -75,33 +77,15 @@ export class DBService extends Dexie {
       await section.deleteData(themeId)
     }
   }
-}
-
-class Tables<T extends Dexie.Table, G extends Dexie.Table> {
-  constructor(
-    public name: SectionNames,
-    public token: T,
-    public group: G,
-  ) {}
-
-  deleteData(themeId: number) {
-    return db.transaction('rw', [this.token, this.group], async () => {
-      const groups = await this.group.where("themeId").equals(themeId).toArray();
-
-      for (let group of groups) {
-        for (let tokenId of group.tokensId) {
-          await this.token.delete(tokenId);
-        }
-        await this.group.delete(group.id);
-      }
-    })
-  }
 
   async isTokenNameUnique(name: string, themeId: number) {
-    const res = await this.token
-    .where("name").equalsIgnoreCase(name)
-    .and(token => token.themeId === themeId).toArray();
-    return !Boolean(res.length);
+    for (let section of this.sections) {
+      const isUnique = await section.isTokenNameUnique(name, themeId);
+      if (!isUnique) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ColorPaletteTokenModel, COLORPALETTE_DB_DATA } from '@colors/color-palette-section/color-palette.model';
 import { DBGroup, TokensByTheme } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
+import { ThemeManagerService } from '@core/services/theme-manager.service';
 import { provideEditorDeps } from '@utils/provide-editor-deps';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
@@ -26,7 +27,10 @@ export class ColorPickerComponent implements OnInit {
   private colorChange$ = new Subject<string>();
   private destroy$ = new Subject();
 
-  constructor(private colorPalettes: SectionContentManagerService<ColorPaletteTokenModel, DBGroup>) {}
+  constructor(
+    private colorPalettes: SectionContentManagerService<ColorPaletteTokenModel, DBGroup>,
+    private themeManager: ThemeManagerService,
+  ) {}
 
   async ngOnInit() {
     this.colorChange$.pipe(
@@ -37,10 +41,10 @@ export class ColorPickerComponent implements OnInit {
     ).subscribe();
 
     if (!this.currentThemeColors) {
-      this.currentThemeColors = await this.colorPalettes.loadTokens();
+      this.currentThemeColors = await this.colorPalettes.tables.getThemeTokens(this.themeManager.selected.id);
     }
 
-    this.colorsByTheme = await this.colorPalettes.getTokensByTheme();
+    this.colorsByTheme = await this.colorPalettes.tables.getTokens([this.themeManager.selected.id]);
   }
 
   ngOnDestroy() {

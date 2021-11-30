@@ -1,5 +1,3 @@
-import { PromiseExtended } from "dexie";
-
 export interface EditableContent<G extends DBGroup = any, T extends DBToken = any> {
   group: StoreGroup<G, T>,
   token?: StoreToken<T>
@@ -41,10 +39,8 @@ export interface DBGroup<State = any> {
 
 export interface DBTables<TokenTable, GroupTable> {
   name: SectionNames;
-  token: TokenTable;
-  group: GroupTable;
-  deleteData: (themeId: number) => PromiseExtended<void>;
-  isTokenNameUnique: (name: string, themeId: number) => Promise<boolean>;
+  tokenTable: TokenTable;
+  groupTable: GroupTable;
 }
 
 export interface DBSectionData {
