@@ -14,7 +14,7 @@ export class SectionTables<T extends DBToken, G extends DBGroup> {
       const groups = await this.getThemeGroups(themeId);
 
       for (let group of groups) {
-        await this.deleteGroup(group);
+        await this.deleteGroup(group.id, themeId);
       }
     })
   }
@@ -34,10 +34,6 @@ export class SectionTables<T extends DBToken, G extends DBGroup> {
     return this.groupTable.where("themeId").equals(themeId).toArray()
   }
 
-  getTokensByIds(ids: number[]) {
-    return this.tokenTable.where("id").anyOf(ids).toArray()
-  }
-
   async getTokens(excludeThemeIds = []) {
     const tokens = await this.tokenTable.toArray();
     const themes = await this.db.theme.toArray();
@@ -55,31 +51,22 @@ export class SectionTables<T extends DBToken, G extends DBGroup> {
     return data;
   }
 
-  async addToken(token: T, group: G) {
+  deleteGroup(groupId: number, themeId: number) {
     return this.db.transaction('rw', [this.tokenTable, this.groupTable], async () => {
-      const tokenId = await this.tokenTable.add(token);
-      await this.groupTable.update(group.id, {tokensId: [...group.tokensId, tokenId]});
-      return tokenId;
-    });
-  }
-
-  deleteToken(tokenId: number, group: G) {
-    return this.db.transaction('rw', [this.tokenTable, this.groupTable], async () => {
-      await this.tokenTable.delete(tokenId);
-
-      await this.groupTable.update(group.id, {
-        tokensId: group.tokensId.filter(id => id !== tokenId)
-      });
-    });
-  }
-
-  deleteGroup(group: G) {
-    return this.db.transaction('rw', [this.tokenTable, this.groupTable], async () => {
+      const group = await this.getGroup(groupId);
       await this.groupTable.delete(group.id);
 
-      for (let tokenId of group.tokensId) {
-        await this.tokenTable.delete(tokenId);
+      const tokens = await this.getThemeTokens(themeId);
+
+      for (let token of tokens) {
+        if (token.groupId === groupId) {
+          await this.tokenTable.delete(token.id);
+        }
       }
     });
+  }
+
+  private getGroup(id: number) {
+    return this.groupTable.where('id').equals(id).first();
   }
 }

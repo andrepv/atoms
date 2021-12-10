@@ -1,34 +1,43 @@
 <div class="wrapper">
   <div class="color-info">
     <app-color-picker
-      [color]="color"
+      [color]="token.color"
       [currentThemeColors]="getPresetColors()"
-      (colorChange)="onColorChange($event)"
-      (colorSave)="saveColor($event)"
+      (colorChange)="changeColor($event)"
+      (colorSave)="saveColor()"
     ></app-color-picker>
   </div>
 
-  <div>
+  <div *ngIf="token.isPrimary">
+
     <app-color-variants
-      type="tint"
-      [variants]="getVariants('tints')"
-      [primaryColor]="_color"
-      [debounceTime]="DEBOUNCE_TIME"
-      [editableContent]="editor.content"
-      (onAddVariant)="addVariant($event)"
-      (onRemoveVariant)="removeVariant($event)"
-      (onColorChange)="updateVariant($event)"
+      #tintsTemplateRef
+
+      [variants]="token.tint"
+      [primaryColor]="token.color"
+      mixedColor="white"
+      [mixRatio]="token.tintConfigs.mixRatio"
+      [saturation]="token.tintConfigs.saturation"
+
+      (addVariant)="addVariant($event, 'tint', token.tint, tintsTemplateRef)"
+      (deleteVariant)="deleteVariant($event, token.tint, tintsTemplateRef)"
+      (changeVariantColor)="changeVariantColor($event)"
+      (updateVariantConfigs)="updateConfigs({tintConfigs: $event})"
     ></app-color-variants>
 
     <app-color-variants
-      type="shade"
-      [variants]="getVariants('shades')"
-      [primaryColor]="_color"
-      [debounceTime]="DEBOUNCE_TIME"
-      [editableContent]="editor.content"
-      (onAddVariant)="addVariant($event)"
-      (onRemoveVariant)="removeVariant($event)"
-      (onColorChange)="updateVariant($event)"
+      #shadesTemplateRef
+
+      [variants]="token.shade"
+      [primaryColor]="token.color"
+      mixedColor="black"
+      [mixRatio]="token.shadeConfigs.mixRatio"
+      [saturation]="token.shadeConfigs.saturation"
+
+      (addVariant)="addVariant($event, 'shade', token.shade, shadesTemplateRef)"
+      (deleteVariant)="deleteVariant($event, token.shade, shadesTemplateRef)"
+      (changeVariantColor)="changeVariantColor($event)"
+      (updateVariantConfigs)="updateConfigs({shadeConfigs: $event})"
     ></app-color-variants>
   </div>
 </div>

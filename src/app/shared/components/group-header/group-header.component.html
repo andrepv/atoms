@@ -10,11 +10,15 @@
 
   <div>
     <i
-      *ngIf="isGroupEditable"
+      *ngIf="groupEditorTemplate"
       nz-icon nzType="edit"
       nzTheme="outline"
-      (click)="openEditor()"
-    ></i>
+      (click)="openEditor(editor)"
+    >
+    <ng-template #editor>
+      <ng-container *ngTemplateOutlet="groupEditorTemplate; context: {$implicit: group}"></ng-container>
+    </ng-template>
+    </i>
   
     <i
       nz-icon nzType="more" nzTheme="outline"

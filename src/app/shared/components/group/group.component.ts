@@ -11,17 +11,18 @@ export class GroupComponent implements OnInit {
   @Input() group: StoreGroup; 
   @Input() tokenPreviewTemplate: TemplateRef<any>;
   @Input() tokenTemplate: TemplateRef<any> | false = false;
+  @Input() tokenEditorTemplate: TemplateRef<any>;
+  @Input() groupEditorTemplate: TemplateRef<any>;
 
-  isEditable: boolean;
-
-  constructor(private section: SectionContentManagerService,) {
-    this.isEditable = section.sectionViewConfigs.isGroupEditable;
-  }
+  constructor(private section: SectionContentManagerService) {}
 
   ngOnInit() {}
 
   addToken() {
-    const token = this.section.createToken(this.group.id);
-    this.section.addToken(token, this.group.id);
+    const token = {
+      ...this.section.createToken(this.group.id),
+      ...this.section.hooks.getDefaultToken(this.group.id)
+    }
+    this.section.addToken(token, this.group);
   }
 }

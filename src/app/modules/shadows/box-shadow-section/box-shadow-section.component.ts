@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { DBGroup, StoreToken } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { provideSectionDeps } from '@utils/provide-section-deps';
@@ -20,37 +20,36 @@ export const DEFAULT_LAYER_VALUE: BoxShadowLayer = {
   providers: [...provideSectionDeps(BOX_SHADOW_DB_DATA.tableGroupName)]
 })
 export class BoxShadowSectionComponent implements OnInit {
-
-  constructor(private section: SectionContentManagerService<BoxShadowTokenModel, DBGroup>,
-  ) {}
+  constructor(private section: SectionContentManagerService) {}
     
-  getBoxShadow(token: StoreToken<BoxShadowTokenModel>) {
-    return token.value.layers.reduce((accumulator, layers, index) => {
+  ngOnInit() {
+    this.section.configure({
+      hooks: {
+        getDefaultToken: () => ({
+          backgroundColor: "#ffffff",
+          blockColor: "#2d2d2d",
+          layers: [DEFAULT_LAYER_VALUE]
+        })
+      },
+    })
+  }
+
+  getBoxShadow(token: any) {
+    return token.layers.reduce((accumulator: any, layers: any, index: any) => {
       let values = Object.values(layers);
       if (!values[values.length - 1]) values.pop();
-      let comma = index + 1 !== token.value.layers.length ? ',' : '';
+      let comma = index + 1 !== token.layers.length ? ',' : '';
       accumulator += values.join(' ');
       return accumulator + comma
     }, "")
   }
 
-  getBlockStyle(token: StoreToken<BoxShadowTokenModel>) {
+  getBlockStyle(token: any) {
     return {
-      backgroundColor: token.value.blockColor,
+      backgroundColor: token.blockColor,
       boxShadow: this.getBoxShadow(token),
     }
   }
 
-  ngOnInit() {
-    this.section.configure({
-      contentManagerConfigs: {
-        getDefaultTokenValue: () => ({
-          backgroundColor: "#ffffff",
-          blockColor: "#2d2d2d",
-          layers: [DEFAULT_LAYER_VALUE]
-        })
-      }
-    })
-  }
 
 }

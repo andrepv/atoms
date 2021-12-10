@@ -1,19 +1,26 @@
 <app-group-list [groupTemplate]="groupTemplate">
   <ng-template #groupTemplate let-group>
-    <app-group [group]="group" [tokenPreviewTemplate]="tokenTemplate">
+    <app-group
+      [group]="group"
+      [tokenPreviewTemplate]="tokenTemplate"
+      [groupEditorTemplate]="editorTemplate"
+    >
       <ng-template #tokenTemplate let-token let-group="group">
         <app-token-editable
-          [isEditable]="!group.state.scale"
+          [isEditable]="!group.scale"
           [minValue]="MIN_VALUE"
           [maxValue]="MAX_VALUE"
           [value]="token.value"
           [previewTemplate]="tokenPreviewRef"
-          (onAfterChange)="setTokenValue($event, token.id, group.id)"
+          (onAfterChange)="setTokenValue($event, token, group)"
         >
           <ng-template #tokenPreviewRef let-value>
             <p>{{ value + 'ms' }}</p>
           </ng-template>
         </app-token-editable>
+      </ng-template>
+      <ng-template #editorTemplate let-group>
+        <app-durations-editor [group]="group"></app-durations-editor>
       </ng-template>
     </app-group>
   </ng-template>

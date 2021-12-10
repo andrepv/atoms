@@ -26,7 +26,7 @@ export class TypefaceListComponent implements OnInit {
 
   onThemeFontsLoad(data: TokensByTheme<TypefaceTokenModel>) {
     for (let themeTokens of data) {
-      const fonts = Object.values(themeTokens.tokens.map(token => token.value));
+      const fonts = Object.values(themeTokens.tokens) as any;
 			this.fontsManager.load(fonts);
 		}
   }

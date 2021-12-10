@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { StoreGroup, StoreToken } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { getScaleValue } from '@utils/get-type-scale-value';
 import { provideSectionDeps } from '@utils/provide-section-deps';
@@ -14,31 +15,30 @@ export class DurationsSectionComponent implements OnInit {
   readonly MIN_VALUE = 1;
   readonly MAX_VALUE = 2500;
 
-  constructor(private section: SectionContentManagerService<DurationsTokenModel, DurationsGroupModel>) { }
+  constructor(private section: SectionContentManagerService) {}
 
   ngOnInit() {
     this.section.configure({
-      contentManagerConfigs: {
-        getDefaultTokenValue: groupId => this.getDefaultTokenValue(groupId),
-        getDefaultGroupState: () => ({scale: false})
+      hooks: {
+        getDefaultToken: groupId => ({
+          value: this.getDefaultTokenValue(groupId)
+        }),
+        getDefaultGroup: () => ({
+          scale: false
+        })
       },
-      sectionViewConfigs: {
-        isTokenEditable: false,
-        isGroupEditable: true,
-      }
     })
   }
 
   private getDefaultTokenValue(groupId: number) {
-    const group = this.section.getGroup(groupId);
-    if (group.state.scale) {
-      return getScaleValue(group.tokens.length, group.state.scale);
+    const group: any = this.section.getGroup(groupId);
+    if (group.scale) {
+      return getScaleValue(group.tokens.length, group.scale);
     }
     return 140;
   }
 
-  setTokenValue(value: DurationsTokenModel['value'], tokenId: number, groupId: number) {
-    this.section.setTokenValue(value, tokenId, groupId)
+  setTokenValue(value: DurationsTokenModel['value'], token: StoreToken, group: StoreGroup) {
+    this.section.updateToken(token, group, {value});
   }
-
 }

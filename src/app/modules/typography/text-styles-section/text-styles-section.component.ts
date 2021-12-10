@@ -13,14 +13,17 @@ import { TextPreviewService } from '../text-preview/text-preview.service';
 })
 export class TextStylesSectionComponent implements OnInit {
   constructor(
-    private section: SectionContentManagerService<TextStylesTokenModel, DBGroup>,
+    private section: SectionContentManagerService,
     private preview: TextPreviewService
   ) {}
 
   ngOnInit() {
     this.section.configure({
-      contentManagerConfigs: {
-        getDefaultTokenValue: () => ({}),
+      hooks: {
+        getDefaultToken: () => ({
+          styles: {},
+          text: this.preview.DEFAULT_PREVIEW.text,
+        }),
         onTokenDelete: token => this.preview.deletePreview(token.id)
       }
     })

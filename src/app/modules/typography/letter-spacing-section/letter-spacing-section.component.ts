@@ -3,6 +3,7 @@ import { SectionContentManagerService } from '@core/services/section-content-man
 import { TextPreviewService } from '../text-preview/text-preview.service';
 import { LetterSpacingGroupModel, LetterSpacingTokenModel, LETTERSPACING_DB_DATA } from './letter-spacing.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
+import { StoreGroup, StoreToken } from '@core/core.model';
 
 @Component({
   selector: 'app-letter-spacing-section',
@@ -11,13 +12,13 @@ import { provideSectionDeps } from '@utils/provide-section-deps';
 })
 export class LetterSpacingSectionComponent implements OnInit {
   constructor(
-    private section: SectionContentManagerService<LetterSpacingTokenModel, LetterSpacingGroupModel>,
+    private section: SectionContentManagerService,
     private preview: TextPreviewService,
   ) {
     this.preview.registerStyleSource<LetterSpacingTokenModel>(
       'letterSpacing',
       {
-        getValue: value => `${value}em`,
+        getValue: token => `${token.value}em`,
         section: this.section.sectionName
       }
     )
@@ -25,13 +26,17 @@ export class LetterSpacingSectionComponent implements OnInit {
 
   ngOnInit() {
     this.section.configure({
-      contentManagerConfigs: {
-        getDefaultTokenValue: () => 0.01,
-        getDefaultGroupState: () => ({textPreviewId: 0}),
+      hooks: {
+        getDefaultToken: () => ({
+          value: 0.01
+        }),
+        getDefaultGroup: () => ({
+          textPreviewId: 0
+        }),
         onLoad: () => {
           this.preview.isStyleSourceLoaded$.next(true);
         },
-        onTokenValueChange: (value, token) => {
+        onTokenUpdate: ({value}, token) => {
           this.preview.setPreviewStyleValue(
             {'letterSpacing': `${value}em`},
             token.id
@@ -41,18 +46,14 @@ export class LetterSpacingSectionComponent implements OnInit {
           this.preview.deletePreviewStyle('letterSpacing', token.id)
         }
       },
-      sectionViewConfigs: {
-        isTokenEditable: false,
-        isGroupEditable: true,
-      }
     })
   }
 
   setTokenValue(
     value: LetterSpacingTokenModel['value'],
-    tokenId: number,
-    groupId: number
+    token: StoreToken,
+    group: StoreGroup
   ) {
-    this.section.setTokenValue(value, tokenId, groupId)
+    this.section.updateToken(token, group, {value});
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DBGroup } from '@core/core.model';
+import { DBGroup, StoreGroup, StoreToken } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { provideSectionDeps } from '@utils/provide-section-deps';
 import { BorderRadiusTokenModel, BORDER_RADIUS_DB_DATA } from './border-radius.model';
@@ -12,25 +12,23 @@ import { BorderRadiusTokenModel, BORDER_RADIUS_DB_DATA } from './border-radius.m
 })
 export class BorderRadiusSectionComponent implements OnInit {
 
-  constructor(private section: SectionContentManagerService<BorderRadiusTokenModel, DBGroup>) {}
+  constructor(private section: SectionContentManagerService) {}
 
   ngOnInit() {
     this.section.configure({
-      contentManagerConfigs: {
-        getDefaultTokenValue: () => 0,
+      hooks: {
+        getDefaultToken: () => ({
+          radius: 0,
+        })
       },
-      sectionViewConfigs: {
-        isTokenEditable: false,
-        isGroupEditable: false,
-      }
     })
   }
 
   setTokenValue(
-    value: BorderRadiusTokenModel['value'],
-    tokenId: number,
-    groupId: number
+    radius: BorderRadiusTokenModel['value'],
+    token: StoreToken,
+    group: StoreGroup
   ) {
-    this.section.setTokenValue(value, tokenId, groupId)
+    this.section.updateToken(token, group, {radius});
   }
 }

@@ -1,6 +1,9 @@
 <div [id]="group.anchorLink" class="group">
 
-  <app-group-header [group]="group"></app-group-header>
+  <app-group-header
+    [group]="group"
+    [groupEditorTemplate]="groupEditorTemplate"
+  ></app-group-header>
 
   <div class="container">
     <div *ngFor="let token of group.tokens" class="token-wrapper">
@@ -26,5 +29,6 @@
     [token]="token"
     [group]="group"
     [previewTemplate]="tokenPreviewTemplate"
+    [editorTemplate]="tokenEditorTemplate"
   ></app-token>
 </ng-template>

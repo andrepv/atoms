@@ -1,27 +1,35 @@
 <app-group-list [groupTemplate]="groupTemplate">
   <ng-template #groupTemplate let-group>
-    <app-group [group]="group" [tokenPreviewTemplate]="tokenTemplate">
+    <app-group
+      [group]="group"
+      [tokenPreviewTemplate]="tokenTemplate"
+      [groupEditorTemplate]="editorTemplate"
+    >
       <ng-template #tokenTemplate let-token let-group="group">
         <app-token-editable
-          [isEditable]="!group.state.scale"
+          [isEditable]="!group.scale"
           [minValue]="MIN_FONT_SIZE"
           [maxValue]="MAX_FONT_SIZE"
           [value]="token.value"
           [previewTemplate]="tokenPreviewRef"
-          (onAfterChange)="section.setTokenValue($event, token.id, group.id)"
+          (onAfterChange)="setTokenValue($event, token, group)"
         >
           <ng-template #tokenPreviewRef let-value>
             <app-text-preview
-              [group]="group"
+              [textPreviewId]="group.textPreviewId"
               [templateRef]="textPreview"
             >
               <ng-template #textPreview let-preview>
                 <p [style]="{'fontSize': value + 'px'}">{{preview.text}}</p>
               </ng-template>
             </app-text-preview>
-            <p *ngIf="group.state.scale">{{ value + 'px' }}</p>
+            <p *ngIf="group.scale">{{ value + 'px' }}</p>
           </ng-template>
         </app-token-editable>
+      </ng-template>
+
+      <ng-template #editorTemplate let-group>
+        <app-typescale-editor [group]="group"></app-typescale-editor>
       </ng-template>
     </app-group>
   </ng-template>

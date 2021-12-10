@@ -1,4 +1,43 @@
-<div *ngIf="editor.content.token.value.isPrimary">
+<div class="variants">
+  <div class="variants-header">
+    <i class="action-button" nz-icon nzType="minus" nzTheme="outline" (click)="delete()"></i>
+    <!-- <p>{{ type }}s</p> -->
+    <i class="action-button" nz-icon nzType="plus" nzTheme="outline" (click)="add()"></i>
+  </div>
+
+  <div>
+    <span>Mix ratio</span>
+    <nz-slider
+      [nzMin]="1"
+      [nzMax]="100"
+      [(ngModel)]="mixRatio"
+      (ngModelChange)="changeVariantsColor()"
+      (nzOnAfterChange)="saveConfigs()"
+    ></nz-slider>
+  </div>
+  <!-- <br /> -->
+  <div>
+    <span>Saturation</span>
+    <nz-slider
+      [nzMin]="1"
+      [nzMax]="100"
+      [(ngModel)]="saturation"
+      (ngModelChange)="changeVariantsColor()"
+      (nzOnAfterChange)="saveConfigs()"
+    ></nz-slider>
+  </div>
+  <br />
+  <div class="variants-grid">
+    <div
+      class="variant"
+      *ngFor="let variant of variants"
+      [style.background]="variant.color"
+    ></div>
+  </div>
+</div>
+
+
+<!-- <div>
   <span>{{ type }}</span>
 
   <div>
@@ -7,6 +46,7 @@
       [nzMax]="MAX_VARIANTS"
       [(ngModel)]="variantCount"
       (ngModelChange)="changeVariantCount()"
+      (nzOnAfterChange)="emitData(_variants)"
     ></nz-slider>
 
     <div
@@ -21,4 +61,4 @@
     </div>
 
   </div>
-</div>
+</div> -->

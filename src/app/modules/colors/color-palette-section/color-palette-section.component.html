@@ -4,10 +4,11 @@
       [group]="group"
       [tokenPreviewTemplate]="tokenPreviewTemplate"
       [tokenTemplate]="tokenTemplate"
+      [tokenEditorTemplate]="editorTemplate"
     >
       <ng-template #tokenTemplate let-token let-group="group" let-tokenTemplateWrapper="tokenTemplateWrapper">
 
-        <ng-container *ngFor="let tints of getTints(token, group)">
+        <ng-container *ngFor="let tints of token.tint.reverse()">
           <ng-container *ngTemplateOutlet="tokenTemplateWrapper; context: {$implicit: tints, group: group}"></ng-container>
         </ng-container>
 
@@ -15,19 +16,24 @@
           <ng-container *ngTemplateOutlet="tokenTemplateWrapper; context: {$implicit: token, group: group}"></ng-container>
         </div>
 
-        <ng-container *ngFor="let shades of getShades(token, group)">
+        <ng-container *ngFor="let shades of token.shade">
           <ng-container *ngTemplateOutlet="tokenTemplateWrapper; context: {$implicit: shades, group: group}"></ng-container>
         </ng-container>
       </ng-template>
  
       <ng-template #tokenPreviewTemplate let-token>
-        <div class="token" [style.background]="token.value.color">
-          <p style.color="#fff">{{ getReadability(token.value.color) }}</p>
+        <div class="token" [style.background]="token.color">
+          <p style.color="#fff">{{ getReadability(token.color) }}</p>
         </div>
-        <p>HEX: {{ getHex(token.value.color) }}</p>
-        <p>RGBA: {{ token.value.color }}</p>
-        <p>HSLA: {{ getHsl(token.value.color) }}</p>
+        <p>HEX: {{ getHex(token.color) }}</p>
+        <p>RGBA: {{ token.color }}</p>
+        <p>HSLA: {{ getHsl(token.color) }}</p>
       </ng-template>
+
+      <ng-template #editorTemplate let-content>
+        <app-color-palette-editor [content]="content"></app-color-palette-editor>
+      </ng-template>
+
     </app-group>
 
   </ng-template>

@@ -6,9 +6,9 @@
           [step]="1"
           [minValue]="0"
           [maxValue]="50"
-          [value]="token.value"
+          [value]="token.radius"
           [previewTemplate]="tokenPreviewRef"
-          (onAfterChange)="setTokenValue($event, token.id, group.id)"
+          (onAfterChange)="setTokenValue($event, token, group)"
         >
           <ng-template #tokenPreviewRef let-value>
             <div class="preview" [style.border-radius]="value + 'px'"></div>

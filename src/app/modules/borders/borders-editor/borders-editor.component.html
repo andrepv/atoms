@@ -2,9 +2,9 @@
   <div>
     <p>Color</p>
     <app-color-picker
-      [color]="token.value.color"
+      [color]="token.color"
       (colorChange)="changeColor($event)"
-      (colorSave)="updateTokenValue()"
+      (colorSave)="saveColor()"
     ></app-color-picker>
   </div>
   <br />
@@ -12,15 +12,15 @@
     title="Width"
     [min]="0"
     [max]="15"
-    [(model)]="token.value.width"
+    [(model)]="token.width"
     (modelChange)="changeWidth($event)"
-    (afterModelChange)="updateTokenValue()"
+    (afterModelChange)="saveWidth()"
   ></app-slider>
   <br />
   <div>
     <p>Style</p>
     <nz-select
-      [ngModel]="token.value.style"
+      [ngModel]="token.style"
       (ngModelChange)="changeStyle($event)"
     >
       <nz-option 

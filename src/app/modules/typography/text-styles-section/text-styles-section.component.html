@@ -1,8 +1,16 @@
 <app-group-list [groupTemplate]="groupTemplate">
   <ng-template #groupTemplate let-group>
-    <app-group [group]="group" [tokenPreviewTemplate]="tokenTemplate">
+    <app-group
+      [group]="group"
+      [tokenPreviewTemplate]="tokenTemplate"
+      [tokenEditorTemplate]="editorTemplate"
+    >
       <ng-template #tokenTemplate let-token>
         <app-text-styles-token [token]="token"></app-text-styles-token>
+      </ng-template>
+
+      <ng-template #editorTemplate let-content>
+        <app-text-styles-editor [content]="content"></app-text-styles-editor>
       </ng-template>
     </app-group>
   </ng-template>

@@ -13,20 +13,48 @@ import { provideSectionDeps } from '@utils/provide-section-deps';
 })
 export class ColorPaletteSectionComponent implements OnInit {
   constructor(private section: SectionContentManagerService<Token, Group>) {}
-  
+
   ngOnInit() {
     this.section.configure({
-      contentManagerConfigs: {
-        getDefaultTokenValue: () => ({
+      hooks: {
+        getDefaultToken: () => ({
           color: 'rgba(255,255,255,1)',
           isPrimary: true,
+          tintConfigs: {mixRatio: 80, saturation: 1},
+          shadeConfigs: {mixRatio: 80, saturation: 1}
         }),
-        onTokenDelete: (deletedToken, group) => {
-          if (!deletedToken.value.isPrimary) {
-            this.onVariantColorDelete(deletedToken, group);
+        onTokenDelete: (deletedToken: any, group) => {
+          if (!deletedToken.isPrimary) {
+            this.deleteVariant(deletedToken, group);
           }
-        }
-      }
+
+          if (deletedToken.isPrimary) {
+            this.deletePrimaryColor(deletedToken, group)
+          }
+        },
+        onTokenAdd: (token: any) => {
+          if (token.isPrimary) {
+            token.tint = [];
+            token.shade = [];
+          } 
+        },
+        onLoad: () => {
+          this.section.getGroupList().map((group: any) => {
+            group.tokens.map((token: any) => this.handleTokenLoad(token, group))
+
+            group.tokens = group.tokens.filter((token: any) => token.isPrimary)
+          })
+        },
+        onCreateTokenDuplicate: (token: any) => {
+          if (!token.isPrimary) {
+            token.isPrimary = true;
+            token.tintConfigs = {mixRatio: 80, saturation: 1},
+            token.shadeConfigs = {mixRatio: 80, saturation: 1}
+            delete token.primaryColorId;
+            delete token.type;
+          }
+        },
+      },
     })
   }
 
@@ -42,29 +70,51 @@ export class ColorPaletteSectionComponent implements OnInit {
     return tinycolor.readability(color, "#fff").toFixed(2);
   }
 
-  isTokenVisible = (token: StoreToken<Token>) => {
-    return token.value.isPrimary;
+  isTokenVisible = (token: any) => {
+    return token.isPrimary;
   }
 
-  getTints = (token: StoreToken<Token>, group: StoreGroup<Group, Token>) => {
-    if (!token.value.isPrimary || !token.value.tints) return [];
-    return this.section.getGroup(group.id).tokens.filter(({id}) => token.value.tints.includes(id)).reverse()
+  private getToken(group: StoreGroup, tokenId: number) {
+    return group.tokens.find(token => token.id === tokenId)
   }
 
-  getShades = (token: StoreToken<Token>, group: StoreGroup<Group, Token>) => {
-    if (!token.value.isPrimary || !token.value.shades) return [];
-    return this.section.getGroup(group.id).tokens.filter(({id}) => token.value.shades.includes(id))
-  }
-
-  private onVariantColorDelete(deletedToken: StoreToken<Token>, group: StoreGroup<Group, Token>) {
-    const variant = `${deletedToken.value.type}s`;
-    const primaryColor = group.tokens
-    .filter(token => token.value.isPrimary)
-    .find(token => token.value[variant].includes(deletedToken.id));
+  private deleteVariant(token: any, group: any) {
+    const {type, primaryColorId} = token;
+    const primaryColor = this.getToken(group, primaryColorId);
 
     if (primaryColor) {
-      primaryColor.value[variant] = primaryColor.value[variant].filter((id: number) => id !== deletedToken.id);
-      this.section.setTokenValue(primaryColor.value, primaryColor.id, group.id);
+      primaryColor[type] = primaryColor[type].filter((variant: StoreToken<Token>) => variant.id !== token.id)
     }
+  }
+
+  private deletePrimaryColor(token: any, group: any) {
+    token.tint.map((token: any) => {
+      this.section.deleteToken(token, group)
+    })
+    token.shade.map((token: any) => {
+      this.section.deleteToken(token, group)
+    })
+  }
+
+  private handleTokenLoad(token: any, group: any) {
+    if (!token.isPrimary) {
+      const {primaryColorId = 0, type = 'tint'} = token;
+      const primaryColor = this.getToken(group, primaryColorId);
+
+      if (primaryColor) {
+        if (!primaryColor[type]) {
+          primaryColor[type] = [];
+        }
+
+        primaryColor[type].push(token)
+      }
+    }
+
+    if (token.isPrimary) {
+      if (!token.tint) token.tint = [];
+      if (!token.shade) token.shade = [];
+    }
+  
+    return token;
   }
 }

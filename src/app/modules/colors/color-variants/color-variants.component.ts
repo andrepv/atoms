@@ -1,16 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { from, Subject } from 'rxjs';
-import { debounceTime, map, mergeMap, takeUntil } from 'rxjs/operators';
-// @ts-ignore
-import Values from 'values.js';
-import { EditorService } from '@core/services/editor.service';
-import { ColorPaletteTokenModel, Variant as VariantType } from '../color-palette-section/color-palette.model';
-import { DBGroup, EditableContent } from '@core/core.model';
+import { ColorPaletteTokenModel } from '../color-palette-section/color-palette.model';
+import { StoreToken } from '@core/core.model';
 
-export type AddVariantEvent = {color: string, type: VariantType};
-export type RemoveVariantEvent = {id: number, type: VariantType};
-export type VariantValueChangeEvent = {id: number, color: string};
-type Variant = {id?: number, value: string};
+import chroma from "chroma-js";
+
+type Configs = {mixRatio: number, saturation: number}
 
 @Component({
   selector: 'app-color-variants',
@@ -18,163 +12,91 @@ type Variant = {id?: number, value: string};
   styleUrls: ['./color-variants.component.less'],
 })
 export class ColorVariantsComponent implements OnInit {
-  @Input() set primaryColor(value: string) {
-    if (value) {
-      this._primaryColor = new Values(value);
-      this.updateVariantsValue();
-    }
-  };
+  @Input() primaryColor: string;
+  @Input() mixedColor: string;
 
-  @Input() type: VariantType;
-  @Input() variants: ColorPaletteTokenModel[];
-  @Input() debounceTime: number;
+  @Input() variants: StoreToken<ColorPaletteTokenModel>[] = [];
+  @Input() mixRatio = 50;
+  @Input() saturation = 1;
 
-  @Input() set editableContent(content: EditableContent) {
-    const variants = content.token.value[`${this.type}s`];
+  @Output() changeVariantColor: EventEmitter<StoreToken<ColorPaletteTokenModel>> = new EventEmitter();
+  @Output() deleteVariant: EventEmitter<StoreToken<ColorPaletteTokenModel>> = new EventEmitter();
+  @Output() addVariant: EventEmitter<string> = new EventEmitter()
+  @Output() updateVariantConfigs: EventEmitter<Configs> = new EventEmitter()
 
-    if (!this.editableTokenId) {
-      this.editableTokenId = content.token.id
-    }
+  constructor() {}
 
-    if (variants && variants.length < this._variants.length) {
-      this.setState();
-    }
+  ngOnInit() {}
 
-    if (content.token.id !== this.editableTokenId) {
-      this.onEditableTokenChange(content);
-    }
-  };
-
-  @Output() onAddVariant: EventEmitter<AddVariantEvent> = new EventEmitter();
-  @Output() onRemoveVariant: EventEmitter<RemoveVariantEvent> = new EventEmitter();
-  @Output() onColorChange: EventEmitter<VariantValueChangeEvent> = new EventEmitter();
-
-  readonly MAX_VARIANTS = 10;
-  readonly MIN_VARIANTS = 0;
-
-  variantCount = this.MIN_VARIANTS;
-  _variants: Variant[] = [];
-  
-  private variantCountChange$ = new Subject<Variant[]>();
-  private variantValueChange$ = new Subject<Variant[]>();
-  private destroy$ = new Subject();
-
-  private _prevVariantCount = this.variantCount;
-  private _primaryColor: Values;
-  private editableTokenId: number;
-
-  constructor(public editor: EditorService<ColorPaletteTokenModel, DBGroup>) {}
-
-  ngOnInit() {
-    this.setState();
-
-    this.variantCountChange$.pipe(
-      takeUntil(this.destroy$),
-      debounceTime(this.debounceTime),
-      map(variants => this.emitData(variants)),
-    ).subscribe();
-
-    this.variantValueChange$.pipe(
-      takeUntil(this.destroy$),
-      debounceTime(this.debounceTime),
-      mergeMap(variants => from(variants)),
-      map(variant => this.onColorChange.emit({
-        id: variant.id,
-        color: variant.value,
-      }))
-    ).subscribe();
+  add() {
+    const variants = this.getVariants(this.variants.length + 1);
+    this.addVariant.emit(variants[variants.length - 1]);
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+  delete() {
+    const lastVariant = this.variants[this.variants.length - 1];
+    this.deleteVariant.emit(lastVariant)
   }
 
-  changeVariantCount() {
-    const diff = this.variantCount - this._prevVariantCount;
-    if (diff > 0) {
-      this.pushVariant();
-    } else if (diff < 0) {
-      this.popVariant()
-    }
-
-    this._prevVariantCount = this.variantCount
+  updateVariants(amount = this.variants.length) {
+    this.getVariant((variant, color) => {
+      variant.color = color
+      this.changeVariantColor.emit(variant);
+    }, amount);
   }
 
-  private pushVariant() {
-    for (let i = 0; i < this.variantCount; i++) {
-      const variant = this._variants[i];
-      const value = this.getVariantValue(i + 1);
-      if (variant) {
-        variant.value = value;
-      } else {
-        this._variants.push({value});
+  changeVariantsColor() {
+    this.getVariant((variant, color) => variant.color = color)
+  }
+
+  saveVariantsColor() {
+    this.getVariant(variant => this.changeVariantColor.emit(variant))
+  }
+
+  saveConfigs() {
+    this.saveVariantsColor();
+
+    this.updateVariantConfigs.emit({
+      saturation: this.saturation,
+      mixRatio: this.mixRatio,
+    })
+  }
+
+  getVariant(
+    callback: (variant: any, color: string, index: number) => void,
+    amount = this.variants.length
+  ) {
+    const colors = this.getVariants(amount);
+
+    this.variants.map((variant: any, index) => {
+      if (colors[index]) {
+        callback(variant, colors[index], index);
       }
-    }
-
-    this.variantCountChange$.next(this._variants);
-    this.variantValueChange$.next(this._variants);
+    })
   }
 
-  private popVariant() {
-    this._variants.pop();
-    this.variantCountChange$.next(this._variants);
+  private getVariants(amount: number) {
+    const primaryColor = this.getPrimaryColor();
+    const mixedColor = this.getMixedColor(primaryColor)
+
+    return this.getScale([primaryColor, mixedColor], amount);
   }
 
-  private updateVariantsValue() {
-    if (!this.editableTokenId) return;
-
-    for (let i = 0; i < this.variantCount; i++) {
-      const variant = this._variants[i];
-      const value = this.getVariantValue(i + 1);
-      if (!variant.id) {
-        if (variant.value === this.variants[i].value.color) {
-          variant.id = this.variants[i].id;
-        }
-      }
-      variant.value = value;
-    }
-    this.variantValueChange$.next(this._variants)
+  private getPrimaryColor() {
+    const primaryColor = chroma(this.primaryColor);
+    const [h,s] = primaryColor.hsl();
+    const minSaturation = s * 100;
+    const saturation = this.saturation / 100 * (100 - minSaturation) + minSaturation;
+    return primaryColor.set('hsl.s', saturation / 100).hex()
   }
 
-  private emitData(variants: Variant[]) {
-    if (variants.length > this.variants.length) {
-      const variantsToAdd = variants.slice(this.variants.length - variants.length);
-
-      for (let variant of variantsToAdd) {
-        this.onAddVariant.emit({color: variant.value, type: this.type})
-      }
-
-      return;
-    }
-    
-    if (variants.length < this.variants.length) {
-      const variantsToRemove = this.variants.slice(variants.length - this.variants.length);
-
-      for (let variant of variantsToRemove) {
-        this.onRemoveVariant.emit({id: variant.id, type: this.type})
-      }
-    }
+  private getMixedColor(primaryColor: string) {
+    return chroma.mix(primaryColor, this.mixedColor, this.mixRatio / 100,'rgb').hex();
   }
 
-  private getVariantValue(index: number) {
-    const value = this._primaryColor[this.type](index * 10);
-    return `rgba(${value.rgb},${value.alpha})`;
-  }
-
-  private getVariants(variants = this.variants): Variant[] {
-    return variants.map(({value, id}) => ({id, value: value.color}));
-  }
-
-  private setState() {
-    this.variantCount = this.variants.length;
-    this._prevVariantCount = this.variantCount;
-    this._variants = this.getVariants();
-  }
-
-  private onEditableTokenChange(content: EditableContent) {
-    this.editableTokenId = content.token.id;
-    this._primaryColor = new Values(content.token.value.color);
-    this.setState();
+  private getScale(colors: string[], amount: number) {
+    const scale = chroma.bezier(colors).scale().mode('lab').colors(amount + 1);
+    scale.shift();
+    return scale;
   }
 }

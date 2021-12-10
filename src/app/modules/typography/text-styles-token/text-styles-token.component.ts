@@ -11,7 +11,7 @@ import { TextStylesTokenModel } from '../text-styles-section/text-styles.model';
   template: `<app-text-preview [preview]="preview"></app-text-preview>`,
 })
 export class TextStylesTokenComponent implements OnInit {
-  @Input() token: StoreToken<TextStylesTokenModel>;
+  @Input() token: any;
   preview = this.previewManager.DEFAULT_PREVIEW;
 
   subscription: Subscription;
@@ -33,7 +33,7 @@ export class TextStylesTokenComponent implements OnInit {
     this.preview = {
       styles: this.transformRefsToStyles(), 
       text: this.getPreviewText(),
-      styleRefs: this.token.value.styles || false,
+      styleRefs: this.token.styles || false,
     }
 
     const globalPreview = this.previewManager.getPreview(this.token.id);
@@ -52,13 +52,13 @@ export class TextStylesTokenComponent implements OnInit {
   }
 
   private getPreviewText() {
-    return this.token.value.text || this.previewManager.DEFAULT_PREVIEW.text;
+    return this.token.text || this.previewManager.DEFAULT_PREVIEW.text;
   }
 
   private transformRefsToStyles() {
     const styles = {};
     const styleProps = Object.keys(this.previewManager.DEFAULT_PREVIEW.styles);
-    const styleRefs = this.token.value.styles || {};
+    const styleRefs = this.token.styles || {};
 
     for (let styleProp of styleProps) {
       const savedStyleTokenId = styleRefs[styleProp] ?? false;

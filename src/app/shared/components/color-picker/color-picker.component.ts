@@ -3,7 +3,7 @@ import { ColorPaletteTokenModel, COLORPALETTE_DB_DATA } from '@colors/color-pale
 import { DBGroup, TokensByTheme } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
-import { provideEditorDeps } from '@utils/provide-editor-deps';
+import { provideSectionDeps } from '@utils/provide-section-deps';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 
@@ -11,7 +11,7 @@ import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operato
   selector: 'app-color-picker',
   templateUrl: './color-picker.component.html',
   styleUrls: ['./color-picker.component.less'],
-  providers: [...provideEditorDeps(COLORPALETTE_DB_DATA.tableGroupName)]
+  providers: [...provideSectionDeps(COLORPALETTE_DB_DATA.tableGroupName)]
 })
 export class ColorPickerComponent implements OnInit {
   @Input() color: string;

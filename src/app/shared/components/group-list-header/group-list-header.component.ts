@@ -20,7 +20,11 @@ export class GroupListHeaderComponent implements OnInit {
   }
 
   addGroup() {
-    const group = this.section.createGroup();
+    const group = {
+      ...this.section.createGroup(),
+      ...this.section.hooks.getDefaultGroup()
+    }
+
     this.section.addGroup(group);
   }
 

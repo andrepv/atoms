@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { SPACING_DB_DATA } from '@spacing/spacing.model';
-import { provideEditorDeps } from '@utils/provide-editor-deps';
+import { Component, Input, OnInit } from '@angular/core';
+import { StoreGroup } from '@core/core.model';
+import { SpacingGroupModel } from '@spacing/spacing.model';
 
 @Component({
   selector: 'app-spacing-editor',
-  template: `<app-modular-scale-editor></app-modular-scale-editor>`,
+  templateUrl: './spacing-editor.component.html',
   styleUrls: ['./spacing-editor.component.less'],
-  providers: [...provideEditorDeps(SPACING_DB_DATA.tableGroupName)]
 })
 export class SpacingEditorComponent implements OnInit {
+  @Input() group: StoreGroup<SpacingGroupModel>
+
   constructor() {}
   ngOnInit() {}
 }

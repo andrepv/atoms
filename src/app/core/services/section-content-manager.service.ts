@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, TemplateRef } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { db } from '../indexedDB';
 import { StoreService } from '@core/services/store.service';
@@ -8,17 +8,19 @@ import { StoreToken, StoreGroup, DBToken, DBGroup } from '@core/core.model';
 import { ThemeManagerService } from './theme-manager.service';
 import { SectionTables } from '@core/section-tables';
 
-interface SectionViewConfigs {
-  isTokenEditable?: boolean;
-  isGroupEditable?: boolean;
-}
+interface SectionViewConfigs {}
 
-interface ConfigureOptions<T extends DBToken, G extends DBGroup> {
+interface SectionContentManagerHooks<T extends DBToken, G extends DBGroup> {
   onLoad: () => void;
   onTokenDelete: (token: StoreToken<T>, group: StoreGroup<G, T>) => void;
-  onTokenValueChange: (value: T['value'], token: StoreToken<T>, group: StoreGroup<G, T>) => void;
-  getDefaultTokenValue: (groupId: number) => T['value'];
-  getDefaultGroupState: () => G['state'];
+  onTokenAdd: (token: StoreToken<T>, group: StoreGroup<G, T>) => void;
+
+  getDefaultToken: (groupId: number) => Omit<T, 'name' | 'value' | 'groupId' | 'themeId'> | void;
+  getDefaultGroup: () => Omit<G, 'name' | 'tokensId' | 'themeId'> | void;
+  onTokenUpdate:  (value: {[key: string]: any}, token: StoreToken<T>, group: StoreGroup<G, T>) => void;
+
+  onCreateTokenDuplicate: (token: any) => void;
+  onTokenPast: (token: any, copiedToken: any,  group: StoreGroup) => void;
 }
 
 @Injectable()
@@ -41,142 +43,98 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     return this.themeManager.selected.id;
   }
 
-  configs: ConfigureOptions<T, G> = {
+  hooks: SectionContentManagerHooks<T, G> = {
     onLoad: () => {},
     onTokenDelete: () => {},
-    onTokenValueChange: () => {},
-    getDefaultTokenValue: () => "",
-    getDefaultGroupState: () => false,
+    onTokenAdd: () => {},
+    onTokenUpdate: () => {},
+    onCreateTokenDuplicate: () => {},
+    onTokenPast: () => {},
+    getDefaultToken: () => {},
+    getDefaultGroup: () => {},
   }
 
-  sectionViewConfigs: SectionViewConfigs = {
-    isTokenEditable: true,
-    isGroupEditable: false,
-  }
+  sectionViewConfigs: SectionViewConfigs = {}
 
   constructor(
     @Inject('tables') public tables: SectionTables<T, G>,
     public store: StoreService,
     private message: NzMessageService,
-    private editor: EditorService,
     private themeManager: ThemeManagerService,
   ) {}
 
-  configure({
-    contentManagerConfigs,
-    sectionViewConfigs,
-  }: {
-    contentManagerConfigs: Partial<ConfigureOptions<T, G>>, // ???
+  configure({ hooks, sectionViewConfigs }: {
+    hooks: Partial<SectionContentManagerHooks<T, G>>,
     sectionViewConfigs?: SectionViewConfigs
   }) {
-    this.configs = Object.assign(this.configs, contentManagerConfigs);
+    this.hooks = Object.assign(this.hooks, hooks);
     this.sectionViewConfigs = Object.assign(this.sectionViewConfigs, sectionViewConfigs)
   }
 
   async load() {
     this.isLoading = true;
 
-    const groups = await this.tables.getThemeGroups(this.selectedThemeId);
+    let groups = await this.tables.getThemeGroups(this.selectedThemeId) as any;
 
-    if (!groups.length) {
-      this.store.setSectionContent(this.sectionName, [])
-      this.isLoading = false;
-      this.configs.onLoad();
-      return;
+    if (groups.length) {
+      for (let group of groups) {
+        const tokens = await this.tokenTable.where("groupId").equals(group.id).toArray();
+
+        group.tokens = tokens;
+        group.anchorLink = getRandomChars();
+      }
     }
 
-    let groupList: StoreGroup[] = [];
-
-    for (let group of groups) {
-      const tokens = await this.tables.getTokensByIds(group.tokensId) as StoreToken[];
-
-      const transformedGroup: StoreGroup = {
-        name: group.name,
-        id: group.id,
-        tokens,
-        anchorLink: getRandomChars(),
-      }
-
-      if (group.state) {
-        transformedGroup.state = group.state;
-      }
-
-      groupList.push(transformedGroup)
-    }
-
-    this.store.setSectionContent(this.sectionName, groupList)
-
+    this.store.setSectionContent(this.sectionName, groups)
     this.isLoading = false;
-
-    this.configs.onLoad();
+    this.hooks.onLoad();
   }
 
-  async addToken(token: T, groupId: number) {
-    const tokenId = await this.tables.addToken(token, this.getDBGroup(groupId));
+  async addToken(token: T, group: StoreGroup, listToAdd = group.tokens) {
+    const tokenId = await this.tokenTable.add(token);
     if (tokenId) {
       const newToken = {id: tokenId, ...token};
-      this.store.getGroup(this.sectionName, groupId).tokens.push(newToken)
+      this.hooks.onTokenAdd(newToken, group);
+      listToAdd.push(newToken);
       return newToken;
     }
   }
 
-  async deleteToken(tokenId: number, groupId: number) {
-    await this.tables.deleteToken(tokenId, this.getDBGroup(groupId));
-
-    const group = this.store.getGroup(this.sectionName, groupId);
-    const token = group.tokens.find(({id}) => id === tokenId);
-
-    if (token) {
-      this.configs.onTokenDelete(token, group);
-    }
-
-    if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
-      this.editor.disable();
-    }
-
-    group.tokens = group.tokens.filter(({id}) => id !== tokenId)
+  async deleteToken(token: StoreToken, group: StoreGroup) {
+    await this.tokenTable.delete(token.id)
+    this.hooks.onTokenDelete(token, group);
+    this.store.deleteToken(this.sectionName, group, token.id)
   }
 
-  async renameToken(tokenName: string, tokenId: number, groupId: number) {
+  async renameToken(tokenName: string, token: StoreToken) {
     const isUnique = await db.isTokenNameUnique(tokenName, this.selectedThemeId);
     if (!isUnique) {
       this.message.error('The token name must be unique');
       return;
     }
 
-    await this.tokenTable.update(tokenId, {name: tokenName});
+    await this.tokenTable.update(token.id, {name: tokenName});
 
-    this.store.getGroupToken(this.sectionName, groupId, tokenId).name = tokenName
+    token.name = tokenName
   }
 
   createToken(
     groupId: number,
-    value = this.configs.getDefaultTokenValue(groupId),
     name = `token-${getRandomChars()}`
-  ): T {
-    const token = {
+  ) {
+    return {
       name,
-      value,
       groupId,
       themeId: this.selectedThemeId,
-    };
-    return token as T;
+    } as T;
   }
 
-  async setTokenValue(value: T['value'], tokenId: number, groupId: number) {
-    await this.tokenTable.update(tokenId, {value});
+  async updateToken(token: any, group: any, changes: {[key: string]: any}) {
+    const key = Object.keys(changes)[0];
 
-    const group = this.store.getGroup(this.sectionName, groupId);
-    const token = this.store.getGroupToken(this.sectionName, groupId, tokenId);
-
-    token.value = value;
-    this.configs.onTokenValueChange(value, token, group);
-
-    // ???
-    if (this.editor.isTokenEditable(tokenId, this.sectionName)) {
-      const {token, group} = this.editor.content;
-      this.editor.content = {token: {...token, value: value},group }
-    }
+    await this.tokenTable.update(token.id, changes);
+    token[key] = changes[key];
+    this.hooks.onTokenUpdate(changes, token, group);
   }
 
   getTokens(): StoreToken<T>[] {
@@ -190,66 +148,42 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
   async addGroup(group: G) {
     const groupId: number = await this.groupTable.add(group);
     const newGroup: StoreGroup<G, T> = {
+      ...group,
       id: groupId,
-      name: group.name,
       tokens: [],
       anchorLink: getRandomChars(),
     }
-
-    if (group.state) newGroup.state = group.state;
-
     this.store.addGroup(this.sectionName, newGroup)
     return groupId;
   }
 
-  async deleteGroup(groupId: number) {
-    await this.tables.deleteGroup(this.getDBGroup(groupId));
-
-    const group = this.store.getGroup(this.sectionName, groupId);
+  async deleteGroup(group: StoreGroup) {
+    await this.tables.deleteGroup(group.id, this.selectedThemeId);
 
     for (let token of group.tokens) {
-      this.configs.onTokenDelete(token, group);
+      this.hooks.onTokenDelete(token, group);
     }
 
-    this.store.deleteGroup(this.sectionName, groupId);
+    this.store.deleteGroup(this.sectionName, group.id);
   }
 
-  async renameGroup(groupName: string, groupId: number) {
-    await this.groupTable.update(groupId, {name: groupName});
-    this.store.getGroup(this.sectionName, groupId).name = groupName
+  async renameGroup(groupName: string, group: StoreGroup) {
+    await this.groupTable.update(group.id, {name: groupName});
+    group.name = groupName
   }
 
-  async setGroupState(
-    groupId: number,
-    stateChunk: Partial<G['state']>
-  ) {
-    const group = this.store.getGroup(this.sectionName, groupId);
-    const prevState = group.state || {};
-    const nextState = {...prevState, ...stateChunk};
-
-    await this.groupTable.update(groupId, {state: nextState});
-
-    group.state = nextState;
-
-    this.store.updateGroup(group, this.sectionName);
-  }
-
-  createGroup(
-    name = "group",
-    state = this.configs.getDefaultGroupState(),
-    tokensId = []
-  ) {
-    const group = {
+  createGroup(name = "group") {
+    return {
       name,
       themeId: this.selectedThemeId,
-      tokensId,
     } as G;
+  }
 
-    if (state) {
-      group.state = state;
-    }
-
-    return group;
+  async updateGroup(group: any, changes: {[key: string]: any}) {
+    const key = Object.keys(changes)[0];
+    await this.groupTable.update(group.id, changes);
+    this.store.getGroup(this.sectionName, group.id)[key] = changes[key]
+    this.store.updateGroup(group, this.sectionName);
   }
 
   getGroup(groupId: number): StoreGroup<G, T> {
@@ -258,14 +192,5 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
 
   getGroupList(): StoreGroup<G, T>[] {
     return this.store.getGroupList(this.sectionName)
-  }
-
-  private getDBGroup(groupId: number): any {
-    const group = this.store.getGroup(this.sectionName, groupId)
-    return {
-      ...group,
-      tokensId: group.tokens.map(token => token.id),
-      themeId: this.themeManager.selected.id,
-    }
   }
 }

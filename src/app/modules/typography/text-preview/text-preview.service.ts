@@ -6,7 +6,7 @@ import { TextPreview, TextPreviewStyleProps, TextPreviewStyles, TextPreviewStyle
 
 type StyleSource<T extends DBToken = any> = {
   [K in TextPreviewStyleProps]?: {
-    getValue(value: T['value']): TextPreviewStyles[K];
+    getValue(token: T): TextPreviewStyles[K];
     section: SectionNames
   }
 } | null;
@@ -132,7 +132,7 @@ export class TextPreviewService {
       const token = this.store.getSectionToken(section, tokenId);
       if (!token) return this.DEFAULT_PREVIEW.styles[styleProp]
 
-      return styleSource.getValue(token.value);
+      return styleSource.getValue(token);
     }
   }
 

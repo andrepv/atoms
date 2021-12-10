@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { TextEditableComponent } from '../text-editable/text-editable.component';
@@ -12,26 +12,28 @@ import { ClipboardService } from '@core/services/clipboard.service';
 })
 export class GroupHeaderComponent implements OnInit {
   @Input() group: StoreGroup;
-  isGroupEditable: boolean;
+  @Input() groupEditorTemplate: TemplateRef<any>;
 
   constructor(
     private editor: EditorService,
     private section: SectionContentManagerService,
     private clipboard: ClipboardService,
-  ) {
-    this.isGroupEditable = this.section.sectionViewConfigs.isGroupEditable;
-  }
+  ) {}
 
   ngOnInit() {}
 
-  openEditor() {
-    this.editor.enable(this.section.sectionName, {group: this.group})
+  openEditor(editorTemplateRef: TemplateRef<any>) {
+    this.editor.enable(
+      this.section.sectionName,
+      {group: this.group},
+      editorTemplateRef
+    )
   }
 
   async renameGroup(value: string, editableText: TextEditableComponent) {
     editableText.isLoading = true;
     try {
-      await this.section.renameGroup(value, this.group.id);
+      await this.section.renameGroup(value, this.group);
     } finally {
       editableText.isLoading = false;
       editableText.makeUneditable();
@@ -39,15 +41,20 @@ export class GroupHeaderComponent implements OnInit {
   }
 
   deleteGroup() {
-    this.section.deleteGroup(this.group.id)
+    this.section.deleteGroup(this.group);
   }
 
   pastToken() {
-    this.clipboard.pastToken(this.group.id)
+    this.clipboard.pastToken(this.group)
   }
 
-  copyGroup() {
-    this.clipboard.copy(this.group)
+  async copyGroup() {
+    const group = await this.section.groupTable.get(this.group.id)
+    const tokens = await this.section.tokenTable.where("groupId").equals(group.id).toArray()
+
+    group.tokens = tokens;
+
+    this.clipboard.copy(group, 'group')
   }
 
   canUseClipboard() {

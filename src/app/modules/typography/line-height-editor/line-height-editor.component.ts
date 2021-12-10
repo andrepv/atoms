@@ -1,32 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { EditorService } from '@core/services/editor.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { StoreGroup } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { LineHeightTokenModel, LineHeightGroupModel, LINEHEIGHT_DB_DATA } from '@typography/line-height-section/line-height.model';
-import { provideEditorDeps } from '@utils/provide-editor-deps';
 
 @Component({
   selector: 'app-line-height-editor',
   templateUrl: './line-height-editor.component.html',
-  providers: [...provideEditorDeps(LINEHEIGHT_DB_DATA.tableGroupName)]
 })
 export class LineHeightEditorComponent implements OnInit {
+  @Input() group: any;
+
   get textPreviewId() {
-    return this.editor.content.group.state.textPreviewId;
+    return this.group.textPreviewId;
   }
 
-  constructor(
-    private editor: EditorService<LineHeightTokenModel,
-    LineHeightGroupModel>,
-    private section: SectionContentManagerService<LineHeightTokenModel,
-    LineHeightGroupModel>,
-  ) { }
+  constructor(private section: SectionContentManagerService<LineHeightTokenModel,
+    LineHeightGroupModel>) {}
 
   ngOnInit() {}
 
-  setTextStyles(textPreviewId: number) {
-    this.section.setGroupState(
-      this.editor.content.group.id,
-      {textPreviewId}
-    );
+  async setTextStyles(textPreviewId: number) {
+    await this.section.updateGroup(this.group, {textPreviewId})
   }
 }

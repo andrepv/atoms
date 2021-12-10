@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SectionNames, StoreGroup, PageName } from '@core/core.model';
+import { EditorService } from './editor.service';
 import { ThemeManagerService } from './theme-manager.service';
 
 interface StorePageContent {
@@ -20,7 +21,10 @@ export class StoreService {
     content: {},
   }
 
-  constructor(public themeManager: ThemeManagerService) {}
+  constructor(
+    public themeManager: ThemeManagerService,
+    private editor: EditorService
+  ) {}
 
   loadTheme() {
     return this.themeManager.loadList();
@@ -44,6 +48,17 @@ export class StoreService {
 
   deleteGroup(sectionName: SectionNames, groupId: number) {
     const group = this.getGroup(sectionName, groupId);
+
+    if (this.editor.isGroupEditable(group.id, sectionName)) {
+      this.editor.disable();
+    }
+  
+    group.tokens.map(token => {
+      if (this.editor.isTokenEditable(token.id, sectionName)) {
+        this.editor.disable();
+      }
+    })
+
     const index = this.page.content[sectionName].indexOf(group);
     if (index > -1) {
       this.page.content[sectionName].splice(index, 1);
@@ -89,5 +104,17 @@ export class StoreService {
   ) {
     const {tokens} = this.getGroup(sectionName, groupId)
     return tokens.find(({id}) => id === tokenId)
+  }
+
+  deleteToken(
+    sectionName: SectionNames,
+    group: StoreGroup,
+    tokenId: number
+  ) {
+    if (this.editor.isTokenEditable(tokenId, sectionName)) {
+      this.editor.disable();
+    }
+
+    group.tokens = group.tokens.filter(({id}) => id !== tokenId)
   }
 }

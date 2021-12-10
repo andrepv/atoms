@@ -4,11 +4,15 @@
   
     <div class="dropdown-menu">
       <i
-        *ngIf="isEditable"
+        *ngIf="editorTemplate"
         nz-icon nzType="edit"
         nzTheme="outline"
-        (click)="openEditor()"
-      ></i>
+        (click)="openEditor(editor)"
+      >
+        <ng-template #editor>
+          <ng-container *ngTemplateOutlet="editorTemplate; context: {$implicit: {token: token, group: group}}"></ng-container>
+        </ng-template>
+      </i>
       <i
         nz-icon nzType="more" nzTheme="outline"
         nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"

@@ -1,44 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { EditorService } from '@core/services/editor.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { StoreGroup } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { TextPreviewService } from '@typography/text-preview/text-preview.service';
-import { TypescaleTokenModel, TypescaleGroupModel, TYPESCALE_DB_DATA } from '@typography/typescale-section/typescale.model';
-import { provideEditorDeps } from '@utils/provide-editor-deps';
+import { TypescaleTokenModel, TypescaleGroupModel } from '@typography/typescale-section/typescale.model';
 
 @Component({
   selector: 'app-typescale-editor',
   templateUrl: './typescale-editor.component.html',
   styleUrls: ['./typescale-editor.component.less'],
-  providers: [...provideEditorDeps(TYPESCALE_DB_DATA.tableGroupName)]
 })
 export class TypescaleEditorComponent implements OnInit {
+  @Input() group: any;
+
   get textPreviewId() {
-    return this.editor.content.group.state.textPreviewId;
+    return this.group.textPreviewId;
   }
 
-  constructor(
-    private editor: EditorService<TypescaleTokenModel, TypescaleGroupModel>,
-    private section: SectionContentManagerService<TypescaleTokenModel, TypescaleGroupModel>,
-    private preview: TextPreviewService,
-  ) {}
+  constructor(private section: SectionContentManagerService<TypescaleTokenModel, TypescaleGroupModel>) {}
 
-  ngOnInit() {
-    this.section.configure({
-      contentManagerConfigs: {
-        onTokenValueChange: (value, token) => {
-          this.preview.setPreviewStyleValue(
-            {fontSize: `${value}px`},
-            token.id
-          )
-        },
-      }
-    })
-  }
+  ngOnInit() {}
 
   setTextStyles(textPreviewId: number) {
-    this.section.setGroupState(
-      this.editor.content.group.id,
-      {textPreviewId}
-    );
+    this.section.updateGroup(this.group, {textPreviewId})
+    // this.section.setGroupState(this.group, {textPreviewId});
   }
 }

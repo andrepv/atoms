@@ -6,7 +6,8 @@ import { Injectable } from "@angular/core";
 
 interface CopiedContent<T> {
   section: SectionNames;
-  content: T
+  content: T;
+  type: 'token' | 'group'
 }
 
 @Injectable()
@@ -22,14 +23,13 @@ export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> 
     private message: NzMessageService,
   ) {}
 
-  async pastToken(groupId: number) {
+  async pastToken(group: StoreGroup) {
     try {
-      const data: CopiedContent<StoreToken<T>> = await this.getCopiedData();
+      const data: CopiedContent<T> = await this.getCopiedData();
+      if (data.type !== "token") return;
+
       if (data.section === this.contentManager.sectionName) {
-        let {value, name} = data.content;
-        name = `${name}-${getRandomChars(4)}`;
-        const token = this.contentManager.createToken(groupId, value, name);
-        await this.contentManager.addToken(token, groupId);
+        await this.addToken(data.content, group);
         this.message.success('Done');
       }
     } catch (err) {
@@ -40,17 +40,23 @@ export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> 
   async pastGroup() {
     const id = this.message.loading('Action in progress..').messageId;
     try {
-      const data: CopiedContent<StoreGroup<G, T>> = await this.getCopiedData();
+      const data: CopiedContent<any> = await this.getCopiedData();
+
+      if (data.type !== "group") {
+        this.message.remove(id);
+        return;
+      }
+
       if (data.section === this.contentManager.sectionName) {
-        const {name, tokens, state = false} = data.content;
 
-        const group = this.contentManager.createGroup(name, state);
-        const groupId = await this.contentManager.addGroup(group);
+        const copiedGroup = data.content;
+        const groupDuplicate = this.getGroupDuplicate(copiedGroup)
 
-        for (let token of tokens) {
-          token.name = `${token.name}-${getRandomChars(4)}`;
-          const newToken = this.contentManager.createToken(groupId, token.value, token.name);
-          await this.contentManager.addToken(newToken, groupId);
+        const groupId = await this.contentManager.addGroup(groupDuplicate);
+        const group = this.contentManager.getGroup(groupId)
+
+        for (let token of copiedGroup.tokens) {
+          await this.addToken(token, group)
         }
         this.message.success('Done');
       }
@@ -61,12 +67,13 @@ export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> 
     }
   }
 
-  async copy(content: T | G) {
+  async copy(content: T | G, type: CopiedContent<T>['type']) {
     try {
       await navigator.clipboard.writeText(
         JSON.stringify({
           section: this.contentManager.sectionName,
-          content
+          content,
+          type
         })
       );
       this.message.info('Content copied to clipboard');
@@ -78,5 +85,35 @@ export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> 
   private async getCopiedData() {
     const text = await navigator.clipboard.readText();
     return JSON.parse(text);
+  }
+
+  private async addToken(copiedToken: T, group: StoreGroup) {
+    const duplicate = this.getTokenDuplicate({...copiedToken}, group)
+    this.contentManager.hooks.onTokenPast(duplicate, copiedToken, group);
+    await this.contentManager.addToken(duplicate, group);
+    return duplicate;
+  }
+
+  private getTokenDuplicate(token: T, group: StoreGroup) {
+    const tokenName = `${token.name}-${getRandomChars(4)}`;
+    delete token.id;
+    this.contentManager.hooks.onCreateTokenDuplicate(token);
+    return {
+      ...token,
+      ...this.contentManager.createToken(group.id, tokenName)
+    };
+  }
+
+  private getGroupDuplicate(group: StoreGroup) {
+    const groupDuplicate = {...group}
+
+    delete groupDuplicate.id;
+    delete groupDuplicate.tokens;
+    delete groupDuplicate.anchorLink;
+
+    return {
+      ...groupDuplicate,
+      ...this.contentManager.createGroup(groupDuplicate.name)
+    }
   }
 }

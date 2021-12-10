@@ -48,8 +48,8 @@ export class DBService extends Dexie {
   constructor() {
     super('ui-theme-builder-db');
 
-    const token = "++id, name, themeId";
-    const group = "++id, name, themeId, *tokensId";
+    const token = "++id, name, themeId, groupId";
+    const group = "++id, name, themeId";
 
     const schema = {theme: '++id, name'}
 
@@ -58,7 +58,7 @@ export class DBService extends Dexie {
       schema[section.groupTableName] = group;
     }
 
-    this.version(12).stores(schema);
+    this.version(14).stores(schema);
     
     this.theme = this.table("theme");
 

@@ -1,30 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { EditorService } from '@core/services/editor.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { StoreGroup } from '@core/core.model';
+// import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { LetterSpacingGroupModel, LetterSpacingTokenModel, LETTERSPACING_DB_DATA } from '@typography/letter-spacing-section/letter-spacing.model';
-import { provideEditorDeps } from '@utils/provide-editor-deps';
+import { LetterSpacingGroupModel, LetterSpacingTokenModel } from '@typography/letter-spacing-section/letter-spacing.model';
 
 @Component({
   selector: 'app-letter-spacing-editor',
   templateUrl: './letter-spacing-editor.component.html',
-  providers: [...provideEditorDeps(LETTERSPACING_DB_DATA.tableGroupName)]
 })
 export class LetterSpacingEditorComponent implements OnInit {
+  @Input() group: any;
+
   get textPreviewId() {
-    return this.editor.content.group.state.textPreviewId;
+    return this.group.textPreviewId;
   }
 
   constructor(
-    private editor: EditorService<LetterSpacingTokenModel, LetterSpacingGroupModel>,
-    private section: SectionContentManagerService<LetterSpacingTokenModel, LetterSpacingGroupModel>,
+    private section: SectionContentManagerService,
   ) {}
 
   ngOnInit() {}
 
   setTextStyles(textPreviewId: number) {
-    this.section.setGroupState(
-      this.editor.content.group.id,
-      {textPreviewId}
-    );
+    this.section.updateGroup(this.group, {textPreviewId})
   }
 }

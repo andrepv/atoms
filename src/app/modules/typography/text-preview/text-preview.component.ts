@@ -10,11 +10,9 @@ import { TextPreviewService } from './text-preview.service';
 export class TextPreviewComponent implements OnInit {
   @Input() templateRef: TemplateRef<any>;
 
-  @Input() set group(group: StoreGroup) {
-    if (group) {
-      this.preview = this.getTextPreview(group);
-    }
-  };
+  @Input() set textPreviewId(value: number) {
+    this.preview = this.getTextPreview(value);
+  }
 
   @Input() preview = this.manager.DEFAULT_PREVIEW;
 
@@ -22,12 +20,8 @@ export class TextPreviewComponent implements OnInit {
 
   ngOnInit() {}
 
-  private getTextPreview(group: StoreGroup) {
+  private getTextPreview(previewId: number) {
     const defaultPreview = {...this.manager.DEFAULT_PREVIEW};
-
-    if (!group.state) return defaultPreview;
-
-    const previewId = group.state.textPreviewId;
 
     if (!previewId) return defaultPreview;
 

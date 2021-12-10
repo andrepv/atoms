@@ -14,14 +14,14 @@ import { TextPreviewService } from '@typography/text-preview/text-preview.servic
 })
 export class TypefaceSectionComponent implements OnInit {
   constructor(
-    private section: SectionContentManagerService<TypefaceTokenModel, DBGroup>,
+    private section: SectionContentManagerService,
     private fontManager: FontManagerService,
     private preview: TextPreviewService,
   ) {
-    this.preview.registerStyleSource<TypefaceTokenModel>(
+    this.preview.registerStyleSource<any>(
       'fontFamily',
       {
-        getValue: value => typeof value  === 'string' ? value : value.family,
+        getValue: token => token.family,
         section: this.section.sectionName
       }
     )
@@ -29,7 +29,7 @@ export class TypefaceSectionComponent implements OnInit {
 
   ngOnInit() {
     this.section.configure({
-      contentManagerConfigs: {
+      hooks: {
         onLoad: () => {
           this.preview.isStyleSourceLoaded$.next(true);
           this.loadFonts()
@@ -37,7 +37,13 @@ export class TypefaceSectionComponent implements OnInit {
         onTokenDelete: token => {
           this.preview.deletePreviewStyle('fontFamily', token.id)
         },
-        getDefaultTokenValue: () => ({
+        onTokenUpdate: ({family}, token) => {
+          this.preview.setPreviewStyleValue(
+            {fontFamily: family},
+            token.id
+          )
+        },
+        getDefaultToken: () => ({
           family: 'Arial',
           type: "custom-font",
           data: '',
@@ -49,8 +55,7 @@ export class TypefaceSectionComponent implements OnInit {
   private loadFonts() {
     const groupList = this.section.getGroupList();
     for (let group of groupList) {
-      const fonts = group.tokens.map(token => token.value);
-      this.fontManager.load(fonts);
+      this.fontManager.load((group as any).tokens);
     }
   }
 }

@@ -1,48 +1,57 @@
-import { Component, OnInit } from '@angular/core';
-import { DBGroup } from '@core/core.model';
+import { Component, Input, OnInit } from '@angular/core';
+import { DBGroup, EditableContent } from '@core/core.model';
 import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { provideSectionDeps } from '@utils/provide-section-deps';
-import { BorderTokenModel, BorderTokenValue, BORDER_DB_DATA } from '../borders.model';
+import { BorderTokenModel, BorderTokenValue } from '../borders.model';
 
 @Component({
   selector: 'app-borders-editor',
   templateUrl: './borders-editor.component.html',
   styleUrls: ['./borders-editor.component.less'],
-  providers: [...provideSectionDeps(BORDER_DB_DATA.tableGroupName)]
 })
 export class BordersEditorComponent implements OnInit {
+  @Input() content: EditableContent;
+
   readonly STYLES = ["dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset", "none"];
 
   get token() {
-    return this.editor.content.token;
+    return this.content.token;
   }
 
   get group() {
-    return this.editor.content.group;
+    return this.content.group;
   }
 
   constructor(
-    private section: SectionContentManagerService<BorderTokenModel, DBGroup>,
-    private editor: EditorService<BorderTokenModel, DBGroup>,
-  ) { }
+    private section: SectionContentManagerService,
+  ) {}
 
   ngOnInit() {}
 
   changeColor(color: string) {
-    this.token.value.color = color
+    this.token.color = color
   }
 
+  saveColor() {
+    this.section.updateToken(this.token, this.group, {
+      color: this.token.color
+    });
+  }
+  
   changeWidth(value: number) {
-    this.token.value.width = value;
+    this.token.width = value;
+  }
+  
+  saveWidth() {
+    this.section.updateToken(this.token, this.group, {
+      width: this.token.width
+    });
   }
 
   changeStyle(value: BorderTokenValue['style']) {
-    this.token.value.style = value;
+    this.token.style = value;
+    this.section.updateToken(this.token, this.group, {
+      style: this.token.style
+    });
   }
-
-  updateTokenValue() {
-    this.section.setTokenValue(this.token.value, this.token.id, this.group.id);
-  }
-
 }

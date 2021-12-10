@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { getScaleValue } from '@utils';
 import { SpacingGroupModel, SpacingTokenModel, SPACING_DB_DATA } from '@spacing/spacing.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
 import { DEFAULT_SCALE_BASE } from '@shared/components/modular-scale-editor/modular-scale-editor.model';
+import { StoreToken, StoreGroup } from '@core/core.model';
 
 @Component({
   selector: 'app-spacing-section',
@@ -19,27 +20,30 @@ export class SpacingSectionComponent implements OnInit {
     return this.section.sectionName;
   }
 
-  constructor(public section: SectionContentManagerService<SpacingTokenModel, SpacingGroupModel>) {}
+  constructor(private section: SectionContentManagerService) {}
 
   ngOnInit() {
     this.section.configure({
-      contentManagerConfigs: {
-        getDefaultTokenValue: groupId => this.getDefaultTokenValue(groupId),
-        getDefaultGroupState: () => ({scale: false})
+      hooks: {
+        getDefaultToken: groupId => ({
+          value: this.getDefaultTokenValue(groupId)
+        }),
+        getDefaultGroup: () => ({
+          scale: false
+        })
       },
-      sectionViewConfigs: {
-        isTokenEditable: false,
-        isGroupEditable: true,
-      }
     })
   }
 
   private getDefaultTokenValue(groupId: number) {
-    const group = this.section.getGroup(groupId);
-    if (group.state.scale) {
-      return getScaleValue(group.tokens.length, group.state.scale);
+    const group: any = this.section.getGroup(groupId);
+    if (group.scale) {
+      return getScaleValue(group.tokens.length, group.scale);
     }
     return DEFAULT_SCALE_BASE;
   }
 
+  setTokenValue(value: number, token: StoreToken, group: StoreGroup) {
+    this.section.updateToken(token, group, {value});
+  }
 }

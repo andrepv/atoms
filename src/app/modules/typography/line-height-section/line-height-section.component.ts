@@ -3,6 +3,7 @@ import { SectionContentManagerService } from '@core/services/section-content-man
 import { TextPreviewService } from '../text-preview/text-preview.service';
 import { LineHeightTokenModel, LineHeightGroupModel, LINEHEIGHT_DB_DATA } from './line-height.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
+import { StoreToken, StoreGroup } from '@core/core.model';
 
 @Component({
   selector: 'app-line-height-section',
@@ -11,14 +12,13 @@ import { provideSectionDeps } from '@utils/provide-section-deps';
 })
 export class LineHeightSectionComponent implements OnInit {
   constructor(
-    private section: SectionContentManagerService<LineHeightTokenModel,
-    LineHeightGroupModel>,
+    private section: SectionContentManagerService,
     private preview: TextPreviewService,
   ) {
     this.preview.registerStyleSource<LineHeightTokenModel>(
       'lineHeight',
       {
-        getValue: value => value,
+        getValue: token => token.value,
         section: this.section.sectionName
       }
     )
@@ -26,27 +26,27 @@ export class LineHeightSectionComponent implements OnInit {
 
   ngOnInit() {
     this.section.configure({
-      contentManagerConfigs: {
-        getDefaultTokenValue: () => 1,
-        getDefaultGroupState: () => ({textPreviewId: 0}),
+      hooks: {
+        getDefaultToken: () => ({
+          value: 1
+        }),
+        getDefaultGroup: () => ({
+          textPreviewId: 0
+        }),
         onLoad: () => {
           this.preview.isStyleSourceLoaded$.next(true)
         },
-        onTokenValueChange: (value, token) => {
+        onTokenUpdate: ({value}, token) => {
           this.preview.setPreviewStyleValue({lineHeight: value}, token.id)
         },
         onTokenDelete: token => {
           this.preview.deletePreviewStyle('lineHeight', token.id)
         }
       },
-      sectionViewConfigs: {
-        isTokenEditable: false,
-        isGroupEditable: true,
-      }
     })
   }
 
-  setTokenValue(value: LineHeightTokenModel['value'], tokenId: number, groupId: number) {
-    this.section.setTokenValue(value, tokenId, groupId)
+  setTokenValue(value: LineHeightTokenModel['value'], token: StoreToken, group: StoreGroup) {
+    this.section.updateToken(token, group, {value});
   }
 }

@@ -1,11 +1,19 @@
 <app-group-list [groupTemplate]="groupTemplate">
   <ng-template #groupTemplate let-group>
-    <app-group [group]="group" [tokenPreviewTemplate]="tokenTemplate">
+    <app-group
+      [group]="group"
+      [tokenPreviewTemplate]="tokenTemplate"
+      [tokenEditorTemplate]="editorTemplate"
+    >
       <ng-template #tokenTemplate let-token>
-        <div class="token" [style.font-family]="token.value.family">
+        <div class="token" [style.font-family]="token.family">
           <h1>Ag</h1>
-          <p>{{ token.value.family }}</p>
+          <p>{{ token.family }}</p>
         </div>
+      </ng-template>
+
+      <ng-template #editorTemplate let-content>
+        <app-typeface-editor [content]="content"></app-typeface-editor>
       </ng-template>
     </app-group>
   </ng-template>

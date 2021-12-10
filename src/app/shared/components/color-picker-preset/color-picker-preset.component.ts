@@ -10,7 +10,7 @@ import { StoreToken } from '@core/core.model';
 export class ColorPickerPresetPresetComponent implements OnInit {
   @Input() tokens: StoreToken<ColorPaletteTokenModel>[];
   @Output() colorSelect: EventEmitter<string> = new EventEmitter();
-  
+
   constructor() {}
 
   ngOnInit() {}
