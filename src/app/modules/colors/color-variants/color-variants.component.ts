@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ColorPaletteTokenModel } from '../color-palette-section/color-palette.model';
+import { ColorPaletteDBToken, ColorPaletteStoreToken } from '../color-palette-section/color-palette.model';
 import { StoreToken } from '@core/core.model';
 
 import chroma from "chroma-js";
@@ -15,12 +15,12 @@ export class ColorVariantsComponent implements OnInit {
   @Input() primaryColor: string;
   @Input() mixedColor: string;
 
-  @Input() variants: StoreToken<ColorPaletteTokenModel>[] = [];
+  @Input() variants: StoreToken<ColorPaletteDBToken>[] = [];
   @Input() mixRatio = 50;
   @Input() saturation = 1;
 
-  @Output() changeVariantColor: EventEmitter<StoreToken<ColorPaletteTokenModel>> = new EventEmitter();
-  @Output() deleteVariant: EventEmitter<StoreToken<ColorPaletteTokenModel>> = new EventEmitter();
+  @Output() changeVariantColor: EventEmitter<StoreToken<ColorPaletteDBToken>> = new EventEmitter();
+  @Output() deleteVariant: EventEmitter<StoreToken<ColorPaletteDBToken>> = new EventEmitter();
   @Output() addVariant: EventEmitter<string> = new EventEmitter()
   @Output() updateVariantConfigs: EventEmitter<Configs> = new EventEmitter()
 
@@ -63,12 +63,12 @@ export class ColorVariantsComponent implements OnInit {
   }
 
   getVariant(
-    callback: (variant: any, color: string, index: number) => void,
+    callback: (variant: ColorPaletteStoreToken, color: string, index: number) => void,
     amount = this.variants.length
   ) {
     const colors = this.getVariants(amount);
 
-    this.variants.map((variant: any, index) => {
+    this.variants.map((variant, index) => {
       if (colors[index]) {
         callback(variant, colors[index], index);
       }

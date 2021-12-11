@@ -12,9 +12,7 @@
           <ng-container *ngTemplateOutlet="tokenTemplateWrapper; context: {$implicit: tints, group: group}"></ng-container>
         </ng-container>
 
-        <div *ngIf="isTokenVisible(token)">
-          <ng-container *ngTemplateOutlet="tokenTemplateWrapper; context: {$implicit: token, group: group}"></ng-container>
-        </div>
+        <ng-container *ngTemplateOutlet="tokenTemplateWrapper; context: {$implicit: token, group: group}"></ng-container>
 
         <ng-container *ngFor="let shades of token.shade">
           <ng-container *ngTemplateOutlet="tokenTemplateWrapper; context: {$implicit: shades, group: group}"></ng-container>
@@ -25,9 +23,9 @@
         <div class="token" [style.background]="token.color">
           <p style.color="#fff">{{ getReadability(token.color) }}</p>
         </div>
-        <p>HEX: {{ getHex(token.color) }}</p>
-        <p>RGBA: {{ token.color }}</p>
-        <p>HSLA: {{ getHsl(token.color) }}</p>
+        <p>HEX: {{ token.color }}</p>
+        <p>RGB: {{ getRgb(token.color) }}</p>
+        <p>HSL: {{ getHsl(token.color) }}</p>
       </ng-template>
 
       <ng-template #editorTemplate let-content>

@@ -1,14 +1,11 @@
 import { DBToken, DBGroup, DBTables, DBSectionData } from "@core/core.model";
 import { ModularScaleState } from "@shared/components/modular-scale-editor/modular-scale-editor.model";
 
-export type SpacingTokenValue = number;
-export type SpacingGroupState = {scale: Pick<ModularScaleState, 'scaleRatio' | 'base'> | false};
+export type SpacingDBToken = DBToken & {value: number};
+export type SpacingDBGroup = DBGroup & {scale: Pick<ModularScaleState, 'scaleRatio' | 'base'> | false};
 
-export type SpacingTokenModel = DBToken<SpacingTokenValue>;
-export type SpacingGroupModel = DBGroup<SpacingGroupState>;
-
-export type SpacingTokenTable = Dexie.Table<SpacingTokenModel, number>;
-export type SpacingGroupTable = Dexie.Table<SpacingGroupModel, number>;
+export type SpacingTokenTable = Dexie.Table<SpacingDBToken, number>;
+export type SpacingGroupTable = Dexie.Table<SpacingDBGroup, number>;
 
 export type SpacingTables = DBTables<SpacingTokenTable, SpacingGroupTable>
 

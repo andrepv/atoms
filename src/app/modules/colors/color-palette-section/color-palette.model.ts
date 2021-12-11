@@ -2,29 +2,26 @@ import { DBToken, DBGroup, DBTables, DBSectionData, StoreToken } from "@core/cor
 
 export type Variant = "tint" | "shade";
 
-// export interface ColorPaletteTokenValue {
-//   color: string;
-//   isPrimary: boolean;
-//   primaryColorId?: number;
-//   type?: Variant;
-// };
+export type VariantConfig = {
+  mixRatio: number;
+  saturation: number;
+}
 
-export interface ColorPaletteTokenModel extends DBToken {
+export type ColorPaletteDBToken = DBToken & {
   color: string;
   isPrimary: boolean;
   primaryColorId?: number;
   type?: Variant;
+  tintConfigs: VariantConfig;
+  shadeConfigs: VariantConfig;
+};
+
+export type ColorPaletteStoreToken = StoreToken<ColorPaletteDBToken> & {
+  tint?: ColorPaletteDBToken[];
+  shade?: ColorPaletteDBToken[];
 }
 
-export interface StoreColorPaletteTokenModel extends ColorPaletteTokenModel {
-  tint?: ColorPaletteTokenModel[];
-  shade?: ColorPaletteTokenModel[];
-}
-
-// export type StorePrimaryColor = StoreToken<DBToken<StorePrimaryColorValue>>
-
-
-export type ColorPaletteTokenTable = Dexie.Table<ColorPaletteTokenModel, number>;
+export type ColorPaletteTokenTable = Dexie.Table<ColorPaletteDBToken, number>;
 export type ColorPaletteGroupTable = Dexie.Table<DBGroup, number>;
 
 export type ColorPaletteTables = DBTables<ColorPaletteTokenTable, ColorPaletteGroupTable>

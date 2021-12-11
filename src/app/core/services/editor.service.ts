@@ -9,7 +9,7 @@ export class EditorService<T extends DBToken = any, G extends DBGroup = any> {
 
   editorTemplateRef: TemplateRef<any>;
   section: SectionNames | '' = '';
-  content: EditableContent<G, T>;
+  content: EditableContent<T, G>;
 
   get isActive() {
     return Boolean(this.section)

@@ -1,10 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { Subscription } from 'rxjs';
-import { EditorService } from '@core/services/editor.service';
-import { FontType, TypefaceTokenModel, TypefaceTokenValue, TYPEFACE_DB_DATA } from '../typeface-section/typeface.model';
+import { FontType, TypefaceDBToken, TypefaceTokenValue } from '../typeface-section/typeface.model';
 import { DBGroup, EditableContent } from '@core/core.model';
-import { TextPreviewService } from '@typography/text-preview/text-preview.service';
 
 @Component({
   selector: 'app-typeface-editor',
@@ -12,12 +9,10 @@ import { TextPreviewService } from '@typography/text-preview/text-preview.servic
   styleUrls: ['./typeface-editor.component.less'],
 })
 export class TypefaceEditorComponent implements OnInit {
-  @Input() content: EditableContent;
+  @Input() content: EditableContent<TypefaceDBToken, DBGroup>;
   radioValue: FontType | "loaded-fonts" = "google-fonts";
 
-  constructor(
-    private section: SectionContentManagerService<TypefaceTokenModel, DBGroup>,
-  ) {}
+  constructor(private section: SectionContentManagerService<TypefaceDBToken, DBGroup>) {}
 
   ngOnInit() {}
 

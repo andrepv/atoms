@@ -1,7 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { getScaleValue } from '@utils';
 import { DEFAULT_SCALE_BASE, DEFAULT_SCALE_RATIO, ModularScaleOption, ModularScaleState, MODULAR_SCALE_OPTIONS } from './modular-scale-editor.model';
@@ -13,7 +10,7 @@ import { StoreGroup } from '@core/core.model';
   styleUrls: ['./modular-scale-editor.component.less']
 })
 export class ModularScaleEditorComponent implements OnInit {
-  @Input() group: any;
+  @Input() group: StoreGroup;
   @Input() minBaseValue = 4;
   @Input() maxBaseValue = 100;
   @Input() private defaultBase = DEFAULT_SCALE_BASE;
@@ -36,6 +33,7 @@ export class ModularScaleEditorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.base = this.defaultBase;
     this.setState(this.group.scale);
   }
 
@@ -50,7 +48,7 @@ export class ModularScaleEditorComponent implements OnInit {
       return;
     }
 
-    this.group.tokens.forEach((token: any, index: any) => {
+    this.group.tokens.forEach((token, index) => {
       const value = getScaleValue(index, this.state);
 
       this.section.updateToken(token, this.group, {value});

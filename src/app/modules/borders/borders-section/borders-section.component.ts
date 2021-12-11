@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DBGroup, StoreToken } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { provideSectionDeps } from '@utils/provide-section-deps';
-import { BorderTokenModel, BORDER_DB_DATA } from '../borders.model';
+import { BorderDBToken, BORDER_DB_DATA } from '../borders.model';
 
 @Component({
   selector: 'app-borders-section',
@@ -11,7 +11,7 @@ import { BorderTokenModel, BORDER_DB_DATA } from '../borders.model';
   providers: [...provideSectionDeps(BORDER_DB_DATA.tableGroupName)]
 })
 export class BordersSectionComponent implements OnInit {
-  constructor(private section: SectionContentManagerService) { }
+  constructor(private section: SectionContentManagerService<BorderDBToken, DBGroup>) { }
 
   ngOnInit() {
     this.section.configure({
@@ -25,7 +25,7 @@ export class BordersSectionComponent implements OnInit {
     })
   }
 
-  getBorder(token: any) {
+  getBorder(token: StoreToken<BorderDBToken>) {
     const {width, style, color} = token;
     return `${width}px ${style} ${color}`;
   }

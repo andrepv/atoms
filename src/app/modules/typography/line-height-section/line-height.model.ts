@@ -1,13 +1,10 @@
 import { DBToken, DBGroup, DBTables, DBSectionData } from "@core/core.model";
 
-export type LineHeightTokenValue = number;
-export type LineHeightGroupState = {textPreviewId: number};
+export type LineHeightDBToken = DBToken & {value: number};
+export type LineHeightDBGroup = DBGroup & {textPreviewId: number};
 
-export type LineHeightTokenModel = DBToken<LineHeightTokenValue>;
-export type LineHeightGroupModel = DBGroup<LineHeightGroupState>;
-
-export type LineHeightTokenTable = Dexie.Table<LineHeightTokenModel, number>;
-export type LineHeightGroupTable = Dexie.Table<DBGroup, number>;
+export type LineHeightTokenTable = Dexie.Table<LineHeightDBToken, number>;
+export type LineHeightGroupTable = Dexie.Table<LineHeightDBGroup, number>;
 
 export type LineHeightTables = DBTables<LineHeightTokenTable, LineHeightGroupTable>
 

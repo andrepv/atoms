@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { DBGroup, TokensByTheme } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { GoogleFont, TypefaceTokenModel } from '../typeface-section/typeface.model';
+import { GoogleFont, TypefaceDBToken } from '../typeface-section/typeface.model';
 import { FontManagerService } from '../typeface-editor/font-manager.service';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
 
@@ -12,11 +12,11 @@ import { ThemeManagerService } from '@core/services/theme-manager.service';
 })
 export class TypefaceListComponent implements OnInit {
   @Output() save: EventEmitter<GoogleFont> = new EventEmitter();
-  fontsByTheme: TokensByTheme<TypefaceTokenModel>
+  fontsByTheme: TokensByTheme<TypefaceDBToken>
 
   constructor(
     private fontsManager: FontManagerService,
-    private section: SectionContentManagerService<TypefaceTokenModel, DBGroup>,
+    private section: SectionContentManagerService<TypefaceDBToken, DBGroup>,
     private themeManager: ThemeManagerService,
   ) {}
 
@@ -24,9 +24,9 @@ export class TypefaceListComponent implements OnInit {
     this.fontsByTheme = await this.section.tables.getTokens([this.themeManager.selected.id]);
   }
 
-  onThemeFontsLoad(data: TokensByTheme<TypefaceTokenModel>) {
+  onThemeFontsLoad(data: TokensByTheme<TypefaceDBToken>) {
     for (let themeTokens of data) {
-      const fonts = Object.values(themeTokens.tokens) as any;
+      const fonts = Object.values(themeTokens.tokens);
 			this.fontsManager.load(fonts);
 		}
   }

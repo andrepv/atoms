@@ -1,10 +1,8 @@
 import { DBToken, DBGroup, DBTables, DBSectionData } from "@core/core.model";
 
-export type BorderRadiusTokenValue = number;
+export type BorderRadiusDBToken = DBToken & {radius: number};
 
-export type BorderRadiusTokenModel = DBToken<BorderRadiusTokenValue>;
-
-export type BorderRadiusTokenTable = Dexie.Table<BorderRadiusTokenModel, number>;
+export type BorderRadiusTokenTable = Dexie.Table<BorderRadiusDBToken, number>;
 export type BorderRadiusGroupTable = Dexie.Table<DBGroup, number>;
 
 export type BorderRadiusTables = DBTables<BorderRadiusTokenTable, BorderRadiusGroupTable>

@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { ColorPaletteTokenModel, Variant } from '../color-palette-section/color-palette.model';
-import { DBGroup, EditableContent, StoreToken } from '@core/core.model';
+import { ColorPaletteDBToken, ColorPaletteStoreToken, Variant } from '../color-palette-section/color-palette.model';
+import { DBGroup, EditableContent, StoreGroup, StoreToken } from '@core/core.model';
 import { ColorVariantsComponent } from '@colors/color-variants/color-variants.component';
 
 @Component({
@@ -13,17 +13,17 @@ export class ColorPaletteEditorComponent implements OnInit {
   @ViewChild('tintsTemplateRef') tintsTemplateRef: ColorVariantsComponent;
   @ViewChild('shadesTemplateRef') shadesTemplateRef: ColorVariantsComponent;
 
-  @Input() content: EditableContent<DBGroup, ColorPaletteTokenModel>;
+  @Input() content: EditableContent<ColorPaletteStoreToken, StoreGroup<DBGroup, ColorPaletteStoreToken>>;
 
-  get token(): any {
+  get token() {
     return this.content.token;
   }
 
-  get group(): any {
+  get group() {
     return this.content.group;
   }
 
-  constructor(private section: SectionContentManagerService<ColorPaletteTokenModel, DBGroup>) {}
+  constructor(private section: SectionContentManagerService<ColorPaletteDBToken, DBGroup>) {}
 
   ngOnInit() {}
 
@@ -50,7 +50,7 @@ export class ColorPaletteEditorComponent implements OnInit {
   async addVariant(
     color: string,
     type: Variant,
-    variants: StoreToken<any>[],
+    variants: ColorPaletteStoreToken[],
     templateRef: ColorVariantsComponent
   ) {
     const token = {
@@ -59,22 +59,22 @@ export class ColorPaletteEditorComponent implements OnInit {
       isPrimary: false,
       primaryColorId: this.token.id,
       type
-    }
+    } as ColorPaletteDBToken
 
     await this.section.addToken(token, this.group, variants);
     templateRef.updateVariants();
   }
 
   async deleteVariant(
-    variant: StoreToken<ColorPaletteTokenModel>,
-    variants: StoreToken<any>[],
+    variant: StoreToken<ColorPaletteDBToken>,
+    variants: ColorPaletteStoreToken[],
     templateRef: ColorVariantsComponent,
   ) {
     await this.section.deleteToken(variant, this.group);
     templateRef.updateVariants(variants.length - 1);
   }
 
-  changeVariantColor(variant: any) {
+  changeVariantColor(variant: ColorPaletteStoreToken) {
     this.section.updateToken(variant, this.group, {
       color: variant.color
     });

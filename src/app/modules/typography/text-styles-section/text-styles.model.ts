@@ -1,17 +1,16 @@
 import { DBSectionData, DBTables, DBGroup, DBToken } from "@core/core.model";
 
-export type TextStylesTokenValue = {
-  styles?: {
+export type TextStylesDBToken = DBToken & {
+  styles: {
     fontFamily?: number,
     fontSize?: number,
     lineHeight?: number,
     letterSpacing?: number,
   },
-  text?: string;
+  text: string;
 };
-export type TextStylesTokenModel = DBToken<TextStylesTokenValue>;
 
-export type TextStylesTokenTable = Dexie.Table<TextStylesTokenModel, number>;
+export type TextStylesTokenTable = Dexie.Table<TextStylesDBToken, number>;
 export type TextStylesGroupTable = Dexie.Table<DBGroup, number>;
 
 export type TextStylesTables = DBTables<TextStylesTokenTable, TextStylesGroupTable>

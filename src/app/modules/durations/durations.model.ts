@@ -1,14 +1,11 @@
 import { DBToken, DBGroup, DBTables, DBSectionData } from "@core/core.model";
 import { ModularScaleState } from "@shared/components/modular-scale-editor/modular-scale-editor.model";
 
-export type DurationsTokenValue = number;
-export type DurationsGroupState = {scale: Pick<ModularScaleState, 'scaleRatio' | 'base'> | false};
+export type DurationsDBToken = DBToken & {value: number};
+export type DurationsDBGroup = DBGroup & {scale: Pick<ModularScaleState, 'scaleRatio' | 'base'> | false};
 
-export type DurationsTokenModel = DBToken<DurationsTokenValue>;
-export type DurationsGroupModel = DBGroup<DurationsGroupState>;
-
-export type DurationsTokenTable = Dexie.Table<DurationsTokenModel, number>;
-export type DurationsGroupTable = Dexie.Table<DurationsGroupModel, number>;
+export type DurationsTokenTable = Dexie.Table<DurationsDBToken, number>;
+export type DurationsGroupTable = Dexie.Table<DurationsDBGroup, number>;
 
 export type DurationsTables = DBTables<DurationsTokenTable, DurationsGroupTable>
 

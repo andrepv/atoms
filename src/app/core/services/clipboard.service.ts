@@ -1,7 +1,7 @@
 import { NzMessageService } from "ng-zorro-antd/message";
 import { getRandomChars } from "@utils";
 import { SectionContentManagerService } from "./section-content-manager.service";
-import { SectionNames, StoreGroup, DBGroup, DBToken, StoreToken } from "@core/core.model";
+import { SectionNames, StoreGroup, DBGroup, DBToken } from "@core/core.model";
 import { Injectable } from "@angular/core";
 
 interface CopiedContent<T> {
@@ -23,7 +23,7 @@ export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> 
     private message: NzMessageService,
   ) {}
 
-  async pastToken(group: StoreGroup) {
+  async pastToken(group: StoreGroup<G, T>) {
     try {
       const data: CopiedContent<T> = await this.getCopiedData();
       if (data.type !== "token") return;
@@ -40,7 +40,7 @@ export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> 
   async pastGroup() {
     const id = this.message.loading('Action in progress..').messageId;
     try {
-      const data: CopiedContent<any> = await this.getCopiedData();
+      const data: CopiedContent<StoreGroup<G, T>> = await this.getCopiedData();
 
       if (data.type !== "group") {
         this.message.remove(id);
@@ -67,7 +67,7 @@ export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> 
     }
   }
 
-  async copy(content: T | G, type: CopiedContent<T>['type']) {
+  async copy(content: T | StoreGroup<G, T>, type: CopiedContent<T>['type']) {
     try {
       await navigator.clipboard.writeText(
         JSON.stringify({
@@ -87,14 +87,13 @@ export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> 
     return JSON.parse(text);
   }
 
-  private async addToken(copiedToken: T, group: StoreGroup) {
+  private async addToken(copiedToken: T, group: StoreGroup<G, T>) {
     const duplicate = this.getTokenDuplicate({...copiedToken}, group)
-    this.contentManager.hooks.onTokenPast(duplicate, copiedToken, group);
     await this.contentManager.addToken(duplicate, group);
     return duplicate;
   }
 
-  private getTokenDuplicate(token: T, group: StoreGroup) {
+  private getTokenDuplicate(token: T, group: StoreGroup<G, T>): T {
     const tokenName = `${token.name}-${getRandomChars(4)}`;
     delete token.id;
     this.contentManager.hooks.onCreateTokenDuplicate(token);
@@ -104,7 +103,7 @@ export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> 
     };
   }
 
-  private getGroupDuplicate(group: StoreGroup) {
+  private getGroupDuplicate(group: StoreGroup<G, T>): G {
     const groupDuplicate = {...group}
 
     delete groupDuplicate.id;

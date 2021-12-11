@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { TextPreviewService } from '../text-preview/text-preview.service';
-import { LineHeightTokenModel, LineHeightGroupModel, LINEHEIGHT_DB_DATA } from './line-height.model';
+import { LineHeightDBToken, LineHeightDBGroup, LINEHEIGHT_DB_DATA } from './line-height.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
 import { StoreToken, StoreGroup } from '@core/core.model';
 
@@ -12,10 +12,10 @@ import { StoreToken, StoreGroup } from '@core/core.model';
 })
 export class LineHeightSectionComponent implements OnInit {
   constructor(
-    private section: SectionContentManagerService,
+    private section: SectionContentManagerService<LineHeightDBToken, LineHeightDBGroup>,
     private preview: TextPreviewService,
   ) {
-    this.preview.registerStyleSource<LineHeightTokenModel>(
+    this.preview.registerStyleSource<LineHeightDBToken>(
       'lineHeight',
       {
         getValue: token => token.value,
@@ -46,7 +46,7 @@ export class LineHeightSectionComponent implements OnInit {
     })
   }
 
-  setTokenValue(value: LineHeightTokenModel['value'], token: StoreToken, group: StoreGroup) {
+  setTokenValue(value: LineHeightDBToken['value'], token: StoreToken, group: StoreGroup<LineHeightDBGroup>) {
     this.section.updateToken(token, group, {value});
   }
 }

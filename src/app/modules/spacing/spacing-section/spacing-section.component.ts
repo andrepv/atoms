@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { getScaleValue } from '@utils';
-import { SpacingGroupModel, SpacingTokenModel, SPACING_DB_DATA } from '@spacing/spacing.model';
+import { SpacingDBGroup, SpacingDBToken, SPACING_DB_DATA } from '@spacing/spacing.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
 import { DEFAULT_SCALE_BASE } from '@shared/components/modular-scale-editor/modular-scale-editor.model';
 import { StoreToken, StoreGroup } from '@core/core.model';
@@ -20,7 +20,7 @@ export class SpacingSectionComponent implements OnInit {
     return this.section.sectionName;
   }
 
-  constructor(private section: SectionContentManagerService) {}
+  constructor(private section: SectionContentManagerService<SpacingDBToken, SpacingDBGroup>) {}
 
   ngOnInit() {
     this.section.configure({
@@ -36,14 +36,14 @@ export class SpacingSectionComponent implements OnInit {
   }
 
   private getDefaultTokenValue(groupId: number) {
-    const group: any = this.section.getGroup(groupId);
+    const group = this.section.getGroup(groupId);
     if (group.scale) {
       return getScaleValue(group.tokens.length, group.scale);
     }
     return DEFAULT_SCALE_BASE;
   }
 
-  setTokenValue(value: number, token: StoreToken, group: StoreGroup) {
+  setTokenValue(value: SpacingDBToken['value'], token: StoreToken, group: StoreGroup<SpacingDBGroup>) {
     this.section.updateToken(token, group, {value});
   }
 }

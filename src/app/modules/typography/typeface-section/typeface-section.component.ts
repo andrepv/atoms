@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { FontManagerService } from '../typeface-editor/font-manager.service';
 import { DBGroup } from '@core/core.model';
-import { TypefaceTokenModel, TYPEFACE_DB_DATA } from './typeface.model';
+import { TypefaceDBToken, TYPEFACE_DB_DATA } from './typeface.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
 import { TextPreviewService } from '@typography/text-preview/text-preview.service';
 
@@ -14,7 +14,7 @@ import { TextPreviewService } from '@typography/text-preview/text-preview.servic
 })
 export class TypefaceSectionComponent implements OnInit {
   constructor(
-    private section: SectionContentManagerService,
+    private section: SectionContentManagerService<TypefaceDBToken, DBGroup>,
     private fontManager: FontManagerService,
     private preview: TextPreviewService,
   ) {
@@ -55,7 +55,7 @@ export class TypefaceSectionComponent implements OnInit {
   private loadFonts() {
     const groupList = this.section.getGroupList();
     for (let group of groupList) {
-      this.fontManager.load((group as any).tokens);
+      this.fontManager.load(group.tokens);
     }
   }
 }

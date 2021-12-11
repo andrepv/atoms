@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { StoreGroup, StoreToken } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { getScaleValue } from '@utils/get-type-scale-value';
 import { provideSectionDeps } from '@utils/provide-section-deps';
-import { DurationsGroupModel, DurationsTokenModel, DURATIONS_DB_DATA } from '../durations.model';
+import { DurationsDBGroup, DurationsDBToken, DURATIONS_DB_DATA } from '../durations.model';
 
 @Component({
   selector: 'app-durations-section',
@@ -15,7 +15,7 @@ export class DurationsSectionComponent implements OnInit {
   readonly MIN_VALUE = 1;
   readonly MAX_VALUE = 2500;
 
-  constructor(private section: SectionContentManagerService) {}
+  constructor(private section: SectionContentManagerService<DurationsDBToken, DurationsDBGroup>) {}
 
   ngOnInit() {
     this.section.configure({
@@ -31,14 +31,14 @@ export class DurationsSectionComponent implements OnInit {
   }
 
   private getDefaultTokenValue(groupId: number) {
-    const group: any = this.section.getGroup(groupId);
+    const group = this.section.getGroup(groupId);
     if (group.scale) {
       return getScaleValue(group.tokens.length, group.scale);
     }
     return 140;
   }
 
-  setTokenValue(value: DurationsTokenModel['value'], token: StoreToken, group: StoreGroup) {
+  setTokenValue(value: DurationsDBToken['value'], token: StoreToken, group: StoreGroup<DurationsDBGroup>) {
     this.section.updateToken(token, group, {value});
   }
 }

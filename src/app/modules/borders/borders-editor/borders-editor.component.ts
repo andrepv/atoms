@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DBGroup, EditableContent } from '@core/core.model';
-import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { BorderTokenModel, BorderTokenValue } from '../borders.model';
+import { BorderDBToken } from '../borders.model';
 
 @Component({
   selector: 'app-borders-editor',
@@ -10,7 +9,7 @@ import { BorderTokenModel, BorderTokenValue } from '../borders.model';
   styleUrls: ['./borders-editor.component.less'],
 })
 export class BordersEditorComponent implements OnInit {
-  @Input() content: EditableContent;
+  @Input() content: EditableContent<BorderDBToken, DBGroup>;
 
   readonly STYLES = ["dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset", "none"];
 
@@ -23,7 +22,7 @@ export class BordersEditorComponent implements OnInit {
   }
 
   constructor(
-    private section: SectionContentManagerService,
+    private section: SectionContentManagerService<BorderDBToken, DBGroup>,
   ) {}
 
   ngOnInit() {}
@@ -48,7 +47,7 @@ export class BordersEditorComponent implements OnInit {
     });
   }
 
-  changeStyle(value: BorderTokenValue['style']) {
+  changeStyle(value: BorderDBToken['style']) {
     this.token.style = value;
     this.section.updateToken(this.token, this.group, {
       style: this.token.style

@@ -9,15 +9,13 @@ export interface BoxShadowLayer {
   color: string;
 }
 
-export interface BoxShadowTokenValue {
+export type BoxShadowDBToken = DBToken & {
   blockColor: string;
   backgroundColor: string;
   layers: BoxShadowLayer[];
-}
+};
 
-export type BoxShadowTokenModel = DBToken<BoxShadowTokenValue>;
-
-export type BoxShadowTokenTable = Dexie.Table<BoxShadowTokenModel, number>;
+export type BoxShadowTokenTable = Dexie.Table<BoxShadowDBToken, number>;
 export type BoxShadowGroupTable = Dexie.Table<DBGroup, number>;
 
 export type BoxShadowTables = DBTables<BoxShadowTokenTable, BoxShadowGroupTable>

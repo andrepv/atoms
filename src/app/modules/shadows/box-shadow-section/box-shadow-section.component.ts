@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DBGroup, StoreToken } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { provideSectionDeps } from '@utils/provide-section-deps';
-import { BoxShadowLayer, BoxShadowTokenModel, BOX_SHADOW_DB_DATA } from './box-shadow-section.model';
+import { BoxShadowLayer, BoxShadowDBToken, BOX_SHADOW_DB_DATA } from './box-shadow-section.model';
 
 export const DEFAULT_LAYER_VALUE: BoxShadowLayer = {
   offsetX: '17px',
@@ -20,7 +20,7 @@ export const DEFAULT_LAYER_VALUE: BoxShadowLayer = {
   providers: [...provideSectionDeps(BOX_SHADOW_DB_DATA.tableGroupName)]
 })
 export class BoxShadowSectionComponent implements OnInit {
-  constructor(private section: SectionContentManagerService) {}
+  constructor(private section: SectionContentManagerService<BoxShadowDBToken, DBGroup>) {}
     
   ngOnInit() {
     this.section.configure({
@@ -34,8 +34,8 @@ export class BoxShadowSectionComponent implements OnInit {
     })
   }
 
-  getBoxShadow(token: any) {
-    return token.layers.reduce((accumulator: any, layers: any, index: any) => {
+  getBoxShadow(token: StoreToken<BoxShadowDBToken>) {
+    return token.layers.reduce((accumulator, layers, index) => {
       let values = Object.values(layers);
       if (!values[values.length - 1]) values.pop();
       let comma = index + 1 !== token.layers.length ? ',' : '';
@@ -44,7 +44,7 @@ export class BoxShadowSectionComponent implements OnInit {
     }, "")
   }
 
-  getBlockStyle(token: any) {
+  getBlockStyle(token: StoreToken<BoxShadowDBToken>) {
     return {
       backgroundColor: token.blockColor,
       boxShadow: this.getBoxShadow(token),

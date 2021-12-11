@@ -1,12 +1,9 @@
 import { DBToken, DBGroup, DBTables, DBSectionData } from "@core/core.model";
 
-export type LetterSpacingTokenValue = number;
-export type LetterSpacingGroupState = {textPreviewId: number};
+export type LetterSpacingDBToken = DBToken & {value: number};
+export type LetterSpacingDBGroup = DBGroup & {textPreviewId: number};
 
-export type LetterSpacingTokenModel = DBToken<LetterSpacingTokenValue>;
-export type LetterSpacingGroupModel = DBGroup<LetterSpacingGroupState>;
-
-export type LetterSpacingTokenTable = Dexie.Table<LetterSpacingTokenModel, number>;
+export type LetterSpacingTokenTable = Dexie.Table<LetterSpacingDBToken, number>;
 export type LetterSpacingGroupTable = Dexie.Table<DBGroup, number>;
 
 export type LetterSpacingTables = DBTables<LetterSpacingTokenTable, LetterSpacingGroupTable>

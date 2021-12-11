@@ -1,9 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DBGroup, EditableContent } from '@core/core.model';
-import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { DEFAULT_LAYER_VALUE } from '../box-shadow-section/box-shadow-section.component';
-import { BoxShadowTokenModel } from '../box-shadow-section/box-shadow-section.model';
+import { BoxShadowDBToken } from '../box-shadow-section/box-shadow-section.model';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
@@ -12,13 +10,13 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
   styleUrls: ['./box-shadow-editor.component.less'],
 })
 export class BoxShadowEditorComponent implements OnInit {
-  @Input() content: EditableContent<DBGroup, BoxShadowTokenModel>;
+  @Input() content: EditableContent<BoxShadowDBToken, DBGroup>;
 
-  get token(): any {
+  get token() {
     return this.content.token;
   }
 
-  get group(): any {
+  get group() {
     return this.content.group;
   }
 

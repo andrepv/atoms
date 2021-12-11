@@ -1,50 +1,38 @@
-
 export type SectionNames = "Type Face" | "Type Scale" | "Line Height" | "Letter Spacing" | "Text Styles" | "Spacing" | "Color Palette" | "Box Shadow" | "Border Radius" | "Borders" | "Durations";
 
 export type PageName = "Typography" | "Colors" | "Spacing" | "Shadows" | "Borders" | "Durations";
 
-export interface DBToken<Value = any> {
+export interface DBToken {
   id?: number;
   name: string;
-  value: Value;
   groupId: number;
   themeId: number;
 }
 
-export interface DBGroup<State = any> {
+export interface DBGroup {
   id: number;
   name: string;
   themeId: number;
-  state?: State;
 }
 
-export interface StoreToken<T extends DBToken = any> extends DBToken<T['value']> {
-    name: string;
-  id: number;
-  value: T['value'];
+export type SectionTokenValue<T extends DBToken> = Omit<T, keyof DBToken>
+export type SectionGroupValue<G extends DBGroup> = Omit<G, keyof DBGroup>
+
+export type StoreToken<T extends DBToken = any> = {
+  [K in keyof T]: T[K]
 }
 
-// export interface StoreToken extends Pick<DBToken, 'name' | 'id'> {}
-
-// export interface StoreGroup<T extends StoreToken = StoreToken> extends Pick<DBGroup, 'name' | 'id'> {
-//   tokens: T[];
-//   anchorLink: string;
-// }
-
-
-export interface EditableContent<G extends DBGroup = any, T extends DBToken = any> {
-  token?: T,
-  group: G,
-}
-
-export interface StoreGroup<G extends DBGroup = any, T extends DBToken = any> {
-  name: string;
-  id: number;
+export type StoreGroup<G extends DBGroup = any, T extends DBToken = any> = {
+  [K in keyof G]: G[K] 
+} & {
   tokens: StoreToken<T>[];
   anchorLink: string;
-  state?: G['state'];
 }
 
+export interface EditableContent<T extends DBToken = any, G extends DBGroup = any> {
+  token?: StoreToken<T>,
+  group: StoreGroup<G, T>,
+}
 
 export interface DBTables<TokenTable, GroupTable> {
   name: SectionNames;

@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DBGroup, EditableContent } from '@core/core.model';
-import { EditorService } from '@core/services/editor.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { BoxShadowLayer, BoxShadowTokenModel } from '../box-shadow-section/box-shadow-section.model';
+import { BoxShadowLayer, BoxShadowDBToken } from '../box-shadow-section/box-shadow-section.model';
 
 type NumericPropertyNames = keyof Omit<BoxShadowLayer, 'inset' | 'color'>;
 
@@ -12,7 +11,7 @@ type NumericPropertyNames = keyof Omit<BoxShadowLayer, 'inset' | 'color'>;
   styleUrls: ['./box-shadow-layer.component.less']
 })
 export class BoxShadowLayerComponent implements OnInit {
-  @Input() content: EditableContent;
+  @Input() content: EditableContent<BoxShadowDBToken, DBGroup>;
   @Input() layer: BoxShadowLayer;
   @Input() index: number;
 
@@ -38,7 +37,7 @@ export class BoxShadowLayerComponent implements OnInit {
   isHidden = false;
 
   constructor(
-    private section: SectionContentManagerService<BoxShadowTokenModel, DBGroup>,
+    private section: SectionContentManagerService<BoxShadowDBToken, DBGroup>,
   ) {}
   
   ngOnInit() {

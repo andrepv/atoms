@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { getScaleValue } from '@utils';
 import { TextPreviewService } from '../text-preview/text-preview.service';
-import { TypescaleTokenModel, TypescaleGroupModel, TYPESCALE_DB_DATA } from './typescale.model';
+import { TypescaleDBToken, TypescaleDBGroup, TYPESCALE_DB_DATA } from './typescale.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
 import { DEFAULT_SCALE_BASE } from '@shared/components/modular-scale-editor/modular-scale-editor.model';
 import { StoreToken, StoreGroup } from '@core/core.model';
@@ -17,10 +17,10 @@ export class TypescaleSectionComponent implements OnInit {
   readonly MAX_FONT_SIZE = 150;
 
   constructor(
-    public section: SectionContentManagerService,
+    public section: SectionContentManagerService<TypescaleDBToken,TypescaleDBGroup>,
     public preview: TextPreviewService,
   ) {
-    this.preview.registerStyleSource<TypescaleTokenModel>(
+    this.preview.registerStyleSource<TypescaleDBToken>(
       'fontSize',
       {
         getValue: token => `${token.value}px`,
@@ -56,14 +56,14 @@ export class TypescaleSectionComponent implements OnInit {
   }
 
   private getDefaultTokenValue(groupId: number) {
-    const group = this.section.getGroup(groupId) as any;
+    const group = this.section.getGroup(groupId);
     if (group.scale) {  
       return getScaleValue(group.tokens.length, group.scale);
     }
     return DEFAULT_SCALE_BASE;
   }
 
-  setTokenValue(value: number, token: StoreToken, group: StoreGroup) {
+  setTokenValue(value: number, token: StoreToken, group: StoreGroup<TypescaleDBGroup>) {
     this.section.updateToken(token, group, {value});
   }
 }

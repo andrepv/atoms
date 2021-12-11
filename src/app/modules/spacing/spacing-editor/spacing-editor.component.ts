@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { StoreGroup } from '@core/core.model';
-import { SpacingGroupModel } from '@spacing/spacing.model';
+import { SpacingDBGroup } from '@spacing/spacing.model';
 
 @Component({
   selector: 'app-spacing-editor',
@@ -8,7 +8,7 @@ import { SpacingGroupModel } from '@spacing/spacing.model';
   styleUrls: ['./spacing-editor.component.less'],
 })
 export class SpacingEditorComponent implements OnInit {
-  @Input() group: StoreGroup<SpacingGroupModel>
+  @Input() group: StoreGroup<SpacingDBGroup>
 
   constructor() {}
   ngOnInit() {}

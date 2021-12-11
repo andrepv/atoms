@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { TextPreviewService } from '../text-preview/text-preview.service';
-import { LetterSpacingGroupModel, LetterSpacingTokenModel, LETTERSPACING_DB_DATA } from './letter-spacing.model';
+import { LetterSpacingDBGroup, LetterSpacingDBToken, LETTERSPACING_DB_DATA } from './letter-spacing.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
 import { StoreGroup, StoreToken } from '@core/core.model';
 
@@ -12,10 +12,10 @@ import { StoreGroup, StoreToken } from '@core/core.model';
 })
 export class LetterSpacingSectionComponent implements OnInit {
   constructor(
-    private section: SectionContentManagerService,
+    private section: SectionContentManagerService<LetterSpacingDBToken, LetterSpacingDBGroup>,
     private preview: TextPreviewService,
   ) {
-    this.preview.registerStyleSource<LetterSpacingTokenModel>(
+    this.preview.registerStyleSource<LetterSpacingDBToken>(
       'letterSpacing',
       {
         getValue: token => `${token.value}em`,
@@ -50,9 +50,9 @@ export class LetterSpacingSectionComponent implements OnInit {
   }
 
   setTokenValue(
-    value: LetterSpacingTokenModel['value'],
+    value: LetterSpacingDBToken['value'],
     token: StoreToken,
-    group: StoreGroup
+    group: StoreGroup<LetterSpacingDBGroup>
   ) {
     this.section.updateToken(token, group, {value});
   }

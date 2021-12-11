@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ColorPaletteTokenModel, COLORPALETTE_DB_DATA } from '@colors/color-palette-section/color-palette.model';
+import { ColorPaletteDBToken, COLORPALETTE_DB_DATA } from '@colors/color-palette-section/color-palette.model';
 import { DBGroup, TokensByTheme } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
@@ -21,14 +21,14 @@ export class ColorPickerComponent implements OnInit {
   @Output() colorChange: EventEmitter<string> = new EventEmitter();
 
   isPopoverVisible = false;
-  colorsByTheme: TokensByTheme<ColorPaletteTokenModel>;
-  currentThemeColors: ColorPaletteTokenModel[] = null;
+  colorsByTheme: TokensByTheme<ColorPaletteDBToken>;
+  currentThemeColors: ColorPaletteDBToken[] = null;
 
   private colorChange$ = new Subject<string>();
   private destroy$ = new Subject();
 
   constructor(
-    private colorPalettes: SectionContentManagerService<ColorPaletteTokenModel, DBGroup>,
+    private colorPalettes: SectionContentManagerService<ColorPaletteDBToken, DBGroup>,
     private themeManager: ThemeManagerService,
   ) {}
 

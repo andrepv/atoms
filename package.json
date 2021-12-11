@@ -25,7 +25,6 @@
     "ng-zorro-antd": "^10.2.2",
     "ngx-color-picker": "^11.0.0",
     "rxjs": "~6.6.0",
-    "tinycolor2": "^1.4.2",
     "tslib": "^2.0.0",
     "values.js": "^2.0.0",
     "zone.js": "~0.10.2"

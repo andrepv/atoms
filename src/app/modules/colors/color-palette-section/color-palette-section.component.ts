@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import tinycolor from "tinycolor2";
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { ColorPaletteTokenModel as Token, COLORPALETTE_DB_DATA } from './color-palette.model';
-import { StoreToken, StoreGroup, DBGroup as Group } from '@core/core.model';
+import { ColorPaletteDBToken, ColorPaletteStoreToken, COLORPALETTE_DB_DATA } from './color-palette.model';
+import { StoreToken, StoreGroup, DBGroup } from '@core/core.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
+import chroma from 'chroma-js';
 
 @Component({
   selector: 'app-color-palette-section',
@@ -12,18 +12,18 @@ import { provideSectionDeps } from '@utils/provide-section-deps';
   providers: [...provideSectionDeps(COLORPALETTE_DB_DATA.tableGroupName)]
 })
 export class ColorPaletteSectionComponent implements OnInit {
-  constructor(private section: SectionContentManagerService<Token, Group>) {}
+  constructor(private section: SectionContentManagerService<ColorPaletteDBToken, DBGroup>) {}
 
   ngOnInit() {
     this.section.configure({
       hooks: {
         getDefaultToken: () => ({
-          color: 'rgba(255,255,255,1)',
+          color: '#ffffff',
           isPrimary: true,
           tintConfigs: {mixRatio: 80, saturation: 1},
           shadeConfigs: {mixRatio: 80, saturation: 1}
         }),
-        onTokenDelete: (deletedToken: any, group) => {
+        onTokenDelete: (deletedToken: ColorPaletteStoreToken, group) => {
           if (!deletedToken.isPrimary) {
             this.deleteVariant(deletedToken, group);
           }
@@ -32,20 +32,19 @@ export class ColorPaletteSectionComponent implements OnInit {
             this.deletePrimaryColor(deletedToken, group)
           }
         },
-        onTokenAdd: (token: any) => {
+        onTokenAdd: (token: ColorPaletteStoreToken) => {
           if (token.isPrimary) {
             token.tint = [];
             token.shade = [];
           } 
         },
         onLoad: () => {
-          this.section.getGroupList().map((group: any) => {
-            group.tokens.map((token: any) => this.handleTokenLoad(token, group))
-
-            group.tokens = group.tokens.filter((token: any) => token.isPrimary)
+          this.section.getGroupList().map(group => {
+            group.tokens.map(token => this.handleTokenLoad(token, group))
+            group.tokens = group.tokens.filter(token => token.isPrimary)
           })
         },
-        onCreateTokenDuplicate: (token: any) => {
+        onCreateTokenDuplicate: (token: ColorPaletteStoreToken) => {
           if (!token.isPrimary) {
             token.isPrimary = true;
             token.tintConfigs = {mixRatio: 80, saturation: 1},
@@ -58,45 +57,41 @@ export class ColorPaletteSectionComponent implements OnInit {
     })
   }
 
-  getHex(rgba: string) {
-    return tinycolor(rgba).toHexString();
+  getRgb(rgba: string) {
+    return chroma(rgba).css();
   }
 
   getHsl(rgba: string) {
-    return tinycolor(rgba).toHslString();
+    return chroma(rgba).css('hsl');
   }
 
   getReadability(color: string) {
-    return tinycolor.readability(color, "#fff").toFixed(2);
-  }
-
-  isTokenVisible = (token: any) => {
-    return token.isPrimary;
+    return chroma.contrast(color, "#fff").toFixed(2);
   }
 
   private getToken(group: StoreGroup, tokenId: number) {
     return group.tokens.find(token => token.id === tokenId)
   }
 
-  private deleteVariant(token: any, group: any) {
+  private deleteVariant(token: ColorPaletteStoreToken, group: StoreGroup) {
     const {type, primaryColorId} = token;
     const primaryColor = this.getToken(group, primaryColorId);
 
     if (primaryColor) {
-      primaryColor[type] = primaryColor[type].filter((variant: StoreToken<Token>) => variant.id !== token.id)
+      primaryColor[type] = primaryColor[type].filter((variant: StoreToken) => variant.id !== token.id)
     }
   }
 
-  private deletePrimaryColor(token: any, group: any) {
-    token.tint.map((token: any) => {
+  private deletePrimaryColor(token: ColorPaletteStoreToken, group: StoreGroup<DBGroup, ColorPaletteDBToken>) {
+    token.tint.map(token => {
       this.section.deleteToken(token, group)
     })
-    token.shade.map((token: any) => {
+    token.shade.map(token => {
       this.section.deleteToken(token, group)
     })
   }
 
-  private handleTokenLoad(token: any, group: any) {
+  private handleTokenLoad(token: ColorPaletteStoreToken, group: StoreGroup) {
     if (!token.isPrimary) {
       const {primaryColorId = 0, type = 'tint'} = token;
       const primaryColor = this.getToken(group, primaryColorId);

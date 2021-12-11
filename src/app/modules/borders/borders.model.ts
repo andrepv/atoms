@@ -1,14 +1,12 @@
 import { DBToken, DBGroup, DBTables, DBSectionData } from "@core/core.model";
 
-export interface BorderTokenValue {
+export type BorderDBToken = DBToken & {
   color: string,
   width: number,
   style: "dotted" | "dashed" | "solid" | "double" | "groove" | "ridge" | "inset" | "outset" | "none";
 };
 
-export type BorderTokenModel = DBToken<BorderTokenValue>;
-
-export type BorderTokenTable = Dexie.Table<BorderTokenModel, number>;
+export type BorderTokenTable = Dexie.Table<BorderDBToken, number>;
 export type BorderGroupTable = Dexie.Table<DBGroup, number>;
 
 export type BorderTables = DBTables<BorderTokenTable, BorderGroupTable>

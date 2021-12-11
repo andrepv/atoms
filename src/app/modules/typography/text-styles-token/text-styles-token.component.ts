@@ -4,14 +4,14 @@ import { TextPreviewStyles } from '@typography/text-preview/text-preview.model';
 import { TextPreviewService } from '@typography/text-preview/text-preview.service';
 import { Subscription } from 'rxjs';
 import { finalize, take } from 'rxjs/operators';
-import { TextStylesTokenModel } from '../text-styles-section/text-styles.model';
+import { TextStylesDBToken } from '../text-styles-section/text-styles.model';
 
 @Component({
   selector: 'app-text-styles-token',
   template: `<app-text-preview [preview]="preview"></app-text-preview>`,
 })
 export class TextStylesTokenComponent implements OnInit {
-  @Input() token: any;
+  @Input() token: StoreToken<TextStylesDBToken>;
   preview = this.previewManager.DEFAULT_PREVIEW;
 
   subscription: Subscription;

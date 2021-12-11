@@ -1,11 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { EditorService } from '@core/services/editor.service';
 import { TextPreviewService } from '../text-preview/text-preview.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { DBGroup, EditableContent } from '@core/core.model';
-import { TextStylesTokenModel, TextStylesTokenValue, TEXTSTYLES_DB_DATA } from '@typography/text-styles-section/text-styles.model';
+import { DBGroup, EditableContent, SectionTokenValue } from '@core/core.model';
+import { TextStylesDBToken } from '@typography/text-styles-section/text-styles.model';
 import { TextPreviewStyleProps } from '@typography/text-preview/text-preview.model';
 
 @Component({
@@ -14,10 +11,10 @@ import { TextPreviewStyleProps } from '@typography/text-preview/text-preview.mod
   styleUrls: ['./text-styles-editor.component.less'],
 })
 export class TextStylesEditorComponent implements OnInit {
-  @Input() content: any;
+  @Input() content: EditableContent<TextStylesDBToken, DBGroup>;
 
   constructor(
-    private section: SectionContentManagerService,
+    private section: SectionContentManagerService<TextStylesDBToken, DBGroup>,
     private preview: TextPreviewService,
   ) {}
 
@@ -59,7 +56,7 @@ export class TextStylesEditorComponent implements OnInit {
     }
   }
 
-  private async setTokenValue(obj: TextStylesTokenValue) {
+  private async setTokenValue(obj: Partial<SectionTokenValue<TextStylesDBToken>>) {
     const {group} = this.content;
     const value = {...this.content.token}
   

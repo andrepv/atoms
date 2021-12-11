@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { StoreGroup } from '@core/core.model';
 import { TextPreviewService } from './text-preview.service';
 
 @Component({

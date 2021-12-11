@@ -1,26 +1,24 @@
-import { Inject, Injectable, TemplateRef } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { db } from '../indexedDB';
 import { StoreService } from '@core/services/store.service';
-import { EditorService } from '@core/services/editor.service';
 import { getRandomChars } from '@utils';
-import { StoreToken, StoreGroup, DBToken, DBGroup } from '@core/core.model';
+import { StoreToken, StoreGroup, DBToken, DBGroup, SectionTokenValue, SectionGroupValue } from '@core/core.model';
 import { ThemeManagerService } from './theme-manager.service';
 import { SectionTables } from '@core/section-tables';
 
 interface SectionViewConfigs {}
 
-interface SectionContentManagerHooks<T extends DBToken, G extends DBGroup> {
-  onLoad: () => void;
-  onTokenDelete: (token: StoreToken<T>, group: StoreGroup<G, T>) => void;
-  onTokenAdd: (token: StoreToken<T>, group: StoreGroup<G, T>) => void;
+export interface SectionContentManagerHooks<T extends DBToken, G extends DBGroup> {
+  onLoad?: () => void;
+  onTokenDelete?: (token: StoreToken<T>, group: StoreGroup<G, T>) => void;
+  onTokenAdd?: (token: StoreToken<T>, group: StoreGroup<G, T>) => void;
 
-  getDefaultToken: (groupId: number) => Omit<T, 'name' | 'value' | 'groupId' | 'themeId'> | void;
-  getDefaultGroup: () => Omit<G, 'name' | 'tokensId' | 'themeId'> | void;
-  onTokenUpdate:  (value: {[key: string]: any}, token: StoreToken<T>, group: StoreGroup<G, T>) => void;
+  getDefaultToken?: (groupId: number) => SectionTokenValue<T> | void;
+  getDefaultGroup?: () => SectionGroupValue<G> | void;
+  onTokenUpdate?:  (value: Partial<SectionTokenValue<T>>, token: StoreToken<T>, group: StoreGroup<G, T>) => void;
 
-  onCreateTokenDuplicate: (token: any) => void;
-  onTokenPast: (token: any, copiedToken: any,  group: StoreGroup) => void;
+  onCreateTokenDuplicate?: (token: T) => void;
 }
 
 @Injectable()
@@ -49,7 +47,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     onTokenAdd: () => {},
     onTokenUpdate: () => {},
     onCreateTokenDuplicate: () => {},
-    onTokenPast: () => {},
+    // onTokenPast: () => {},
     getDefaultToken: () => {},
     getDefaultGroup: () => {},
   }
@@ -64,7 +62,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
   ) {}
 
   configure({ hooks, sectionViewConfigs }: {
-    hooks: Partial<SectionContentManagerHooks<T, G>>,
+    hooks: SectionContentManagerHooks<T, G>,
     sectionViewConfigs?: SectionViewConfigs
   }) {
     this.hooks = Object.assign(this.hooks, hooks);
@@ -74,7 +72,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
   async load() {
     this.isLoading = true;
 
-    let groups = await this.tables.getThemeGroups(this.selectedThemeId) as any;
+    let groups = await this.tables.getThemeGroups(this.selectedThemeId) as StoreGroup<G, T>[];
 
     if (groups.length) {
       for (let group of groups) {
@@ -90,7 +88,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     this.hooks.onLoad();
   }
 
-  async addToken(token: T, group: StoreGroup, listToAdd = group.tokens) {
+  async addToken(token: T, group: StoreGroup<G, T>, listToAdd = group.tokens) {
     const tokenId = await this.tokenTable.add(token);
     if (tokenId) {
       const newToken = {id: tokenId, ...token};
@@ -100,13 +98,13 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     }
   }
 
-  async deleteToken(token: StoreToken, group: StoreGroup) {
+  async deleteToken(token: StoreToken<T>, group: StoreGroup<G, T>) {
     await this.tokenTable.delete(token.id)
     this.hooks.onTokenDelete(token, group);
     this.store.deleteToken(this.sectionName, group, token.id)
   }
 
-  async renameToken(tokenName: string, token: StoreToken) {
+  async renameToken(tokenName: string, token: StoreToken<T>) {
     const isUnique = await db.isTokenNameUnique(tokenName, this.selectedThemeId);
     if (!isUnique) {
       this.message.error('The token name must be unique');
@@ -126,10 +124,14 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
       name,
       groupId,
       themeId: this.selectedThemeId,
-    } as T;
+    };
   }
 
-  async updateToken(token: any, group: any, changes: {[key: string]: any}) {
+  async updateToken(
+    token: StoreToken<T>,
+    group: StoreGroup<G, T>,
+    changes: Partial<SectionTokenValue<T>>
+  ) {
     const key = Object.keys(changes)[0];
 
     await this.tokenTable.update(token.id, changes);
@@ -157,7 +159,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     return groupId;
   }
 
-  async deleteGroup(group: StoreGroup) {
+  async deleteGroup(group: StoreGroup<G, T>) {
     await this.tables.deleteGroup(group.id, this.selectedThemeId);
 
     for (let token of group.tokens) {
@@ -167,7 +169,7 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     this.store.deleteGroup(this.sectionName, group.id);
   }
 
-  async renameGroup(groupName: string, group: StoreGroup) {
+  async renameGroup(groupName: string, group: StoreGroup<G, T>) {
     await this.groupTable.update(group.id, {name: groupName});
     group.name = groupName
   }
@@ -176,21 +178,24 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
     return {
       name,
       themeId: this.selectedThemeId,
-    } as G;
+    };
   }
 
-  async updateGroup(group: any, changes: {[key: string]: any}) {
+  async updateGroup(
+    group: StoreGroup<G, T>,
+    changes: Partial<SectionGroupValue<G>>
+  ) {
     const key = Object.keys(changes)[0];
     await this.groupTable.update(group.id, changes);
     this.store.getGroup(this.sectionName, group.id)[key] = changes[key]
     this.store.updateGroup(group, this.sectionName);
   }
 
-  getGroup(groupId: number): StoreGroup<G, T> {
-    return this.store.getGroup(this.sectionName, groupId);
+  getGroup(groupId: number)  {
+    return this.store.getGroup(this.sectionName, groupId) as StoreGroup<G, T>;
   }
 
-  getGroupList(): StoreGroup<G, T>[] {
-    return this.store.getGroupList(this.sectionName)
+  getGroupList() {
+    return this.store.getGroupList(this.sectionName) as StoreGroup<G, T>[]
   }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DBGroup, StoreGroup, StoreToken } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { provideSectionDeps } from '@utils/provide-section-deps';
-import { BorderRadiusTokenModel, BORDER_RADIUS_DB_DATA } from './border-radius.model';
+import { BorderRadiusDBToken, BORDER_RADIUS_DB_DATA } from './border-radius.model';
 
 @Component({
   selector: 'app-border-radius-section',
@@ -12,7 +12,7 @@ import { BorderRadiusTokenModel, BORDER_RADIUS_DB_DATA } from './border-radius.m
 })
 export class BorderRadiusSectionComponent implements OnInit {
 
-  constructor(private section: SectionContentManagerService) {}
+  constructor(private section: SectionContentManagerService<BorderRadiusDBToken, DBGroup>) {}
 
   ngOnInit() {
     this.section.configure({
@@ -25,9 +25,9 @@ export class BorderRadiusSectionComponent implements OnInit {
   }
 
   setTokenValue(
-    radius: BorderRadiusTokenModel['value'],
-    token: StoreToken,
-    group: StoreGroup
+    radius: BorderRadiusDBToken['radius'],
+    token: StoreToken<BorderRadiusDBToken>,
+    group: StoreGroup<DBGroup, BorderRadiusDBToken>
   ) {
     this.section.updateToken(token, group, {radius});
   }

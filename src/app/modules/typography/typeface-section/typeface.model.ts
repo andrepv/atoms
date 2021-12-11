@@ -16,9 +16,9 @@ export interface GoogleFont extends FontModel {
 }
 
 export type TypefaceTokenValue = CustomFont | GoogleFont;
-export type TypefaceTokenModel = DBToken<TypefaceTokenValue>;
+export type TypefaceDBToken = DBToken & TypefaceTokenValue;
 
-export type TypefaceTokenTable = Dexie.Table<TypefaceTokenModel, number>;
+export type TypefaceTokenTable = Dexie.Table<TypefaceDBToken, number>;
 export type TypefaceGroupTable = Dexie.Table<DBGroup, number>;
 
 export type TypefaceTables = DBTables<TypefaceTokenTable, TypefaceGroupTable>

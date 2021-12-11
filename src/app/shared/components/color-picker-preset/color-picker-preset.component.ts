@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ColorPaletteTokenModel } from '@colors/color-palette-section/color-palette.model';
+import { ColorPaletteDBToken } from '@colors/color-palette-section/color-palette.model';
 import { StoreToken } from '@core/core.model';
 import { EditorService } from '@core/services/editor.service';
 
@@ -9,7 +9,7 @@ import { EditorService } from '@core/services/editor.service';
   styleUrls: ['./color-picker-preset.component.less']
 })
 export class ColorPickerPresetPresetComponent implements OnInit {
-  @Input() tokens: StoreToken<ColorPaletteTokenModel>[];
+  @Input() tokens: StoreToken<ColorPaletteDBToken>[];
   @Output() colorSelect: EventEmitter<string> = new EventEmitter();
 
   excludedTokenId = 0;

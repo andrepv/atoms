@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { StoreGroup } from '@core/core.model';
-import { DurationsGroupModel } from '../durations.model';
+import { DurationsDBGroup } from '../durations.model';
 
 @Component({
   selector: 'app-durations-editor',
@@ -8,7 +8,7 @@ import { DurationsGroupModel } from '../durations.model';
   styleUrls: ['./durations-editor.component.less'],
 })
 export class DurationsEditorComponent implements OnInit {
-  @Input() group: StoreGroup<DurationsGroupModel>;
+  @Input() group: StoreGroup<DurationsDBGroup>;
 
   constructor() {}
   ngOnInit() {}

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { DBGroup } from '@core/core.model';
-import { TextStylesTokenModel, TEXTSTYLES_DB_DATA } from './text-styles.model';
+import { TextStylesDBToken, TEXTSTYLES_DB_DATA } from './text-styles.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
 import { TextPreviewService } from '../text-preview/text-preview.service';
 
@@ -13,7 +13,7 @@ import { TextPreviewService } from '../text-preview/text-preview.service';
 })
 export class TextStylesSectionComponent implements OnInit {
   constructor(
-    private section: SectionContentManagerService,
+    private section: SectionContentManagerService<TextStylesDBToken, DBGroup>,
     private preview: TextPreviewService
   ) {}
 
