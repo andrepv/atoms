@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ColorPaletteTokenModel } from '@colors/color-palette-section/color-palette.model';
 import { StoreToken } from '@core/core.model';
+import { EditorService } from '@core/services/editor.service';
 
 @Component({
   selector: 'app-color-picker-preset',
@@ -11,15 +12,13 @@ export class ColorPickerPresetPresetComponent implements OnInit {
   @Input() tokens: StoreToken<ColorPaletteTokenModel>[];
   @Output() colorSelect: EventEmitter<string> = new EventEmitter();
 
-  constructor() {}
+  excludedTokenId = 0;
 
-  ngOnInit() {}
+  constructor(private editor: EditorService) {}
 
-  getTintsByIds(ids: number[]) {
-    return this.tokens.filter(({id}) => ids.includes(id)).reverse()
-  }
-
-  getShadesByIds(ids: number[]) {
-    return this.tokens.filter(({id}) => ids.includes(id))
+  ngOnInit() {
+    if (this.editor.section === "Color Palette") {
+      this.excludedTokenId = this.editor.content.token.id;
+    }
   }
 }

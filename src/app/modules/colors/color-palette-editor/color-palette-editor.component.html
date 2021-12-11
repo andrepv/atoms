@@ -2,7 +2,6 @@
   <div class="color-info">
     <app-color-picker
       [color]="token.color"
-      [currentThemeColors]="getPresetColors()"
       (colorChange)="changeColor($event)"
       (colorSave)="saveColor()"
     ></app-color-picker>

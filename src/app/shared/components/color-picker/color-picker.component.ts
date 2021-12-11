@@ -16,13 +16,13 @@ import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operato
 export class ColorPickerComponent implements OnInit {
   @Input() color: string;
   @Input() colorChangeDelay = 500;
-  @Input() currentThemeColors: ColorPaletteTokenModel[] = null;
 
   @Output() colorSave: EventEmitter<string> = new EventEmitter();
   @Output() colorChange: EventEmitter<string> = new EventEmitter();
 
   isPopoverVisible = false;
   colorsByTheme: TokensByTheme<ColorPaletteTokenModel>;
+  currentThemeColors: ColorPaletteTokenModel[] = null;
 
   private colorChange$ = new Subject<string>();
   private destroy$ = new Subject();
@@ -40,9 +40,7 @@ export class ColorPickerComponent implements OnInit {
       tap(color => this.colorSave.emit(color)),
     ).subscribe();
 
-    if (!this.currentThemeColors) {
-      this.currentThemeColors = await this.colorPalettes.tables.getThemeTokens(this.themeManager.selected.id);
-    }
+    this.currentThemeColors = await this.colorPalettes.tables.getThemeTokens(this.themeManager.selected.id);
 
     this.colorsByTheme = await this.colorPalettes.tables.getTokens([this.themeManager.selected.id]);
   }
@@ -58,11 +56,16 @@ export class ColorPickerComponent implements OnInit {
   }
 
   onPresetColorSelect(color: string) {
+    this.color = color;
     this.colorChange.emit(color);
-    this.colorSave.emit(color);
+    this.colorChange$.next(color);
   }
 
-  togglePopover() {
+  async togglePopover() {
     this.isPopoverVisible = !this.isPopoverVisible;
-  }  
+
+    if (this.isPopoverVisible) {
+      this.currentThemeColors = await this.colorPalettes.tables.getThemeTokens(this.themeManager.selected.id);
+    }
+  }
 }

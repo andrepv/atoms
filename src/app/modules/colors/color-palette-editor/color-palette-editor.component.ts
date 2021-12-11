@@ -27,18 +27,24 @@ export class ColorPaletteEditorComponent implements OnInit {
 
   ngOnInit() {}
 
-  changeColor(value: string,) {
+  changeColor(value: string) {
     this.token.color = value;
 
-    this.tintsTemplateRef.changeVariantsColor();
-    this.shadesTemplateRef.changeVariantsColor();
+    setTimeout(() => {
+      if (this.token.isPrimary) {
+        this.tintsTemplateRef.changeVariantsColor();
+        this.shadesTemplateRef.changeVariantsColor();
+      }
+    }, 50)
   }
 
   async saveColor() {
     await this.section.tokenTable.update(this.token.id, {color: this.token.color});
 
-    this.tintsTemplateRef.saveVariantsColor();
-    this.shadesTemplateRef.saveVariantsColor();
+    if (this.token.isPrimary) {
+      this.tintsTemplateRef.saveVariantsColor();
+      this.shadesTemplateRef.saveVariantsColor();
+    }
   }
 
   async addVariant(
