@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { EditorService } from '@core/services/editor.service';
 
 @Component({
   selector: 'app-page',
@@ -8,7 +9,13 @@ import { Component, Input, OnInit } from '@angular/core';
 export class PageComponent implements OnInit {
   @Input() name: string
 
-  constructor() { }
+  constructor(private editor: EditorService) {}
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    if (this.editor.isActive) {
+      this.editor.disable();
+    }
+  }
 }
