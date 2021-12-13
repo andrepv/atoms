@@ -34,6 +34,8 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { ColorPickerPresetPresetComponent } from './components/color-picker-preset/color-picker-preset.component';
 import { SliderComponent } from './components/slider/slider.component';
 import { PageComponent } from './components/page/page.component';
+import { SectionTreeComponent } from './components/section-tree/section-tree.component';
+import { AppRoutingModule } from '../app-routing.module';
 
 @NgModule({
   declarations: [
@@ -51,10 +53,12 @@ import { PageComponent } from './components/page/page.component';
     ColorPickerPresetPresetComponent,
     SliderComponent,
     PageComponent,
+    SectionTreeComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
+    AppRoutingModule,
 
     NzToolTipModule,
     NzDropDownModule,
@@ -88,6 +92,7 @@ import { PageComponent } from './components/page/page.component';
     ColorPickerComponent,
     SliderComponent,
     PageComponent,
+    SectionTreeComponent,
 
     NzToolTipModule,
     NzDropDownModule,

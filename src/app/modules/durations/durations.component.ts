@@ -15,7 +15,7 @@ export class DurationsComponent implements OnInit {
     this.store.setPageStructure({
       name: this.PAGE_NAME,
       content: {
-        "Groups": [],
+        "Durations": [],
       }
     });
   }

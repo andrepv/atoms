@@ -1,5 +1,9 @@
 <app-group-list-header></app-group-list-header>
 
+<ng-template #treeTemplate>
+  <ng-container *ngTemplateOutlet="sectionTreeTemplate; context: {$implicit: groupList}"></ng-container>
+</ng-template>
+
 <ng-container *ngIf="!isLoading">
   <div *ngIf="!cm.isLoading">
     <div *ngFor="let group of groupList">
@@ -9,5 +13,3 @@
 </ng-container>
 
 <div *ngIf="isLoading || cm.isLoading">Loading</div>
-
-

@@ -15,7 +15,7 @@ export class ShadowsComponent implements OnInit {
     this.store.setPageStructure({
       name: this.PAGE_NAME,
       content: {
-        "Box-Shadow": [],
+        "Box Shadow": [],
       }
     })
   }

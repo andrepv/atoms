@@ -1,4 +1,4 @@
-<div>
+<div [id]="'token-' + token.id">
   <div class="token">
     <ng-container *ngTemplateOutlet="previewTemplate; context: {$implicit: token, group: group}"></ng-container>
   

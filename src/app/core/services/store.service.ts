@@ -3,11 +3,11 @@ import { SectionNames, StoreGroup, PageName } from '@core/core.model';
 import { EditorService } from './editor.service';
 import { ThemeManagerService } from './theme-manager.service';
 
-interface StorePageContent {
+export interface StorePageContent {
   [sectionName: string]: StoreGroup[]
 } 
 
-interface StorePage {
+export interface StorePage {
   name: PageName | '';
   content: StorePageContent;
 }
@@ -16,7 +16,7 @@ interface StorePage {
 export class StoreService {
   isLoading = false;
 
-  private page: StorePage = {
+  page: StorePage = {
     name: "",
     content: {},
   }

@@ -1,4 +1,7 @@
-<app-group-list [groupTemplate]="groupTemplate">
+<app-group-list
+  [groupTemplate]="groupTemplate"
+  [sectionTreeTemplate]="sectionTreeTemplate"
+>
   <ng-template #groupTemplate let-group>
     <app-group
       [group]="group"
@@ -34,5 +37,23 @@
 
     </app-group>
 
+  </ng-template>
+
+  
+  <ng-template #sectionTreeTemplate let-groups>
+    <app-section-tree [groups]="groups" [leafTemplate]="leafTemplate">
+      <ng-template #leafTemplate let-token let-leafDefaultTemplate="leafDefaultTemplate">
+
+        <ng-container *ngFor="let tints of token.tint.reverse()">
+          <ng-container *ngTemplateOutlet="leafDefaultTemplate; context: {$implicit: tints}"></ng-container>
+        </ng-container>
+
+        <ng-container *ngTemplateOutlet="leafDefaultTemplate; context: {$implicit: token}"></ng-container>
+
+        <ng-container *ngFor="let shades of token.shade">
+          <ng-container *ngTemplateOutlet="leafDefaultTemplate; context: {$implicit: shades}"></ng-container>
+        </ng-container>
+      </ng-template>
+    </app-section-tree>
   </ng-template>
 </app-group-list>

@@ -1,4 +1,7 @@
-<app-group-list [groupTemplate]="groupTemplate">
+<app-group-list
+  [groupTemplate]="groupTemplate"
+  [sectionTreeTemplate]="sectionTreeTemplate"
+>
   <ng-template #groupTemplate let-group>
     <app-group
       [group]="group"
@@ -32,5 +35,9 @@
         <app-typescale-editor [group]="group"></app-typescale-editor>
       </ng-template>
     </app-group>
+  </ng-template>
+
+  <ng-template #sectionTreeTemplate let-groups>
+    <app-section-tree [groups]="groups"></app-section-tree>
   </ng-template>
 </app-group-list>

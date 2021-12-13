@@ -1,0 +1,24 @@
+.invisible {
+  display: none;
+}
+
+.tree-folder {
+  display: flex;
+  align-items: center;
+
+  i {
+    margin-right: 10px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    transform: rotate(270deg);
+  }
+
+  &.isExpanded i {
+    transform: rotate(0);
+  }
+}
+
+.tree-node-children {
+  padding-left: 15px;
+}

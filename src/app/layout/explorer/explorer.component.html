@@ -1,5 +1,14 @@
 <div class="content">
   <div class="content-wrapper">
       <app-editor *ngIf="editor.isActive"></app-editor>
+
+      <ng-container *ngIf="!editor.isActive">
+        <div *ngIf="explorer.isLoading">Loading</div>
+        <div *ngIf="!explorer.isLoading">
+          <ng-container *ngFor="let templateRef of explorer.templates">
+            <ng-container *ngTemplateOutlet="templateRef"></ng-container>
+          </ng-container>
+        </div>
+      </ng-container>
   </div>
 </div>

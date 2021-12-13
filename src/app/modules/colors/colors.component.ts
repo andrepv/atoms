@@ -15,8 +15,7 @@ export class ColorsComponent implements OnInit {
     this.store.setPageStructure({
       name: this.PAGE_NAME,
       content: {
-        "Palette": [],
-        "Gradients": [],
+        "Color Palette": [],
       }
     })
   }
