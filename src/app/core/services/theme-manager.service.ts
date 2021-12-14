@@ -13,7 +13,6 @@ export class ThemeManagerService {
   
   set selected(theme: ThemeModel) {
     this._selected = theme;
-    this.selected$.next(theme);
   }
 
   get selected() {
@@ -58,6 +57,7 @@ export class ThemeManagerService {
     this.list = await this.load({limit});
     this.totalCount = await this.table.count();
     this.selected = this.list[0]; // tmp
+    this.selected$.next(this.selected);
   }
 
   search(themeName: string) {
@@ -93,6 +93,7 @@ export class ThemeManagerService {
     const theme = await this.addToDB(name);
     this.list = [theme, ...this.list];
     this.selected = theme;
+    this.selected$.next(theme);
   }
 
   async rename(name: string) {
@@ -133,6 +134,7 @@ export class ThemeManagerService {
 
     this.list = nextThemeList;
     this.selected = nextSelectedTheme;
+    this.selected$.next(this.selected);
   }
 
   getSearchResults(value: string) {

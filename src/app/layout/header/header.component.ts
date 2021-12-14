@@ -43,6 +43,7 @@ export class HeaderComponent implements OnInit {
 
   selectTheme(theme: ThemeModel) {
     this.themes.selected = theme;
+    this.themes.selected$.next(theme);
   }
 
   deleteTheme(): void {
