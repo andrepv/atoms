@@ -6,12 +6,13 @@ import { TypescaleTables, TYPESCALE_DB_DATA } from '@typography/typescale-sectio
 import { LineHeightTables, LINEHEIGHT_DB_DATA } from '@typography/line-height-section/line-height.model';
 import { ColorPaletteTables, COLORPALETTE_DB_DATA } from '@colors/color-palette-section/color-palette.model';
 import { SpacingTables, SPACING_DB_DATA } from '@spacing/spacing.model';
-import { DBSectionData, SectionNames, ThemeTable } from '@core/core.model';
+import { DBSectionData, ThemeTable } from '@core/core.model';
 import { BoxShadowTables, BOX_SHADOW_DB_DATA } from '@shadows/box-shadow-section/box-shadow-section.model';
 import { BorderRadiusTables, BORDER_RADIUS_DB_DATA } from '../modules/borders/border-radius-section/border-radius.model';
 import { BorderTables, BORDER_DB_DATA } from '../modules/borders/borders.model';
 import { DurationsTables, DURATIONS_DB_DATA } from '../modules/durations/durations.model';
 import { SectionTables } from './section-tables';
+import { CustomTokensTables, CUSTOM_TOKENS_DB_DATA } from '../modules/custom-tokens/custom-tokens.model';
 
 const SECTIONS: DBSectionData[] = [
   TYPEFACE_DB_DATA,
@@ -25,6 +26,7 @@ const SECTIONS: DBSectionData[] = [
   BORDER_RADIUS_DB_DATA,
   BORDER_DB_DATA,
   DURATIONS_DB_DATA,
+  CUSTOM_TOKENS_DB_DATA
 ];
 
 export class DBService extends Dexie {
@@ -40,6 +42,7 @@ export class DBService extends Dexie {
   borderRadius: BorderRadiusTables;
   border: BorderTables;
   durations: DurationsTables;
+  customTokens: CustomTokensTables
 
   get sections() {
     return SECTIONS.map(section => this[section.tableGroupName])
@@ -58,7 +61,7 @@ export class DBService extends Dexie {
       schema[section.groupTableName] = group;
     }
 
-    this.version(14).stores(schema);
+    this.version(15).stores(schema);
     
     this.theme = this.table("theme");
 

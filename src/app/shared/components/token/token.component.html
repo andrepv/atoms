@@ -1,31 +1,13 @@
 <div [id]="'token-' + token.id">
   <div class="token">
     <ng-container *ngTemplateOutlet="previewTemplate; context: {$implicit: token, group: group}"></ng-container>
-  
-    <div class="dropdown-menu">
-      <i
-        *ngIf="editorTemplate"
-        nz-icon nzType="edit"
-        nzTheme="outline"
-        (click)="openEditor(editor)"
-      >
-        <ng-template #editor>
-          <ng-container *ngTemplateOutlet="editorTemplate; context: {$implicit: {token: token, group: group}}"></ng-container>
-        </ng-template>
-      </i>
-      <i
-        nz-icon nzType="more" nzTheme="outline"
-        nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
-      >
-        <nz-dropdown-menu #menu="nzDropdownMenu">
-          <ul nz-menu>
-            <li nz-menu-item (click)="editableText.makeEditable()">Rename</li>
-            <li nz-menu-item (click)="delete()">Delete</li>
-            <li *ngIf="canCopy()" nz-menu-item (click)="copy()">Copy</li>
-          </ul>
-        </nz-dropdown-menu>
-      </i>
-    </div>
+
+    <app-token-actions
+      [token]="token"
+      [group]="group"
+      [editorTemplate]="editorTemplate"
+      [editableText]="editableText"
+    ></app-token-actions>
   </div>
 
   <app-text-editable

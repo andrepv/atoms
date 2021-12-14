@@ -4,18 +4,24 @@
 
 <ng-container *ngIf="isEditable">
   <input
-    *ngIf="!isLoading"
+    *ngIf="!isLoading && type === 'input'"
     nz-input
     [(ngModel)]="inputValue"
     (blur)="onBlur()"
     [appAutofocus]
   />
 
-  <nz-input-group [nzSuffix]="suffixTemplateLoading" *ngIf="isLoading">
+  <nz-input-group [nzSuffix]="suffixTemplateLoading" *ngIf="isLoading && type === 'input'">
     <input nz-input [(ngModel)]="inputValue" [disabled]="true"/>
     <ng-template #suffixTemplateLoading>
       <i nz-icon nzType="loading" nzTheme="outline"></i>
     </ng-template>
   </nz-input-group>
 
+
+  <textarea *ngIf="!isLoading && type === 'textarea'" rows="4" nz-input [(ngModel)]="inputValue" (blur)="onBlur()" [appAutofocus]></textarea>
+
+  <ng-template *ngIf="isLoading && type === 'textarea'">
+    <i nz-icon nzType="loading" nzTheme="outline"></i>
+  </ng-template>
 </ng-container>

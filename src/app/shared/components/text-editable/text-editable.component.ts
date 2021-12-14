@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@an
 export class TextEditableComponent implements OnInit {
   @Input() text = "";
   @Input() makeUneditableOnBlur = true;
+  @Input() type: "input" | "textarea" = "input"
   @Output() blur: EventEmitter<string> = new EventEmitter();
   
   inputValue = this.text;

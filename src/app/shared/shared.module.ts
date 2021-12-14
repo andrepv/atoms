@@ -36,6 +36,7 @@ import { SliderComponent } from './components/slider/slider.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionTreeComponent } from './components/section-tree/section-tree.component';
 import { AppRoutingModule } from '../app-routing.module';
+import { TokenActionsComponent } from './components/token-actions/token-actions.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { AppRoutingModule } from '../app-routing.module';
     SliderComponent,
     PageComponent,
     SectionTreeComponent,
+    TokenActionsComponent,
   ],
   imports: [
     CommonModule,
@@ -93,6 +95,7 @@ import { AppRoutingModule } from '../app-routing.module';
     SliderComponent,
     PageComponent,
     SectionTreeComponent,
+    TokenActionsComponent,
 
     NzToolTipModule,
     NzDropDownModule,

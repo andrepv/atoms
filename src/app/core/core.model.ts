@@ -1,6 +1,6 @@
-export type SectionNames = "Type Face" | "Type Scale" | "Line Height" | "Letter Spacing" | "Text Styles" | "Spacing" | "Color Palette" | "Box Shadow" | "Border Radius" | "Borders" | "Durations";
+export type SectionNames = "Type Face" | "Type Scale" | "Line Height" | "Letter Spacing" | "Text Styles" | "Spacing" | "Color Palette" | "Box Shadow" | "Border Radius" | "Borders" | "Durations" | "Custom Tokens";
 
-export type PageName = "Typography" | "Colors" | "Spacing" | "Shadows" | "Borders" | "Durations";
+export type PageName = "Typography" | "Colors" | "Spacing" | "Shadows" | "Borders" | "Durations" | "Custom Tokens";
 
 export interface DBToken {
   id?: number;

@@ -26,6 +26,7 @@ import { TypographyModule } from '@typography/typography.module';
 import { ShadowsModule } from './modules/shadows/shadows.module';
 import { BordersModule } from './modules/borders/borders.module';
 import { DurationsModule } from './modules/durations/durations.module';
+import { CustomTokensModule } from './modules/custom-tokens/custom-tokens.module';
 
 registerLocaleData(en);
 
@@ -45,6 +46,7 @@ registerLocaleData(en);
     ShadowsModule,
     BordersModule,
     DurationsModule,
+    CustomTokensModule,
     NzGridModule,
     NzAnchorModule,
     CommonModule,

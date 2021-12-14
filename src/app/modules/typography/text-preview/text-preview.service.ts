@@ -76,7 +76,6 @@ export class TextPreviewService {
     }
   }
 
-  //////////////
   setPreviewBackgroundColor(previewId: number, value: string) {
     const preview = this.getPreview(previewId);
     if (preview) {
@@ -90,7 +89,6 @@ export class TextPreviewService {
       preview.color = value;
     }
   }
-  //////////////
 
   setPreviewStyleValue(
     style: {[K in TextPreviewStyleProps]?: TextPreviewStyles[K]},
