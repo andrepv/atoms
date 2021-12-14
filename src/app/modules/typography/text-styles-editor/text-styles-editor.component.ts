@@ -13,32 +13,40 @@ import { TextPreviewStyleProps } from '@typography/text-preview/text-preview.mod
 export class TextStylesEditorComponent implements OnInit {
   @Input() content: EditableContent<TextStylesDBToken, DBGroup>;
 
+  get token() {
+    return this.content.token;
+  }
+
   constructor(
     private section: SectionContentManagerService<TextStylesDBToken, DBGroup>,
     private preview: TextPreviewService,
   ) {}
 
   text = '';
+  color = '';
+  backgroundColor = '';
 
   ngOnInit() {
-    this.text = this.content.token.text;
+    this.text = this.token.text;
+    this.color = this.token.color;
+    this.backgroundColor = this.token.backgroundColor;
   }
 
   getStyleTokenId(styleProp: string) {
-    const styles = this.content.token.styles;
+    const styles = this.token.styles;
     return !styles ? null : styles[styleProp];
   }
 
   async setStyleRef(tokenId: number, styleProp: TextPreviewStyleProps) {
     await this.setTokenValue({
       styles: {
-        ...this.content.token.styles,
+        ...this.token.styles,
         [styleProp]: tokenId
       }
     });
 
     this.preview.setPreviewStyleRef(
-      this.content.token.id,
+      this.token.id,
       styleProp,
       tokenId
     )
@@ -47,22 +55,40 @@ export class TextStylesEditorComponent implements OnInit {
   async setPreviewText() {
     const inputValue = this.text.trim();
 
-    if (inputValue.length && inputValue !== this.content.token.text) {
+    if (inputValue.length && inputValue !== this.token.text) {
       await this.setTokenValue({text: inputValue});
-      this.preview.setPreviewText(this.content.token.id, inputValue)
+      this.preview.setPreviewText(this.token.id, inputValue)
 
     } else {
-      this.text = this.content.token.text;
+      this.text = this.token.text;
     }
+  }
+
+  changeColor(value: string) {
+    this.color = value;
+    this.preview.setPreviewColor(this.token.id, value);
+  }
+
+  saveColor() {
+    this.setTokenValue({color: this.color});
+  }
+
+  changeBackgroundColor(value: string) {
+    this.backgroundColor = value;
+    this.preview.setPreviewBackgroundColor(this.token.id, value)
+  }
+
+  saveBackgroundColor() {
+    this.setTokenValue({backgroundColor: this.backgroundColor});
   }
 
   private async setTokenValue(obj: Partial<SectionTokenValue<TextStylesDBToken>>) {
     const {group} = this.content;
-    const value = {...this.content.token}
+    const value = {...this.token}
   
     for (let key in obj) {
       value[key] = obj[key];
-      await this.section.updateToken(this.content.token, group, {
+      await this.section.updateToken(this.token, group, {
         [key]: obj[key]
       });
     }

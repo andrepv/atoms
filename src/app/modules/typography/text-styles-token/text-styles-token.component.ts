@@ -34,6 +34,8 @@ export class TextStylesTokenComponent implements OnInit {
       styles: this.transformRefsToStyles(), 
       text: this.getPreviewText(),
       styleRefs: this.token.styles || false,
+      backgroundColor: this.token.backgroundColor,
+      color: this.token.color,
     }
 
     const globalPreview = this.previewManager.getPreview(this.token.id);
@@ -42,7 +44,9 @@ export class TextStylesTokenComponent implements OnInit {
       this.previewManager.updatePreview(this.token.id, {
         styles: this.preview.styles,
         text: this.preview.text,
-        styleRefs: this.preview.styleRefs
+        styleRefs: this.preview.styleRefs,
+        backgroundColor: this.token.backgroundColor,
+        color: this.token.color,
       })
     
       this.preview = globalPreview;

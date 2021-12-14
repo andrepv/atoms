@@ -15,6 +15,14 @@ export class TextPreviewComponent implements OnInit {
 
   @Input() preview = this.manager.DEFAULT_PREVIEW;
 
+  get styles() {
+    return {
+      ...this.preview.styles,
+      color: this.preview.color,
+      backgroundColor: this.preview.backgroundColor
+    }
+  }
+
   constructor(private manager: TextPreviewService) {}
 
   ngOnInit() {}

@@ -1,4 +1,18 @@
 <div>
+  <p>Text Color</p>
+  <app-color-picker
+    [color]="token.color"
+    (colorChange)="changeColor($event)"
+    (colorSave)="saveColor()"
+  ></app-color-picker>
+  <br />
+  <p>Background Color</p>
+  <app-color-picker
+    [color]="token.backgroundColor"
+    (colorChange)="changeBackgroundColor($event)"
+    (colorSave)="saveBackgroundColor()"
+  ></app-color-picker>
+
   <app-tokens-section-select
     section="Type Face"
     [selectedTokenId]="getStyleTokenId('fontFamily')"

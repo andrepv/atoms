@@ -25,6 +25,8 @@ export class TextPreviewService {
     },
     text: 'Quick brown fox jumped over the lazy red dog',
     styleRefs: false,
+    backgroundColor: '#35343d',
+    color: '#e3e3e3',
   }
 
   private styleSources: StyleSource = null;
@@ -73,6 +75,22 @@ export class TextPreviewService {
       preview.text = value;
     }
   }
+
+  //////////////
+  setPreviewBackgroundColor(previewId: number, value: string) {
+    const preview = this.getPreview(previewId);
+    if (preview) {
+      preview.backgroundColor = value;
+    }
+  }
+
+  setPreviewColor(previewId: number, value: string) {
+    const preview = this.getPreview(previewId);
+    if (preview) {
+      preview.color = value;
+    }
+  }
+  //////////////
 
   setPreviewStyleValue(
     style: {[K in TextPreviewStyleProps]?: TextPreviewStyles[K]},

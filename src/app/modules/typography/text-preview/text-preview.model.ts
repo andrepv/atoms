@@ -6,6 +6,8 @@ export interface TextPreview {
     letterSpacing: string,
   },
   text: string,
+  backgroundColor: string,
+  color: string,
   styleRefs?: {[K in keyof TextPreview['styles']]?: number} | false,
 }
 

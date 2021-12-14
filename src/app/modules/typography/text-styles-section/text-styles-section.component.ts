@@ -23,6 +23,8 @@ export class TextStylesSectionComponent implements OnInit {
         getDefaultToken: () => ({
           styles: {},
           text: this.preview.DEFAULT_PREVIEW.text,
+          backgroundColor: '#35343d',
+          color: '#e3e3e3',
         }),
         onTokenDelete: token => this.preview.deletePreview(token.id)
       }

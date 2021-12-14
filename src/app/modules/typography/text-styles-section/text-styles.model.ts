@@ -8,6 +8,8 @@ export type TextStylesDBToken = DBToken & {
     letterSpacing?: number,
   },
   text: string;
+  backgroundColor: string,
+  color: string,
 };
 
 export type TextStylesTokenTable = Dexie.Table<TextStylesDBToken, number>;
