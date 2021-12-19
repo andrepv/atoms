@@ -26,10 +26,8 @@
           [ngModel]="themes.selected"
           nzShowSearch
           nzServerSearch
-          (ngModelChange)="selectTheme($event)"
-          (nzScrollToBottom)="loadMore()"
+          (ngModelChange)="themes.selectTheme($event)"
           nzOptionOverflowSize="7"
-          [nzDropdownRender]="renderTemplate"
           (nzOnSearch)="themes.search($event)"
         >
         <ng-container *ngFor="let item of themes.list">
@@ -45,9 +43,6 @@
         </nz-option>
 
         </nz-select>
-        <ng-template #renderTemplate>
-          <i nz-icon nzType="loading" nzTheme="outline" *ngIf="loadMorePending"></i>
-        </ng-template>
       </ng-container>
 
     </div>

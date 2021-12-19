@@ -26,7 +26,6 @@ export type StoreGroup<G extends DBGroup = any, T extends DBToken = any> = {
   [K in keyof G]: G[K] 
 } & {
   tokens: StoreToken<T>[];
-  anchorLink: string;
 }
 
 export interface EditableContent<T extends DBToken = any, G extends DBGroup = any> {

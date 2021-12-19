@@ -33,13 +33,6 @@ export class ThemeManagerService {
   private isSearching = false;
   private canSearch = false;
 
-  private readonly PAGE_SIZE = 20;
-  private totalCount = 0;
-  private currentPage = 1;
-  private get hasMorePages() {
-    return this.currentPage * this.PAGE_SIZE < this.totalCount;
-  }
-
   private readonly DEFAULT_THEME_NAME = "new theme";
 
   constructor() {
@@ -53,11 +46,21 @@ export class ThemeManagerService {
     ).subscribe();
   }
 
-  async loadList(limit = this.PAGE_SIZE) {
-    this.list = await this.load({limit});
-    this.totalCount = await this.table.count();
-    this.selected = this.list[0]; // tmp
+  async loadList() {
+    this.list = await this.getCollection().toArray();
+
+    if (this.list.length) {
+      const theme = await this.getSelectedTheme();
+      this.selectTheme(theme)
+      this.updateSelected();
+    }
+  }
+
+  selectTheme(theme: ThemeModel) {
+    this.selected = theme;
     this.selected$.next(this.selected);
+
+    localStorage.setItem('selectedThemeId', `${theme.id}`);
   }
 
   search(themeName: string) {
@@ -68,44 +71,21 @@ export class ThemeManagerService {
     this.searchChange$.next(themeName);
   }
 
-  async loadMore() {
-    if (this.hasMorePages && !this.isSearching) {
-      this.currentPage += 1;
-      const offset = (this.currentPage - 1) * this.PAGE_SIZE;
-
-      const list = await this.load({offset});
-      this.list = [...this.list, ...list];
-    }
-  }
-
-  async load({offset = 0, limit = this.PAGE_SIZE} = {}) {
-    const query = this.getCollection().offset(offset).limit(limit)
-    let themes = await query.toArray();
-  
-    if (!themes.length) {
-      const newTheme = await this.addToDB();
-      themes = [newTheme];
-    }
-    return themes;
-  }
 
   async add(name = this.DEFAULT_THEME_NAME) {
     const theme = await this.addToDB(name);
     this.list = [theme, ...this.list];
-    this.selected = theme;
-    this.selected$.next(theme);
+    this.selectTheme(theme)
+    return theme;
   }
 
   async rename(name: string) {
     const { id } = this.selected;
     await this.table.update(id, {name});
 
-    const nextTheme = {id, name};
-    const nextList = this.list.map(prevTheme => (
-      prevTheme.id === id ? nextTheme : prevTheme
-    ))
-
-    this.list = nextList;
+    this.list = this.list.map(prevTheme => (
+      prevTheme.id === id ? {id, name} : prevTheme
+    ));
     this.updateSelected();
   }
 
@@ -133,24 +113,18 @@ export class ThemeManagerService {
     }
 
     this.list = nextThemeList;
-    this.selected = nextSelectedTheme;
-    this.selected$.next(this.selected);
+    this.selectTheme(nextSelectedTheme)
   }
 
   getSearchResults(value: string) {
     if (!this.canSearch) {
       return of();
     }
-
-    const limit = !this.isSearching 
-      ? this.PAGE_SIZE * this.currentPage
-      : this.PAGE_SIZE;
-
     this.isLoading = true;
 
     const collection = this.getCollection().filter(theme => (
       new RegExp(value, 'i').test(theme.name)
-    )).limit(limit);
+    ));
 
     return from(collection.toArray()).pipe(
       tap(list => {
@@ -159,6 +133,21 @@ export class ThemeManagerService {
       }),
       finalize(() => this.isLoading = false)
     )
+  }
+
+  private async getSelectedTheme() {
+    let themeId = localStorage.getItem('selectedThemeId');
+
+    if (!themeId) {
+      let theme = this.list[0];
+      if (theme) {
+        localStorage.setItem('selectedThemeId', `${theme.id}`)
+        return theme;
+      }
+    }
+
+    const theme = await this.table.get(parseInt(themeId));
+    if (theme) return theme
   }
 
   private async addToDB(name = this.DEFAULT_THEME_NAME) {

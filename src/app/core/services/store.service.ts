@@ -21,14 +21,7 @@ export class StoreService {
     content: {},
   }
 
-  constructor(
-    public themeManager: ThemeManagerService,
-    private editor: EditorService
-  ) {}
-
-  loadTheme() {
-    return this.themeManager.loadList();
-  }
+  constructor(private editor: EditorService) {}
 
   setPageStructure(page: StorePage) {
     this.page = page;

@@ -27,6 +27,7 @@ import { ShadowsModule } from './modules/shadows/shadows.module';
 import { BordersModule } from './modules/borders/borders.module';
 import { DurationsModule } from './modules/durations/durations.module';
 import { CustomTokensModule } from './modules/custom-tokens/custom-tokens.module';
+import { ContentComponent } from './layout/content/content.component';
 
 registerLocaleData(en);
 
@@ -37,6 +38,7 @@ registerLocaleData(en);
     HeaderComponent,
     ExplorerComponent,
     EditorComponent,
+    ContentComponent,
   ],
   imports: [  
     SharedModule,

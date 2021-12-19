@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { StoreService } from '@core/services/store.service';
+import { Router } from '@angular/router';
+import { ThemeManagerService } from '@core/services/theme-manager.service';
 import { queryClipboardPermission } from '@utils/query-clipboard-permission';
 
 @Component({
@@ -12,7 +13,10 @@ export class AppComponent implements OnInit {
   title = 'ui-theme-builder';
   isLoading = false;
 
-  constructor(private store: StoreService) {}
+  constructor(
+    private themeManager: ThemeManagerService,
+    private router: Router,
+  ) {}
 
   async ngOnInit() {
     this.isLoading = true;
@@ -20,7 +24,10 @@ export class AppComponent implements OnInit {
     queryClipboardPermission();
 
     try {
-      await this.store.loadTheme();
+      await this.themeManager.loadList();
+      if (!this.themeManager.list.length) {
+        await this.router.navigate(['start-page']);
+      }
     } finally {
       this.isLoading = false
     }

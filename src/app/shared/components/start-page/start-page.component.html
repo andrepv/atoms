@@ -1,0 +1,13 @@
+<div>
+  <p>Theme Name</p>
+  <input nz-input [(ngModel)]="themeName" />
+
+  <div>
+    <nz-radio-group [(ngModel)]="radioValue">
+      <label nz-radio nzValue="empty">Empty Theme</label>
+      <label nz-radio nzValue="prebuilt">Pre-built Theme</label>
+    </nz-radio-group>
+  </div>
+
+  <button (click)="addTheme()">Save</button>
+</div>

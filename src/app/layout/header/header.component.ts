@@ -1,5 +1,4 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ThemeModel } from '@core/core.model';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
@@ -41,11 +40,6 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  selectTheme(theme: ThemeModel) {
-    this.themes.selected = theme;
-    this.themes.selected$.next(theme);
-  }
-
   deleteTheme(): void {
     const {id} = this.themes.selected;
 
@@ -57,14 +51,5 @@ export class HeaderComponent implements OnInit {
       nzOnOk: () => this.themes.delete(id),
       nzCancelText: 'No',
     });
-  }
-
-  async loadMore() {
-    this.loadMorePending = true;
-    try {
-      await this.themes.loadMore();
-    } finally {
-      this.loadMorePending = false;
-    }
   }
 }

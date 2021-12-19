@@ -37,6 +37,7 @@ import { PageComponent } from './components/page/page.component';
 import { SectionTreeComponent } from './components/section-tree/section-tree.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { TokenActionsComponent } from './components/token-actions/token-actions.component';
+import { StartPageComponent } from './components/start-page/start-page.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { TokenActionsComponent } from './components/token-actions/token-actions.
     PageComponent,
     SectionTreeComponent,
     TokenActionsComponent,
+    StartPageComponent,
   ],
   imports: [
     CommonModule,
@@ -96,6 +98,7 @@ import { TokenActionsComponent } from './components/token-actions/token-actions.
     PageComponent,
     SectionTreeComponent,
     TokenActionsComponent,
+    StartPageComponent,
 
     NzToolTipModule,
     NzDropDownModule,

@@ -79,7 +79,6 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
         const tokens = await this.tokenTable.where("groupId").equals(group.id).toArray();
 
         group.tokens = tokens;
-        group.anchorLink = getRandomChars();
       }
     }
 
@@ -153,7 +152,6 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
       ...group,
       id: groupId,
       tokens: [],
-      anchorLink: getRandomChars(),
     }
     this.store.addGroup(this.sectionName, newGroup)
     return groupId;

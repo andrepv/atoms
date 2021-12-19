@@ -1,26 +1,4 @@
 <div *ngIf="isLoading">Loading</div>
 <div *ngIf="!isLoading">
-  <div class="container">
-    <div nz-row class="row">
-
-      <div class="toolbar" nz-col nzFlex="65px">
-        <div class="toolbar-wrapper">
-          <app-toolbar></app-toolbar>
-        </div>
-      </div>
-
-      <div nz-col nzFlex="270px">
-        <app-explorer></app-explorer>
-      </div>
-
-      <main nz-col nzFlex="auto">
-        <app-header></app-header>
-        <div class="content">
-          <div class="content-wrapper">
-            <router-outlet></router-outlet>
-          </div>
-        </div>
-      </main>
-    </div>
-  </div>
+  <router-outlet></router-outlet>
 </div>

@@ -108,7 +108,6 @@ export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> 
 
     delete groupDuplicate.id;
     delete groupDuplicate.tokens;
-    delete groupDuplicate.anchorLink;
 
     return {
       ...groupDuplicate,
