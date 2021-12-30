@@ -1,0 +1,13 @@
+<h1>Your Export Configurations</h1>
+
+<div class="list">
+  <div class="list-wrapper">
+    <div *ngFor="let config of configurationList" class="group">
+      <p>{{ config.name }}</p>
+      <p>{{ config.format }}</p>
+      <p (click)="deleteConfiguration(config.id)">delete</p>
+      <a [routerLink]="['./', '' + config.id]">Edit</a>
+    </div>
+  </div>
+  <div (click)="addConfiguration()">Add Configuration</div>
+</div>

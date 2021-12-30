@@ -1,0 +1,49 @@
+<div class="section" *ngIf="!isLoading">
+  <header class="section-header">
+    <h1>{{ sectionName }}</h1>
+    <div class="section-actions">
+      <div *ngIf="configs.code.colorFormat">
+        <label for="colorFormat"></label>
+        <div id="colorFormat">
+          <nz-select
+          [ngModel]="configs.code.colorFormat"
+          (ngModelChange)="setCodePreviewConfigs('colorFormat', $event)"
+        >
+          <nz-option
+            *ngFor="let option of colorFormats"
+            [nzValue]="option"
+            [nzLabel]="option"
+          ></nz-option>
+        </nz-select>
+        </div>
+      </div>
+
+      <div *ngIf="configs.code.useReferences !== undefined">
+        <span>Use References</span>
+        <nz-switch
+          [(ngModel)]="configs.code.useReferences"
+          (ngModelChange)="setCodePreviewConfigs('useReferences', $event)"
+        ></nz-switch>
+      </div>
+    </div>
+  </header>
+
+  <section class="section-body">
+    <div class="section-body-actions">
+      <div>
+        <label for="fileName">FileName</label>
+        <app-input-file-name
+          [fileName]="configs.fileName"
+          [format]="editor.format"
+          (saveFileName)="saveFileName($event)"
+        ></app-input-file-name>
+      </div>
+      <div>
+        <p (click)="copyCode()">Copy</p>
+        <p (click)="download()">Download</p>
+      </div>
+    </div>
+
+    <app-export-code-preview></app-export-code-preview>
+  </section>
+</div>

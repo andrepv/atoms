@@ -13,6 +13,7 @@ import { BorderTables, BORDER_DB_DATA } from '../modules/borders/borders.model';
 import { DurationsTables, DURATIONS_DB_DATA } from '../modules/durations/durations.model';
 import { SectionTables } from './section-tables';
 import { CustomTokensTables, CUSTOM_TOKENS_DB_DATA } from '../modules/custom-tokens/custom-tokens.model';
+import { ExportConfigsTable, ExportConfigsSectionTable } from '../modules/export-page/export-types';
 
 const SECTIONS: DBSectionData[] = [
   TYPEFACE_DB_DATA,
@@ -31,6 +32,8 @@ const SECTIONS: DBSectionData[] = [
 
 export class DBService extends Dexie {
   theme: ThemeTable;
+  exportConfigs: ExportConfigsTable;
+  exportConfigsSection: ExportConfigsSectionTable;
   typeface: TypefaceTables;
   typescale: TypescaleTables;
   lineHeight: LineHeightTables;
@@ -54,16 +57,22 @@ export class DBService extends Dexie {
     const token = "++id, name, themeId, groupId";
     const group = "++id, name, themeId";
 
-    const schema = {theme: '++id, name'}
+    const schema = {
+      theme: '++id, name',
+      exportConfigs: "++id",
+      exportConfigsSection: "++id, commonConfigsId"
+    }
 
     for (let section of SECTIONS) {
       schema[section.tokenTableName] = token;
       schema[section.groupTableName] = group;
     }
 
-    this.version(15).stores(schema);
+    this.version(20).stores(schema);
     
     this.theme = this.table("theme");
+    this.exportConfigs = this.table("exportConfigs");
+    this.exportConfigsSection = this.table("exportConfigsSection");
 
     for (let section of SECTIONS) {
       this[section.tableGroupName] = new SectionTables(
@@ -93,4 +102,5 @@ export class DBService extends Dexie {
 }
 
 const db = new DBService();
+db.open();
 export {db};

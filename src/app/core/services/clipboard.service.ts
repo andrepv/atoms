@@ -2,7 +2,7 @@ import { NzMessageService } from "ng-zorro-antd/message";
 import { getRandomChars } from "@utils";
 import { SectionContentManagerService } from "./section-content-manager.service";
 import { SectionNames, StoreGroup, DBGroup, DBToken } from "@core/core.model";
-import { Injectable } from "@angular/core";
+import { Injectable, Optional } from "@angular/core";
 
 interface CopiedContent<T> {
   section: SectionNames;
@@ -19,7 +19,7 @@ export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> 
   }
 
   constructor(
-    private contentManager: SectionContentManagerService<T, G>,
+    @Optional() private contentManager: SectionContentManagerService<T, G>,
     private message: NzMessageService,
   ) {}
 
@@ -68,17 +68,23 @@ export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> 
   }
 
   async copy(content: T | StoreGroup<G, T>, type: CopiedContent<T>['type']) {
+    this.copyText(JSON.stringify({
+      section: this.contentManager.sectionName,
+      content,
+      type
+    }));
+  }
+
+  async copyText(text: string) {
+    if (!navigator.clipboard) {
+      this.fallbackCopyText(text);
+      return;
+    }
     try {
-      await navigator.clipboard.writeText(
-        JSON.stringify({
-          section: this.contentManager.sectionName,
-          content,
-          type
-        })
-      );
-      this.message.info('Content copied to clipboard');
+      await navigator.clipboard.writeText(text);
+      this.message.info('Copied');
     } catch (err) {
-      this.message.error('Failed to copy');
+      this.message.info('Failed to copy');
     }
   }
 
@@ -113,5 +119,27 @@ export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> 
       ...groupDuplicate,
       ...this.contentManager.createGroup(groupDuplicate.name)
     }
+  }
+
+  private fallbackCopyText(text: string) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+  
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+  
+    try {
+      document.execCommand('copy');
+      this.message.info('Copied');
+    } catch (err) {
+      this.message.info('Failed to copy');
+    }
+  
+    document.body.removeChild(textArea);
   }
 }
