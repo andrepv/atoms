@@ -36,6 +36,10 @@ export class TokenActionsComponent implements OnInit {
     this.section.deleteToken(this.token, this.group)
   }
 
+  duplicate() {
+    this.clipboard.duplicateToken(this.token, this.group)
+  }
+
   async copy() {
     const token = await this.section.tokenTable.get(this.token.id);
     this.clipboard.copy(token, 'token')

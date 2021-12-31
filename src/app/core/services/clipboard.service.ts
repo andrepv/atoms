@@ -1,7 +1,7 @@
 import { NzMessageService } from "ng-zorro-antd/message";
 import { getRandomChars } from "@utils";
 import { SectionContentManagerService } from "./section-content-manager.service";
-import { SectionNames, StoreGroup, DBGroup, DBToken } from "@core/core.model";
+import { SectionNames, StoreGroup, DBGroup, DBToken, StoreToken } from "@core/core.model";
 import { Injectable, Optional } from "@angular/core";
 
 interface CopiedContent<T> {
@@ -73,6 +73,21 @@ export class ClipboardService<T extends DBToken = any, G extends DBGroup = any> 
       content,
       type
     }));
+  }
+
+  duplicateToken(token: StoreToken<T>, group: StoreGroup<G, T>) {
+    return this.addToken(token, group);
+  }
+
+  async duplicateGroup(group: StoreGroup<G, T>) {
+    const groupDuplicate = this.getGroupDuplicate(group)
+
+    const groupId = await this.contentManager.addGroup(groupDuplicate);
+    const storeGroup = this.contentManager.getGroup(groupId)
+
+    for (let token of group.tokens) {
+      await this.addToken(token, storeGroup)
+    }
   }
 
   async copyText(text: string) {

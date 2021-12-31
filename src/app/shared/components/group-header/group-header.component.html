@@ -30,6 +30,7 @@
           <li nz-menu-item (click)="editableText.makeEditable()">Rename</li>
           <li *ngIf="canUseClipboard()" nz-menu-item (click)="pastToken()">Past Token</li>
           <li *ngIf="canUseClipboard()" nz-menu-item (click)="copyGroup()">Copy Group</li>
+          <li nz-menu-item (click)="duplicateGroup()">Duplicate</li>
         </ul>
       </nz-dropdown-menu>
     </i>

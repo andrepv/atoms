@@ -57,6 +57,10 @@ export class GroupHeaderComponent implements OnInit {
     this.clipboard.copy(group, 'group')
   }
 
+  duplicateGroup() {
+    this.clipboard.duplicateGroup(this.group);
+  }
+
   canUseClipboard() {
     return this.clipboard.isAvailable;
   }

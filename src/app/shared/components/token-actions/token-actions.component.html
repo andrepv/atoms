@@ -18,6 +18,7 @@
         <li *ngIf="editableText" nz-menu-item (click)="editableText.makeEditable()">Rename</li>
         <li nz-menu-item (click)="delete()">Delete</li>
         <li *ngIf="canCopy()" nz-menu-item (click)="copy()">Copy</li>
+        <li nz-menu-item (click)="duplicate()">Duplicate</li>
       </ul>
     </nz-dropdown-menu>
   </i>
