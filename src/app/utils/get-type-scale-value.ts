@@ -1,7 +1,5 @@
-import { ModularScaleState } from "@shared/components/modular-scale-editor/modular-scale-editor.model";
-
-export function getScaleValue(index: number, state: Pick<ModularScaleState, 'scaleRatio' | 'base'>) {
+export function getScaleValue(index: number, ratio: number, base: number) {
   const n = index - 2;
-  const value = state.base * Math.pow(state.scaleRatio, n);
+  const value = base * Math.pow(ratio, n);
   return Number(value.toFixed(3));
 }

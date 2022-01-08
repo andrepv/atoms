@@ -1,42 +1,48 @@
-<nz-select
-  [ngModel]="sortOption"
-  (ngModelChange)="sort($event)"
->
-  <nz-option 
-    *ngFor="let option of sortOptions"
-    [nzValue]="option"
-    [nzLabel]="option"
-  ></nz-option>
-</nz-select>
+<div class="settings">
+  <nz-select
+    [ngModel]="sortOption"
+    (ngModelChange)="sort($event)"
+  >
+    <nz-option 
+      *ngFor="let option of sortOptions"
+      [nzValue]="option"
+      [nzLabel]="option"
+    ></nz-option>
+  </nz-select>
+  <i (click)="toggleCategories()" nz-icon nzType="setting" nzTheme="outline"></i>
+</div>
 
-<div *ngFor="let option of categoryOptions">
-  <span>{{ option.name }}</span>
-  <nz-switch
-    [(ngModel)]="option.value"
-    (ngModelChange)="fontManager.toggleCategory(option.name, $event)"
-  ></nz-switch>
+<div class="categories" *ngIf="categoriesVisible">
+  <div *ngFor="let option of categoryOptions" class="category">
+    <span>{{ option.name }}</span>
+    <nz-switch
+      [(ngModel)]="option.value"
+      (ngModelChange)="fontManager.toggleCategory(option.name, $event)"
+    ></nz-switch>
+  </div>
 </div>
 
 <input
+  class="search-input"
   nz-input
   placeholder="Search by name"
   [(ngModel)]="searchValue"
   (input)="search()"
 />
 
-<span>{{ fontManager.fonts.length }} of {{ fontManager.totalFontsCount }} families </span>
+<p class="search-results">{{ fontManager.fonts.length }} of {{ fontManager.totalFontsCount }} families </p>
   
-<cdk-virtual-scroll-viewport itemSize="155" class="demo-infinite-container">
+<cdk-virtual-scroll-viewport itemSize="155" class="typeface-preview-container">
   <nz-list>
     <nz-list-item *cdkVirtualFor="let font of ds">
-      <div class="font" (click)="selectFont(font)">
-        <div class="font-header">
-          <p>{{ font.family }}</p><p>{{ font.variants.length }} styles</p>
-        </div>
-        <div class="font-family-preview">
+      <div class="typeface-preview-block">
+        <div class="typeface-preview-text" (click)="selectFont(font)">
           <p [style.font-family]="font.family">
             {{ fontManager.PREVIEW_TEXT }}
           </p>
+        </div>
+        <div class="typeface-preview-info">
+          <p>{{ font.family }}</p><p>{{ font.variants.length }} styles</p>
         </div>
       </div>
     </nz-list-item>

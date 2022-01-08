@@ -9,7 +9,7 @@ export class CodeFormatterCSS extends CodeFormatter {
 
   getCodeBeforeTokens() {
     const comment = super.getCodeBeforeTokens();
-    return `${comment}\n:root {`;
+    return `${comment}:root {\n`;
   }
 
   formatToken({varName, varValue}) {

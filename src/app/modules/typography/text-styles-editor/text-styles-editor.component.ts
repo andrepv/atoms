@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TextPreviewService } from '../text-preview/text-preview.service';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { DBGroup, EditableContent, SectionTokenValue } from '@core/core.model';
 import { TextStylesDBToken } from '@typography/text-styles-section/text-styles.model';
-import { TextPreviewStyleProps } from '@typography/text-preview/text-preview.model';
+import { StoreService } from '@core/services/store.service';
 
 @Component({
   selector: 'app-text-styles-editor',
@@ -19,78 +18,84 @@ export class TextStylesEditorComponent implements OnInit {
 
   constructor(
     private section: SectionContentManagerService<TextStylesDBToken, DBGroup>,
-    private preview: TextPreviewService,
+    private store: StoreService,
   ) {}
 
   text = '';
   color = '';
   backgroundColor = '';
+  variants = [];
 
-  ngOnInit() {
+  async ngOnInit() {
     this.text = this.token.text;
     this.color = this.token.color;
     this.backgroundColor = this.token.backgroundColor;
+    this.variants = await this.getVariants();
   }
 
-  getStyleTokenId(styleProp: string) {
-    const styles = this.token.styles;
-    return !styles ? null : styles[styleProp];
-  }
-
-  async setStyleRef(tokenId: number, styleProp: TextPreviewStyleProps) {
-    await this.setTokenValue({
-      styles: {
-        ...this.token.styles,
-        [styleProp]: tokenId
-      }
-    });
-
-    this.preview.setPreviewStyleRef(
-      this.token.id,
-      styleProp,
-      tokenId
-    )
-  }
-
-  async setPreviewText() {
+  setPreviewText() {
     const inputValue = this.text.trim();
 
     if (inputValue.length && inputValue !== this.token.text) {
-      await this.setTokenValue({text: inputValue});
-      this.preview.setPreviewText(this.token.id, inputValue)
-
+      this.updateTextStyles({text: inputValue});
     } else {
       this.text = this.token.text;
     }
   }
 
-  changeColor(value: string) {
-    this.color = value;
-    this.preview.setPreviewColor(this.token.id, value);
+  async setFontFamily(typefaceId: number) {
+    await this.updateTextStyles({typefaceId}, true);
+    this.variants = await this.getVariants();    
   }
 
-  saveColor() {
-    this.setTokenValue({color: this.color});
+  changeTextColor(value: string) {
+    this.color = value;
   }
 
   changeBackgroundColor(value: string) {
     this.backgroundColor = value;
-    this.preview.setPreviewBackgroundColor(this.token.id, value)
   }
 
-  saveBackgroundColor() {
-    this.setTokenValue({backgroundColor: this.backgroundColor});
-  }
-
-  private async setTokenValue(obj: Partial<SectionTokenValue<TextStylesDBToken>>) {
-    const {group} = this.content;
-    const value = {...this.token}
-  
-    for (let key in obj) {
-      value[key] = obj[key];
-      await this.section.updateToken(this.token, group, {
-        [key]: obj[key]
-      });
+  setTextDecoration(value: TextStylesDBToken['textDecoration']) {
+    if (this.token.textDecoration === value) {
+      this.updateTextStyles({textDecoration: 'none'}, true);
+      return;
     }
+
+    this.updateTextStyles({textDecoration: value}, true);
+  }
+
+  updateTextStyles(
+    styles: Partial<SectionTokenValue<TextStylesDBToken>>,
+    updateStore = false
+  ) {
+    return this.section.updateToken(this.token, this.content.group, styles, updateStore);
+  }
+
+  private async getVariants() {
+    const typeface = this.store.getSectionToken('Type Face', this.token.typefaceId);
+
+    if (typeface) {
+
+      if (
+        typeface.type !== "google-fonts" && 
+        this.token.fontWeight !== '400'
+      ) {
+        await this.updateTextStyles({fontWeight: '400'}, true)
+      }
+
+      if (typeface.type === "google-fonts") {
+
+        if (!typeface.variants.includes(this.token.fontWeight)) {
+          await this.updateTextStyles({fontWeight: '400'}, true);
+        }
+
+        return (typeface as any).variants
+        .map((variant: string) => variant === "regular" ? '400' : variant)
+        .filter((variant: string) => !!Number(variant));
+      }
+      return [];
+    }
+    return [];
   }
 }

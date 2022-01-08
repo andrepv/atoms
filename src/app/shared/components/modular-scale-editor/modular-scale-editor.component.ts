@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { getScaleValue } from '@utils';
-import { DEFAULT_SCALE_BASE, DEFAULT_SCALE_RATIO, ModularScaleOption, ModularScaleState, MODULAR_SCALE_OPTIONS } from './modular-scale-editor.model';
-import { StoreGroup } from '@core/core.model';
+import { DBToken, StoreGroup } from '@core/core.model';
+import { ModularScaleGroup, ModularScalePreset, ModularScaleToken } from './modular-scale-types';
+import { MODULAR_SCALE_PRESETS } from './modular-scale-presets';
 
 @Component({
   selector: 'app-modular-scale-editor',
@@ -10,63 +11,68 @@ import { StoreGroup } from '@core/core.model';
   styleUrls: ['./modular-scale-editor.component.less']
 })
 export class ModularScaleEditorComponent implements OnInit {
-  @Input() group: StoreGroup;
-  @Input() minBaseValue = 4;
-  @Input() maxBaseValue = 100;
-  @Input() private defaultBase = DEFAULT_SCALE_BASE;
+  @Input() group: StoreGroup<any, DBToken & ModularScaleToken> & ModularScaleGroup;
+  @Input() minBase = 4;
+  @Input() maxBase = 100;
 
-  readonly MODULAR_SCALE_OPTIONS = MODULAR_SCALE_OPTIONS
-  isModularScaleEnabled = true;
-  scaleRatio = DEFAULT_SCALE_RATIO;
-  base = this.defaultBase;
+  MODULAR_SCALE_PRESETS = MODULAR_SCALE_PRESETS;
 
-  get state() {
-    return {
-      scaleRatio: this.scaleRatio.value,
-      base: this.base,
-      isModularScaleEnabled: this.isModularScaleEnabled
-    }
-  }
+  ratio: ModularScalePreset;
+  base: number;
 
-  constructor(
-    private section: SectionContentManagerService,
-  ) {}
+  constructor(private section: SectionContentManagerService<DBToken & ModularScaleToken>) {}
 
   ngOnInit() {
-    this.base = this.defaultBase;
-    this.setState(this.group.scale);
-  }
-
-  onScaleRatioChange(ratio: ModularScaleOption) {
-    this.scaleRatio = ratio;
-    this.updateModularScale();
+    this.base = this.group.scaleBase;
+    this.ratio = this.getInitialRatio();
   }
 
   updateModularScale() {
-    if (!this.isModularScaleEnabled) {
-      this.section.updateGroup(this.group, {scale: false})
-      return;
-    }
-
     this.group.tokens.forEach((token, index) => {
-      const value = getScaleValue(index, this.state);
-
-      this.section.updateToken(token, this.group, {value});
+      if (!token.modularScaleTokenIsLocked) {
+        const value = getScaleValue(index, this.ratio.value, this.base);
+        this.section.updateToken(token, this.group, {
+          modularScaleTokenValue: value
+        });
+      }
     })
 
-    this.section.updateGroup(this.group, {scale: {
-      scaleRatio: this.state.scaleRatio,
-      base: this.state.base,
-    }})
+    this.section.updateGroup(this.group, {scaleRatio: this.ratio.value})
+    this.section.updateGroup(this.group, {base: this.base})
   }
 
-  private setState(state: ModularScaleState | undefined) {
-    if (state) {
-      this.isModularScaleEnabled = true;
-      this.scaleRatio = MODULAR_SCALE_OPTIONS.find(option => option.value === state.scaleRatio);
-      this.base = state.base;
-    } else {
-      this.isModularScaleEnabled = false;
-    }
+  setCustomRatio(value: number) {
+    this.getPresetRatio({name: 'Custom'}).value = value;
+    this.ratio.value = value;
+    this.updateModularScale();
   }
+
+  setPresetRatio(ratio: ModularScalePreset) {
+    this.ratio = ratio;
+    this.updateModularScale();
+  }
+
+  private getInitialRatio() {
+    const preset = this.getPresetRatio({value: this.group.scaleRatio});
+
+    if (preset) {
+      return preset;
+    }
+
+    const customRatio = this.getPresetRatio({name: "Custom"});
+    customRatio.value = this.group.scaleRatio;
+    return customRatio;
+  }
+
+  private getPresetRatio({value, name}: {value?: number, name?: string}) {
+    return this.MODULAR_SCALE_PRESETS.find(preset => {
+      if (value) {
+        return preset.value === value
+      }
+      if (name) {
+        return preset.name = name;
+      }
+    });
+  }
+
 }

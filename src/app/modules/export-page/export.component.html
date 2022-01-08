@@ -3,7 +3,13 @@
 <div class="list">
   <div class="list-wrapper">
     <div *ngFor="let config of configurationList" class="group">
-      <p>{{ config.name }}</p>
+      <app-text-editable
+        #editableText
+        [text]="config.name"
+        (blur)="renameConfiguration($event, config)"
+      >
+        <p (click)="editableText.makeEditable()">{{ config.name }}</p>
+      </app-text-editable>
       <p>{{ config.format }}</p>
       <p (click)="deleteConfiguration(config.id)">delete</p>
       <a [routerLink]="['./', '' + config.id]">Edit</a>

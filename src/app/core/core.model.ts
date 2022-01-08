@@ -1,4 +1,4 @@
-export type SectionNames = "Type Face" | "Type Scale" | "Line Height" | "Letter Spacing" | "Text Styles" | "Spacing" | "Color Palette" | "Box Shadow" | "Border Radius" | "Borders" | "Durations" | "Custom Tokens";
+export type SectionNames = "Type Face" | "Text Styles" | "Spacing" | "Color Palette" | "Box Shadow" | "Border Radius" | "Borders" | "Durations" | "Custom Tokens";
 
 export type PageName = "Typography" | "Colors" | "Spacing" | "Shadows" | "Borders" | "Durations" | "Custom Tokens";
 

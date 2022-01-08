@@ -80,7 +80,9 @@ export class ExportEditorSectionComponent implements OnInit {
       code: {},
     }
 
-    configs.code = this.editorSection.codePreviewConfigs;
+    if (this.editorSection.codePreviewConfigs) {
+      configs.code = this.editorSection.codePreviewConfigs;
+    }
 
     const id = await db.exportConfigsSection.add(configs);
     configs.id = id;

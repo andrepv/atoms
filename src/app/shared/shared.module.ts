@@ -18,6 +18,7 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 import { GroupListHeaderComponent } from './components/group-list-header/group-list-header.component';
 import { GroupHeaderComponent } from './components/group-header/group-header.component';
@@ -27,7 +28,6 @@ import { TokenComponent } from './components/token/token.component';
 import { GroupComponent } from './components/group/group.component';
 import { ModularScaleEditorComponent } from './components/modular-scale-editor/modular-scale-editor.component';
 import { TokensSectionSelectComponent } from './components/tokens-section-select/tokens-section-select.component';
-import { TokenEditableComponent } from './components/token-editable/token-editable.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 import { ColorPickerModule } from 'ngx-color-picker';
@@ -38,6 +38,8 @@ import { SectionTreeComponent } from './components/section-tree/section-tree.com
 import { AppRoutingModule } from '../app-routing.module';
 import { TokenActionsComponent } from './components/token-actions/token-actions.component';
 import { StartPageComponent } from './components/start-page/start-page.component';
+import { ModularScaleEditorTokenComponent } from './components/modular-scale-editor-token/modular-scale-editor-token.component';
+import { ColorContrastCheckerComponent } from './components/color-contrast-checker/color-contrast-checker.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,6 @@ import { StartPageComponent } from './components/start-page/start-page.component
     GroupListComponent,
     GroupListHeaderComponent,
     TokenComponent,
-    TokenEditableComponent,
     TokensSectionSelectComponent,
     TextEditableComponent,
     ModularScaleEditorComponent,
@@ -58,6 +59,8 @@ import { StartPageComponent } from './components/start-page/start-page.component
     SectionTreeComponent,
     TokenActionsComponent,
     StartPageComponent,
+    ModularScaleEditorTokenComponent,
+    ColorContrastCheckerComponent,
   ],
   imports: [
     CommonModule,
@@ -80,6 +83,7 @@ import { StartPageComponent } from './components/start-page/start-page.component
     NzInputNumberModule,
     NzPopoverModule,
     NzTabsModule,
+    NzGridModule,
 
     ColorPickerModule
   ],
@@ -89,16 +93,17 @@ import { StartPageComponent } from './components/start-page/start-page.component
     GroupComponent,
     GroupListComponent,
     TokenComponent,
-    TokenEditableComponent,
     TokensSectionSelectComponent,
     TextEditableComponent,
     ModularScaleEditorComponent,
+    ModularScaleEditorTokenComponent,
     ColorPickerComponent,
     SliderComponent,
     PageComponent,
     SectionTreeComponent,
     TokenActionsComponent,
     StartPageComponent,
+    ColorContrastCheckerComponent,
 
     NzToolTipModule,
     NzDropDownModule,
@@ -114,6 +119,8 @@ import { StartPageComponent } from './components/start-page/start-page.component
     NzRadioModule,
     NzSliderModule,
     NzInputNumberModule,
+    NzPopoverModule,
+    NzGridModule,
 
     ColorPickerModule
   ]

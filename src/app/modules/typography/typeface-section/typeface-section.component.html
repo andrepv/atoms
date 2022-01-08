@@ -14,14 +14,14 @@
           <p>{{ token.family }}</p>
         </div>
       </ng-template>
-
-      <ng-template #editorTemplate let-content>
-        <app-typeface-editor [content]="content"></app-typeface-editor>
-      </ng-template>
     </app-group>
   </ng-template>
-
-  <ng-template #sectionTreeTemplate let-groups>
-    <app-section-tree [groups]="groups"></app-section-tree>
-  </ng-template>
 </app-group-list>
+
+<ng-template #editorTemplate let-content>
+  <app-typeface-editor [content]="content"></app-typeface-editor>
+</ng-template>
+
+<ng-template #sectionTreeTemplate let-groups>
+  <app-section-tree [groups]="groups"></app-section-tree>
+</ng-template>

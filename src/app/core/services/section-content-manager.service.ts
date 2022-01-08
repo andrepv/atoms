@@ -129,12 +129,19 @@ export class SectionContentManagerService<T extends DBToken = any, G extends DBG
   async updateToken(
     token: StoreToken<T>,
     group: StoreGroup<G, T>,
-    changes: Partial<SectionTokenValue<T>>
+    changes: Partial<SectionTokenValue<T>>,
+    updateStore = true,
   ) {
-    const key = Object.keys(changes)[0];
+    const keys = Object.keys(changes);
 
-    await this.tokenTable.update(token.id, changes);
-    token[key] = changes[key];
+    for (let key of keys) {
+      await this.tokenTable.update(token.id, changes);
+
+      if (updateStore) {
+        token[key] = changes[key];
+      }
+    }
+
     this.hooks.onTokenUpdate(changes, token, group);
   }
 

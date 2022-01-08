@@ -3,7 +3,6 @@ import { SectionContentManagerService } from '@core/services/section-content-man
 import { getScaleValue } from '@utils';
 import { SpacingDBGroup, SpacingDBToken, SPACING_DB_DATA } from '@spacing/spacing.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
-import { DEFAULT_SCALE_BASE } from '@shared/components/modular-scale-editor/modular-scale-editor.model';
 import { StoreToken, StoreGroup } from '@core/core.model';
 
 @Component({
@@ -13,9 +12,6 @@ import { StoreToken, StoreGroup } from '@core/core.model';
   providers: [...provideSectionDeps(SPACING_DB_DATA.tableGroupName)]
 })
 export class SpacingSectionComponent implements OnInit {
-  readonly MIN_VALUE = 1;
-  readonly MAX_VALUE = 150;
-
   get sectionName() {
     return this.section.sectionName;
   }
@@ -26,24 +22,23 @@ export class SpacingSectionComponent implements OnInit {
     this.section.configure({
       hooks: {
         getDefaultToken: groupId => ({
-          value: this.getDefaultTokenValue(groupId)
+          modularScaleTokenValue: this.getDefaultTokenValue(groupId),
+          modularScaleTokenIsLocked: false,
         }),
         getDefaultGroup: () => ({
-          scale: false
-        })
+          scaleBase: 16,
+          scaleRatio: 1.067,
+        }),
       },
     })
   }
 
   private getDefaultTokenValue(groupId: number) {
     const group = this.section.getGroup(groupId);
-    if (group.scale) {
-      return getScaleValue(group.tokens.length, group.scale);
-    }
-    return DEFAULT_SCALE_BASE;
+    return getScaleValue(group.tokens.length, group.scaleRatio, group.scaleBase);
   }
 
-  setTokenValue(value: SpacingDBToken['value'], token: StoreToken, group: StoreGroup<SpacingDBGroup>) {
-    this.section.updateToken(token, group, {value});
+  setTokenValue(value: SpacingDBToken['modularScaleTokenValue'], token: StoreToken, group: StoreGroup<SpacingDBGroup>) {
+    this.section.updateToken(token, group, {modularScaleTokenValue: value});
   }
 }

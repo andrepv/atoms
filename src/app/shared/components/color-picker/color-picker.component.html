@@ -1,13 +1,19 @@
-<div
-  class="color-preview"
-  [style.background-color]="color"
-  nz-popover
-  nzPopoverTrigger="click"
-  [(nzPopoverVisible)]="isPopoverVisible"
-  [nzPopoverContent]="popoverContentTemplate"
-  nzPopoverPlacement="bottom"
-  (click)="togglePopover()"
-></div>
+<div class="color-picker-container">
+  <div
+    class="color-preview"
+    [style.background-color]="color"
+    nz-popover
+    nzPopoverTrigger="click"
+    [(nzPopoverVisible)]="isPopoverVisible"
+    [nzPopoverContent]="popoverContentTemplate"
+    nzPopoverPlacement="bottom"
+    (click)="togglePopover()"
+  ></div>
+
+  <div class="color-hex">
+    <p>{{ color }}</p>
+  </div>
+</div>
 
 <ng-template #popoverContentTemplate>
   <div class="container">

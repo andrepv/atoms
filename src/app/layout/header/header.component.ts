@@ -8,8 +8,11 @@ import { NzModalService } from 'ng-zorro-antd/modal';
   styleUrls: ['./header.component.less']
 })
 export class HeaderComponent implements OnInit {
-  modalInputValue = "";
-  loadMorePending = false;
+  nextThemeName = "";
+  currentThemeName = "";
+
+  nextThemeEditorVisible = false;
+  currentThemeEditorVisible = false;
 
   @ViewChild('input') inputEl: TemplateRef<any>;
 
@@ -18,26 +21,23 @@ export class HeaderComponent implements OnInit {
     private modal: NzModalService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.currentThemeName = this.themes.selected.name;
+  }
 
   addTheme() {
-    this.modalInputValue = "";
-
-    this.modal.create({
-      nzTitle: 'Enter a name for your theme',
-      nzContent: this.inputEl,
-      nzOnOk: () => this.themes.add(this.modalInputValue),
-    });
+    this.themes.add(this.nextThemeName);
+    this.nextThemeEditorVisible = false;
+    this.nextThemeName = "";
   }
 
   renameTheme() {
-    this.modalInputValue = this.themes.selected.name;
+    this.themes.rename(this.currentThemeName);
+    this.currentThemeEditorVisible = false;
+  }
 
-    this.modal.create({
-      nzTitle: 'Enter a new theme name',
-      nzContent: this.inputEl,
-      nzOnOk: () => this.themes.rename(this.modalInputValue),
-    });
+  onCurrentThemeEditorOpen() {
+    this.currentThemeName = this.themes.selected.name;
   }
 
   deleteTheme(): void {

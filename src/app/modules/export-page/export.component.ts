@@ -44,4 +44,9 @@ export class ExportComponent implements OnInit {
       await db.exportConfigsSection.delete(exportConfigSection.id);
     }
   }
+
+  renameConfiguration(value: string, config: ExportConfigs) {
+    db.exportConfigs.update(config.id, {name: value});
+    config.name = value;
+  }
 }

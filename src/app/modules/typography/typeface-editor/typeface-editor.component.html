@@ -1,13 +1,9 @@
 <div>
-
   <div class="content">
-    <!-- <label for="name">Name</label>
-    <input id="name" nz-input [(ngModel)]="tokenName" (blur)="onBlur()" /> -->
 
     <nz-radio-group [(ngModel)]="radioValue">
-      <label nz-radio-button nzValue="loaded-fonts">Loaded Fonts</label>
       <label nz-radio-button nzValue="google-fonts">Google Fonts</label>
-      <label nz-radio-button nzValue="custom-font">Custom Font</label>
+      <label nz-radio-button nzValue="custom-font">Upload Font</label>
     </nz-radio-group>
 
     <app-typeface-list-google
@@ -19,10 +15,5 @@
       *ngIf="radioValue === 'custom-font'"
       (save)="saveFont($event)"
     ></app-typeface-dropzone>
-
-    <app-typeface-list
-      *ngIf="radioValue === 'loaded-fonts'"
-      (save)="saveFont($event)"
-    ></app-typeface-list>
   </div>
 </div>

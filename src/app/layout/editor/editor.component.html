@@ -1,12 +1,12 @@
-<header class="editor-heading">
-  <div class="heading" (click)="editor.disable()">
-    <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
+<div class="editor">
+  <header class="editor-header">
     <h3>{{ editor.section }}</h3>
+    <i (click)="editor.disable()" nz-icon nzType="close" nzTheme="outline"></i>
+  </header>
+  
+  <div [ngSwitch]="editor.section" class="content-wrapper">
+    <ng-container *ngIf="editor.editorTemplateRef">
+      <ng-container *ngTemplateOutlet="editor.editorTemplateRef"></ng-container>
+    </ng-container>
   </div>
-</header>
-
-<div [ngSwitch]="editor.section" class="content-wrapper">
-  <ng-container *ngIf="editor.editorTemplateRef">
-    <ng-container *ngTemplateOutlet="editor.editorTemplateRef"></ng-container>
-  </ng-container>
 </div>

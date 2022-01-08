@@ -1,0 +1,11 @@
+<p class="editor-label">Color Contrast</p>
+<div
+  class="contrast"
+  [style.backgroundColor]="_backgroundColor"
+  [style.color]="_textColor"
+>
+  <div class="contrast-info">
+    <p class="contrast-ratio">Ratio: {{ colorContrast }}</p>
+    <h2 [style.color]="_textColor" class="contrast-status">{{ colorContrastStatus }}</h2>
+  </div>
+</div>

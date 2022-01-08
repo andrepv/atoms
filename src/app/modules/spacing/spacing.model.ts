@@ -1,8 +1,8 @@
 import { DBToken, DBGroup, DBTables, DBSectionData } from "@core/core.model";
-import { ModularScaleState } from "@shared/components/modular-scale-editor/modular-scale-editor.model";
+import { ModularScaleGroup, ModularScaleToken } from "@shared/components/modular-scale-editor/modular-scale-types";
 
-export type SpacingDBToken = DBToken & {value: number};
-export type SpacingDBGroup = DBGroup & {scale: Pick<ModularScaleState, 'scaleRatio' | 'base'> | false};
+export type SpacingDBToken = DBToken & ModularScaleToken;
+export type SpacingDBGroup = DBGroup & ModularScaleGroup;
 
 export type SpacingTokenTable = Dexie.Table<SpacingDBToken, number>;
 export type SpacingGroupTable = Dexie.Table<SpacingDBGroup, number>;

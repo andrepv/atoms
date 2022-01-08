@@ -23,8 +23,8 @@ export class ExportEditorTextStylesComponent implements OnInit {
     css: CodeFormatterCSSTextStyles,
     js: CodeFormatterJSTextStyles,
     less: CodeFormatterCSSTextStyles,
-    sass: CodeFormatterScssTextStyles,
-    scss: CodeFormatterSassTextStyles,
+    sass: CodeFormatterSassTextStyles,
+    scss: CodeFormatterScssTextStyles,
     styl: CodeFormatterStylusTextStyles,
   }
 

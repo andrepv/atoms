@@ -10,7 +10,24 @@ header {
 
 .content-wrapper {
   position: fixed;
-  width: 270px;
+  width: 300px;
+  padding: 0 @space-sm;
+  border-right: 1px solid @color-border;
+  
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.content-wrapper::-webkit-scrollbar {
+  width: 7px;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb {
+  background: #363636;
+  border-radius: 5px;
+  // &:hover {
+  //   background-color: #363636;
+  // }
 }
 
 .anchor-list {

@@ -12,33 +12,30 @@ import { DurationsDBGroup, DurationsDBToken, DURATIONS_DB_DATA } from '../durati
   providers: [...provideSectionDeps(DURATIONS_DB_DATA.tableGroupName)]
 })
 export class DurationsSectionComponent implements OnInit {
-  readonly MIN_VALUE = 1;
-  readonly MAX_VALUE = 2500;
-
   constructor(private section: SectionContentManagerService<DurationsDBToken, DurationsDBGroup>) {}
 
   ngOnInit() {
     this.section.configure({
       hooks: {
         getDefaultToken: groupId => ({
-          value: this.getDefaultTokenValue(groupId)
+          modularScaleTokenValue: this.getDefaultTokenValue(groupId),
+          modularScaleTokenIsLocked: false,
         }),
         getDefaultGroup: () => ({
-          scale: false
-        })
+          textPreviewId: 0,
+          scaleBase: 140,
+          scaleRatio: 1.067,
+        }),
       },
     })
   }
 
   private getDefaultTokenValue(groupId: number) {
     const group = this.section.getGroup(groupId);
-    if (group.scale) {
-      return getScaleValue(group.tokens.length, group.scale);
-    }
-    return 140;
+    return getScaleValue(group.tokens.length, group.scaleRatio, group.scaleBase);
   }
 
-  setTokenValue(value: DurationsDBToken['value'], token: StoreToken, group: StoreGroup<DurationsDBGroup>) {
-    this.section.updateToken(token, group, {value});
+  setTokenValue(value: DurationsDBToken['modularScaleTokenValue'], token: StoreToken, group: StoreGroup<DurationsDBGroup>) {
+    this.section.updateToken(token, group, {modularScaleTokenValue: value});
   }
 }

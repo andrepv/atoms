@@ -82,14 +82,16 @@ export class ExportCodePreviewComponent implements OnInit {
 
     if (this.editor.showComments) {
       const sectionName = this.sectionTables.name.toLowerCase();
-      codePreview.push(`${this.formatter.getComment(sectionName)}\n`);
+      codePreview.push(`${this.formatter.getComment(sectionName)}\n\n`);
     }
 
     codePreview.push(this.formatter.getCodeBeforeTokens());
 
+    const showGroupName = this.editor.showComments && this.formatter.commentsAllowed;
+
     for (let group of this.groups) {
-      if (this.editor.showComments && this.formatter.commentsAllowed) {
-        const groupName = `\n${this.formatter.tokenIndent}${this.formatter.getComment(group.groupName)}`;
+      if (showGroupName) {
+        const groupName = `${this.formatter.tokenIndent}${this.formatter.getComment(group.groupName)}\n`;
 
         codePreview.push(groupName);
       }
@@ -99,7 +101,7 @@ export class ExportCodePreviewComponent implements OnInit {
       await this.createCodeLines(group.tokens, codePreview);
 
       if ((index + 1) !== this.groups.length) {
-        codePreview.push('\n');
+        codePreview.push('\n\n');
       }
     }
 
@@ -117,8 +119,10 @@ export class ExportCodePreviewComponent implements OnInit {
         varName: this.formatter.handleVariableName(token.name, this.editor.prefix),
         varValue,
       });
+
+      const lineBreak = source.indexOf(token) !== source.length - 1 ? '\n' : ''
   
-      container.push(`\n${codeLine}`);
+      container.push(`${codeLine}${lineBreak}`);
     }
   }
 

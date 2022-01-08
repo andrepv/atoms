@@ -1,0 +1,48 @@
+.contrast-colors {
+  // display: flex;
+  margin-bottom: 21px;
+}
+
+// .contrast-color {
+//   width: 50%;
+//   display: flex;
+//   flex-direction: column;
+//   /* align-items: center; */
+// }
+
+.contrast-colors .color-preview {
+  /* width: 80px; */
+  border-radius: 5px 0 0 5px;
+}
+
+.typeface-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 15px;
+  font-weight: 500;
+
+  .typeface-preview {
+    font-size: 21px;
+  }
+
+  .typeface-name {
+    width: 80%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+
+
+.text-styles-options {
+  i {
+    background: #1e2022;
+    padding: 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    &.isActive {
+      background: #6948cb;
+    }
+  }
+}

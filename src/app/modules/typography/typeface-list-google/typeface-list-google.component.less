@@ -1,64 +1,77 @@
 @import "design-tokens.less";
+@import "styles.less";
 
-.demo-infinite-container {
-  height: 75%;
-  border: 1px solid #e8e8e8;
-}
-
-.font {
-  cursor: pointer;
-}
-
-.font-family-preview {
-  padding: 20px;
-  margin-bottom: 20px;
-  background: #27272f;
-  font-size: 20px;
-}
-
-.content {
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.font-header {
+.settings {
   display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  color: #808080;
-}
+  .ant-select {
+    width: 85%;
+    margin-right: @space-xxs;
 
-header {
-  padding: @space-xl;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  justify-content: space-between;
-}
-
-.heading {
-  display: flex;
-  align-items: center;
+    &::ng-deep nz-select-top-control {
+      border-radius: @border-radius-md 0 0 @border-radius-md;
+    }
+  }
 
   i {
-    margin-right: 15px;
-  }
-  
-  h3 {
-    margin-bottom: 0;
+    cursor: pointer;
+    background: @color-bg-30;
+    border-radius: 0 @border-radius-md @border-radius-md 0;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
   }
 }
 
-.action-list {
+.categories {
+  background: @color-bg-30;
+  padding: @space-sm;
+  border-radius: @border-radius-sm;
+  margin-top: @space-xs;
+}
+
+.category {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  margin-bottom: @space-xxs;
+}
 
-  i:first-child {
-    margin-right: 15px;
-  }
+.search-input {
+  margin-top: @space-md;
+}
 
-  &::ng-deep svg {
-    width: 20px;
-    height: 20px;
-  }
+.search-results {
+  font-size: @text-sm;
+  color: @color-contrast-medium;
+  margin-top: @space-xs;
+}
+
+
+.typeface-preview-container {
+  height: 58%;
+  width: 105%;
+}
+
+.typeface-preview-block {
+  width: 100%;
+}
+
+.typeface-preview-text {
+  cursor: pointer;
+  padding: @space-lg @space-sm;
+  background: @color-bg-30;
+  font-size: @text-md;
+}
+
+.typeface-preview-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: @text-sm;
+  color: @color-contrast-medium;
+  margin-top: @space-xxs;
+}
+
+.ant-list-split .ant-list-item {
+  border-bottom: 1px solid @color-border;
 }

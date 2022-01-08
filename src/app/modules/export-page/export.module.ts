@@ -13,12 +13,9 @@ import { ExportEditorBoxShadowComponent } from './export-editor/export-editor-bo
 import { ExportEditorColorsComponent } from './export-editor/export-editor-colors.component';
 import { ExportEditorCustomTokensComponent } from './export-editor/export-editor-custom-tokens.component';
 import { ExportEditorDurationsComponent } from './export-editor/export-editor-durations.component';
-import { ExportEditorLetterSpacingComponent } from './export-editor/export-editor-letter-spacing.component';
-import { ExportEditorLineHeightComponent } from './export-editor/export-editor-line-height.component';
 import { ExportEditorSpacingComponent } from './export-editor/export-editor-spacing.component';
 import { ExportEditorTextStylesComponent } from './export-editor/export-editor-text-styles.component';
 import { ExportEditorTypefaceComponent } from './export-editor/export-editor-typeface.component';
-import { ExportEditorTypescaleComponent } from './export-editor/export-editor-typescale.component';
 import { InputFileNameComponent } from './input-file-name/input-file-name.component';
 
 
@@ -38,9 +35,6 @@ import { InputFileNameComponent } from './input-file-name/input-file-name.compon
     ExportEditorBoxShadowComponent,
     ExportEditorTextStylesComponent,
     ExportEditorTypefaceComponent,
-    ExportEditorTypescaleComponent,
-    ExportEditorLetterSpacingComponent,
-    ExportEditorLineHeightComponent,
   ],
   imports: [
     CommonModule,

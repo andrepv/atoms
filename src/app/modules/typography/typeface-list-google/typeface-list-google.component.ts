@@ -22,6 +22,7 @@ export class TypefaceListGoogleComponent implements OnInit {
     {name: 'monospace', value: true},
   ];
 
+  categoriesVisible = false;
   searchValue = '';
 
   ds: MyDataSource;
@@ -59,6 +60,10 @@ export class TypefaceListGoogleComponent implements OnInit {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  toggleCategories() {
+    this.categoriesVisible = !this.categoriesVisible;
   }
 
   search() {

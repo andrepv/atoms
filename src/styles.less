@@ -42,7 +42,7 @@
 // Background color for `<body>`
 @body-background: @color-bg;
 // Base background color for most components
-@component-background: @color-bg;
+@component-background: @color-bg-30;
 // Popover background color
 @popover-background: @component-background;
 @popover-customize-border-color: @border-color-split;
@@ -56,7 +56,7 @@
 @text-color-inverse: @black;
 @icon-color: @color-contrast-higher;
 @icon-color-hover: @color-contrast-high;
-@heading-color: @color-contrast-high;
+@heading-color: @color-contrast-higher;
 @text-color-dark: fade(@black, 85%);
 @text-color-secondary-dark: fade(@black, 65%);
 @text-selection-bg: @primary-color;
@@ -72,7 +72,7 @@
 @heading-5-size: @text-md;
 // https://github.com/ant-design/ant-design/issues/20210
 @line-height-base: 1.5715;
-@border-radius-base: @border-radius;
+@border-radius-base: 5px;
 @border-radius-sm: @border-radius-base;
 
 // vertical paddings
@@ -94,14 +94,14 @@
 @margin-xss: @space-xxs; // more small
 
 // height rules
-@height-base: 32px;
+@height-base: 40px;
 @height-lg: 40px;
 @height-sm: 24px;
 
 // The background colors for active and hover states for things like
 // list items or table cells.
 @item-active-bg: @primary-1;
-@item-hover-bg: @color-primary-20;
+@item-hover-bg: @color-contrast-lower;
 
 // ICONFONT
 @iconfont-css-prefix: anticon;
@@ -132,8 +132,8 @@
 @ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
 
 // Border color
-@border-color-base: @color-contrast-low; // base border outline a component
-@border-color-split: @color-contrast-low; // split border inside a component
+@border-color-base: @color-bg-20; // base border outline a component
+@border-color-split: @color-bg-20; // split border inside a component
 @border-color-inverse: @black;
 @border-width-base: 1px; // width of the border for a component
 @border-style-base: solid; // style of a components border
@@ -169,8 +169,8 @@
 
 // Buttons
 @btn-font-weight: 400;
-@btn-border-radius-base: @border-radius-base;
-@btn-border-radius-sm: @border-radius-base;
+@btn-border-radius-base: @border-radius-sm;
+@btn-border-radius-sm: @border-radius-sm;
 @btn-border-width: @border-width-base;
 @btn-border-style: @border-style-base;
 @btn-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
@@ -250,27 +250,27 @@
 @divider-color: rgba(0, 0, 0, 6%);
 
 // Dropdown
-@dropdown-selected-color: @primary-color;
+@dropdown-selected-color: @color-contrast-lower;
 @dropdown-menu-submenu-disabled-bg: @component-background;
 
 // Empty
 @empty-font-size: @font-size-base;
 
 // Radio
-@radio-size: 16px;
+@radio-size: @text-sm;
 @radio-top: 0px;
-@radio-border-width: 1px;
+@radio-border-width: 2px;
 @radio-dot-size: @radio-size - 8px;
-@radio-dot-color: @primary-color;
+@radio-dot-color: @component-background;
 @radio-dot-disabled-color: fade(@black, 20%);
 @radio-solid-checked-color: @component-background;
 
 // Radio buttons
-@radio-button-bg: @btn-default-bg;
-@radio-button-checked-bg: @btn-default-bg;
-@radio-button-color: @btn-default-color;
-@radio-button-hover-color: @primary-5;
-@radio-button-active-color: @primary-7;
+@radio-button-bg: @color-bg;
+@radio-button-checked-bg: @component-background;
+@radio-button-color: @color-contrast-medium;
+@radio-button-hover-color: @color-contrast-higher;
+@radio-button-active-color: @color-contrast-higher;
 @radio-disabled-button-checked-bg: tint(@black, 90%);
 @radio-disabled-button-checked-color: @disabled-color;
 @radio-wrapper-margin-right: 8px;
@@ -359,10 +359,10 @@
 
 //Dropdown
 @dropdown-menu-bg: @component-background;
-@dropdown-vertical-padding: 5px;
+@dropdown-vertical-padding: @space-xxs;
 @dropdown-edge-child-vertical-padding: 4px;
 @dropdown-font-size: @font-size-base;
-@dropdown-line-height: 22px;
+@dropdown-line-height: 20px;
 
 // Form
 // ---
@@ -399,17 +399,17 @@
 );
 @input-padding-vertical-lg: ceil((@input-height-lg - @font-size-lg * @line-height-base) / 2 * 10) /
   10 - @border-width-base;
-@input-placeholder-color: hsv(0, 0, 75%);
+@input-placeholder-color: @color-contrast-medium;
 @input-color: @text-color;
 @input-icon-color: @input-color;
-@input-border-color: @border-color-base;
-@input-bg: @component-background;
+@input-border-color: @color-bg-20;
+@input-bg: @color-bg;
 @input-number-hover-border-color: @input-hover-border-color;
 @input-number-handler-active-bg: #f4f4f4;
 @input-number-handler-hover-bg: @primary-5;
 @input-number-handler-bg: @component-background;
 @input-number-handler-border-color: @border-color-base;
-@input-addon-bg: @background-color-light;
+@input-addon-bg: @color-bg-30;
 @input-hover-border-color: @primary-5;
 @input-disabled-bg: @disabled-bg;
 @input-outline-offset: 0 0;
@@ -423,7 +423,7 @@
 
 // Select
 // ---
-@select-border-color: @border-color-base;
+@select-border-color: @component-background;
 @select-item-selected-color: @text-color;
 @select-item-selected-font-weight: 600;
 @select-dropdown-bg: @component-background;
@@ -432,11 +432,11 @@
 @select-dropdown-vertical-padding: @dropdown-vertical-padding;
 @select-dropdown-font-size: @dropdown-font-size;
 @select-dropdown-line-height: @dropdown-line-height;
-@select-dropdown-height: 32px;
+@select-dropdown-height: 42px;
 @select-background: @component-background;
 @select-clear-background: @select-background;
 @select-selection-item-bg: @background-color-base;
-@select-selection-item-border-color: @border-color-split;
+@select-selection-item-border-color: @component-background;
 @select-single-item-height-lg: 40px;
 @select-multiple-item-height: @input-height-base - @input-padding-vertical-base * 2; // Normal 24px
 @select-multiple-item-height-lg: 32px;
@@ -509,7 +509,7 @@
 @modal-body-padding: @padding-lg;
 @modal-header-bg: @component-background;
 @modal-header-padding: @modal-header-padding-vertical @modal-header-padding-horizontal;
-@modal-header-border-width: @border-width-base;
+@modal-header-border-width: 0;
 @modal-header-border-style: @border-style-base;
 @modal-header-title-line-height: 22px;
 @modal-header-title-font-size: @font-size-lg;
@@ -523,7 +523,7 @@
 @modal-footer-border-style: @border-style-base;
 @modal-footer-padding-vertical: 10px;
 @modal-footer-padding-horizontal: 16px;
-@modal-footer-border-width: @border-width-base;
+@modal-footer-border-width: 0;
 @modal-mask-bg: fade(@black, 45%);
 @modal-confirm-body-padding: 32px 32px 24px;
 
@@ -1027,4 +1027,47 @@ h1, h2, h3, h4, h5, h6 {
 
 html {
   scroll-behavior: smooth
+}
+
+
+// radio
+
+.ant-radio-button-wrapper-checked:not([class*=' ant-radio-button-wrapper-disabled']).ant-radio-button-wrapper:first-child {
+  border-right-color: @color-bg-30;
+}
+
+.ant-radio-button-wrapper:hover,
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  color: @color-contrast-higher;
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+  color: @color-contrast-higher;
+  border-color: @color-bg-30;
+}
+
+.ant-radio-button-wrapper {
+  border: 1px solid @color-bg-30;
+}
+
+.ant-radio-button-wrapper:not(:first-child)::before {
+  display: none;
+}
+
+// .ant-btn {
+//   border-radius: @border-radius-sm;
+// }
+
+
+.cdk-virtual-scroll-viewport::-webkit-scrollbar-track {
+  background: @color-bg-10;
+}
+
+.cdk-virtual-scroll-viewport::-webkit-scrollbar {
+  width: 7px;
+}
+
+.cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
+  background-color: @color-bg-40;
+  border-radius: @border-radius-sm;
 }

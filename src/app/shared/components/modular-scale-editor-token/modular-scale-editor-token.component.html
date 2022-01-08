@@ -1,0 +1,8 @@
+<app-slider
+  [title]="title"
+  [min]="minValue"
+  [max]="maxValue"
+  [units]="units"
+  [(model)]="content.token.modularScaleTokenValue"
+  (afterModelChange)="setValue($event)"
+></app-slider>

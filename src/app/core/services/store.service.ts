@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SectionNames, StoreGroup, PageName } from '@core/core.model';
 import { EditorService } from './editor.service';
-import { ThemeManagerService } from './theme-manager.service';
 
 export interface StorePageContent {
   [sectionName: string]: StoreGroup[]

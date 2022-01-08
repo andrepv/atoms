@@ -1,32 +1,78 @@
 @import "design-tokens";
 
 header {
-  // height: 70px;
   padding: @space-xl;
-  // position: sticky;
-  // top: 0;
-  background: @color-bg;
+  border-bottom: 1px solid @color-border;
+
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+
+    .theme-switcher {
+      display: flex;
+      align-items: center;
+      .btn {
+        cursor: pointer;
+        background: @color-bg-30;
+        border-radius:  @border-radius-md 0 0  @border-radius-md;
+        margin-right: 4px;
+
+        height: 42px;
+        width: 42px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .btn-more {
+        border-radius:  0 @border-radius-md @border-radius-md 0;
+        margin-left: 4px;
+      }
+
+      .btn-rename {
+        border-radius: 0;
+        margin-right: 0;
+        margin-left: 4px;
+      }
+
+      nz-select {
+        width: 240px;
+  
+        &::ng-deep nz-select-top-control {
+          border: 0;
+          border-radius: 0;
+          height: 42px;
+          display: flex;
+          align-items: center;
+  
+          &::ng-deep nz-select-search input {
+            height: 100%;
+          }
+        }
+  
+        &::ng-deep .ant-select-arrow svg {
+          color: @color-contrast-low;
+        }
+      }
+    }
+  }
 }
 
-.wrapper {
+.popover-header {
+  font-size: @text-sm;
+  color: @color-contrast-medium;
+}
+
+.popover-body {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: 100%;
-}
+  input {
+    margin-right: @space-xs;
+  }
 
-.add-btn {
-  cursor: pointer;
-  background: @color-contrast-lower;
-  padding: @space-xs;
-  border-radius: @border-radius-sm;
-}
-
-.more-btn {
-  cursor: pointer;
-  padding: @space-xs;
-}
-
-nz-select {
-  width: 240px;
+  button {
+    width: 120px;
+  }
 }

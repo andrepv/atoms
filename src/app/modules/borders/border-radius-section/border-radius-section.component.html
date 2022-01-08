@@ -5,7 +5,8 @@
   <ng-template #groupTemplate let-group>
     <app-group [group]="group" [tokenPreviewTemplate]="tokenTemplate">
       <ng-template #tokenTemplate let-token let-group="group">
-        <app-token-editable
+        <div class="preview" [style.border-radius]="token.value + 'px'"></div>
+        <!-- <app-token-editable
           [step]="1"
           [minValue]="0"
           [maxValue]="50"
@@ -14,9 +15,8 @@
           (onAfterChange)="setTokenValue($event, token, group)"
         >
           <ng-template #tokenPreviewRef let-value>
-            <div class="preview" [style.border-radius]="value + 'px'"></div>
           </ng-template>
-        </app-token-editable>
+        </app-token-editable> -->
       </ng-template>
     </app-group>
   </ng-template>

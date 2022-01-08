@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { DBGroup } from '@core/core.model';
-import { TextStylesDBToken, TEXTSTYLES_DB_DATA } from './text-styles.model';
+import { TextStylesDBGroup, TextStylesDBToken, TEXTSTYLES_DB_DATA } from './text-styles.model';
 import { provideSectionDeps } from '@utils/provide-section-deps';
-import { TextPreviewService } from '../text-preview/text-preview.service';
+import { getScaleValue } from '@utils/get-type-scale-value';
+
+const defaultText = 'Quick brown fox jumped over the lazy red dog'
 
 @Component({
   selector: 'app-text-styles-section',
@@ -12,22 +13,36 @@ import { TextPreviewService } from '../text-preview/text-preview.service';
   providers: [...provideSectionDeps(TEXTSTYLES_DB_DATA.tableGroupName)]
 })
 export class TextStylesSectionComponent implements OnInit {
-  constructor(
-    private section: SectionContentManagerService<TextStylesDBToken, DBGroup>,
-    private preview: TextPreviewService
-  ) {}
+  constructor(private section: SectionContentManagerService<TextStylesDBToken, TextStylesDBGroup>) {}
 
   ngOnInit() {
     this.section.configure({
       hooks: {
-        getDefaultToken: () => ({
-          styles: {},
-          text: this.preview.DEFAULT_PREVIEW.text,
+        getDefaultToken: groupId => ({
+          text: defaultText,
           backgroundColor: '#35343d',
           color: '#e3e3e3',
+
+          typefaceId: 0,
+          letterSpacing: 0.01,
+          lineHeight: 1,
+          wordSpacing: 0,
+          fontWeight: '400',
+          textDecoration: 'none',
+          fontStyle: 'normal',
+          modularScaleTokenValue: this.getDefaultScaleValue(groupId),
+          modularScaleTokenIsLocked: false,
         }),
-        onTokenDelete: token => this.preview.deletePreview(token.id)
+        getDefaultGroup: () => ({
+          scaleBase: 16,
+          scaleRatio: 1.067,
+        }),
       }
     })
+  }
+
+  private getDefaultScaleValue(groupId: number) {
+    const group = this.section.getGroup(groupId);
+    return getScaleValue(group.tokens.length, group.scaleRatio, group.scaleBase);
   }
 }

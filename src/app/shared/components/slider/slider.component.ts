@@ -10,7 +10,8 @@ export class SliderComponent implements OnInit {
   @Input() min: number = 0
   @Input() max: number = 10;
   @Input() step: number = 1;
-  @Input() model: number
+  @Input() model: number;
+  @Input() units: string | 'none' = 'px';
 
   @Output() modelChange: EventEmitter<number> = new EventEmitter();
   @Output() afterModelChange: EventEmitter<number> = new EventEmitter();

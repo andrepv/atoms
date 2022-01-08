@@ -6,26 +6,22 @@
     <app-group
       [group]="group"
       [tokenPreviewTemplate]="tokenTemplate"
-      [groupEditorTemplate]="editorTemplate"
+      [groupEditorTemplate]="editorGroupTemplate"
+      [tokenEditorTemplate]="editorTokenTemplate"
     >
-
       <ng-template #tokenTemplate let-token let-group="group">
-        <app-token-editable
-          [isEditable]="!group.scale"
-          [minValue]="MIN_VALUE"
-          [maxValue]="MAX_VALUE"
-          [value]="token.value"
-          [previewTemplate]="tokenPreviewRef"
-          (onAfterChange)="setTokenValue($event, token, group)"
-        >
-          <ng-template #tokenPreviewRef let-value>
-            <p>{{ value + 'px' }}</p>
-          </ng-template>
-        </app-token-editable>
+        <p>{{ token.modularScaleTokenValue + 'px' }}</p>
       </ng-template>
 
-      <ng-template #editorTemplate let-group>
-        <app-spacing-editor [group]="group"></app-spacing-editor>
+      <ng-template #editorGroupTemplate let-group>
+        <app-modular-scale-editor [group]="group"></app-modular-scale-editor>
+      </ng-template>
+      
+      <ng-template #editorTokenTemplate let-content>
+        <app-modular-scale-editor-token
+          [content]="content"
+          title="Spacing"
+        ></app-modular-scale-editor-token>
       </ng-template>
 
     </app-group>

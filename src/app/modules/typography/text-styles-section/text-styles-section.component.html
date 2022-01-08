@@ -6,19 +6,24 @@
     <app-group
       [group]="group"
       [tokenPreviewTemplate]="tokenTemplate"
-      [tokenEditorTemplate]="editorTemplate"
+      [tokenEditorTemplate]="editorTokenTemplate"
+      [groupEditorTemplate]="editorGroupTemplate"
     >
       <ng-template #tokenTemplate let-token>
-        <app-text-styles-token [token]="token"></app-text-styles-token>
-      </ng-template>
-
-      <ng-template #editorTemplate let-content>
-        <app-text-styles-editor [content]="content"></app-text-styles-editor>
+        <app-text-preview [token]="token"></app-text-preview>
       </ng-template>
     </app-group>
   </ng-template>
-
-  <ng-template #sectionTreeTemplate let-groups>
-    <app-section-tree [groups]="groups"></app-section-tree>
-  </ng-template>
 </app-group-list>
+
+<ng-template #editorTokenTemplate let-content>
+  <app-text-styles-editor [content]="content"></app-text-styles-editor>
+</ng-template>
+
+<ng-template #editorGroupTemplate let-group>
+  <app-modular-scale-editor [group]="group"></app-modular-scale-editor>
+</ng-template>
+
+<ng-template #sectionTreeTemplate let-groups>
+  <app-section-tree [groups]="groups"></app-section-tree>
+</ng-template>
