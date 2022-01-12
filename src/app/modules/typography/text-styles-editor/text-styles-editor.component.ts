@@ -37,7 +37,7 @@ export class TextStylesEditorComponent implements OnInit {
     const inputValue = this.text.trim();
 
     if (inputValue.length && inputValue !== this.token.text) {
-      this.updateTextStyles({text: inputValue});
+      this.updateTextStyles({text: inputValue}, true);
     } else {
       this.text = this.token.text;
     }

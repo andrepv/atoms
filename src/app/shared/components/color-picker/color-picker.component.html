@@ -1,49 +1,96 @@
-<div class="color-picker-container">
-  <div
-    class="color-preview"
-    [style.background-color]="color"
-    nz-popover
-    nzPopoverTrigger="click"
-    [(nzPopoverVisible)]="isPopoverVisible"
-    [nzPopoverContent]="popoverContentTemplate"
-    nzPopoverPlacement="bottom"
-    (click)="togglePopover()"
-  ></div>
-
-  <div class="color-hex">
-    <p>{{ color }}</p>
+<div
+  class="color-preview-container"
+  nz-popover
+  nzPopoverTrigger="click"
+  [(nzPopoverVisible)]="isPopoverVisible"
+  [nzPopoverContent]="popoverContentTemplate"
+  nzPopoverPlacement="right"
+  (click)="togglePopover()"
+>
+  <div class="color-preview-wrapper">
+    <div
+      class="color-preview"
+      [style.background-color]="color"
+    ></div>
+  
+    <div class="color-preview-hex-text">
+      <p>{{ getColor() }}</p>
+    </div>
   </div>
 </div>
 
-<ng-template #popoverContentTemplate>
-  <div class="container">
-    <input
-      [style.background]="color"
-      [(colorPicker)]="color"
-      [cpDialogDisplay]="'inline'"
-      [cpToggle]="true"
-      (colorPickerChange)="onColorPickerChange($event)"
-    />
 
-    <div class="preset-colors-wrapper" *ngIf="isPopoverVisible">
-      <nz-tabset>
-        <nz-tab nzTitle="Current Theme">
+<ng-template #popoverContentTemplate>
+  <div class="color-picker-popover">
+    <div class="color-picker-radio-group">
+      <nz-radio-group [(ngModel)]="radioValue">
+        <label nz-radio-button nzValue="color-picker">Color Picker</label>
+        <label nz-radio-button nzValue="presets">Presets</label>
+      </nz-radio-group>
+    </div>
+
+    <div
+      class="color-picker-container"
+      *ngIf="radioValue === 'color-picker'"
+    >
+      <input
+        [style.background]="color"
+        [(colorPicker)]="color"
+        [cpDialogDisplay]="'inline'"
+        [cpToggle]="true"
+        (colorPickerChange)="onColorPickerChange($event)"
+      />
+    </div>
+
+    <div *ngIf="radioValue === 'presets'">
+      <div class="color-presets-header">
+        <div class="color-presets-view">
+          <i
+            [class.active]="view === 'list'"
+            nz-icon nzType="unordered-list" nzTheme="outline"
+            (click)="view = 'list'"
+          ></i>
+          <i
+            [class.active]="view === 'grid'"
+            nz-icon nzType="appstore" nzTheme="outline"
+            (click)="view = 'grid'"
+          ></i>
+        </div>
+    
+        <div class="color-presets-source">
+          <span>Source: All Themes</span>
+          <nz-switch
+            [(ngModel)]="allThemes"
+            (ngModelChange)="allThemes = $event"
+          ></nz-switch>
+        </div>
+      </div>
+
+      <ng-container *ngIf="!allThemes">
+        <div class="color-presets-container">
           <app-color-picker-preset
             [tokens]="currentThemeColors"
             (colorSelect)="onPresetColorSelect($event)"
+            [view]="view"
           ></app-color-picker-preset>
-        </nz-tab>
-        <nz-tab nzTitle="Other Themes">
-          <div *ngFor="let theme of colorsByTheme" class="theme-colors">
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="allThemes">
+        <div class="color-presets-container">
+          <div 
+            *ngFor="let theme of colorsByTheme" 
+            class="theme-color-presets"
+          >
             <p class="theme-name">{{ theme.themeName }}</p>
             <app-color-picker-preset
               [tokens]="theme.tokens"
               (colorSelect)="onPresetColorSelect($event)"
+              [view]="view"
             ></app-color-picker-preset>
           </div>
-        </nz-tab>
-      </nz-tabset>
-
+        </div>
+      </ng-container>
     </div>
   </div>
 </ng-template>

@@ -1,13 +1,44 @@
-.preset-colors {
-  font-size: 14px;
-  display: grid;
-  grid-template-columns: repeat(5, 30px);
-  grid-column-gap: 15px;
-  grid-row-gap: 10px;
-  grid-auto-rows: 30px;
+@import "design-tokens";
+@import "styles";
+
+.color-item {
+  display: flex;
+  align-items: center;
+  font-size: @text-sm;
+  padding: @space-xxs 0;
+  cursor: pointer;
+  padding-left: 6%;
+  transition: all @animation-duration-base;
+
+  &:hover {
+    background-color: @color-bg-20;
+  }
 }
 
-.preset-color {
-  cursor: pointer;
-  border-radius: 100%;
+.color-preview {
+  width: 25px;
+  height: 25px;
+  margin-right: @space-sm;
+  border-radius: @border-radius-sm;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(22px, 1fr));
+  padding-left: 6%;
+  grid-row-gap: 10px;
+  grid-column-gap: 10px;
+  width: calc(100% - 9px);
+
+  .color-item {
+    padding: 0;
+  }
+
+  .color-preview {
+    margin: 0;
+  }
+
+  .color-name {
+    display: none;
+  }
 }

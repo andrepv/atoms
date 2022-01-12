@@ -1,5 +1,6 @@
 @import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
 @import "design-tokens.less";
+@import "mixins";
 
 @theme: default;
 
@@ -96,12 +97,12 @@
 // height rules
 @height-base: 40px;
 @height-lg: 40px;
-@height-sm: 24px;
+@height-sm: 34px;
 
 // The background colors for active and hover states for things like
 // list items or table cells.
 @item-active-bg: @primary-1;
-@item-hover-bg: @color-contrast-lower;
+@item-hover-bg: @color-bg-20;
 
 // ICONFONT
 @iconfont-css-prefix: anticon;
@@ -1058,16 +1059,19 @@ html {
 //   border-radius: @border-radius-sm;
 // }
 
-
-.cdk-virtual-scroll-viewport::-webkit-scrollbar-track {
-  background: @color-bg-10;
+.cdk-virtual-scroll-viewport {
+  .scrollbar-mixin();
 }
 
-.cdk-virtual-scroll-viewport::-webkit-scrollbar {
-  width: 7px;
-}
+// .cdk-virtual-scroll-viewport::-webkit-scrollbar-track {
+//   background: @color-bg-10;
+// }
 
-.cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
-  background-color: @color-bg-40;
-  border-radius: @border-radius-sm;
-}
+// .cdk-virtual-scroll-viewport::-webkit-scrollbar {
+//   width: 7px;
+// }
+
+// .cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
+//   background-color: @color-bg-40;
+//   border-radius: @border-radius-sm;
+// }

@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { ColorPaletteDBToken, COLORPALETTE_DB_DATA } from '@colors/color-palette-section/color-palette.model';
 import { DBGroup, TokensByTheme } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
 import { provideSectionDeps } from '@utils/provide-section-deps';
+import chroma from 'chroma-js';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 
@@ -11,7 +12,8 @@ import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operato
   selector: 'app-color-picker',
   templateUrl: './color-picker.component.html',
   styleUrls: ['./color-picker.component.less'],
-  providers: [...provideSectionDeps(COLORPALETTE_DB_DATA.tableGroupName)]
+  providers: [...provideSectionDeps(COLORPALETTE_DB_DATA.tableGroupName)],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ColorPickerComponent implements OnInit {
   @Input() color: string;
@@ -26,6 +28,16 @@ export class ColorPickerComponent implements OnInit {
 
   private colorChange$ = new Subject<string>();
   private destroy$ = new Subject();
+
+  view: 'list' | 'grid' = 'list';
+
+  allThemes = false;
+
+  radioValue: 'color-picker' | 'presets' = 'color-picker';
+
+  getColor() {
+    return chroma(this.color).hex();
+  }
 
   constructor(
     private colorPalettes: SectionContentManagerService<ColorPaletteDBToken, DBGroup>,

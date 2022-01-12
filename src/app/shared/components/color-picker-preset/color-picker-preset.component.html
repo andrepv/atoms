@@ -1,11 +1,13 @@
-<div class="preset-colors">
-  <ng-container *ngFor="let token of tokens">
+<div [class.grid]="view === 'grid'">
+  <div
+    class="color-item"
+    *ngFor="let token of tokens"
+    (click)="colorSelect.emit(token.color)"
+  >
     <div
-      *ngIf="token.id !== excludedTokenId"
-      class="preset-color"
-      (click)="colorSelect.emit(token.color)"
-      nz-tooltip [nzTooltipTitle]="token.name"
-      [style.background]="token.color">
-    </div>
-  </ng-container>
+      class="color-preview"
+      [style.background]="token.color"
+    ></div>
+    <span class="color-name">{{ token.name }}</span>
+  </div>
 </div>

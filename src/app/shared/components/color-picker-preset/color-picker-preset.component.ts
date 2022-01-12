@@ -10,6 +10,7 @@ import { EditorService } from '@core/services/editor.service';
 })
 export class ColorPickerPresetPresetComponent implements OnInit {
   @Input() tokens: StoreToken<ColorPaletteDBToken>[];
+  @Input() view: 'list' | 'grid';
   @Output() colorSelect: EventEmitter<string> = new EventEmitter();
 
   excludedTokenId = 0;

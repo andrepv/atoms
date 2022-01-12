@@ -1,0 +1,14 @@
+.scrollbar-mixin() {
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: @color-contrast-lower;
+    border-radius: @border-radius-sm;
+  }
+}
