@@ -1,0 +1,18 @@
+<div *ngIf="!inline" [class.spaces]="hasVerticalSpaces">
+  <h5 *ngIf="title" class="label">{{ title }}</h5>
+  <div *ngIf="title" class="space-vertical space-vertical-xxs"></div>
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</div>
+
+<div *ngIf="inline" nz-row [nzGutter]="12" nzAlign="middle" [class.spaces]="hasVerticalSpaces">
+  <div nz-col nzSpan="11">
+    <h5 *ngIf="title" class="label title">{{ title }}</h5>
+  </div>
+  <div nz-col nzSpan="13">
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </div>
+</div>
+
+<ng-template #content>
+  <ng-content></ng-content>
+</ng-template>

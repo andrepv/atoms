@@ -1,6 +1,7 @@
 @import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
-@import "design-tokens.less";
+@import "design-tokens";
 @import "mixins";
+@import "global";
 
 @theme: default;
 
@@ -1010,68 +1011,4 @@
 @image-preview-operation-disabled-color: fade(@image-preview-operation-color, 25%);
 /* You can add global styles to this file, and also import other style files */
 
-ul {
-  padding: 0;
-}
 
-li {
-  list-style: none;
-}
-
-p {
-  margin-bottom: 0;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  margin-bottom: 0;
-}
-
-html {
-  scroll-behavior: smooth
-}
-
-
-// radio
-
-.ant-radio-button-wrapper-checked:not([class*=' ant-radio-button-wrapper-disabled']).ant-radio-button-wrapper:first-child {
-  border-right-color: @color-bg-30;
-}
-
-.ant-radio-button-wrapper:hover,
-.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-  color: @color-contrast-higher;
-}
-
-.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
-  color: @color-contrast-higher;
-  border-color: @color-bg-30;
-}
-
-.ant-radio-button-wrapper {
-  border: 1px solid @color-bg-30;
-}
-
-.ant-radio-button-wrapper:not(:first-child)::before {
-  display: none;
-}
-
-// .ant-btn {
-//   border-radius: @border-radius-sm;
-// }
-
-.cdk-virtual-scroll-viewport {
-  .scrollbar-mixin();
-}
-
-// .cdk-virtual-scroll-viewport::-webkit-scrollbar-track {
-//   background: @color-bg-10;
-// }
-
-// .cdk-virtual-scroll-viewport::-webkit-scrollbar {
-//   width: 7px;
-// }
-
-// .cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
-//   background-color: @color-bg-40;
-//   border-radius: @border-radius-sm;
-// }

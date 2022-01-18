@@ -1,17 +1,9 @@
-.wrapper {
-  height: 88vh;
-  overflow-y: scroll;
+.cdk-drag-handle {
+  cursor: all-scroll;
 }
 
-.layer {
-  margin-bottom: 15px;
-}
-
-.layers-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+.cdk-drag-preview {
+  opacity: 0.5;
 }
 
 .cdk-drag-placeholder {
@@ -22,6 +14,6 @@
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.layers-list.cdk-drop-list-dragging .layer-wrapper:not(.cdk-drag-placeholder) {
+.cdk-drop-list-dragging .layer-wrapper:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

@@ -11,7 +11,7 @@ header {
 .content-wrapper {
   position: fixed;
   width: 300px;
-  padding: 0 @space-sm;
+  padding: 0 var(--editor-padding-x);
   border-right: 1px solid @color-border;
   
   height: 100vh;
@@ -25,9 +25,6 @@ header {
 .content-wrapper::-webkit-scrollbar-thumb {
   background: #363636;
   border-radius: 5px;
-  // &:hover {
-  //   background-color: #363636;
-  // }
 }
 
 .anchor-list {

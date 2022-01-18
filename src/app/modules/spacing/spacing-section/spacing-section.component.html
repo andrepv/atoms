@@ -12,23 +12,27 @@
       <ng-template #tokenTemplate let-token let-group="group">
         <p>{{ token.modularScaleTokenValue + 'px' }}</p>
       </ng-template>
-
-      <ng-template #editorGroupTemplate let-group>
-        <app-modular-scale-editor [group]="group"></app-modular-scale-editor>
-      </ng-template>
-      
-      <ng-template #editorTokenTemplate let-content>
-        <app-modular-scale-editor-token
-          [content]="content"
-          title="Spacing"
-        ></app-modular-scale-editor-token>
-      </ng-template>
-
     </app-group>
   </ng-template>
-
-  <ng-template #sectionTreeTemplate let-groups>
-    <app-section-tree [groups]="groups"></app-section-tree>
-  </ng-template>
+  
 </app-group-list>
+
+<ng-template #editorGroupTemplate let-group>
+  <app-modular-scale-editor
+    [group]="group"
+    [minBase]="1"
+    [maxBase]="30"
+  ></app-modular-scale-editor>
+</ng-template>
+
+<ng-template #editorTokenTemplate let-content>
+  <app-modular-scale-editor-token
+    [content]="content"
+    title="Spacing"
+  ></app-modular-scale-editor-token>
+</ng-template>
+
+<ng-template #sectionTreeTemplate let-groups>
+  <app-section-tree [groups]="groups"></app-section-tree>
+</ng-template>
 

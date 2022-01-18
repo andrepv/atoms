@@ -13,11 +13,11 @@ import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operato
   templateUrl: './color-picker.component.html',
   styleUrls: ['./color-picker.component.less'],
   providers: [...provideSectionDeps(COLORPALETTE_DB_DATA.tableGroupName)],
-  encapsulation: ViewEncapsulation.None,
 })
 export class ColorPickerComponent implements OnInit {
   @Input() color: string;
   @Input() colorChangeDelay = 500;
+  @Input() mode: 'light' | 'dark' | 'normal' = 'normal';
 
   @Output() colorSave: EventEmitter<string> = new EventEmitter();
   @Output() colorChange: EventEmitter<string> = new EventEmitter();

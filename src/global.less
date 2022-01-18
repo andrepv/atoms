@@ -1,0 +1,360 @@
+@import "design-tokens";
+@import "styles";
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+html {
+  scroll-behavior: smooth
+}
+
+// typography
+
+h1, h2, h3, h4, h5 {
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+h1 {
+  font-size: @text-xxl;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: @text-xl;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: @text-lg;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+h4 {
+  font-size: @text-md;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+h5 {
+  font-size: @text-sm;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+.text-subtle {
+  color: @color-contrast-medium;
+}
+
+.label {
+  color: @color-contrast-medium;
+  font-weight: 500;
+  font-size: @text-sm;
+}
+
+// spacing
+
+.space-horizontal {
+  display: inline-block;
+}
+
+.space-vertical {
+  display: block;
+}
+
+.space-horizontal-xxxs {width: @space-xxxs}
+.space-horizontal-xxs {width: @space-xxs}
+.space-horizontal-xs {width: @space-xs}
+.space-horizontal-sm {width: @space-sm}
+.space-horizontal-md {width: @space-md}
+.space-horizontal-lg {width: @space-lg}
+.space-horizontal-xl {width: @space-xl}
+.space-horizontal-xxl {width: @space-xxl}
+
+.space-vertical-xxxs {height: @space-xxxs}
+.space-vertical-xxs {height: @space-xxs}
+.space-vertical-xs {height: @space-xs}
+.space-vertical-sm {height: @space-sm}
+.space-vertical-md {height: @space-md}
+.space-vertical-lg {height: @space-lg}
+.space-vertical-xl {height: @space-xl}
+.space-vertical-xxl {height: @space-xxl}
+
+// helpers
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background: @color-border;
+  margin: @space-xl 0;
+  display: block;
+}
+
+.icon-btn {
+  padding: @space-xxxs;
+  cursor: pointer;
+  border-radius: @border-radius-sm;
+  &:hover {
+    background: @color-bg-10;
+    transition: all 0.3s;
+    border-radius: @border-radius-sm;
+  }
+}
+
+.justify-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.align-center {
+  display: flex;
+  align-items: center;
+}
+
+.display-none {
+  display: none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+
+:root {
+  --header-height: 93px;
+  --header-margin-bottom: @space-xl;
+
+  --editor-padding-x: @space-sm;
+}
+
+// radio
+
+.ant-radio-group {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .ant-radio-button-wrapper {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.ant-radio-button-wrapper-checked:not([class*=' ant-radio-button-wrapper-disabled']).ant-radio-button-wrapper:first-child {
+  border-right-color: @color-bg-30;
+}
+
+.ant-radio-button-wrapper:hover,
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  color: @color-contrast-higher;
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+  color: @color-contrast-higher;
+  border-color: @color-bg-30;
+}
+
+.ant-radio-button-wrapper {
+  border: 1px solid @color-bg-30;
+}
+
+.ant-radio-button-wrapper:not(:first-child)::before {
+  display: none;
+}
+
+// cdk-virtual-scroll
+
+.cdk-virtual-scroll-viewport {
+  .scrollbar-mixin();
+}
+
+
+// slider
+
+.ant-slider-rail {
+  height: 2px;
+}
+
+.ant-slider-track {
+  height: 2px;
+}
+
+.ant-slider-handle {
+  margin-top: -6px;
+}
+
+
+// input-number
+
+.ant-input-number-handler-wrap {
+  display: none;
+}
+
+.ant-input-number-input {
+  height: 25px;
+  text-align: right;
+  padding: 0 6px;
+}
+
+.ant-input-number {
+  font-size: @text-sm;;
+  width: 50px;
+}
+
+
+// input-group
+
+.ant-input-group-wrapper {
+  .ant-input-number {
+    border-radius: @border-radius-sm 0 0 @border-radius-sm;
+  }
+
+  .ant-input-group-addon {
+    border: 0;
+    border-radius: 0 @border-radius-sm @border-radius-sm 0;
+    padding: 0 4px;
+    font-size: @text-xxs;
+    vertical-align: baseline;
+    color: @color-contrast-medium;
+    font-weight: 500;
+    width: 30px;
+    text-transform: uppercase;
+  }
+}
+
+.editor {
+  .ant-select {
+    width: 100%;
+  }
+}
+
+// color-picker
+
+.color-picker-popover {
+  .color-picker {
+    background: transparent;
+    border: 0;
+  
+    .selected-color {
+      border: 1px solid transparent;
+    }
+  
+    .hue, .alpha {
+      height: 10px;
+      border-radius: @border-radius-sm;
+    }
+  
+    .saturation-lightness {
+      border-radius: @border-radius-sm;
+      height: 150px;
+    }
+  
+    .cursor {
+      border-color: #fff;
+      cursor: pointer;
+    }
+  
+    .hue .cursor, .alpha .cursor {
+      height: 10px;
+      width: 10px;
+    }
+  
+    .hex-text .box input,
+    .cmyk-text .box input,
+    .hsla-text .box input,
+    .rgba-text .box input,
+    .value-text .box input {
+      background: @color-bg;
+      color: @color-contrast-high;
+      border: 0;
+      border-radius: @border-radius-sm;
+    }
+  
+    .hex-text {
+      .box {
+        align-items: center;
+        &:last-child {
+          padding-bottom: 0;
+        }
+  
+        input {
+          height: 35px;
+          text-transform: uppercase;
+        }
+  
+        div {
+          color: @color-contrast-high;
+          text-transform: uppercase;
+        }
+      }
+    }
+    
+    .type-policy {
+      top: 255px;
+      right: 7px;
+      cursor: pointer;
+    }
+  }
+}
+
+.on-bg-30 {
+  .ant-radio-group {
+    .ant-radio-button-wrapper {
+      background: transparent;
+      border-color: @color-bg-10;
+    }
+  
+    .ant-radio-button-wrapper-checked {
+      background: @color-bg-10;
+      border-color: @color-bg-10;
+    }
+  }
+
+  .ant-input-group-wrapper .ant-input-group-addon {
+    background-color: @color-bg-15;
+    color: @color-contrast-high;
+  }
+}
+
+.ant-popover {
+  .ant-radio-group .ant-radio-button-wrapper {
+    font-size: @text-sm;
+    font-weight: 500;
+  }
+
+  nz-switch {
+    @switch-height: 19px;
+    @switch-width: 40px;
+
+    display: flex;
+    align-items: center;
+
+    .ant-switch {
+      height: @switch-height;
+      min-width: @switch-width;
+    }
+
+    .ant-switch-handle {
+      height: @switch-height - 4px;
+      width: @switch-height - 4px;
+      top: 2px;
+    }
+
+    .ant-switch-checked .ant-switch-handle {
+      left: calc(100% - (@switch-height - 4px) - 2px);
+    }
+  }
+}

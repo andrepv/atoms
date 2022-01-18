@@ -1,45 +1,35 @@
-<div>
-  <div class="editor-block">
-    <app-slider
-      title="Base Font Size"
-      [min]="minBase"
-      [max]="maxBase"
-      [(model)]="base"
-      (afterModelChange)="updateModularScale()"
-    ></app-slider>
-  </div>
+<app-editor-block>
+  <app-slider
+    [title]="title"
+    [min]="minBase"
+    [max]="maxBase"
+    [(model)]="base"
+    (afterModelChange)="updateModularScale()"
+    [units]="units"
+  ></app-slider>
+</app-editor-block>
 
-  <div
-    class="scale-ratio-select editor-block"
-    nz-row [nzGutter]="12" nzAlign="bottom"
-  >
-    <div class="preset-ratio" nz-col [nzSpan]="ratio.name === 'Custom' ?16 : 24">
-      <p class="editor-label">Scale Ratio</p>
-      <nz-select
-        [ngModel]="ratio"
-        (ngModelChange)="setPresetRatio($event)"
-      >
-        <nz-option
-          *ngFor="let presetRatio of MODULAR_SCALE_PRESETS"
-          [nzValue]="presetRatio"
-          [nzLabel]="presetRatio.name"
-        ></nz-option>
-      </nz-select>
-    </div>
-
-    <div
-      class="custom-ratio"
+<app-editor-block>
+  <div class="justify-between">
+    <p class="label">Scale Ratio</p>
+    <nz-input-number
       *ngIf="ratio.name === 'Custom'"
-      nz-col nzSpan="8"
-    >
-      <p class="editor-label">Value</p>
-      <nz-input-number
-        [nzMin]="1"
-        [nzMax]="2"
-        [nzStep]="0.01"
-        [(ngModel)]="ratio.value"
-        (ngModelChange)="setCustomRatio($event)"
-      ></nz-input-number>
-    </div>
+      [nzMin]="1"
+      [nzMax]="2"
+      [nzStep]="0.01"
+      [(ngModel)]="ratio.value"
+      (ngModelChange)="setCustomRatio($event)"
+    ></nz-input-number>
   </div>
-</div>
+  <div class="space-vertical space-vertical-xxs"></div>
+  <nz-select
+    [ngModel]="ratio"
+    (ngModelChange)="setPresetRatio($event)"
+  >
+    <nz-option
+      *ngFor="let presetRatio of MODULAR_SCALE_PRESETS"
+      [nzValue]="presetRatio"
+      [nzLabel]="presetRatio.name"
+    ></nz-option>
+  </nz-select>
+</app-editor-block>

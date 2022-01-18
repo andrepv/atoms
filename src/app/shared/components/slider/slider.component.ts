@@ -12,6 +12,8 @@ export class SliderComponent implements OnInit {
   @Input() step: number = 1;
   @Input() model: number;
   @Input() units: string | 'none' = 'px';
+  @Input() displaySlider = true;
+  @Input() displayInput = true;
 
   @Output() modelChange: EventEmitter<number> = new EventEmitter();
   @Output() afterModelChange: EventEmitter<number> = new EventEmitter();

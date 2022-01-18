@@ -1,4 +1,7 @@
-<p>Name</p>
-<input nz-input [(ngModel)]="name" (blur)="save('name')"/>
-<p>Value</p>
-<input nz-input [(ngModel)]="value" (blur)="save('value')"/>
+<app-editor-block title="Name">
+  <input nz-input [(ngModel)]="name" (blur)="save('name')"/>
+</app-editor-block>
+
+<app-editor-block title="Value">
+  <input nz-input [(ngModel)]="value" (blur)="save('value')"/>
+</app-editor-block>

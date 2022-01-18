@@ -1,42 +1,63 @@
-<div class="wrapper">
-  <div class="color-info">
-    <app-color-picker
-      [color]="token.color"
-      (colorChange)="changeColor($event)"
-      (colorSave)="saveColor()"
-    ></app-color-picker>
+<app-color-contrast-checker
+  [backgroundColor]="token.color"
+  [textColor]="contrastColor"
+></app-color-contrast-checker>
+<div class="space-vertical space-vertical-sm"></div>
+
+<div nz-row [nzGutter]="20" nzAlign="center">
+  <div nz-col nzSpan="12">
+    <app-editor-block title="Color" [hasVerticalSpaces]="false">
+      <app-color-picker
+        [color]="token.color"
+        (colorChange)="changeColor($event)"
+        (colorSave)="saveColor()"
+      ></app-color-picker>
+    </app-editor-block>
   </div>
-
-  <div *ngIf="token.isPrimary">
-
-    <app-color-variants
-      #tintsTemplateRef
-
-      [variants]="token.tint"
-      [primaryColor]="token.color"
-      mixedColor="white"
-      [mixRatio]="token.tintConfigs.mixRatio"
-      [saturation]="token.tintConfigs.saturation"
-
-      (addVariant)="addVariant($event, 'tint', token.tint, tintsTemplateRef)"
-      (deleteVariant)="deleteVariant($event, token.tint, tintsTemplateRef)"
-      (changeVariantColor)="changeVariantColor($event)"
-      (updateVariantConfigs)="updateConfigs({tintConfigs: $event})"
-    ></app-color-variants>
-
-    <app-color-variants
-      #shadesTemplateRef
-
-      [variants]="token.shade"
-      [primaryColor]="token.color"
-      mixedColor="black"
-      [mixRatio]="token.shadeConfigs.mixRatio"
-      [saturation]="token.shadeConfigs.saturation"
-
-      (addVariant)="addVariant($event, 'shade', token.shade, shadesTemplateRef)"
-      (deleteVariant)="deleteVariant($event, token.shade, shadesTemplateRef)"
-      (changeVariantColor)="changeVariantColor($event)"
-      (updateVariantConfigs)="updateConfigs({shadeConfigs: $event})"
-    ></app-color-variants>
+  <div nz-col nzSpan="12">
+    <app-editor-block title="Contrast Color" [hasVerticalSpaces]="false">
+      <app-color-picker
+        [color]="contrastColor"
+        (colorChange)="contrastColor = $event"
+      ></app-color-picker>
+    </app-editor-block>
   </div>
+</div>
+
+<div *ngIf="token.isPrimary">
+  <div class="divider"></div>
+
+  <app-color-variants
+    #tintsTemplateRef
+
+    [variants]="token.tint"
+    [primaryColor]="token.color"
+    mixedColor="white"
+    [mixRatio]="token.tintConfigs.mixRatio"
+    [saturation]="token.tintConfigs.saturation"
+    title="Tints"
+    mixRatioName="Light Side"
+
+    (addVariant)="addVariant($event, 'tint', token.tint, tintsTemplateRef)"
+    (deleteVariant)="deleteVariant($event, token.tint, tintsTemplateRef)"
+    (changeVariantColor)="changeVariantColor($event)"
+    (updateVariantConfigs)="updateConfigs({tintConfigs: $event})"
+  ></app-color-variants>
+
+  <app-color-variants
+    #shadesTemplateRef
+
+    [variants]="token.shade"
+    [primaryColor]="token.color"
+    mixedColor="black"
+    [mixRatio]="token.shadeConfigs.mixRatio"
+    [saturation]="token.shadeConfigs.saturation"
+    title="Shades"
+    mixRatioName="Dark Side"
+
+    (addVariant)="addVariant($event, 'shade', token.shade, shadesTemplateRef)"
+    (deleteVariant)="deleteVariant($event, token.shade, shadesTemplateRef)"
+    (changeVariantColor)="changeVariantColor($event)"
+    (updateVariantConfigs)="updateConfigs({shadeConfigs: $event})"
+  ></app-color-variants>
 </div>

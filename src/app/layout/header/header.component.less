@@ -4,59 +4,12 @@ header {
   padding: @space-xl;
   border-bottom: 1px solid @color-border;
 
+  .ant-select {
+    width: 240px;
+  }
+
   .wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 100%;
-
-    .theme-switcher {
-      display: flex;
-      align-items: center;
-      .btn {
-        cursor: pointer;
-        background: @color-bg-30;
-        border-radius:  @border-radius-md 0 0  @border-radius-md;
-        margin-right: 4px;
-
-        height: 42px;
-        width: 42px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      
-      .btn-more {
-        border-radius:  0 @border-radius-md @border-radius-md 0;
-        margin-left: 4px;
-      }
-
-      .btn-rename {
-        border-radius: 0;
-        margin-right: 0;
-        margin-left: 4px;
-      }
-
-      nz-select {
-        width: 240px;
-  
-        &::ng-deep nz-select-top-control {
-          border: 0;
-          border-radius: 0;
-          height: 42px;
-          display: flex;
-          align-items: center;
-  
-          &::ng-deep nz-select-search input {
-            height: 100%;
-          }
-        }
-  
-        &::ng-deep .ant-select-arrow svg {
-          color: @color-contrast-low;
-        }
-      }
-    }
+    height: 100%
   }
 }
 

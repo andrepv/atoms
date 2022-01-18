@@ -1,24 +1,24 @@
 <div class="wrapper">
-  <div>
-    <p>Color</p>
+  <app-editor-block title="Color" [inline]="true">
     <app-color-picker
       [color]="token.color"
       (colorChange)="changeColor($event)"
       (colorSave)="saveColor()"
     ></app-color-picker>
-  </div>
-  <br />
-  <app-slider
-    title="Width"
-    [min]="0"
-    [max]="15"
-    [(model)]="token.width"
-    (modelChange)="changeWidth($event)"
-    (afterModelChange)="saveWidth()"
-  ></app-slider>
-  <br />
-  <div>
-    <p>Style</p>
+  </app-editor-block>
+
+  <app-editor-block>
+    <app-slider
+      title="Width"
+      [min]="0"
+      [max]="15"
+      [(model)]="token.width"
+      (modelChange)="changeWidth($event)"
+      (afterModelChange)="saveWidth()"
+    ></app-slider>
+  </app-editor-block>
+
+  <app-editor-block title="Style" [inline]="true">
     <nz-select
       [ngModel]="token.style"
       (ngModelChange)="changeStyle($event)"
@@ -29,8 +29,8 @@
         [nzLabel]="style"
         nzCustomContent
       >
-        <div class="style-option">
-          <p class="style-name">{{ style }}</p>
+        <div class="justify-between">
+          <p>{{ style }}</p>
           <div
             class="style-preview"
             [style.border-style]="style"
@@ -38,5 +38,5 @@
         </div>
       </nz-option>
     </nz-select>
-  </div>
+  </app-editor-block>
 </div>

@@ -1,142 +1,131 @@
-<div>
+<app-editor-block title="Color Contrast">
   <app-color-contrast-checker
     [backgroundColor]="backgroundColor"
     [textColor]="color"
   ></app-color-contrast-checker>
+</app-editor-block>
 
-  <div nz-row [nzGutter]="12" nzAlign="center" class="editor-block">
-    <div nz-col nzSpan="12">
-      <p class="editor-label">Text Color</p>
+<div nz-row [nzGutter]="20" nzAlign="center">
+  <div nz-col nzSpan="12">
+    <app-editor-block title="Text Color">
       <app-color-picker
         [color]="token.color"
         (colorChange)="changeTextColor($event)"
         (colorSave)="updateTextStyles({color: color}, true)"
       ></app-color-picker>
-    </div>
+    </app-editor-block>
+  </div>
 
-    <div nz-col nzSpan="12">
-      <p class="editor-label">Background Color</p>
+  <div nz-col nzSpan="12">
+    <app-editor-block title="Background Color">
       <app-color-picker
         [color]="token.backgroundColor"
         (colorChange)="changeBackgroundColor($event)"
         (colorSave)="updateTextStyles({backgroundColor: backgroundColor}, true)"
       ></app-color-picker>
-    </div>
+    </app-editor-block>
   </div>
+</div>
 
-  <div class="editor-block">
-    <app-tokens-section-select
-      section="Type Face"
-      [selectedTokenId]="token.typefaceId"
-      (change)="setFontFamily($event)"
-      [customContent]="customContent"
-    >
-      <ng-template let-token #customContent>
-        <div class="typeface-option">
-          <p
-            class="typeface-preview"
-            [style.fontFamily]="token.family"
-          >Aa</p>
-          <p class="typeface-name">{{ token.name }}</p>
-        </div>
-      </ng-template>
-    </app-tokens-section-select>
-  </div>
+<app-editor-block title="Type Face">
+  <app-tokens-section-select
+    section="Type Face"
+    [selectedTokenId]="token.typefaceId"
+    (change)="setFontFamily($event)"
+    [customContent]="customContent"
+  >
+    <ng-template let-token #customContent>
+      <div class="justify-between">
+        <h3 [style.fontFamily]="token.family">Aa</h3>
+        <h5 class="typeface-name">{{ token.name }}</h5>
+      </div>
+    </ng-template>
+  </app-tokens-section-select>
+</app-editor-block>
 
-  <div class="editor-block">
-    <app-modular-scale-editor-token
-      [content]="content"
-      title="Font Size"
-    ></app-modular-scale-editor-token>
-  </div>
+<app-editor-block>
+  <app-modular-scale-editor-token
+    [content]="content"
+    title="Font Size"
+  ></app-modular-scale-editor-token>
+</app-editor-block>
 
-  <div class="editor-block">
-    <app-slider
-      title="Letter Spacing"
-      [min]="-0.1"
-      [max]="1"
-      [step]="0.01"
-      units="em"
-      [(model)]="token.letterSpacing"
-      (afterModelChange)="updateTextStyles({letterSpacing: $event})"
-    ></app-slider>
-  </div>
+<app-editor-block>
+  <app-slider
+    title="Letter Spacing"
+    [min]="-0.1"
+    [max]="1"
+    [step]="0.01"
+    units="em"
+    [(model)]="token.letterSpacing"
+    (afterModelChange)="updateTextStyles({letterSpacing: $event})"
+  ></app-slider>
+</app-editor-block>
 
-  <div class="editor-block">
-    <app-slider
-      title="Line Height"
-      [min]="1"
-      [max]="4"
-      [step]="0.1"
-      units="none"
-      [(model)]="token.lineHeight"
-      (afterModelChange)="updateTextStyles({lineHeight: $event})"
-    ></app-slider>
-  </div>
+<app-editor-block>
+  <app-slider
+    title="Line Height"
+    [min]="1"
+    [max]="4"
+    [step]="0.1"
+    units="em"
+    [(model)]="token.lineHeight"
+    (afterModelChange)="updateTextStyles({lineHeight: $event})"
+  ></app-slider>
+</app-editor-block>
 
-  <div class="editor-block">
-    <app-slider
-      title="Word Spacing"
-      [min]="0"
-      [max]="1"
-      [step]="0.01"
-      units="em"
-      [(model)]="token.wordSpacing"
-      (afterModelChange)="updateTextStyles({wordSpacing: $event})"
-    ></app-slider>
-  </div>
+<app-editor-block>
+  <app-slider
+    title="Word Spacing"
+    [min]="0"
+    [max]="1"
+    [step]="0.01"
+    units="em"
+    [(model)]="token.wordSpacing"
+    (afterModelChange)="updateTextStyles({wordSpacing: $event})"
+  ></app-slider>
+</app-editor-block>
 
-  <div class="editor-block" *ngIf="variants.length">
-    <p class="editor-label">Font Weight</p>
-    <nz-select
-      [ngModel]="token.fontWeight"
-      (ngModelChange)="updateTextStyles({fontWeight: $event}, true)"
-    >
+<app-editor-block title="Font Weight" *ngIf="variants.length">
+  <nz-select
+    [ngModel]="token.fontWeight"
+    (ngModelChange)="updateTextStyles({fontWeight: $event}, true)"
+  >
     <nz-option
       *ngFor="let variant of variants"
       [nzValue]="variant"
       [nzLabel]="variant"
     ></nz-option>
-    </nz-select>
-  </div>
+  </nz-select>
+</app-editor-block>
 
-  <div nz-row nzJustify="space-between">
-    <div class="editor-block text-styles" nz-col nzSpan="10">
-      <p class="editor-label">Text Decoration</p>
-      <div class="text-styles-options">
-        <i
-          [class.isActive]="token.textDecoration === 'underline'"
-          nz-icon nzType="underline" nzTheme="outline"
-          (click)="setTextDecoration('underline')"
-        ></i>
-        <i
-          [class.isActive]="token.textDecoration === 'line-through'"
-          nz-icon nzType="strikethrough" nzTheme="outline"
-          (click)="setTextDecoration('line-through')"
-        ></i>
-      </div>
-    </div>
+<div nz-row nzJustify="space-between">
+  <app-editor-block title="Text Decoration" nz-col nzSpan="10">
+    <button nz-button [nzType]="token.textDecoration === 'underline' ? 'primary' : 'default'" (click)="setTextDecoration('underline')">
+      <i nz-icon nzType="underline" nzTheme="outline"></i>
+    </button>
 
-    <div class="editor-block text-styles" nz-col nzSpan="10">
-      <p class="editor-label">Text Styles</p>
-      <div class="text-styles-options">
-        <i
-          [class.isActive]="token.fontStyle === 'normal'"
-          nz-icon nzType="font-colors" nzTheme="outline"
-          (click)="updateTextStyles({fontStyle: 'normal'}, true)"
-        ></i>
-        <i
-          [class.isActive]="token.fontStyle === 'italic'"
-          nz-icon nzType="italic" nzTheme="outline"
-          (click)="updateTextStyles({fontStyle: 'italic'}, true)"
-        ></i>
-      </div>
-    </div>
+    <div class="space-horizontal space-horizontal-xxs"></div>
 
-  </div>
+    <button nz-button [nzType]="token.textDecoration === 'line-through' ? 'primary' : 'default'" (click)="setTextDecoration('line-through')">
+      <i nz-icon nzType="strikethrough" nzTheme="outline"></i>
+    </button>
+  </app-editor-block>
 
-  <div class="editor-block">
-    <p class="editor-label">Text</p>
-    <textarea rows="4" nz-input [(ngModel)]="text" (blur)="setPreviewText()"></textarea>
-  </div>
+  <app-editor-block title="Text Styles" nz-col nzSpan="10">
+    <button nz-button [nzType]="token.fontStyle === 'normal' ? 'primary': 'default'" (click)="updateTextStyles({fontStyle: 'normal'}, true)">
+      <i nz-icon nzType="font-colors" nzTheme="outline"></i>
+    </button>
+
+    <div class="space-horizontal space-horizontal-xxs"></div>
+
+    <button nz-button [nzType]="token.fontStyle === 'italic' ? 'primary': 'default'" (click)="updateTextStyles({fontStyle: 'italic'}, true)">
+      <i nz-icon nzType="italic" nzTheme="outline"></i>
+    </button>
+  </app-editor-block>
+
 </div>
+
+<app-editor-block title="Text">
+  <textarea rows="4" nz-input [(ngModel)]="text" (blur)="setPreviewText()"></textarea>
+</app-editor-block>

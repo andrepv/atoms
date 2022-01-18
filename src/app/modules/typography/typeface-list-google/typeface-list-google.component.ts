@@ -23,6 +23,7 @@ export class TypefaceListGoogleComponent implements OnInit {
   ];
 
   categoriesVisible = false;
+  searchInputVisible = false;
   searchValue = '';
 
   ds: MyDataSource;
@@ -64,6 +65,10 @@ export class TypefaceListGoogleComponent implements OnInit {
 
   toggleCategories() {
     this.categoriesVisible = !this.categoriesVisible;
+  }
+
+  toggleSearchInput() {
+    this.searchInputVisible = !this.searchInputVisible
   }
 
   search() {

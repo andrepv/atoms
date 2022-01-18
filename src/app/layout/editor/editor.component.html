@@ -1,7 +1,7 @@
 <div class="editor">
-  <header class="editor-header">
-    <h3>{{ editor.section }}</h3>
-    <i (click)="editor.disable()" nz-icon nzType="close" nzTheme="outline"></i>
+  <header class="editor-header justify-between">
+    <h4>{{ editor.section }}</h4>
+    <i (click)="editor.disable()" nz-icon nzType="close" nzTheme="outline" class="icon-btn"></i>
   </header>
   
   <div [ngSwitch]="editor.section" class="content-wrapper">

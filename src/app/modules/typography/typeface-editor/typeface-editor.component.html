@@ -1,19 +1,18 @@
-<div>
-  <div class="content">
-
-    <nz-radio-group [(ngModel)]="radioValue">
-      <label nz-radio-button nzValue="google-fonts">Google Fonts</label>
-      <label nz-radio-button nzValue="custom-font">Upload Font</label>
-    </nz-radio-group>
-
-    <app-typeface-list-google
-      *ngIf="radioValue === 'google-fonts'"
-      (save)="saveFont($event)"
-    ></app-typeface-list-google>
-
-    <app-typeface-dropzone
-      *ngIf="radioValue === 'custom-font'"
-      (save)="saveFont($event)"
-    ></app-typeface-dropzone>
-  </div>
+<div class="container">
+  <nz-radio-group [(ngModel)]="radioValue">
+    <label nz-radio-button nzValue="google-fonts">Google Fonts</label>
+    <label nz-radio-button nzValue="custom-font">Upload Font</label>
+  </nz-radio-group>
+  
+  <div class="space-vertical space-vertical-md"></div>
+  
+  <app-typeface-list-google
+    *ngIf="radioValue === 'google-fonts'"
+    (save)="saveFont($event)"
+  ></app-typeface-list-google>
+  
+  <app-typeface-dropzone
+    *ngIf="radioValue === 'custom-font'"
+    (save)="saveFont($event)"
+  ></app-typeface-dropzone>
 </div>

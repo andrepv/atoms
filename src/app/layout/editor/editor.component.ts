@@ -5,7 +5,6 @@ import { EditorService } from '@core/services/editor.service';
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.less'],
-  encapsulation: ViewEncapsulation.None
 })
 export class EditorComponent implements OnInit {
 

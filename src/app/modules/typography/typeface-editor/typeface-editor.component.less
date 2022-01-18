@@ -1,43 +1,5 @@
-@import "design-tokens";
-
-.ant-radio-group {
-  margin-bottom: @space-md;
-  width: 100%;
+.container {
   display: flex;
-  justify-content: center;
-
-  .ant-radio-button-wrapper {
-    width: 100%;
-    text-align: center;
-  }
-}
-
-.content {
-  height: 100vh;
-}
-
-
-
-.demo-infinite-container {
-  height: 75%;
-  border: 1px solid #e8e8e8;
-}
-
-.font {
-  cursor: pointer;
-}
-
-.font-family-preview {
-  padding: 20px;
-  margin-bottom: 20px;
-  background: #27272f;
-  font-size: 20px;
-}
-
-
-.font-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  color: #808080;
+  flex-direction: column;
+  height: calc(100vh - var(--header-height) - var(--header-margin-bottom));
 }

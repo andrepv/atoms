@@ -2,31 +2,7 @@
 
 .editor-header {
   padding: @space-xl 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 93px;
-
-  i {
-    cursor: pointer;
-  }
-}
-
-.editor {
-  .editor-label {
-    margin-bottom: @space-xxs;
-    color: @color-contrast-medium;
-
-    font-weight: 500;
-    font-size: 14px;
-  }
-  
-  .editor-block {
-    margin-bottom: @space-xl;
-  }
-  
-  .ant-input-number,
-  .ant-select {
-    width: 100%;
-  }
+  height: var(--header-height);
+  margin-bottom: var(--header-margin-bottom);
+  border-bottom: 1px solid @color-border;
 }

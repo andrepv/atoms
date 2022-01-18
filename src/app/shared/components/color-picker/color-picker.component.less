@@ -13,149 +13,25 @@
     & > input {
       display: none;
     }
-
-    .color-picker {
-      background: transparent;
-      border: 0;
-
-      .selected-color {
-        border: 1px solid transparent;
-      }
-  
-      .hue, .alpha {
-        height: 10px;
-        border-radius: @border-radius-sm;
-      }
-
-      .saturation-lightness {
-        border-radius: @border-radius-sm;
-        height: 150px;
-      }
-
-      .cursor {
-        border-color: #fff;
-        cursor: pointer;
-      }
-
-      .hue .cursor, .alpha .cursor {
-        height: 10px;
-        width: 10px;
-      }
-
-      .hex-text .box input,
-      .cmyk-text .box input,
-      .hsla-text .box input,
-      .rgba-text .box input,
-      .value-text .box input {
-        background: @color-bg;
-        color: @color-contrast-high;
-        border: 0;
-        border-radius: @border-radius-sm;
-      }
-
-      .hex-text {
-        .box {
-          align-items: center;
-          &:last-child {
-            padding-bottom: 0;
-          }
-    
-          input {
-            height: 35px;
-            text-transform: uppercase;
-          }
-
-          div {
-            color: @color-contrast-high;
-            text-transform: uppercase;
-          }
-        }
-      }
-      
-      .type-policy {
-        top: 255px;
-        right: 7px;
-        cursor: pointer;
-      }
-    }
-  }
-  
-  .color-picker-radio-group {
-    .ant-radio-group {
-      width: 100%;
-      margin-bottom: @space-lg;
-    }
-
-    .ant-radio-button-wrapper {
-      padding: 0;
-      width: 50%;
-      text-align: center;
-      font-size: @text-sm;
-      font-weight: 500;
-    }
-    
-    .ant-radio-button-wrapper {
-      background: transparent;
-      border-color: @color-bg-10;
-    }
-
-    .ant-radio-button-wrapper-checked {
-      background: @color-bg-10;
-      border-color: @color-bg-10;
-    }
-
   }
   
   .color-presets-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: @space-sm;
-  
     .color-presets-view {
       .anticon {
-        margin-right: @space-xxs;
         cursor: pointer;
-        &.active svg {
-          fill: @color-primary;
+        &.active {
+          color: @color-primary;
         }
       }
     }
   
     .color-presets-source {
-      display: flex;
-      align-items: center;
-      
       span {
         font-size: @text-sm;
         margin-right: @space-xs;
         color: @color-contrast-high;
         font-weight: 500;
       }
-      
-      nz-switch {
-        @switch-height: 19px;
-        @switch-width: 40px;
-
-        display: flex;
-        align-items: center;
-
-        .ant-switch {
-          height: @switch-height;
-          min-width: @switch-width;
-        }
-  
-        .ant-switch-handle {
-          height: @switch-height - 4px;
-          width: @switch-height - 4px;
-          top: 2px;
-        }
-  
-        .ant-switch-checked .ant-switch-handle {
-          left: calc(100% - (@switch-height - 4px) - 2px);
-        }
-      }
-      
     }  
   }
 
@@ -181,37 +57,43 @@
   }
 }
 
+@color-preview-width: 15px;
+@color-preview-height: 30px;
 
-.color-preview-container {
-  @height: 30px;
+.color-preview-wrapper {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 
-  display: inline-block;
+}
 
-  .color-preview-wrapper {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    
-    .color-preview {
-      width: @height;
-      height: @height;
-      border-radius: @border-radius-sm 0 0 @border-radius-sm;
-    }
-    
-    .color-preview-hex-text {
-      background: @color-bg-30;
-      padding: 0 @space-sm;
-      border-radius: 0 @border-radius-sm @border-radius-sm 0;
-      height: @height;
-      display: flex;
-      align-items: center;
-      font-size: @text-sm;
-      text-transform: uppercase;
-      border: 1px solid transparent;
-      &:hover {
-        border: 1px solid @color-primary;
-        transition: all @animation-duration-slow;
-      }
-    }
+.color-preview {
+  width: @color-preview-width;
+  height: @color-preview-height;
+  border-radius: @border-radius-sm 0 0 @border-radius-sm;
+  margin-right: 4px;
+}
+
+.color-preview-hex-text {
+  background: @color-bg-30;
+  padding: 0 @space-sm;
+  border-radius: 0 @border-radius-sm @border-radius-sm 0;
+  height: @color-preview-height;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: @text-sm;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  flex-grow: 1;
+  &:hover {
+    border: 1px solid @color-primary;
+    transition: all @animation-duration-slow;
+  }
+}
+
+.light-mode {
+  .color-preview-hex-text {
+    background-color: @color-bg-15;
   }
 }

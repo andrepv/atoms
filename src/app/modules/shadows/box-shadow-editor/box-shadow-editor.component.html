@@ -1,49 +1,59 @@
-<div class="wrapper">
-  <p>Block Color</p>
-  <app-color-picker
-    [color]="token.blockColor"
-    (colorChange)="changeBlockColor($event)"
-    (colorSave)="saveBlockColor()"
-  ></app-color-picker>
-  <br />
-  <p>Background Color</p>
-  <app-color-picker
-    [color]="token.backgroundColor"
-    (colorChange)="changeBackgroundColor($event)"
-    (colorSave)="saveBackgroundColor()"
-  ></app-color-picker>
-  <br />
+<div nz-row [nzGutter]="20" nzAlign="center">
+  <div nz-col nzSpan="12">
+    <app-editor-block title="Block Color">
+      <app-color-picker
+        [color]="token.blockColor"
+        (colorChange)="changeBlockColor($event)"
+        (colorSave)="saveBlockColor()"
+      ></app-color-picker>
+    </app-editor-block>
+  </div>
+  <div nz-col nzSpan="12">
+    <app-editor-block title="Background Color">
+      <app-color-picker
+        [color]="token.backgroundColor"
+        (colorChange)="changeBackgroundColor($event)"
+        (colorSave)="saveBackgroundColor()"
+      ></app-color-picker>
+    </app-editor-block>
+  </div>
+</div>
 
+<app-editor-block>
   <div class="layers-container">
-    <div class="layers-header">
-      <p>Layers</p>
+    <div class="justify-between">
+      <h5 class="label">Layers</h5>
       <i
         nz-tooltip nzTooltipTitle="add a layer" nzTooltipPlacement="bottom"
-        nz-icon nzType="plus" nzTheme="outline" (click)="addLayer()"></i>
+        nz-icon nzType="plus" nzTheme="outline" (click)="addLayer()" class="icon-btn"></i>
     </div>
-    <div
-      class="layers-list"
-      cdkDropList
-      (cdkDropListDropped)="dropLayer($event)"
-    >
+  
+    <div class="space-vertical space-vertical-sm"></div>
+  
+    <div cdkDropList (cdkDropListDropped)="dropLayer($event)">
       <div
         class="layer-wrapper"
         cdkDragBoundary=".layers-container"
         *ngFor="let layer of token.layers; let i = index"
         cdkDrag
       >
-        <div class="layer">
-          <div cdkDragHandle>
-            <i nz-icon nzType="drag" nzTheme="outline"></i>
-          </div>
-          {{ layer.inset }}
+        <div>
+          <ng-template #dragHandleTemplate>
+            <div cdkDragHandle>
+              <i nz-icon nzType="drag" nzTheme="outline"></i>
+            </div>
+          </ng-template>
+  
           <app-box-shadow-layer
             [layer]="layer"
             [index]="i"
             [content]="content"
+            [dragHandleTemplate]="dragHandleTemplate"
           ></app-box-shadow-layer>
+  
+          <div class="space-vertical space-vertical-lg"></div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</app-editor-block>

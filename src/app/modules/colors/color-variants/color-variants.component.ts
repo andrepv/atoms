@@ -18,6 +18,8 @@ export class ColorVariantsComponent implements OnInit {
   @Input() variants: StoreToken<ColorPaletteDBToken>[] = [];
   @Input() mixRatio = 50;
   @Input() saturation = 1;
+  @Input() title: string;
+  @Input() mixRatioName: string;
 
   @Output() changeVariantColor: EventEmitter<StoreToken<ColorPaletteDBToken>> = new EventEmitter();
   @Output() deleteVariant: EventEmitter<StoreToken<ColorPaletteDBToken>> = new EventEmitter();

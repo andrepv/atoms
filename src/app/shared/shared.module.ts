@@ -40,6 +40,10 @@ import { TokenActionsComponent } from './components/token-actions/token-actions.
 import { StartPageComponent } from './components/start-page/start-page.component';
 import { ModularScaleEditorTokenComponent } from './components/modular-scale-editor-token/modular-scale-editor-token.component';
 import { ColorContrastCheckerComponent } from './components/color-contrast-checker/color-contrast-checker.component';
+import { SelectSplitItemComponent } from './components/select-split-item/select-split-item.component';
+import { EditorCardComponent } from './components/editor-card/editor-card.component';
+import { EditorBlockComponent } from './components/editor-block/editor-block.component';
+
 
 @NgModule({
   declarations: [
@@ -61,6 +65,9 @@ import { ColorContrastCheckerComponent } from './components/color-contrast-check
     StartPageComponent,
     ModularScaleEditorTokenComponent,
     ColorContrastCheckerComponent,
+    SelectSplitItemComponent,
+    EditorCardComponent,
+    EditorBlockComponent,
   ],
   imports: [
     CommonModule,
@@ -104,6 +111,9 @@ import { ColorContrastCheckerComponent } from './components/color-contrast-check
     TokenActionsComponent,
     StartPageComponent,
     ColorContrastCheckerComponent,
+    SelectSplitItemComponent,
+    EditorCardComponent,
+    EditorBlockComponent,
 
     NzToolTipModule,
     NzDropDownModule,

@@ -1,37 +1,52 @@
-<div class="settings">
-  <nz-select
-    [ngModel]="sortOption"
-    (ngModelChange)="sort($event)"
-  >
-    <nz-option 
-      *ngFor="let option of sortOptions"
-      [nzValue]="option"
-      [nzLabel]="option"
-    ></nz-option>
-  </nz-select>
-  <i (click)="toggleCategories()" nz-icon nzType="setting" nzTheme="outline"></i>
-</div>
-
-<div class="categories" *ngIf="categoriesVisible">
-  <div *ngFor="let option of categoryOptions" class="category">
-    <span>{{ option.name }}</span>
-    <nz-switch
-      [(ngModel)]="option.value"
-      (ngModelChange)="fontManager.toggleCategory(option.name, $event)"
-    ></nz-switch>
+<div>
+  <div class="align-center">
+    <app-select-split-item position="start" class="select">
+      <nz-select
+        [ngModel]="sortOption"
+        (ngModelChange)="sort($event)"
+      >
+        <nz-option 
+          *ngFor="let option of sortOptions"
+          [nzValue]="option"
+          [nzLabel]="option"
+        ></nz-option>
+      </nz-select>
+    </app-select-split-item>
+    <app-select-split-item role="button" (click)="toggleSearchInput()">
+      <i nz-icon nzType="search" nzTheme="outline"></i>
+    </app-select-split-item>
+    <app-select-split-item
+      role="button" position="end"
+      (click)="toggleCategories()"
+    >
+      <i nz-icon nzType="setting" nzTheme="outline"></i>
+    </app-select-split-item>
   </div>
+  
+  <div class="categories" *ngIf="categoriesVisible">
+    <div *ngFor="let option of categoryOptions" class="category">
+      <span>{{ option.name }}</span>
+      <nz-switch
+        [(ngModel)]="option.value"
+        (ngModelChange)="fontManager.toggleCategory(option.name, $event)"
+      ></nz-switch>
+    </div>
+  </div>
+  
+  <div [class.display-none]="!searchInputVisible">
+    <div class="space-vertical space-vertical-md"></div>
+    <input
+      nz-input
+      placeholder="Search by name"
+      [(ngModel)]="searchValue"
+      (input)="search()"
+    />
+  </div>
+  
+  <div class="space-vertical space-vertical-xs"></div>
+  <h5 class="text-subtle">{{ fontManager.fonts.length }} of {{ fontManager.totalFontsCount }} families </h5>
 </div>
 
-<input
-  class="search-input"
-  nz-input
-  placeholder="Search by name"
-  [(ngModel)]="searchValue"
-  (input)="search()"
-/>
-
-<p class="search-results">{{ fontManager.fonts.length }} of {{ fontManager.totalFontsCount }} families </p>
-  
 <cdk-virtual-scroll-viewport itemSize="155" class="typeface-preview-container">
   <nz-list>
     <nz-list-item *cdkVirtualFor="let font of ds">

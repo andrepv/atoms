@@ -15,6 +15,8 @@ export class ColorPaletteEditorComponent implements OnInit {
 
   @Input() content: EditableContent<ColorPaletteStoreToken, StoreGroup<DBGroup, ColorPaletteStoreToken>>;
 
+  contrastColor = "#fff";
+
   get token() {
     return this.content.token;
   }

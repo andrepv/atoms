@@ -1,32 +1,34 @@
-<div class="slider" nz-row [nzGutter]="12" nzAlign="bottom">
-  <div class="slider-body" nz-col nzSpan="16">
-    <p class="editor-label">{{ title }}</p>
-    <nz-slider
-      [nzMin]="min"
-      [nzMax]="max"
-      [nzStep]="step"
-      [(ngModel)]="model"
-      (ngModelChange)="modelChange.emit($event)"
-      (nzOnAfterChange)="afterModelChange.emit($event)"
-    ></nz-slider>
+<div class="slider">
+  <div class="slider-header justify-between">
+    <p *ngIf="title" class="label">{{ title }}</p>
+    <div *ngIf="title" class="space-vertical space-vertical-sm"></div>
+    <div class="input-number" *ngIf="displayInput">
+      <nz-input-group
+        *ngIf="units !== 'none'; else inputRef"
+        [nzAddOnAfter]="units"
+      >
+        <ng-container *ngTemplateOutlet="inputRef"></ng-container>
+      </nz-input-group>
+  
+      <ng-template #inputRef>
+        <nz-input-number
+          [nzMin]="min"
+          [nzMax]="max"
+          [nzStep]="step"
+          [(ngModel)]="model"
+          (ngModelChange)="onInputChange()"
+        ></nz-input-number>
+      </ng-template>
+    </div>
   </div>
-  <div class="input-number" nz-col nzSpan="8">
-    <nz-input-group
-      *ngIf="units !== 'none'; else inputRef"
-      [nzAddOnAfter]="units"
-    >
-      <ng-container *ngTemplateOutlet="inputRef"></ng-container>
-    </nz-input-group>
-
-    <ng-template #inputRef>
-      <nz-input-number
-        [nzMin]="min"
-        [nzMax]="max"
-        [nzStep]="step"
-        [(ngModel)]="model"
-        (ngModelChange)="onInputChange()"
-      ></nz-input-number>
-    </ng-template>
-  </div>
+  <nz-slider
+    *ngIf="displaySlider"
+    [nzMin]="min"
+    [nzMax]="max"
+    [nzStep]="step"
+    [(ngModel)]="model"
+    (ngModelChange)="modelChange.emit($event)"
+    (nzOnAfterChange)="afterModelChange.emit($event)"
+  ></nz-slider>
 </div>
 

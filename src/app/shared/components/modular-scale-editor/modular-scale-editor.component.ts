@@ -14,6 +14,8 @@ export class ModularScaleEditorComponent implements OnInit {
   @Input() group: StoreGroup<any, DBToken & ModularScaleToken> & ModularScaleGroup;
   @Input() minBase = 4;
   @Input() maxBase = 100;
+  @Input() units = 'px';
+  @Input() title = 'Base Size';
 
   MODULAR_SCALE_PRESETS = MODULAR_SCALE_PRESETS;
 

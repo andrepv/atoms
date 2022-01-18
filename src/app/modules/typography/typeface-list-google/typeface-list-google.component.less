@@ -1,27 +1,23 @@
-@import "design-tokens.less";
-@import "styles.less";
+@import "design-tokens";
+@import "styles";
 
-.settings {
+:host {
   display: flex;
-  .ant-select {
-    width: 85%;
-    margin-right: @space-xxs;
+  flex-direction: column;
+  flex-grow: 1;
+}
 
-    &::ng-deep nz-select-top-control {
-      border-radius: @border-radius-md 0 0 @border-radius-md;
-    }
-  }
+.typeface-preview-container {
+  flex: 1;
+  width: 104%;
+}
 
-  i {
-    cursor: pointer;
-    background: @color-bg-30;
-    border-radius: 0 @border-radius-md @border-radius-md 0;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 15%;
-  }
+.select {
+  width: 67%;
+}
+
+.ant-select {
+  width: 100%;
 }
 
 .categories {
@@ -35,22 +31,6 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: @space-xxs;
-}
-
-.search-input {
-  margin-top: @space-md;
-}
-
-.search-results {
-  font-size: @text-sm;
-  color: @color-contrast-medium;
-  margin-top: @space-xs;
-}
-
-
-.typeface-preview-container {
-  height: 58%;
-  width: 105%;
 }
 
 .typeface-preview-block {

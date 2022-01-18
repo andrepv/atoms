@@ -11,7 +11,7 @@ import { ModularScaleToken } from '../modular-scale-editor/modular-scale-types';
 export class ModularScaleEditorTokenComponent implements OnInit {
   @Input() content: EditableContent<DBToken & ModularScaleToken, DBGroup>;
   @Input() minValue = 1;
-  @Input() maxValue = 150;
+  @Input() maxValue = Infinity;
   @Input() title: string;
   @Input() units = 'px';
 

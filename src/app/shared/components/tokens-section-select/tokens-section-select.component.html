@@ -1,27 +1,24 @@
-<div>
-  <p class="editor-label">{{ section }}</p>
-  <nz-select
-    [ngModel]="selectedTokenId"
-    (ngModelChange)="change.emit($event)"
-    [nzPlaceHolder]="placeholder"
-  >
-    <ng-container *ngIf="!customContent">
-      <nz-option
-        *ngFor="let token of tokens"
-        [nzValue]="token.id"
-        [nzLabel]="token.name"
-      ></nz-option>
-    </ng-container>
+<nz-select
+  [ngModel]="selectedTokenId"
+  (ngModelChange)="change.emit($event)"
+  [nzPlaceHolder]="placeholder"
+>
+  <ng-container *ngIf="!customContent">
+    <nz-option
+      *ngFor="let token of tokens"
+      [nzValue]="token.id"
+      [nzLabel]="token.name"
+    ></nz-option>
+  </ng-container>
 
-    <ng-container *ngIf="customContent">
-      <nz-option
-        *ngFor="let token of tokens"
-        [nzValue]="token.id"
-        [nzLabel]="token.name"
-        nzCustomContent
-      >
-        <ng-container *ngTemplateOutlet="customContent; context: {$implicit: token}"></ng-container>
-      </nz-option>
-    </ng-container>
-  </nz-select>
-</div>
+  <ng-container *ngIf="customContent">
+    <nz-option
+      *ngFor="let token of tokens"
+      [nzValue]="token.id"
+      [nzLabel]="token.name"
+      nzCustomContent
+    >
+      <ng-container *ngTemplateOutlet="customContent; context: {$implicit: token}"></ng-container>
+    </nz-option>
+  </ng-container>
+</nz-select>

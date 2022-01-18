@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { DBGroup, EditableContent } from '@core/core.model';
 import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { BoxShadowLayer, BoxShadowDBToken } from '../box-shadow-section/box-shadow-section.model';
@@ -14,6 +14,8 @@ export class BoxShadowLayerComponent implements OnInit {
   @Input() content: EditableContent<BoxShadowDBToken, DBGroup>;
   @Input() layer: BoxShadowLayer;
   @Input() index: number;
+
+  @Input() dragHandleTemplate: TemplateRef<any>;
 
   get token() {
     return this.content.token;

@@ -1,5 +1,5 @@
 <div
-  class="color-preview-container"
+  [class.light-mode]="mode === 'light'"
   nz-popover
   nzPopoverTrigger="click"
   [(nzPopoverVisible)]="isPopoverVisible"
@@ -22,11 +22,12 @@
 
 <ng-template #popoverContentTemplate>
   <div class="color-picker-popover">
-    <div class="color-picker-radio-group">
+    <div class="on-bg-30">
       <nz-radio-group [(ngModel)]="radioValue">
         <label nz-radio-button nzValue="color-picker">Color Picker</label>
         <label nz-radio-button nzValue="presets">Presets</label>
       </nz-radio-group>
+      <div class="space-vertical space-vertical-lg"></div>
     </div>
 
     <div
@@ -43,13 +44,14 @@
     </div>
 
     <div *ngIf="radioValue === 'presets'">
-      <div class="color-presets-header">
+      <div class="color-presets-header justify-between">
         <div class="color-presets-view">
           <i
             [class.active]="view === 'list'"
             nz-icon nzType="unordered-list" nzTheme="outline"
             (click)="view = 'list'"
           ></i>
+          <div class="space-horizontal space-horizontal-xxs"></div>
           <i
             [class.active]="view === 'grid'"
             nz-icon nzType="appstore" nzTheme="outline"
@@ -57,7 +59,7 @@
           ></i>
         </div>
     
-        <div class="color-presets-source">
+        <div class="color-presets-source align-center">
           <span>Source: All Themes</span>
           <nz-switch
             [(ngModel)]="allThemes"
@@ -65,6 +67,8 @@
           ></nz-switch>
         </div>
       </div>
+      <div class="space-vertical space-vertical-sm"></div>
+
 
       <ng-container *ngIf="!allThemes">
         <div class="color-presets-container">

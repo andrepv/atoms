@@ -1,66 +1,76 @@
-<div class="wrapper">
-  <div class="layer-header control-header">
-    <i 
-      *ngIf="canDeleteLayer"
-      nz-icon nzType="delete" nzTheme="outline" 
-      (click)="deleteLayer()"></i>
-    <i
-      nz-icon nzType="down" nzTheme="outline"
-      (click)="toggleVisibility()"></i>
+<app-editor-card [hasBody]="isHidden">
+  <div header (click)="toggleVisibility()" class="justify-between cursor-pointer">
+    <i nz-icon nzType="down" nzTheme="outline" class="icon-down icon-btn" [class.icon-right]="isHidden"></i>
+    <div class="align-center">
+      <i
+        *ngIf="canDeleteLayer"
+        class="icon-btn"
+        nz-icon nzType="delete" nzTheme="outline"
+        (click)="deleteLayer()"></i>
+        <div class="space-horizontal space-horizontal-xxxs"></div>
+       <ng-container *ngTemplateOutlet="dragHandleTemplate"></ng-container>
+    </div>
   </div>
-  <div class="layer-body" [class.hidden]="isHidden">
+
+  <div body>
     <app-slider
       title="Offset X"
       [min]="-15"
       [max]="15"
       [(model)]="offsetX"
+      units="px"
       (modelChange)="changeValue('offsetX')"
       (afterModelChange)="saveValue()"
     ></app-slider>
- 
+  
     <app-slider
       title="Offset Y"
       [min]="-15"
       [max]="15"
       [(model)]="offsetY"
+      units="px"
       (modelChange)="changeValue('offsetY')"
       (afterModelChange)="saveValue()"
     ></app-slider>
-
+  
     <app-slider
       title="Blur"
       [min]="0"
       [max]="20"
       [(model)]="blur"
+      units="px"
       (modelChange)="changeValue('blur')"
       (afterModelChange)="saveValue()"
     ></app-slider>
-
+  
     <app-slider
       title="Spread"
       [min]="-15"
       [max]="15"
       [(model)]="spread"
+      units="px"
       (modelChange)="changeValue('spread')"
       (afterModelChange)="saveValue()"
     ></app-slider>
-
-    <div class="control-header inset">
-      <p>Inset</p>
+  
+    <div class="justify-between">
+      <h5 class="label">Inset</h5>
       <nz-switch
         [(ngModel)]="inset"
         (ngModelChange)="toggleInset()"
       ></nz-switch>
     </div>
 
-    <div class="control-header shadow-color">
-      <p>Color</p>
+    <div class="space-vertical space-vertical-md"></div>
+  
+    <div class="justify-between">
+      <h5 class="label">Color</h5>
       <app-color-picker
         [color]="color"
         (colorChange)="changeColor($event)"
         (colorSave)="saveValue()"
+        mode="light"
       ></app-color-picker>
     </div>
-
   </div>
-</div>
+</app-editor-card>
