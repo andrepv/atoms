@@ -1,6 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { db } from '@core/indexedDB';
-import { SectionTables } from '@core/section-tables';
 import { ClipboardService } from '@core/services/clipboard.service';
 import { ExportEditorService } from '../export-editor/export-editor.service';
 import { ExportColorFormat, ExportConfigsSection, CodePreviewConfigs } from '../export-types';
@@ -22,7 +20,7 @@ export class ExportEditorSectionComponent implements OnInit {
   }
 
   constructor(
-    @Inject('tables') private sectionTables: SectionTables<any, any>,
+    @Inject('tables') private sectionTables: any,
     public editor: ExportEditorService,
     private editorSection: ExportEditorSectionService,
     private clipboard: ClipboardService,

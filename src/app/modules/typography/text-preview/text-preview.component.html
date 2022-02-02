@@ -1,3 +1,34 @@
-<div [style]="blockStyles">
-  <p [style]="textStyles">{{ token.text }}</p>
-</div>
+<ng-container *ngIf="group.view === 'detailed'">
+  <div [style]="styles.block" class="text-preview token-interactive">
+    <p class="text" [style]="styles.text">{{ token.text }}</p>
+
+    <div class="text-styles-info justify-between">
+      <div class="text-style-name">
+        <span>Family</span>
+        <h5 class="text-style-value">{{ styles.fontFamily }}</h5>
+      </div>
+      <div class="text-style-name">
+        <span>Size</span>
+        <h5 class="text-style-value">{{ styles.fontSize }}</h5>
+      </div>
+      <div class="text-style-name">
+        <span>Line Height</span>
+        <h5 class="text-style-value">{{ styles.lineHeight }}</h5>
+      </div>
+      <div class="text-style-name">
+        <span>Letter Spacing</span>
+        <h5 class="text-style-value">{{ styles.letterSpacing }}</h5>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="group.view === 'default'">
+  <div class="text-preview minimal token-interactive" [style]="styles.block">
+    <p [style]="styles.text">{{ token.text }}</p>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="group.view === 'minimal'">
+  <p class="token-interactive" [style]="styles.text">{{ token.text }}</p>
+</ng-container>

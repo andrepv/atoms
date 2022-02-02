@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { db } from '@core/indexedDB';
+import { browserStorageDB } from '@core/storages/browser-storage/browser-storage-db';
 import { ExportConfigs } from './export-types';
 
 @Component({
@@ -10,12 +10,13 @@ import { ExportConfigs } from './export-types';
 export class ExportComponent implements OnInit {
   configurationList: ExportConfigs[] = [];
   isLoading = true;
+  storage = browserStorageDB.exportConfigs;
 
   constructor() {}
 
   async ngOnInit() {
     this.isLoading = true;
-    this.configurationList = await db.exportConfigs.toArray();
+    this.configurationList = await this.storage.getList();
     this.isLoading = false;
   }
 
@@ -28,25 +29,25 @@ export class ExportComponent implements OnInit {
       showComments: true,
       excludedSections: [],
     }
-    const id = await db.exportConfigs.add(config);
+    const id = await this.storage.add(config);
     config.id = id;
 
     this.configurationList.push(config)
   }
 
   async deleteConfiguration(configId: number) {
-    await db.exportConfigs.delete(configId);
+    await this.storage.delete(configId);
     this.configurationList = this.configurationList.filter(config => config.id !== configId);
 
-    const exportConfigSections = await db.exportConfigsSection.where("commonConfigsId").equals(configId).toArray();
+    const exportConfigSections = await this.storage.get({index: "commonConfigsId", key: configId})
 
     for (let exportConfigSection of exportConfigSections) {
-      await db.exportConfigsSection.delete(exportConfigSection.id);
+      await this.storage.delete(exportConfigSection.id);
     }
   }
 
   renameConfiguration(value: string, config: ExportConfigs) {
-    db.exportConfigs.update(config.id, {name: value});
+    this.storage.update(config.id, {name: value});
     config.name = value;
   }
 }

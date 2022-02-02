@@ -1,11 +1,9 @@
-import { DBToken, DBGroup, DBTables, DBSectionData } from "@core/core.model";
+import { DBSectionData } from "@core/core-types";
+import { StorageGroup, StorageSectionContentManager, StorageToken } from "@core/storages/storages-types";
 
-export type BorderRadiusDBToken = DBToken & {radius: number};
+export type BorderRadiusDBToken = StorageToken & {radius: number};
 
-export type BorderRadiusTokenTable = Dexie.Table<BorderRadiusDBToken, number>;
-export type BorderRadiusGroupTable = Dexie.Table<DBGroup, number>;
-
-export type BorderRadiusTables = DBTables<BorderRadiusTokenTable, BorderRadiusGroupTable>
+export type BorderRadiusManager = StorageSectionContentManager<BorderRadiusDBToken, StorageGroup>
 
 export const BORDER_RADIUS_DB_DATA: DBSectionData = {
   tableGroupName: 'borderRadius',

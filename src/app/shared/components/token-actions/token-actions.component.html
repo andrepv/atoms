@@ -1,25 +1,28 @@
-<div class="dropdown-menu">
+<div class="container">
   <i
-    *ngIf="editorTemplate"
-    nz-icon nzType="edit"
-    nzTheme="outline"
-    (click)="openEditor(editor)"
-  >
-    <ng-template #editor>
-      <ng-container *ngTemplateOutlet="editorTemplate; context: {$implicit: {token: token, group: group}}"></ng-container>
-    </ng-template>
-  </i>
+    nz-tooltip nzTooltipTitle="duplicate"
+    class="icon-btn" nz-icon nzType="block" nzTheme="outline"
+    (click)="duplicate()"
+  ></i>
+
+  <div class="space-horizontal space-horizontal-xxxs"></div>
+
   <i
-    nz-icon nzType="more" nzTheme="outline"
-    nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
-  >
-    <nz-dropdown-menu #menu="nzDropdownMenu">
-      <ul nz-menu>
-        <li *ngIf="editableText" nz-menu-item (click)="editableText.makeEditable()">Rename</li>
-        <li nz-menu-item (click)="delete()">Delete</li>
-        <li *ngIf="canCopy()" nz-menu-item (click)="copy()">Copy</li>
-        <li nz-menu-item (click)="duplicate()">Duplicate</li>
-      </ul>
-    </nz-dropdown-menu>
-  </i>
+    nz-tooltip nzTooltipTitle="delete"
+    class="icon-btn" nz-icon nzType="delete" nzTheme="outline"
+    (click)="delete()"
+  ></i>
+
+  <div class="space-horizontal space-horizontal-xxxs"></div>
+
+  <i
+    *ngIf="canCopy()"
+    nz-tooltip nzTooltipTitle="copy"
+    class="icon-btn" nz-icon nzType="copy" nzTheme="outline"
+    (click)="copy()"
+  ></i>
 </div>
+
+<ng-template #editor>
+  <ng-container *ngTemplateOutlet="editorTemplate; context: {$implicit: {token: token, group: group}}"></ng-container>
+</ng-template>

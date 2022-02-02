@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
-import { SectionNames } from '@core/core.model';
+import { SectionNames } from '@core/core-types';
 import { StoreService } from '@core/services/store.service';
 
 @Component({

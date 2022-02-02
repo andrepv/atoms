@@ -5,30 +5,23 @@
     [groupEditorTemplate]="groupEditorTemplate"
   ></app-group-header>
 
-  <div class="container">
-    <div *ngFor="let token of group.tokens" class="token-wrapper">
+  <ng-container *ngIf="isViewListOpen">
+    <app-group-view-list
+      [options]="viewOptions"
+      [group]="group"
+    ></app-group-view-list>
+    <div class="divider"></div>
+  </ng-container>
 
-      <div *ngIf="tokenTemplate">
-        <ng-container *ngTemplateOutlet="tokenTemplate; context: {$implicit: token, group: group, tokenTemplateWrapper: tokenTemplateWrapper}"></ng-container>
-      </div>
-
-      <div *ngIf="!tokenTemplate">
-        <ng-container *ngTemplateOutlet="tokenTemplateWrapper; context: {$implicit: token, group: group}"></ng-container>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="add-token-btn" (click)="addToken()">
-    <i nz-icon nzType="plus" nzTheme="outline"></i>
-  </div>
+  <!-- group's body -->
+  <ng-content></ng-content>
 </div>
 
-<ng-template #tokenTemplateWrapper let-token let-group="group">
-  <app-token
-    [token]="token"
-    [group]="group"
-    [previewTemplate]="tokenPreviewTemplate"
-    [editorTemplate]="tokenEditorTemplate"
-  ></app-token>
+<ng-template #customButtonsTemplate>
+  <i *ngIf="viewOptions.length" class="icon-btn" nz-icon nzType="eye" nzTheme="outline"
+  (click)="toggleViewList()"></i>
+
+  <ng-container *ngIf="customButtonsTemplate">
+    <ng-container *ngTemplateOutlet="customButtonsTemplate; context: {$implicit: {group: group}}"></ng-container>
+  </ng-container>
 </ng-template>

@@ -1,13 +1,17 @@
-<header class="section-header">
+<header class="section-header justify-between">
   <h2>{{ sectionName }}</h2>
   <div class="actions">
     <i
-      nz-tooltip nzTooltipTitle="add a group" nzTooltipPlacement="bottom"
+      class="icon-btn"
+      nz-tooltip nzTooltipTitle="add group" nzTooltipPlacement="bottom"
       nz-icon nzType="plus" nzTheme="outline" (click)="addGroup()"></i>
-    <i
-      *ngIf="canUseClipboard()"
-      nz-icon nzType="snippets" nzTheme="outline"
-      nz-tooltip nzTooltipTitle="past a group" nzTooltipPlacement="bottom"
-      (click)="pastGroup()"></i>
+    <ng-container *ngIf="canUseClipboard()">
+      <div class="space-horizontal space-horizontal-xxxs"></div>
+      <i
+        class="icon-btn"
+        nz-icon nzType="snippets" nzTheme="outline"
+        nz-tooltip nzTooltipTitle="past group" nzTooltipPlacement="bottom"
+        (click)="pastGroup()"></i>
+    </ng-container>
   </div>
 </header>

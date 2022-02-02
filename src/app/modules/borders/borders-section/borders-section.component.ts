@@ -1,29 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { DBGroup, StoreToken } from '@core/core.model';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { provideSectionDeps } from '@utils/provide-section-deps';
-import { BorderDBToken, BORDER_DB_DATA } from '../borders.model';
+import { StoreToken } from '@core/core-types';
+import SectionManagerContentService from '@core/services/section-manager-content.service';
+import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
+import { browserStorageDB } from '@core/storages/browser-storage/browser-storage-db';
+import BordersManagerTokensService from '../borders-managers/borders-manager-tokens.service';
+import { BorderDBToken } from '../borders.model';
 
 @Component({
   selector: 'app-borders-section',
   templateUrl: './borders-section.component.html',
   styleUrls: ['./borders-section.component.less'],
-  providers: [...provideSectionDeps(BORDER_DB_DATA.tableGroupName)]
+  providers: [
+    {provide: 'storage', useValue: browserStorageDB.border},
+    {useClass: BordersManagerTokensService, provide: SectionManagerTokensService},
+    SectionManagerContentService,
+    SectionManagerGroupsService,
+  ]
 })
 export class BordersSectionComponent implements OnInit {
-  constructor(private section: SectionContentManagerService<BorderDBToken, DBGroup>) { }
+  constructor() {}
 
-  ngOnInit() {
-    this.section.configure({
-      hooks: {
-        getDefaultToken: () => ({
-          "color": "#fff",
-          "width": 2,
-          "style": "solid",
-        }),
-      },
-    })
-  }
+  ngOnInit() {}
 
   getBorder(token: StoreToken<BorderDBToken>) {
     const {width, style, color} = token;

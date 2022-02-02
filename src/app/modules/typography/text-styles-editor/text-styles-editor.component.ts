@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { DBGroup, EditableContent, SectionTokenValue } from '@core/core.model';
-import { TextStylesDBToken } from '@typography/text-styles-section/text-styles.model';
+import { EditableContent, StorageTokenValue } from '@core/core-types';
+import { TextStylesDBGroup, TextStylesDBToken } from '@typography/text-styles-section/text-styles.model';
 import { StoreService } from '@core/services/store.service';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 
 @Component({
   selector: 'app-text-styles-editor',
@@ -10,15 +10,19 @@ import { StoreService } from '@core/services/store.service';
   styleUrls: ['./text-styles-editor.component.less'],
 })
 export class TextStylesEditorComponent implements OnInit {
-  @Input() content: EditableContent<TextStylesDBToken, DBGroup>;
+  @Input() content: EditableContent<TextStylesDBToken, TextStylesDBGroup>;
 
   get token() {
     return this.content.token;
   }
 
+  get group() {
+    return this.content.group;
+  }
+
   constructor(
-    private section: SectionContentManagerService<TextStylesDBToken, DBGroup>,
     private store: StoreService,
+    private tokensManager: SectionManagerTokensService,
   ) {}
 
   text = '';
@@ -66,10 +70,10 @@ export class TextStylesEditorComponent implements OnInit {
   }
 
   updateTextStyles(
-    styles: Partial<SectionTokenValue<TextStylesDBToken>>,
+    styles: Partial<StorageTokenValue<TextStylesDBToken>>,
     updateStore = false
   ) {
-    return this.section.updateToken(this.token, this.content.group, styles, updateStore);
+    return this.tokensManager.update(this.token, styles, updateStore)
   }
 
   private async getVariants() {

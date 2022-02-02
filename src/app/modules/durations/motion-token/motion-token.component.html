@@ -1,0 +1,19 @@
+<div class="container token-interactive token-card">
+  <div class="header justify-between">
+
+    <app-button-play
+      [state]="!_isActive ? 'pause': 'play'"
+      (play)="play()"
+      (pause)="pause()"
+   ></app-button-play>
+
+    <p class="duration">{{ duration + 'ms' }}</p>
+  </div>
+  <div class="rail">
+    <div
+      class="track"
+      [@run]="{value: animationState, params: {duration: duration}}"
+      (@run.done)="onDone()"
+    ></div>
+  </div>
+</div>

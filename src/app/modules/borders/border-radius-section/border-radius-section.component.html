@@ -1,33 +1,52 @@
 <app-group-list
   [groupTemplate]="groupTemplate"
   [sectionTreeTemplate]="sectionTreeTemplate"
->
-  <ng-template #groupTemplate let-group>
-    <app-group
-      [group]="group"
-      [tokenPreviewTemplate]="tokenTemplate"
-      [tokenEditorTemplate]="editorTemplate"
-    >
-      <ng-template #tokenTemplate let-token let-group="group">
-        <div class="preview" [style.border-radius]="token.radius + 'px'"></div>
-      </ng-template>
-    </app-group>
-  </ng-template>
+></app-group-list>
 
-  <ng-template #editorTemplate let-content>
-    <app-slider
-      title="Radius"
-      [min]="0"
-      [max]="50"
-      [(model)]="content.token.radius"
-      (modelChange)="content.token.radius = $event"
-      (afterModelChange)="setTokenValue($event, content.token, content.group)"
-    ></app-slider>
-  </ng-template>
+<ng-template #groupTemplate let-group>
+  <div class="group">
+    <app-group-header [group]="group"></app-group-header>
 
-  <ng-template #sectionTreeTemplate let-groups>
-    <app-section-tree [groups]="groups"></app-section-tree>
-  </ng-template>
+    <!-- group's body -->
+    <div class="tokens-view-grid">
+      <ng-container *ngFor="let token of group.tokens">
+        <app-token
+          [token]="token"
+          [group]="group"
+          [previewTemplate]="tokenTemplate"
+          [editorTemplate]="editorTemplate"
+        ></app-token>
+
+        <!-- token's preview -->
+        <ng-template #tokenTemplate let-data>
+          <div
+            class="token-card token-interactive"
+            (click)="data.openEditor()"
+          >
+            <div
+              class="preview"
+              [style.border-radius]="data.token.radius + 'px'"
+            ></div>
+          </div>
+        </ng-template>
+
+        <!-- token's editor -->
+        <ng-template #editorTemplate let-content>
+          <app-slider
+            title="Radius"
+            [min]="0"
+            [max]="50"
+            [(model)]="content.token.radius"
+            (modelChange)="content.token.radius = $event"
+            (afterModelChange)="setTokenValue($event, content.token)"
+          ></app-slider>
+        </ng-template>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
 
 
-</app-group-list>
+<ng-template #sectionTreeTemplate let-groups>
+  <app-section-tree [groups]="groups"></app-section-tree>
+</ng-template>

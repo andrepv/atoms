@@ -1,11 +1,9 @@
-import { DBToken, DBGroup, DBTables, DBSectionData } from "@core/core.model";
+import { DBSectionData } from "@core/core-types";
+import { StorageToken, StorageGroup, StorageSectionContentManager } from "@core/storages/storages-types";
 
-export type CustomTokensDBToken = DBToken & {value: string};
+export type CustomTokensDBToken = StorageToken & {value: string};
 
-export type CustomTokensTokenTable = Dexie.Table<CustomTokensDBToken, number>;
-export type CustomTokensGroupTable = Dexie.Table<DBGroup, number>;
-
-export type CustomTokensTables = DBTables<CustomTokensTokenTable, CustomTokensGroupTable>
+export type CustomTokensManager = StorageSectionContentManager<CustomTokensDBToken, StorageGroup>
 
 export const CUSTOM_TOKENS_DB_DATA: DBSectionData = {
   tableGroupName: 'customTokens',

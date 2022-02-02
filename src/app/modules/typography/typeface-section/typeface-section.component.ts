@@ -1,39 +1,30 @@
 import { Component, OnInit } from '@angular/core';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { FontManagerService } from '../typeface-editor/font-manager.service';
-import { DBGroup } from '@core/core.model';
-import { TypefaceDBToken, TYPEFACE_DB_DATA } from './typeface.model';
-import { provideSectionDeps } from '@utils/provide-section-deps';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
+import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
+import SectionManagerContentService from '@core/services/section-manager-content.service';
+import { TypefaceManagerContentService } from '@typography/typeface-managers/typeface-manager-content.service';
+import TypefaceManagerTokensService from '@typography/typeface-managers/typeface-manager-tokens.service';
+import { browserStorageDB } from '@core/storages/browser-storage/browser-storage-db';
 
 @Component({
   selector: 'app-typeface-section',
   templateUrl: './typeface-section.component.html',
   styleUrls: ['./typeface-section.component.less'],
-  providers: [...provideSectionDeps(TYPEFACE_DB_DATA.tableGroupName)]
+  providers: [
+    {provide: 'storage', useValue: browserStorageDB.typeface},
+    SectionManagerGroupsService,
+    {
+      useClass: TypefaceManagerContentService,
+      provide: SectionManagerContentService
+    },
+    {
+      useClass: TypefaceManagerTokensService,
+      provide: SectionManagerTokensService
+    },
+  ]
 })
 export class TypefaceSectionComponent implements OnInit {
-  constructor(
-    private section: SectionContentManagerService<TypefaceDBToken, DBGroup>,
-    private fontManager: FontManagerService,
-  ) {}
+  constructor() {}
 
-  ngOnInit() {
-    this.section.configure({
-      hooks: {
-        onLoad: () => this.loadFonts(),
-        getDefaultToken: () => ({
-          family: 'Arial',
-          type: "custom-font",
-          data: '',
-        })
-      }
-    })
-  }
-
-  private loadFonts() {
-    const groupList = this.section.getGroupList();
-    for (let group of groupList) {
-      this.fontManager.load(group.tokens);
-    }
-  }
+  ngOnInit() {}
 }

@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { ColorPaletteDBToken, COLORPALETTE_DB_DATA } from '@colors/color-palette-section/color-palette.model';
-import { DBGroup, TokensByTheme } from '@core/core.model';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ColorPaletteDBToken } from '@colors/color-palette-section/color-palette.model';
+import { TokensByTheme } from '@core/core-types';
+import SectionManagerContentService from '@core/services/section-manager-content.service';
+import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
-import { provideSectionDeps } from '@utils/provide-section-deps';
+import { browserStorageDB } from '@core/storages/browser-storage/browser-storage-db';
+import { StorageGroup } from '@core/storages/storages-types';
 import chroma from 'chroma-js';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
@@ -12,7 +15,12 @@ import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operato
   selector: 'app-color-picker',
   templateUrl: './color-picker.component.html',
   styleUrls: ['./color-picker.component.less'],
-  providers: [...provideSectionDeps(COLORPALETTE_DB_DATA.tableGroupName)],
+  providers: [
+    {provide: 'storage', useValue: browserStorageDB.colorPalette},
+    SectionManagerContentService,
+    SectionManagerTokensService,
+    SectionManagerGroupsService,
+  ]
 })
 export class ColorPickerComponent implements OnInit {
   @Input() color: string;
@@ -23,7 +31,7 @@ export class ColorPickerComponent implements OnInit {
   @Output() colorChange: EventEmitter<string> = new EventEmitter();
 
   isPopoverVisible = false;
-  colorsByTheme: TokensByTheme<ColorPaletteDBToken>;
+  colorsByTheme: TokensByTheme<ColorPaletteDBToken> = [];
   currentThemeColors: ColorPaletteDBToken[] = null;
 
   private colorChange$ = new Subject<string>();
@@ -40,8 +48,8 @@ export class ColorPickerComponent implements OnInit {
   }
 
   constructor(
-    private colorPalettes: SectionContentManagerService<ColorPaletteDBToken, DBGroup>,
     private themeManager: ThemeManagerService,
+    private colors: SectionManagerTokensService<ColorPaletteDBToken, StorageGroup>,
   ) {}
 
   async ngOnInit() {
@@ -52,9 +60,9 @@ export class ColorPickerComponent implements OnInit {
       tap(color => this.colorSave.emit(color)),
     ).subscribe();
 
-    this.currentThemeColors = await this.colorPalettes.tables.getThemeTokens(this.themeManager.selected.id);
+    await this.setThemeColors();
 
-    this.colorsByTheme = await this.colorPalettes.tables.getTokens([this.themeManager.selected.id]);
+    await this.setAllThemesColors();
   }
 
   ngOnDestroy() {
@@ -77,7 +85,27 @@ export class ColorPickerComponent implements OnInit {
     this.isPopoverVisible = !this.isPopoverVisible;
 
     if (this.isPopoverVisible) {
-      this.currentThemeColors = await this.colorPalettes.tables.getThemeTokens(this.themeManager.selected.id);
+      this.setThemeColors();
+    }
+  }
+
+  private async setThemeColors() {
+    this.currentThemeColors = await this.colors.load({ index: 'themeId', key: this.themeManager.selected.id});
+  }
+
+  private async setAllThemesColors() {
+    const colors = await this.colors.storage.loadList();
+
+    for (let theme of this.themeManager.list) {
+      if (theme.id !== this.themeManager.selected.id) {
+        const themeTokens = colors.filter(color => color.themeId === theme.id);
+        if (themeTokens.length) {
+          this.colorsByTheme.push({
+            themeName: theme.name,
+            tokens: themeTokens
+          })
+        }
+      }
     }
   }
 }

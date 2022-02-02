@@ -1,12 +1,31 @@
-.dropdown-menu {
-  position: absolute;
-  right: 10px;
-  top: 5px;
+.container {
+  border-radius: var(--border-radius-sm);
+  background: var(--color-bg-10);
+  transition: all 0.3s;
+}
 
-  i {
-    cursor: pointer;
-    &:not(:last-child) {
-      margin-right: 10px;
-    }
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  height: 40px;
+  min-width: 95px;
+  bottom: 100%;
+  z-index: 9;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.2s;
+  transform: scale(0.5);
+
+  &.bottom {
+    top: 25px;
+    align-items: end;
   }
+}
+
+.token-actions-on-hover {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
 }

@@ -1,0 +1,22 @@
+<div class="token">
+  <app-token-actions
+    [token]="token"
+    [group]="group"
+    [class]="tooltipPosition"
+  ></app-token-actions>
+
+  <div
+    class="preview token-interactive flex-center"
+    [style.background]="token.color"
+    (click)="openEditor(editor)"
+  >
+    <p
+      [style.color]="getHexCodeColor(token.color)"
+      class="hex"
+    >{{ token.color }}</p>
+  </div>
+</div>
+
+<ng-template #editor>
+  <app-color-palette-editor [content]="{token: token, group: group}"></app-color-palette-editor>
+</ng-template>

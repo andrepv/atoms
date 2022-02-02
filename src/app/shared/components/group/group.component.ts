@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { StoreGroup } from '@core/core.model';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
+import { SectionViewOption, StoreGroup } from '@core/core-types';
 
 @Component({
   selector: 'app-group',
@@ -9,20 +8,18 @@ import { SectionContentManagerService } from '@core/services/section-content-man
 })
 export class GroupComponent implements OnInit {
   @Input() group: StoreGroup; 
-  @Input() tokenPreviewTemplate: TemplateRef<any>;
-  @Input() tokenTemplate: TemplateRef<any> | false = false;
-  @Input() tokenEditorTemplate: TemplateRef<any>;
   @Input() groupEditorTemplate: TemplateRef<any>;
+  @Input() viewOptions: SectionViewOption<string>[] = [];
 
-  constructor(private section: SectionContentManagerService) {}
+  @Input() customButtonsTemplate: TemplateRef<any>;
+
+  isViewListOpen = false;
+
+  constructor() {}
 
   ngOnInit() {}
 
-  addToken() {
-    const token = {
-      ...this.section.createToken(this.group.id),
-      ...this.section.hooks.getDefaultToken(this.group.id)
-    }
-    this.section.addToken(token, this.group);
+  toggleViewList() {
+    this.isViewListOpen = !this.isViewListOpen;
   }
 }

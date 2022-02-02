@@ -1,9 +1,10 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { StoreGroup } from '@core/core.model';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
+import { StoreGroup } from '@core/core-types';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
 import { ExplorerService } from '../../../layout/explorer/explorer.service';
 import { Subscription } from 'rxjs';
+import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
+import SectionManagerContentService from '@core/services/section-manager-content.service';
 
 @Component({
   selector: 'app-group-list',
@@ -21,9 +22,10 @@ export class GroupListComponent implements OnInit {
   subscription: Subscription;
 
   constructor(
-    public cm: SectionContentManagerService,
     private theme: ThemeManagerService,
     private explorer: ExplorerService,
+    private groupsManager: SectionManagerGroupsService,
+    public section: SectionManagerContentService,
   ) {
     this.subscription = this.theme.selected$.subscribe(() => this.load())
   }
@@ -37,8 +39,8 @@ export class GroupListComponent implements OnInit {
   }
 
   private async load() {
-    await this.cm.load();
-    this.groupList = this.cm.getGroupList();
-    this.explorer.addSection(this.cm.sectionName, this.treeTemplateRef)
+    await this.section.load();
+    this.groupList = this.groupsManager.getList();
+    this.explorer.addSection(this.section.name, this.treeTemplateRef)
   }
 }

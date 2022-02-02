@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SectionNames } from '@core/core.model';
-import { db } from '@core/indexedDB';
+import { SectionNames } from '@core/core-types';
+import { browserStorageDB } from '@core/storages/browser-storage/browser-storage-db';
 import { ExportConfigs, ExportFormat } from '../export-types';
 import { ExportEditorService } from './export-editor.service';
 
@@ -28,9 +28,6 @@ export class ExportEditorComponent implements OnInit {
 
   sections: {label: string; value: SectionNames; checked: boolean}[] = [
     { label: 'TypeFace', value: 'Type Face', checked: true },
-    { label: 'Type Scale', value: 'Type Scale', checked: true },
-    { label: 'Line Height', value: 'Line Height', checked: true },
-    { label: 'Letter Spacing', value: 'Letter Spacing', checked: true },
     { label: 'Text Styles', value: 'Text Styles', checked: true },
     { label: 'Color Palette', value: 'Color Palette', checked: true },
     { label: 'Spacing', value: 'Spacing', checked: true },
@@ -51,7 +48,7 @@ export class ExportEditorComponent implements OnInit {
 
     const commonConfigsId = parseInt(this.route.snapshot.paramMap.get("id"));
 
-    this.commonConfigs = await db.exportConfigs.get(commonConfigsId);
+    this.commonConfigs = await browserStorageDB.exportConfigs.get({index: 'commonConfigsId', key: commonConfigsId})[0];
     this.prefix = this.commonConfigs.prefix;
 
     this.sections.map(section => {
@@ -137,6 +134,6 @@ export class ExportEditorComponent implements OnInit {
   }
 
   private updateCommonConfigs(value: Partial<ExportConfigs>) {
-    return db.exportConfigs.update(this.commonConfigs.id, value);
+    return browserStorageDB.exportConfigs.update(this.commonConfigs.id, value);
   }
 }

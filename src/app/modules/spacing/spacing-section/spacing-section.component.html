@@ -1,21 +1,60 @@
 <app-group-list
   [groupTemplate]="groupTemplate"
   [sectionTreeTemplate]="sectionTreeTemplate"
->
-  <ng-template #groupTemplate let-group>
-    <app-group
+></app-group-list>
+
+<ng-template #groupTemplate let-group>
+  <div class="group">
+    <app-group-header
       [group]="group"
-      [tokenPreviewTemplate]="tokenTemplate"
       [groupEditorTemplate]="editorGroupTemplate"
-      [tokenEditorTemplate]="editorTokenTemplate"
-    >
-      <ng-template #tokenTemplate let-token let-group="group">
-        <p>{{ token.modularScaleTokenValue + 'px' }}</p>
-      </ng-template>
-    </app-group>
-  </ng-template>
-  
-</app-group-list>
+    ></app-group-header>
+
+    <!-- group's body -->
+
+    <div class="tokens-view-table">
+      <div class="thead">
+        <p>Name</p>
+        <p>Size</p>
+      </div>
+      <ng-container *ngFor="let token of group.tokens; let even = even">
+        <app-token
+          [token]="token"
+          [group]="group"
+          [previewTemplate]="tokenTemplate"
+          [editorTemplate]="editorTemplate"
+          [nameVisible]="false"
+        ></app-token>
+
+        <!-- token's preview -->
+        <ng-template #tokenTemplate let-data>
+          <div
+            class="tr token-interactive"
+            [ngClass]="{ even: even }"
+            (click)="data.openEditor()"
+          >
+            <app-token-name class="name" [token]="token"></app-token-name>
+            <p class="value">
+              {{ data.token.modularScaleTokenValue + 'px' }}
+            </p>
+            <div
+              class="preview"
+              [style.width]="data.token.modularScaleTokenValue + 'px' "
+              [style.height]="data.token.modularScaleTokenValue + 'px'"></div>
+          </div>
+        </ng-template>
+
+        <!-- token's editor -->
+        <ng-template #editorTemplate let-content>
+          <app-modular-scale-editor-token
+            [content]="content"
+            title="Spacing"
+          ></app-modular-scale-editor-token>
+        </ng-template>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
 
 <ng-template #editorGroupTemplate let-group>
   <app-modular-scale-editor
@@ -23,13 +62,6 @@
     [minBase]="1"
     [maxBase]="30"
   ></app-modular-scale-editor>
-</ng-template>
-
-<ng-template #editorTokenTemplate let-content>
-  <app-modular-scale-editor-token
-    [content]="content"
-    title="Spacing"
-  ></app-modular-scale-editor-token>
 </ng-template>
 
 <ng-template #sectionTreeTemplate let-groups>

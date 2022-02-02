@@ -1,15 +1,13 @@
-import { DBToken, DBGroup, DBTables, DBSectionData } from "@core/core.model";
+import { DBSectionData } from "@core/core-types";
+import { StorageGroup, StorageSectionContentManager, StorageToken } from "@core/storages/storages-types";
 
-export type BorderDBToken = DBToken & {
+export type BorderDBToken = StorageToken & {
   color: string,
   width: number,
   style: "dotted" | "dashed" | "solid" | "double" | "groove" | "ridge" | "inset" | "outset" | "none";
 };
 
-export type BorderTokenTable = Dexie.Table<BorderDBToken, number>;
-export type BorderGroupTable = Dexie.Table<DBGroup, number>;
-
-export type BorderTables = DBTables<BorderTokenTable, BorderGroupTable>
+export type BorderManager = StorageSectionContentManager<BorderDBToken, StorageGroup>
 
 export const BORDER_DB_DATA: DBSectionData = {
   tableGroupName: 'border',

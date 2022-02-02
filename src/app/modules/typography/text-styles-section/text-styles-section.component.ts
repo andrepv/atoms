@@ -1,48 +1,44 @@
 import { Component, OnInit } from '@angular/core';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { TextStylesDBGroup, TextStylesDBToken, TEXTSTYLES_DB_DATA } from './text-styles.model';
-import { provideSectionDeps } from '@utils/provide-section-deps';
-import { getScaleValue } from '@utils/get-type-scale-value';
-
-const defaultText = 'Quick brown fox jumped over the lazy red dog'
+import { TextStylesDBGroup } from './text-styles.model';
+import { SectionViewOption } from '@core/core-types';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
+import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
+import { browserStorageDB } from '@core/storages/browser-storage/browser-storage-db';
+import SectionManagerContentService from '@core/services/section-manager-content.service';
+import TextStylesManagerTokensService from '@typography/text-styles-managers/text-styles-manager-tokens.service';
+import TextStylesManagerGroupsService from '@typography/text-styles-managers/text-styles-manager-groups.service';
 
 @Component({
   selector: 'app-text-styles-section',
   templateUrl: './text-styles-section.component.html',
   styleUrls: ['./text-styles-section.component.less'],
-  providers: [...provideSectionDeps(TEXTSTYLES_DB_DATA.tableGroupName)]
+  providers: [
+    {provide: 'storage', useValue: browserStorageDB.textStyles},
+    SectionManagerContentService,
+    {
+      useClass: TextStylesManagerTokensService,
+      provide: SectionManagerTokensService
+    },
+    {
+      useClass: TextStylesManagerGroupsService,
+      provide: SectionManagerGroupsService
+    },
+  ]
 })
 export class TextStylesSectionComponent implements OnInit {
-  constructor(private section: SectionContentManagerService<TextStylesDBToken, TextStylesDBGroup>) {}
+  readonly viewOptions: SectionViewOption<TextStylesDBGroup['view']>[] = [
+    {name: 'detailed'},
+    {name: 'default'},
+    {name: 'minimal'},
+  ];
 
-  ngOnInit() {
-    this.section.configure({
-      hooks: {
-        getDefaultToken: groupId => ({
-          text: defaultText,
-          backgroundColor: '#35343d',
-          color: '#e3e3e3',
+  isViewOptionsOpen = false;
 
-          typefaceId: 0,
-          letterSpacing: 0.01,
-          lineHeight: 1,
-          wordSpacing: 0,
-          fontWeight: '400',
-          textDecoration: 'none',
-          fontStyle: 'normal',
-          modularScaleTokenValue: this.getDefaultScaleValue(groupId),
-          modularScaleTokenIsLocked: false,
-        }),
-        getDefaultGroup: () => ({
-          scaleBase: 16,
-          scaleRatio: 1.067,
-        }),
-      }
-    })
-  }
+  constructor() {}
 
-  private getDefaultScaleValue(groupId: number) {
-    const group = this.section.getGroup(groupId);
-    return getScaleValue(group.tokens.length, group.scaleRatio, group.scaleBase);
+  ngOnInit() {}
+
+  toggleViewOptions() {
+    this.isViewOptionsOpen = !this.isViewOptionsOpen;
   }
 }

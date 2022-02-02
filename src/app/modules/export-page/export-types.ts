@@ -1,4 +1,5 @@
-import { SectionNames } from "@core/core.model";
+import { SectionNames } from "@core/core-types";
+import { BrowserStorageEntityManager } from "@core/storages/browser-storage/browser-storage-types";
 
 export type ExportFormat = "css" | "less" | "sass" | "scss" | "styl" | "js";
 export type ExportColorFormat = "hex" | "rgb" | "hsl";
@@ -26,5 +27,5 @@ export type ExportConfigsSection<T = {}> = T & {
   code: CodePreviewConfigs
 }
 
-export type ExportConfigsTable = Dexie.Table<ExportConfigs, number>;
-export type ExportConfigsSectionTable = Dexie.Table<ExportConfigsSection, number>;
+export type ExportConfigsStorage = BrowserStorageEntityManager<ExportConfigs>;
+export type ExportConfigsSectionStorage = BrowserStorageEntityManager<ExportConfigsSection>;

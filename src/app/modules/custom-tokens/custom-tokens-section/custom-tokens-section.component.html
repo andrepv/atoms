@@ -1,33 +1,58 @@
 <app-group-list
   [groupTemplate]="groupTemplate"
   [sectionTreeTemplate]="sectionTreeTemplate"
->
-  <ng-template #groupTemplate let-group>
-    <app-group
-      [group]="group"
-      [tokenTemplate]="tokenTemplate"
-      [tokenEditorTemplate]="editorTemplate"
-    >
-      <ng-template #tokenTemplate let-token let-group="group">
-        <div class="token">
-          <span>{{ token.name }} : </span>
-          <span>{{ token.value }}</span>
-          <app-token-actions
-            [token]="token"
-            [group]="group"
-            [editorTemplate]="editorTemplate"
-          ></app-token-actions>
-        </div>
+></app-group-list>
 
-      </ng-template>
+<!-- group -->
 
-      <ng-template #editorTemplate let-content>
-        <app-custom-tokens-editor [content]="content"></app-custom-tokens-editor>
-      </ng-template>
-    </app-group>
-  </ng-template>
+<ng-template #groupTemplate let-group>
+  <div class="group">
+    <app-group-header [group]="group"></app-group-header>
+  
+    <!-- group's body -->
+  
+    <div class="tokens-view-table">
+      <div class="thead">
+        <p>Name</p>
+        <p>Value</p>
+      </div>
 
-  <ng-template #sectionTreeTemplate let-groups>
-    <app-section-tree [groups]="groups"></app-section-tree>
-  </ng-template>
-</app-group-list>
+      <ng-container *ngFor="let token of group.tokens; let even = even">
+        <app-token
+          [token]="token"
+          [group]="group"
+          [previewTemplate]="tokenTemplate"
+          [editorTemplate]="editorTemplate"
+          [nameVisible]="false"
+        ></app-token>
+  
+        <!-- token's preview -->
+
+        <ng-template #tokenTemplate let-data>
+          <tr
+            class="tr token-interactive"
+            (click)="data.openEditor()"
+            [ngClass]="{ even: even }"
+          >
+            <td><app-token-name [token]="token"></app-token-name></td>
+            <td>{{ data.token.value }}</td>
+          </tr>
+        </ng-template>
+  
+        <!-- token's editor -->
+  
+        <ng-template #editorTemplate let-content>
+          <app-custom-tokens-editor
+            [content]="content"
+          ></app-custom-tokens-editor>
+        </ng-template>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<!-- tree -->
+
+<ng-template #sectionTreeTemplate let-groups>
+  <app-section-tree [groups]="groups"></app-section-tree>
+</ng-template>

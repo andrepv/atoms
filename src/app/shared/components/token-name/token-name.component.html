@@ -1,0 +1,8 @@
+<app-text-editable
+  #editableText
+  [text]="token.name"
+  (blur)="rename($event, editableText)"
+  [makeUneditableOnBlur]="false"
+>
+  <p class="overflow-ellipsis">{{ token.name }}</p>
+</app-text-editable>

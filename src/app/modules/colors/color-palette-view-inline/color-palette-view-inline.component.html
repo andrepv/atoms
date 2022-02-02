@@ -1,0 +1,31 @@
+<!-- group's body -->
+
+<ng-container *ngFor="let token of group.tokens">
+
+  <!-- tints -->
+
+  <ng-container *ngFor="let tints of token.tint.reverse()">
+    <app-color-token-view-inline
+      [token]="tints"
+      [group]="group"
+    ></app-color-token-view-inline>
+  </ng-container>
+  
+  <!-- primary color -->
+
+  <app-color-token-view-inline
+    [token]="token"
+    [group]="group"
+  ></app-color-token-view-inline>
+
+  <!-- shades -->
+
+  <ng-container *ngFor="let shades of token.shade">
+    <app-color-token-view-inline
+      [token]="shades"
+      [group]="group"
+    ></app-color-token-view-inline>
+  </ng-container>
+
+</ng-container>
+

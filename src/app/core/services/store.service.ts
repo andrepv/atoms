@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SectionNames, StoreGroup, PageName } from '@core/core.model';
+import { SectionNames, StoreGroup, PageName } from '@core/core-types';
 import { EditorService } from './editor.service';
 
 export interface StorePageContent {

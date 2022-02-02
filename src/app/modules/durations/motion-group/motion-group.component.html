@@ -1,0 +1,60 @@
+<div class="container">
+  <app-group-header
+    [group]="group"
+    [groupEditorTemplate]="editorGroupTemplate"
+    [customButtonsTemplate]="playBtnTemplate"
+  ></app-group-header>
+
+  <!-- group's body -->
+
+  <div>
+    <ng-container *ngFor="let token of group.tokens">
+      <div class="token-view-list">
+        <app-token
+          [token]="token"
+          [group]="group"
+          [previewTemplate]="tokenTemplate"
+          [editorTemplate]="editorTemplate"
+        ></app-token>
+      </div>
+
+      <!-- token's preview -->
+
+      <ng-template #tokenTemplate let-data>
+        <app-motion-token
+          (click)="data.openEditor()"
+          [duration]="data.token.modularScaleTokenValue"
+          [isActive]="isActive"
+        ></app-motion-token>
+      </ng-template>
+
+      <!-- token's editor -->
+
+      <ng-template #editorTemplate let-content>
+        <app-modular-scale-editor-token
+          [content]="content"
+          title="Duration"
+          units="ms"
+        ></app-modular-scale-editor-token>
+      </ng-template>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #editorGroupTemplate let-group>
+  <app-modular-scale-editor
+    [group]="group"
+    [minBase]="10"
+    [maxBase]="1000"
+    units="ms"
+    title="Base Time"
+  ></app-modular-scale-editor>
+</ng-template>
+
+<ng-template #playBtnTemplate>
+  <app-button-play
+    [state]="state"
+    (play)="play()"
+    (pause)="pause()"
+  ></app-button-play>
+</ng-template>

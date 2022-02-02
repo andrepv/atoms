@@ -1,4 +1,5 @@
-import { DBToken, DBGroup, DBTables, DBSectionData } from "@core/core.model";
+import { DBSectionData } from "@core/core-types";
+import { StorageToken, StorageGroup, StorageSectionContentManager } from "@core/storages/storages-types";
 
 export interface BoxShadowLayer {
   inset: 'inset' | '';
@@ -9,16 +10,13 @@ export interface BoxShadowLayer {
   color: string;
 }
 
-export type BoxShadowDBToken = DBToken & {
+export type BoxShadowDBToken = StorageToken & {
   blockColor: string;
   backgroundColor: string;
   layers: BoxShadowLayer[];
 };
 
-export type BoxShadowTokenTable = Dexie.Table<BoxShadowDBToken, number>;
-export type BoxShadowGroupTable = Dexie.Table<DBGroup, number>;
-
-export type BoxShadowTables = DBTables<BoxShadowTokenTable, BoxShadowGroupTable>
+export type BoxShadowManager = StorageSectionContentManager<BoxShadowDBToken, StorageGroup>
 
 export const BOX_SHADOW_DB_DATA: DBSectionData = {
   tableGroupName: 'boxShadow',

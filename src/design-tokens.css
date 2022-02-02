@@ -1,0 +1,70 @@
+:root {
+  /* colors */
+
+  --color-primary: #6948cb;
+  --color-primary-10: #ae9ce3;
+  --color-primary-20: #8e71d8;
+  --color-primary-30: #52379f;
+  --color-primary-40: #3c2874;
+  
+  --color-bg-10: #393a3b;
+  --color-bg-15: #2a2c2e;
+  --color-bg-20: #242628;
+  --color-bg-30:  #1e2022;
+  --color-bg-40: #181b1d;
+  --color-bg: #131516;
+
+  --color-contrast-lower: #363636;
+  --color-contrast-low: #5a5a5a;
+  --color-contrast-medium: #818181;
+  --color-contrast-high: #ababab;
+  --color-contrast-higher: #D6D6D6;
+
+  --color-border: var(--color-bg-30);
+
+  /* typography */
+
+  --font-primary: Jost, Arial, sans-serif;
+  --font-secondary: Roboto Mono, Consolas,  Arial, sans-serif;
+
+  --text-base-size: 1em;
+  --text-xxs: 0.6875em;
+  --text-xs: 0.8125em;
+  --text-sm: 0.875em;
+  --text-md: 1.1875em;
+  --text-lg: 1.4375em;
+  --text-xl: 1.75em;
+  --text-xxl: 2.0625em;
+  --text-xxxl: 2.5em;
+
+  --letter-spacing: 0.1em;
+
+  /* spacing */
+
+  --space-xxxs: 0.3125em;
+  --space-xxs: 0.5em;
+  --space-xs: 0.625em;
+  --space-sm: 0.8125em;
+  --space-md: 1em;
+  --space-lg: 1.25em;
+  --space-xl: 1.5625em;
+  --space-xxl: 1.9375em;
+
+  /* borders */
+
+  --border-radius-sm: 5px;
+  --border-radius-md: 9px;
+
+  /* icons */
+
+  --icon-base: 1em;
+  --icon-xxxs: 0.5em;
+  --icon-xxs:  0.75em;
+  --icon-xs:   1.125em;
+  --icon-sm:   1.4375em;
+  --icon-md:   2em;
+  --icon-lg:   3em;
+  --icon-xl:   4em;
+  --icon-xxl:  6em;
+  --icon-xxxl: 8em;
+}

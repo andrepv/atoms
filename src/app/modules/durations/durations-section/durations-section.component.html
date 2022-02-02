@@ -1,38 +1,15 @@
 <app-group-list
   [groupTemplate]="groupTemplate"
   [sectionTreeTemplate]="sectionTreeTemplate"
->
-  <ng-template #groupTemplate let-group>
-    <app-group
-      [group]="group"
-      [tokenPreviewTemplate]="tokenTemplate"
-      [groupEditorTemplate]="editorGroupTemplate"
-      [tokenEditorTemplate]="editorTokenTemplate"
-    >
-      <ng-template #tokenTemplate let-token let-group="group">
-        <p>{{ token.modularScaleTokenValue + 'ms' }}</p>
-      </ng-template>
-    </app-group>
-  </ng-template>
-</app-group-list>
+></app-group-list>
 
-<ng-template #editorGroupTemplate let-group>
-  <app-modular-scale-editor
-    [group]="group"
-    [minBase]="10"
-    [maxBase]="1000"
-    units="ms"
-    title="Base Time"
-  ></app-modular-scale-editor>
+<!-- group -->
+
+<ng-template #groupTemplate let-group>
+  <app-motion-group [group]="group"></app-motion-group>
 </ng-template>
 
-<ng-template #editorTokenTemplate let-content>
-  <app-modular-scale-editor-token
-    [content]="content"
-    title="Duration"
-    units="ms"
-  ></app-modular-scale-editor-token>
-</ng-template>
+<!-- tree -->
 
 <ng-template #sectionTreeTemplate let-groups>
   <app-section-tree [groups]="groups"></app-section-tree>

@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { TextEditableComponent } from '../text-editable/text-editable.component';
-import { StoreToken, StoreGroup } from '@core/core.model';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { StoreToken, StoreGroup } from '@core/core-types';
+import { EditorService } from '@core/services/editor.service';
+import SectionManagerContentService from '@core/services/section-manager-content.service';
 
 @Component({
   selector: 'app-token',
@@ -9,25 +9,26 @@ import { StoreToken, StoreGroup } from '@core/core.model';
   styleUrls: ['./token.component.less']
 })
 export class TokenComponent implements OnInit {
+  @ViewChild('editor') editorTemplateRef: TemplateRef<any>;
+
   @Input() token: StoreToken;
   @Input() group: StoreGroup;
   @Input() previewTemplate: TemplateRef<any>;
   @Input() editorTemplate: TemplateRef<any> = null;
+  @Input() nameVisible = true;
 
   constructor(
-    private section: SectionContentManagerService,
+    private editor: EditorService,
+    private section: SectionManagerContentService,
   ) {}
 
   ngOnInit() {}
 
-
-  async rename(value: string, editableText: TextEditableComponent) {
-    editableText.isLoading = true;
-    try {
-      await this.section.renameToken(value, this.token)
-    } finally {
-      editableText.isLoading = false;
-      editableText.makeUneditable();
-    }
+  openEditor = () => {
+    this.editor.enable(
+      this.section.name,
+      {group: this.group, token: this.token},
+      this.editorTemplateRef
+    )
   }
 }

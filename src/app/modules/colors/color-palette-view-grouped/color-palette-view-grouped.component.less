@@ -1,0 +1,17 @@
+.container {
+  height: 140px;
+}
+
+.color-primary {
+  position: relative;
+  flex-grow: 1;
+  &:hover .hex {
+    opacity: 1;
+  }
+}
+
+.hex {
+  text-transform: uppercase;
+  opacity: 0;
+  transition: all 0.3s;
+}

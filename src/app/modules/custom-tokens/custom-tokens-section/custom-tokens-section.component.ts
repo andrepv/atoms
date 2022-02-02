@@ -1,27 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { DBGroup } from '@core/core.model';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { provideSectionDeps } from '@utils/provide-section-deps';
-import { CustomTokensDBToken, CUSTOM_TOKENS_DB_DATA } from '../custom-tokens.model';
+import SectionManagerContentService from '@core/services/section-manager-content.service';
+import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
+import { browserStorageDB } from '@core/storages/browser-storage/browser-storage-db';
+import CustomTokensManagerTokensService from '../custom-tokens-managers/custom-tokens-managers-tokens.service';
 
 @Component({
   selector: 'app-custom-tokens-section',
   templateUrl: './custom-tokens-section.component.html',
   styleUrls: ['./custom-tokens-section.component.less'],
-  providers: [...provideSectionDeps(CUSTOM_TOKENS_DB_DATA.tableGroupName)]
+  providers: [
+    {provide: 'storage', useValue: browserStorageDB.customTokens},
+    SectionManagerContentService,
+    SectionManagerGroupsService,
+    {
+      useClass: CustomTokensManagerTokensService,
+      provide: SectionManagerTokensService
+    },
+  ]
 })
 export class CustomTokensSectionComponent implements OnInit {
+  constructor() { }
 
-  constructor(private section: SectionContentManagerService<CustomTokensDBToken, DBGroup>) { }
-
-  ngOnInit() {
-    this.section.configure({
-      hooks: {
-        getDefaultToken: () => ({
-          value: 'empty'
-        })
-      },
-    })
-  }
-
+  ngOnInit() {}
 }

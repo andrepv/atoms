@@ -1,9 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { getScaleValue } from '@utils';
-import { DBToken, StoreGroup } from '@core/core.model';
+import { StoreGroup } from '@core/core-types';
 import { ModularScaleGroup, ModularScalePreset, ModularScaleToken } from './modular-scale-types';
 import { MODULAR_SCALE_PRESETS } from './modular-scale-presets';
+import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
+import { StorageToken } from '@core/storages/storages-types';
 
 @Component({
   selector: 'app-modular-scale-editor',
@@ -11,7 +13,7 @@ import { MODULAR_SCALE_PRESETS } from './modular-scale-presets';
   styleUrls: ['./modular-scale-editor.component.less']
 })
 export class ModularScaleEditorComponent implements OnInit {
-  @Input() group: StoreGroup<any, DBToken & ModularScaleToken> & ModularScaleGroup;
+  @Input() group: StoreGroup<any, StorageToken & ModularScaleToken> & ModularScaleGroup;
   @Input() minBase = 4;
   @Input() maxBase = 100;
   @Input() units = 'px';
@@ -22,7 +24,10 @@ export class ModularScaleEditorComponent implements OnInit {
   ratio: ModularScalePreset;
   base: number;
 
-  constructor(private section: SectionContentManagerService<DBToken & ModularScaleToken>) {}
+  constructor(
+    private groups: SectionManagerGroupsService,
+    private tokens: SectionManagerTokensService
+  ) {}
 
   ngOnInit() {
     this.base = this.group.scaleBase;
@@ -33,14 +38,12 @@ export class ModularScaleEditorComponent implements OnInit {
     this.group.tokens.forEach((token, index) => {
       if (!token.modularScaleTokenIsLocked) {
         const value = getScaleValue(index, this.ratio.value, this.base);
-        this.section.updateToken(token, this.group, {
-          modularScaleTokenValue: value
-        });
+        this.tokens.update(token, {modularScaleTokenValue: value});
       }
     })
 
-    this.section.updateGroup(this.group, {scaleRatio: this.ratio.value})
-    this.section.updateGroup(this.group, {base: this.base})
+    this.groups.update(this.group, {scaleRatio: this.ratio.value})
+    this.groups.update(this.group, {base: this.base})
   }
 
   setCustomRatio(value: number) {
@@ -76,5 +79,4 @@ export class ModularScaleEditorComponent implements OnInit {
       }
     });
   }
-
 }

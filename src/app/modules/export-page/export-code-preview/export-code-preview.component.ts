@@ -1,7 +1,6 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { DBToken } from '@core/core.model';
-import { SectionTables } from '@core/section-tables';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
+import { StorageToken } from '@core/storages/storages-types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CodeFormatter } from '../export-code-formatter/code-formatter';
@@ -16,12 +15,12 @@ import { ExportEditorService } from '../export-editor/export-editor.service';
 export class ExportCodePreviewComponent implements OnInit {
   codePreview: string[] = [];
 
-  private groups: {groupName: string, tokens: DBToken[]}[] = [];
+  private groups: {groupName: string, tokens: StorageToken[]}[] = [];
   private formatter: CodeFormatter = this.getCodeFormatter();
   private destroy$ = new Subject();
 
   constructor(
-    @Inject('tables') private sectionTables: SectionTables<any, any>,
+    @Inject('tables') private sectionTables: any,
     private editor: ExportEditorService,
     private editorSection: ExportEditorSectionService,
     private themeManager: ThemeManagerService,
@@ -112,7 +111,7 @@ export class ExportCodePreviewComponent implements OnInit {
     this.editor.setSectionCode(this.sectionTables.name, this.codePreview.join(''));
   }
 
-  private async createCodeLines(source: DBToken[], container: string[]) {
+  private async createCodeLines(source: StorageToken[], container: string[]) {
     for (let token of source) {
       const varValue = await this.getVariableValue(token);
       const codeLine = this.formatter.formatToken({
@@ -126,7 +125,7 @@ export class ExportCodePreviewComponent implements OnInit {
     }
   }
 
-  private async getVariableValue(token: DBToken) {
+  private async getVariableValue(token: StorageToken) {
     const value = await this.editorSection.getTokenValue(token);
     return this.formatter.handleVariableValue(value);
   }

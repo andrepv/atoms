@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { EditableContent, DBGroup, DBToken } from '@core/core.model';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
+import { EditableContent } from '@core/core-types';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
+import { StorageGroup, StorageToken } from '@core/storages/storages-types';
 import { ModularScaleToken } from '../modular-scale-editor/modular-scale-types';
 
 @Component({
@@ -9,21 +10,21 @@ import { ModularScaleToken } from '../modular-scale-editor/modular-scale-types';
   styleUrls: ['./modular-scale-editor-token.component.less']
 })
 export class ModularScaleEditorTokenComponent implements OnInit {
-  @Input() content: EditableContent<DBToken & ModularScaleToken, DBGroup>;
+  @Input() content: EditableContent<StorageToken & ModularScaleToken, StorageGroup>;
   @Input() minValue = 1;
   @Input() maxValue = Infinity;
   @Input() title: string;
   @Input() units = 'px';
 
-  constructor(public section: SectionContentManagerService<DBToken & ModularScaleToken>) {}
+  constructor(private tokens: SectionManagerTokensService) {}
 
   ngOnInit() {}
 
   setValue(value: number) {
-    this.section.updateToken(this.content.token, this.content.group, {modularScaleTokenValue: value});
+    this.tokens.update(this.content.token, {modularScaleTokenValue: value});
 
     if (!this.content.token.modularScaleTokenIsLocked) {
-      this.section.updateToken(this.content.token, this.content.group, {modularScaleTokenIsLocked: true});
+      this.tokens.update(this.content.token, {modularScaleTokenIsLocked: true})
     }
   }
 }

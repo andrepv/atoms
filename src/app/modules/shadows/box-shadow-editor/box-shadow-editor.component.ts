@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DBGroup, EditableContent } from '@core/core.model';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
+import { EditableContent } from '@core/core-types';
 import { BoxShadowDBToken } from '../box-shadow-section/box-shadow-section.model';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
+import { StorageGroup } from '@core/storages/storages-types';
 
 @Component({
   selector: 'app-box-shadow-editor',
@@ -10,7 +11,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
   styleUrls: ['./box-shadow-editor.component.less'],
 })
 export class BoxShadowEditorComponent implements OnInit {
-  @Input() content: EditableContent<BoxShadowDBToken, DBGroup>;
+  @Input() content: EditableContent<BoxShadowDBToken, StorageGroup>;
 
   get token() {
     return this.content.token;
@@ -20,7 +21,7 @@ export class BoxShadowEditorComponent implements OnInit {
     return this.content.group;
   }
 
-  constructor(private section: SectionContentManagerService) {}
+  constructor(private tokens: SectionManagerTokensService<BoxShadowDBToken, StorageGroup>) {}
 
   ngOnInit() {}
 
@@ -29,9 +30,7 @@ export class BoxShadowEditorComponent implements OnInit {
   }
 
   saveBlockColor() {
-    this.section.updateToken(this.token, this.group, {
-      blockColor: this.token.blockColor
-    });
+    this.tokens.update(this.token, {blockColor: this.token.blockColor});
   }
 
   changeBackgroundColor(color: string) {
@@ -39,9 +38,7 @@ export class BoxShadowEditorComponent implements OnInit {
   }
 
   saveBackgroundColor() {
-    this.section.updateToken(this.token, this.group, {
-      backgroundColor: this.token.backgroundColor
-    });
+    this.tokens.update(this.token, {backgroundColor: this.token.backgroundColor});
   }
 
   addLayer() {
@@ -54,16 +51,12 @@ export class BoxShadowEditorComponent implements OnInit {
       inset: ''
     })
 
-    this.section.updateToken(this.token, this.group, {
-      layers: this.token.layers
-    });
+    this.tokens.update(this.token, {layers: this.token.layers});
   }
 
   dropLayer(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.token.layers, event.previousIndex, event.currentIndex);
 
-    this.section.updateToken(this.token, this.group, {
-      layers: this.token.layers
-    });
+    this.tokens.update(this.token, {layers: this.token.layers});
   }
 }

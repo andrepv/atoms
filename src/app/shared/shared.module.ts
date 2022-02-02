@@ -25,7 +25,6 @@ import { GroupHeaderComponent } from './components/group-header/group-header.com
 import { GroupListComponent } from './components/group-list/group-list.component';
 import { TextEditableComponent } from './components/text-editable/text-editable.component';
 import { TokenComponent } from './components/token/token.component';
-import { GroupComponent } from './components/group/group.component';
 import { ModularScaleEditorComponent } from './components/modular-scale-editor/modular-scale-editor.component';
 import { TokensSectionSelectComponent } from './components/tokens-section-select/tokens-section-select.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
@@ -43,11 +42,12 @@ import { ColorContrastCheckerComponent } from './components/color-contrast-check
 import { SelectSplitItemComponent } from './components/select-split-item/select-split-item.component';
 import { EditorCardComponent } from './components/editor-card/editor-card.component';
 import { EditorBlockComponent } from './components/editor-block/editor-block.component';
+import { GroupViewListComponent } from './components/group-view-list/group-view-list.component';
+import { TokenNameComponent } from './components/token-name/token-name.component';
 
 
 @NgModule({
   declarations: [
-    GroupComponent,
     GroupHeaderComponent,
     GroupListComponent,
     GroupListHeaderComponent,
@@ -68,6 +68,8 @@ import { EditorBlockComponent } from './components/editor-block/editor-block.com
     SelectSplitItemComponent,
     EditorCardComponent,
     EditorBlockComponent,
+    GroupViewListComponent,
+    TokenNameComponent,
   ],
   imports: [
     CommonModule,
@@ -97,7 +99,7 @@ import { EditorBlockComponent } from './components/editor-block/editor-block.com
   exports: [
     FormsModule,
 
-    GroupComponent,
+    GroupHeaderComponent,
     GroupListComponent,
     TokenComponent,
     TokensSectionSelectComponent,
@@ -114,6 +116,8 @@ import { EditorBlockComponent } from './components/editor-block/editor-block.com
     SelectSplitItemComponent,
     EditorCardComponent,
     EditorBlockComponent,
+    TokenNameComponent,
+    GroupViewListComponent,
 
     NzToolTipModule,
     NzDropDownModule,

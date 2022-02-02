@@ -1,4 +1,5 @@
-import { DBToken, DBGroup, DBTables, DBSectionData } from "@core/core.model";
+import { DBSectionData } from "@core/core-types";
+import { StorageGroup, StorageSectionContentManager, StorageToken } from "@core/storages/storages-types";
 
 export type FontType = 'google-fonts' | 'custom-font';
 export type FontCategory = "sans-serif" | "serif" | "display" | "handwriting" | "monospace";
@@ -16,12 +17,9 @@ export interface GoogleFont extends FontModel {
 }
 
 export type TypefaceTokenValue = CustomFont | GoogleFont;
-export type TypefaceDBToken = DBToken & TypefaceTokenValue;
+export type TypefaceDBToken = StorageToken & TypefaceTokenValue;
 
-export type TypefaceTokenTable = Dexie.Table<TypefaceDBToken, number>;
-export type TypefaceGroupTable = Dexie.Table<DBGroup, number>;
-
-export type TypefaceTables = DBTables<TypefaceTokenTable, TypefaceGroupTable>
+export type TypefaceManager = StorageSectionContentManager<TypefaceDBToken, StorageGroup>
 
 export const TYPEFACE_DB_DATA: DBSectionData = {
   tableGroupName: 'typeface',

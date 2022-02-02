@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ColorPaletteDBToken } from '@colors/color-palette-section/color-palette.model';
-import { StoreToken } from '@core/core.model';
+import { StoreToken } from '@core/core-types';
 import { EditorService } from '@core/services/editor.service';
 
 @Component({

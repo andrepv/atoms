@@ -1,36 +1,65 @@
 <header class="group-header">
-  <app-text-editable
-    #editableText
-    [text]="group.name"
-    (blur)="renameGroup($event, editableText)"
-    [makeUneditableOnBlur]="false"
-  >
-    <h3>{{ group.name }}</h3>
-  </app-text-editable>
+  <!-- <i nz-icon nzType="down" nzTheme="outline"></i> -->
+  <div class="group-name">
+    <app-text-editable
+      #editableText
+      [text]="group.name"
+      (blur)="renameGroup($event, editableText)"
+      [makeUneditableOnBlur]="false"
+    >
+      <h4 class="overflow-ellipsis">{{ group.name }}</h4>
+    </app-text-editable>
+  </div>
 
   <div>
+    <i 
+      nz-tooltip nzTooltipTitle="add token" nzTooltipPlacement="bottom"
+      class="icon-btn" nz-icon nzType="plus" nzTheme="outline" 
+      (click)="addToken()"
+    ></i>
+    <div class="space-horizontal space-horizontal-xxxs"></div>
+
     <i
+      nz-tooltip nzTooltipTitle="duplicate group" nzTooltipPlacement="bottom"
+      class="icon-btn" nz-icon nzType="block" nzTheme="outline"
+      (click)="duplicateGroup()"
+    ></i>
+    <div class="space-horizontal space-horizontal-xxxs"></div>
+
+    <i
+      nz-tooltip nzTooltipTitle="edit group" nzTooltipPlacement="bottom" 
+      class="icon-btn"
       *ngIf="groupEditorTemplate"
       nz-icon nzType="edit"
       nzTheme="outline"
       (click)="openEditor(editor)"
     >
-    <ng-template #editor>
-      <ng-container *ngTemplateOutlet="groupEditorTemplate; context: {$implicit: group}"></ng-container>
-    </ng-template>
+      <ng-template #editor>
+        <ng-container *ngTemplateOutlet="groupEditorTemplate; context: {$implicit: group}"></ng-container>
+      </ng-template>
     </i>
-  
+    <div class="space-horizontal space-horizontal-xxxs"></div>
+
     <i
+      nz-tooltip nzTooltipTitle="delete group" nzTooltipPlacement="bottom" 
+      class="icon-btn" nz-icon nzType="delete" nzTheme="outline"
+      (click)="deleteGroup()"
+    ></i>
+    <div class="space-horizontal space-horizontal-xxxs"></div>
+    
+    <ng-container *ngIf="customButtonsTemplate">
+      <ng-container *ngTemplateOutlet="customButtonsTemplate; context: {$implicit: group}"></ng-container>
+    </ng-container>
+
+    <i
+      class="icon-btn"
       nz-icon nzType="more" nzTheme="outline"
       nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
     >
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu>
-          <li nz-menu-item (click)="deleteGroup()">Delete</li>
-          <li nz-menu-item (click)="editableText.makeEditable()">Rename</li>
           <li *ngIf="canUseClipboard()" nz-menu-item (click)="pastToken()">Past Token</li>
           <li *ngIf="canUseClipboard()" nz-menu-item (click)="copyGroup()">Copy Group</li>
-          <li nz-menu-item (click)="duplicateGroup()">Duplicate</li>
         </ul>
       </nz-dropdown-menu>
     </i>

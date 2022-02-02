@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SectionNames } from '@core/core.model';
+import { SectionNames } from '@core/core-types';
 import { Subject } from 'rxjs';
 import { ExportConfigs, ExportFormat } from '../export-types';
 

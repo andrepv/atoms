@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { EditableContent, DBGroup } from '@core/core.model';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
+import { EditableContent } from '@core/core-types';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
+import { StorageGroup } from '@core/storages/storages-types';
 import { CustomTokensDBToken } from '../custom-tokens.model';
 
 @Component({
@@ -9,7 +10,7 @@ import { CustomTokensDBToken } from '../custom-tokens.model';
   styleUrls: ['./custom-tokens-editor.component.less']
 })
 export class CustomTokensEditorComponent implements OnInit {
-  @Input() content: EditableContent<CustomTokensDBToken, DBGroup>;
+  @Input() content: EditableContent<CustomTokensDBToken, StorageGroup>;
   name: string;
   value: string;
 
@@ -21,7 +22,7 @@ export class CustomTokensEditorComponent implements OnInit {
     return this.content.group;
   }
 
-  constructor(private section: SectionContentManagerService<CustomTokensDBToken, DBGroup>) {}
+  constructor(private tokens: SectionManagerTokensService<CustomTokensDBToken, StorageGroup>) {}
 
   ngOnInit() {
     this.name = this.token.name;
@@ -31,9 +32,7 @@ export class CustomTokensEditorComponent implements OnInit {
   save(propName: string) {
     const inputValue = this[propName].trim();
     if (inputValue.length && inputValue !== this.token[propName]) {
-      this.section.updateToken(this.token, this.group, {
-        [propName]: inputValue
-      })
+      this.tokens.update(this.token, {[propName]: inputValue})
     } else {
       this[propName] = this.token[propName];
     }

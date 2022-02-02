@@ -1,4 +1,5 @@
-import { DBToken, DBGroup, DBTables, DBSectionData, StoreToken } from "@core/core.model";
+import { DBSectionData, StoreToken } from "@core/core-types";
+import { StorageGroup, StorageSectionContentManager, StorageToken } from "@core/storages/storages-types";
 
 export type Variant = "tint" | "shade";
 
@@ -7,7 +8,7 @@ export type VariantConfig = {
   saturation: number;
 }
 
-export type ColorPaletteDBToken = DBToken & {
+export type ColorPaletteDBToken = StorageToken & {
   color: string;
   isPrimary: boolean;
   primaryColorId?: number;
@@ -16,15 +17,16 @@ export type ColorPaletteDBToken = DBToken & {
   shadeConfigs: VariantConfig;
 };
 
+export type ColorPaletteDBGroup = StorageGroup & {
+  view: 'grouped' | 'default' | 'inline';
+}
+
 export type ColorPaletteStoreToken = StoreToken<ColorPaletteDBToken> & {
   tint?: ColorPaletteDBToken[];
   shade?: ColorPaletteDBToken[];
 }
 
-export type ColorPaletteTokenTable = Dexie.Table<ColorPaletteDBToken, number>;
-export type ColorPaletteGroupTable = Dexie.Table<DBGroup, number>;
-
-export type ColorPaletteTables = DBTables<ColorPaletteTokenTable, ColorPaletteGroupTable>
+export type ColorPaletteManager = StorageSectionContentManager<ColorPaletteDBToken, StorageGroup>
 
 export const COLORPALETTE_DB_DATA: DBSectionData = {
   tableGroupName: 'colorPalette',

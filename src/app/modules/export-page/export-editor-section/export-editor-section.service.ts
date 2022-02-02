@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DBToken } from '@core/core.model';
+import { StorageToken } from '@core/storages/storages-types';
 import { BehaviorSubject } from 'rxjs';
 import { standardFormatters } from '../export-code-formatter/standard-formatters';
 import { CodePreviewConfigs } from '../export-types';
@@ -18,7 +18,7 @@ export class ExportEditorSectionService {
 
   constructor() {}
 
-  getTokenValue: (token: DBToken) => string | Promise<any> = () => '';
+  getTokenValue: (token: StorageToken) => string | Promise<any> = () => '';
 
   codeFormatters = standardFormatters;
 }

@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { StoreToken, StoreGroup } from '@core/core.model';
+import { StoreToken, StoreGroup } from '@core/core-types';
+import SectionManagerContentService from '@core/services/section-manager-content.service';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { ClipboardService } from '@core/services/clipboard.service';
 import { EditorService } from '@core/services/editor.service';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { TextEditableComponent } from '../text-editable/text-editable.component';
 
 @Component({
   selector: 'app-token-actions',
@@ -14,35 +14,34 @@ export class TokenActionsComponent implements OnInit {
   @Input() token: StoreToken;
   @Input() group: StoreGroup;
   @Input() editorTemplate: TemplateRef<any> = null;
-  @Input() editableText: TextEditableComponent;
 
   constructor(
     private editor: EditorService,
     private clipboard: ClipboardService,
-    private section: SectionContentManagerService,
+    private tokenManager: SectionManagerTokensService,
+    private section: SectionManagerContentService,
   ) {}
 
   ngOnInit() {}
 
   openEditor(editorTemplateRef: TemplateRef<any>) {
     this.editor.enable(
-      this.section.sectionName,
+      this.section.name,
       {group: this.group, token: this.token},
       editorTemplateRef
     )
   }
 
   delete() {
-    this.section.deleteToken(this.token, this.group)
+    this.tokenManager.delete(this.token, this.group)
   }
 
   duplicate() {
-    this.clipboard.duplicateToken(this.token, this.group)
+    this.tokenManager.duplicate(this.token, this.group)
   }
 
   async copy() {
-    const token = await this.section.tokenTable.get(this.token.id);
-    this.clipboard.copy(token, 'token')
+    this.tokenManager.copy(this.token)
   }
   
   canCopy() {

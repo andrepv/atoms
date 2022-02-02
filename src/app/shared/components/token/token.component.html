@@ -1,22 +1,19 @@
-<div [id]="'token-' + token.id">
-  <div class="token">
-    <ng-container *ngTemplateOutlet="previewTemplate; context: {$implicit: token, group: group}"></ng-container>
+<div [id]="'token-' + token.id" class="wrapper">
+  <ng-container *ngTemplateOutlet="previewTemplate; context: {$implicit: {token: token, group: group, openEditor: openEditor}}"></ng-container>
+  
+  <app-token-actions
+    [token]="token"
+    [group]="group"
+    [editorTemplate]="editorTemplate"
+  ></app-token-actions>
 
-    <app-token-actions
-      [token]="token"
-      [group]="group"
-      [editorTemplate]="editorTemplate"
-      [editableText]="editableText"
-    ></app-token-actions>
-  </div>
-
-  <app-text-editable
-    #editableText
-    [text]="token.name"
-    (blur)="rename($event, editableText)"
-    [makeUneditableOnBlur]="false"
-  >
-    <p class="token-name">{{ token.name }}</p>
-  </app-text-editable>
+  <ng-container *ngIf="nameVisible">
+    <div class="space-vertical space-vertical-xs"></div>
+    <app-token-name [token]="token"></app-token-name>
+  </ng-container>
 
 </div>
+
+<ng-template #editor>
+  <ng-container *ngTemplateOutlet="editorTemplate; context: {$implicit: {token: token, group: group}}"></ng-container>
+</ng-template>

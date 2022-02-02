@@ -1,31 +1,34 @@
-<app-editor-block title="Color Contrast">
-  <app-color-contrast-checker
-    [backgroundColor]="backgroundColor"
-    [textColor]="color"
-  ></app-color-contrast-checker>
-</app-editor-block>
+<ng-container *ngIf="group.view !== 'minimal'">
+  <app-editor-block title="Color Contrast">
+    <app-color-contrast-checker
+      [backgroundColor]="backgroundColor"
+      [textColor]="color"
+    ></app-color-contrast-checker>
+  </app-editor-block>
 
-<div nz-row [nzGutter]="20" nzAlign="center">
-  <div nz-col nzSpan="12">
-    <app-editor-block title="Text Color">
-      <app-color-picker
-        [color]="token.color"
-        (colorChange)="changeTextColor($event)"
-        (colorSave)="updateTextStyles({color: color}, true)"
-      ></app-color-picker>
-    </app-editor-block>
+  <div nz-row [nzGutter]="20" nzAlign="center">
+    <div nz-col nzSpan="12">
+      <app-editor-block title="Text Color">
+        <app-color-picker
+          [color]="token.color"
+          (colorChange)="changeTextColor($event)"
+          (colorSave)="updateTextStyles({color: color}, true)"
+        ></app-color-picker>
+      </app-editor-block>
+    </div>
+  
+    <div nz-col nzSpan="12">
+      <app-editor-block title="Background Color">
+        <app-color-picker
+          [color]="token.backgroundColor"
+          (colorChange)="changeBackgroundColor($event)"
+          (colorSave)="updateTextStyles({backgroundColor: backgroundColor}, true)"
+        ></app-color-picker>
+      </app-editor-block>
+    </div>
   </div>
+</ng-container>
 
-  <div nz-col nzSpan="12">
-    <app-editor-block title="Background Color">
-      <app-color-picker
-        [color]="token.backgroundColor"
-        (colorChange)="changeBackgroundColor($event)"
-        (colorSave)="updateTextStyles({backgroundColor: backgroundColor}, true)"
-      ></app-color-picker>
-    </app-editor-block>
-  </div>
-</div>
 
 <app-editor-block title="Type Face">
   <app-tokens-section-select

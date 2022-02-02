@@ -1,0 +1,21 @@
+.item {
+  background: #1e2022;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+
+  &.active {
+    border: 1px solid #6948cb;
+  }
+
+  &:hover {
+    border: 1px solid #6948cb;
+  }
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-column-gap: 15px;
+}

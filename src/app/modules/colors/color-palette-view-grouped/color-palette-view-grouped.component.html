@@ -1,0 +1,60 @@
+<!-- group's body -->
+
+<ng-container *ngFor="let token of group.tokens">
+
+  <app-token
+    [token]="token"
+    [group]="group"
+    [previewTemplate]="tokenPreviewTemplate"
+    [editorTemplate]="editorTemplate"
+  ></app-token>
+
+  <!-- token's editor -->
+
+  <ng-template #editorTemplate let-content>
+    <app-color-palette-editor [content]="content"></app-color-palette-editor>
+  </ng-template>
+
+  <!-- token's preview -->
+
+  <ng-template #tokenPreviewTemplate let-data>
+
+    <div class="flex-column container">
+      <!-- tints -->
+  
+      <div class="align-center">
+        <ng-container *ngFor="let tints of data.token.tint.reverse()">
+          <app-color-token-view-inline
+            [token]="tints"
+            [group]="data.group"
+            tooltipPosition="bottom"
+          ></app-color-token-view-inline>
+        </ng-container>
+      </div>
+  
+      <!-- primary color -->
+  
+      <div
+        class="color-primary token-interactive"
+        [style.background]="data.token.color"
+        (click)="data.openEditor()"
+      >
+        <h4
+          [style.color]="getHexCodeColor(data.token)"
+          class="hex absolute-center"
+        >{{ data.token.color }}</h4>
+      </div>
+  
+      <!-- shades -->
+  
+      <div class="align-center">
+        <ng-container *ngFor="let shades of data.token.shade">
+          <app-color-token-view-inline
+            [token]="shades"
+            [group]="data.group"
+          ></app-color-token-view-inline>
+        </ng-container>
+      </div> 
+    </div>
+  </ng-template>
+</ng-container>

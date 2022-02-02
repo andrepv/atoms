@@ -1,0 +1,35 @@
+:host {
+  flex-grow: 1;
+  transition: all 0.3s;
+  position: relative;
+  &:hover {
+    flex-grow: 4;
+
+    .hex {
+      opacity: 1;
+    }
+
+    app-token-actions {
+      visibility: visible;
+      opacity: 1;
+      transform: scale(1);
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+
+  .preview {
+    cursor: pointer;
+    height: 30px;
+    position: relative;
+  }
+
+  .hex {
+    position: absolute;
+    line-height: 0;
+    transition: all 0.1s;
+    opacity: 0;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+}

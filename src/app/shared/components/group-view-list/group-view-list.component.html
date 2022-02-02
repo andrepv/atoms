@@ -1,0 +1,8 @@
+<div class="list">
+  <div
+    class="item"
+    *ngFor="let option of options"
+    [class.active]="option.name === group.view"
+    (click)="setGroupView(option.name)"
+  >{{ option.name }}</div>
+</div>

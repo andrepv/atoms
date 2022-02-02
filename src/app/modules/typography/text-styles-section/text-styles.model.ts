@@ -1,7 +1,8 @@
-import { DBSectionData, DBTables, DBGroup, DBToken } from "@core/core.model";
+import { DBSectionData } from "@core/core-types";
+import { StorageGroup, StorageSectionContentManager, StorageToken } from "@core/storages/storages-types";
 import { ModularScaleGroup, ModularScaleToken } from "@shared/components/modular-scale-editor/modular-scale-types";
 
-export type TextStylesDBToken = DBToken & ModularScaleToken & {
+export type TextStylesDBToken = StorageToken & ModularScaleToken & {
   text: string;
   backgroundColor: string,
   color: string,
@@ -14,12 +15,11 @@ export type TextStylesDBToken = DBToken & ModularScaleToken & {
   fontStyle: 'italic' | 'normal';
 }
 
-export type TextStylesDBGroup = DBGroup & ModularScaleGroup
+export type TextStylesDBGroup = StorageGroup & ModularScaleGroup & {
+  view: 'detailed' | 'default' | 'minimal';
+}
 
-export type TextStylesTokenTable = Dexie.Table<TextStylesDBToken, number>;
-export type TextStylesGroupTable = Dexie.Table<TextStylesDBGroup, number>;
-
-export type TextStylesTables = DBTables<TextStylesTokenTable, TextStylesGroupTable>
+export type TextStylesManager = StorageSectionContentManager<TextStylesDBToken, StorageGroup>;
 
 export const TEXTSTYLES_DB_DATA: DBSectionData = {
   tableGroupName: 'textStyles',

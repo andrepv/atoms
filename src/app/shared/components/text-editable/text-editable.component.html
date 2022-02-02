@@ -1,5 +1,10 @@
 <ng-container *ngIf="!isEditable">
-  <ng-content></ng-content>
+  <span class="text-container align-center">
+    <div class="text-content">
+      <ng-content></ng-content>
+    </div>
+    <i class="icon-btn edit-icon" nz-icon nzType="edit" nzTheme="outline" (click)="makeEditable($event)"></i>
+  </span>
 </ng-container>
 
 <ng-container *ngIf="isEditable">

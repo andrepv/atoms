@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { DBGroup, EditableContent } from '@core/core.model';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
+import { EditableContent } from '@core/core-types';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
+import { StorageGroup } from '@core/storages/storages-types';
 import { BoxShadowLayer, BoxShadowDBToken } from '../box-shadow-section/box-shadow-section.model';
 
 type NumericPropertyNames = keyof Omit<BoxShadowLayer, 'inset' | 'color'>;
@@ -11,7 +12,7 @@ type NumericPropertyNames = keyof Omit<BoxShadowLayer, 'inset' | 'color'>;
   styleUrls: ['./box-shadow-layer.component.less']
 })
 export class BoxShadowLayerComponent implements OnInit {
-  @Input() content: EditableContent<BoxShadowDBToken, DBGroup>;
+  @Input() content: EditableContent<BoxShadowDBToken, StorageGroup>;
   @Input() layer: BoxShadowLayer;
   @Input() index: number;
 
@@ -38,9 +39,7 @@ export class BoxShadowLayerComponent implements OnInit {
 
   isHidden = false;
 
-  constructor(
-    private section: SectionContentManagerService<BoxShadowDBToken, DBGroup>,
-  ) {}
+  constructor(private tokens: SectionManagerTokensService<BoxShadowDBToken, StorageGroup>) {}
   
   ngOnInit() {
     this.offsetX = parseInt(this.layer.offsetX);
@@ -64,9 +63,7 @@ export class BoxShadowLayerComponent implements OnInit {
   }
   
   saveValue() {
-    this.section.updateToken(this.token, this.group, {
-      layers: this.token.layers
-    });
+    this.tokens.update(this.token, {layers: this.token.layers});
   }
 
   deleteLayer() {

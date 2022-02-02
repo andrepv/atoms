@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 
 @Component({
   selector: 'app-section-tree',
@@ -11,7 +10,7 @@ export class SectionTreeComponent implements OnInit {
   @Input() leafTemplate: TemplateRef<any>;
   hiddenNodes = [];
 
-  constructor(public section: SectionContentManagerService) {}
+  constructor() {}
 
   ngOnInit() {}
 

@@ -1,34 +1,36 @@
 import { Component, OnInit } from '@angular/core';
-import { DBGroup, StoreGroup, StoreToken } from '@core/core.model';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { provideSectionDeps } from '@utils/provide-section-deps';
-import { BorderRadiusDBToken, BORDER_RADIUS_DB_DATA } from './border-radius.model';
+import { StoreToken } from '@core/core-types';
+import SectionManagerContentService from '@core/services/section-manager-content.service';
+import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
+import { browserStorageDB } from '@core/storages/browser-storage/browser-storage-db';
+import { StorageGroup } from '@core/storages/storages-types';
+import BorderRadiusManagerTokensService from '../border-radius-managers/border-radius-manager-tokens.service';
+import { BorderRadiusDBToken } from './border-radius.model';
 
 @Component({
   selector: 'app-border-radius-section',
   templateUrl: './border-radius-section.component.html',
   styleUrls: ['./border-radius-section.component.less'],
-  providers: [...provideSectionDeps(BORDER_RADIUS_DB_DATA.tableGroupName)]
+  providers: [
+    {provide: 'storage', useValue: browserStorageDB.borderRadius},
+    SectionManagerContentService,
+    SectionManagerGroupsService,
+    {
+      useClass: BorderRadiusManagerTokensService,
+      provide: SectionManagerTokensService
+    },
+  ]
 })
 export class BorderRadiusSectionComponent implements OnInit {
+  constructor(private tokens: SectionManagerTokensService<BorderRadiusDBToken, StorageGroup>) {}
 
-  constructor(private section: SectionContentManagerService<BorderRadiusDBToken, DBGroup>) {}
-
-  ngOnInit() {
-    this.section.configure({
-      hooks: {
-        getDefaultToken: () => ({
-          radius: 0,
-        })
-      },
-    })
-  }
+  ngOnInit() {}
 
   setTokenValue(
     radius: BorderRadiusDBToken['radius'],
     token: StoreToken<BorderRadiusDBToken>,
-    group: StoreGroup<DBGroup, BorderRadiusDBToken>
   ) {
-    this.section.updateToken(token, group, {radius});
+    this.tokens.update(token, {radius});
   }
 }

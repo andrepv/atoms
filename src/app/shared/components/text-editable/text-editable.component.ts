@@ -19,7 +19,8 @@ export class TextEditableComponent implements OnInit {
  
   ngOnInit() {}
 
-  makeEditable() {
+  makeEditable(event: Event) {
+    event.stopPropagation()
     this.isEditable = true;
     this.inputValue = this.text;
   }

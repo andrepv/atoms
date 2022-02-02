@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import SectionManagerContentService from '@core/services/section-manager-content.service';
+import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
 import { ClipboardService } from '@core/services/clipboard.service';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 
 @Component({
   selector: 'app-group-list-header',
@@ -11,25 +12,21 @@ export class GroupListHeaderComponent implements OnInit {
   sectionName: string;
 
   constructor(
-    private section: SectionContentManagerService,
     private clipboard: ClipboardService,
+    private groups: SectionManagerGroupsService,
+    private section: SectionManagerContentService,
   ) {}
 
   ngOnInit() {
-    this.sectionName = this.section.sectionName;
+    this.sectionName = this.section.name;
   }
 
   addGroup() {
-    const group = {
-      ...this.section.createGroup(),
-      ...this.section.hooks.getDefaultGroup()
-    }
-
-    this.section.addGroup(group);
+    this.groups.add();
   }
 
   pastGroup() {
-    this.clipboard.pastGroup();
+    this.groups.past();
   }
 
   canUseClipboard() {

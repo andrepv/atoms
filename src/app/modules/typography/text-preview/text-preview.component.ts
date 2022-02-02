@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { StoreService } from '@core/services/store.service';
-import { TextStylesDBToken } from '@typography/text-styles-section/text-styles.model';
-
-const defaultFontFamily = 'Arial';
+import { TextStylesDBGroup, TextStylesDBToken } from '@typography/text-styles-section/text-styles.model';
+import TextStyles from './text-styles';
 
 @Component({
   selector: 'app-text-preview',
@@ -11,42 +10,13 @@ const defaultFontFamily = 'Arial';
 })
 export class TextPreviewComponent implements OnInit {
   @Input() token: TextStylesDBToken;
+  @Input() group: TextStylesDBGroup;
 
-  get blockStyles() {
-    return {
-      color: this.token.color,
-      backgroundColor: this.token.backgroundColor
-    }
-  }
-
-  get textStyles() {
-    return {
-      fontFamily: this.getFontFamily(),
-      letterSpacing: `${this.token.letterSpacing}em`,
-      lineHeight: this.token.lineHeight,
-      fontSize: `${this.token.modularScaleTokenValue}px`,
-      fontWeight: this.token.fontWeight,
-      wordSpacing: `${this.token.wordSpacing}em`,
-      textDecoration: this.token.textDecoration,
-      fontStyle: this.token.fontStyle,
-    }
-  }
+  styles: TextStyles;
 
   constructor(private store: StoreService) {}
 
-  getFontFamily() {
-    if (!this.token.typefaceId) {
-      return defaultFontFamily;
-    }
-
-    const typeface = this.store.getSectionToken('Type Face', this.token.typefaceId);
-
-    if (typeface) {
-      return typeface.family
-    }
-
-    return defaultFontFamily;
+  ngOnInit() {
+    this.styles = new TextStyles(this.token, this.store);
   }
-
-  ngOnInit() {}
 }

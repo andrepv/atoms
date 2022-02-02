@@ -4,12 +4,10 @@
   <ng-container *ngTemplateOutlet="sectionTreeTemplate; context: {$implicit: groupList}"></ng-container>
 </ng-template>
 
-<ng-container *ngIf="!isLoading">
-  <div *ngIf="!cm.isLoading">
-    <div *ngFor="let group of groupList">
-      <ng-container *ngTemplateOutlet="groupTemplate; context: {$implicit: group}"></ng-container>
-    </div>
+<div *ngIf="!section.isLoading">
+  <div *ngFor="let group of groupList">
+    <ng-container *ngTemplateOutlet="groupTemplate; context: {$implicit: group}"></ng-container>
   </div>
-</ng-container>
+</div>
 
-<div *ngIf="isLoading || cm.isLoading">Loading</div>
+<div *ngIf="section.isLoading">Loading</div>

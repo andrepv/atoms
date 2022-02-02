@@ -1,11 +1,12 @@
 import { Injectable, TemplateRef } from '@angular/core';
-import { DBGroup, DBToken, EditableContent, SectionNames } from '@core/core.model';
+import { EditableContent, SectionNames } from '@core/core-types';
+import { StorageToken, StorageGroup } from '@core/storages/storages-types';
 import { ThemeManagerService } from './theme-manager.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EditorService<T extends DBToken = any, G extends DBGroup = any> {
+export class EditorService<T extends StorageToken = any, G extends StorageGroup = any> {
 
   editorTemplateRef: TemplateRef<any>;
   section: SectionNames | '' = '';

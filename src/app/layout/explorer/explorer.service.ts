@@ -1,5 +1,5 @@
 import { Injectable, TemplateRef } from '@angular/core';
-import { SectionNames } from '@core/core.model';
+import { SectionNames } from '@core/core-types';
 import { StoreService } from '@core/services/store.service';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
 

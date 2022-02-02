@@ -1,13 +1,11 @@
-import { DBToken, DBGroup, DBTables, DBSectionData } from "@core/core.model";
+import { DBSectionData } from "@core/core-types";
+import { StorageToken, StorageGroup, StorageSectionContentManager } from "@core/storages/storages-types";
 import { ModularScaleToken, ModularScaleGroup } from "@shared/components/modular-scale-editor/modular-scale-types";
 
-export type DurationsDBToken = DBToken & ModularScaleToken;
-export type DurationsDBGroup = DBGroup & ModularScaleGroup;
+export type DurationsDBToken = StorageToken & ModularScaleToken;
+export type DurationsDBGroup = StorageGroup & ModularScaleGroup;
 
-export type DurationsTokenTable = Dexie.Table<DurationsDBToken, number>;
-export type DurationsGroupTable = Dexie.Table<DurationsDBGroup, number>;
-
-export type DurationsTables = DBTables<DurationsTokenTable, DurationsGroupTable>
+export type DurationsManager = StorageSectionContentManager<DurationsDBToken, DurationsDBGroup>
 
 export const DURATIONS_DB_DATA: DBSectionData = {
   tableGroupName: 'durations',

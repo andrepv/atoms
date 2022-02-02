@@ -1,9 +1,11 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { EditorService } from '@core/services/editor.service';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
 import { TextEditableComponent } from '../text-editable/text-editable.component';
-import { StoreGroup } from '@core/core.model';
+import { StoreGroup } from '@core/core-types';
 import { ClipboardService } from '@core/services/clipboard.service';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
+import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
+import SectionManagerContentService from '@core/services/section-manager-content.service';
 
 @Component({
   selector: 'app-group-header',
@@ -13,18 +15,21 @@ import { ClipboardService } from '@core/services/clipboard.service';
 export class GroupHeaderComponent implements OnInit {
   @Input() group: StoreGroup;
   @Input() groupEditorTemplate: TemplateRef<any>;
+  @Input() customButtonsTemplate: TemplateRef<any>;
 
   constructor(
     private editor: EditorService,
-    private section: SectionContentManagerService,
     private clipboard: ClipboardService,
+    private tokensManager: SectionManagerTokensService,
+    private groupsManager: SectionManagerGroupsService,
+    private section: SectionManagerContentService,
   ) {}
 
   ngOnInit() {}
 
   openEditor(editorTemplateRef: TemplateRef<any>) {
     this.editor.enable(
-      this.section.sectionName,
+      this.section.name,
       {group: this.group},
       editorTemplateRef
     )
@@ -33,7 +38,11 @@ export class GroupHeaderComponent implements OnInit {
   async renameGroup(value: string, editableText: TextEditableComponent) {
     editableText.isLoading = true;
     try {
-      await this.section.renameGroup(value, this.group);
+      if (this.groupsManager) {
+        await this.groupsManager.rename(value, this.group);
+      } else {
+        await this.groupsManager.rename(value, this.group);
+      }
     } finally {
       editableText.isLoading = false;
       editableText.makeUneditable();
@@ -41,24 +50,23 @@ export class GroupHeaderComponent implements OnInit {
   }
 
   deleteGroup() {
-    this.section.deleteGroup(this.group);
+    this.groupsManager.delete(this.group);
   }
 
   pastToken() {
-    this.clipboard.pastToken(this.group)
+    this.tokensManager.past(this.group)
+  }
+
+  addToken() {
+    this.tokensManager.addToGroup(this.group);
   }
 
   async copyGroup() {
-    const group = await this.section.groupTable.get(this.group.id)
-    const tokens = await this.section.tokenTable.where("groupId").equals(group.id).toArray()
-
-    group.tokens = tokens;
-
-    this.clipboard.copy(group, 'group')
+    this.groupsManager.copy(this.group)
   }
 
   duplicateGroup() {
-    this.clipboard.duplicateGroup(this.group);
+    this.groupsManager.duplicate(this.group);
   }
 
   canUseClipboard() {

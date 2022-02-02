@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ThemeModel, ThemeTable } from '@core/core.model';
-import { BehaviorSubject, from, of, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, finalize, switchMap, tap } from 'rxjs/operators';
-import { db } from '../indexedDB';
+import { ThemeModel, ThemeTable } from '@core/core-types';
+import { browserStorageDB } from '@core/storages/browser-storage/browser-storage-db';
+import { BehaviorSubject, of, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class ThemeManagerService {
-  table: ThemeTable;
+  storage: ThemeTable;
   isLoading = false;
   
   selected$ = new Subject<ThemeModel>();
@@ -36,7 +36,7 @@ export class ThemeManagerService {
   private readonly DEFAULT_THEME_NAME = "new theme";
 
   constructor() {
-    this.table = db.theme;
+    this.storage = browserStorageDB.theme;
 
     this.searchChange$.pipe(
       debounceTime(500),
@@ -47,7 +47,7 @@ export class ThemeManagerService {
   }
 
   async loadList() {
-    this.list = await this.getCollection().toArray();
+    this.list = await this.storage.loadList({orderBy: 'id', reverse: true})
 
     if (this.list.length) {
       const theme = await this.getSelectedTheme();
@@ -81,7 +81,7 @@ export class ThemeManagerService {
 
   async rename(name: string) {
     const { id } = this.selected;
-    await this.table.update(id, {name});
+    await this.storage.update(id, {name});
 
     this.list = this.list.map(prevTheme => (
       prevTheme.id === id ? {id, name} : prevTheme
@@ -90,8 +90,8 @@ export class ThemeManagerService {
   }
 
   async delete(id: number) {
-    await db.deleteData(id);
-    await this.table.delete(id);
+    await this.clear();
+    await this.storage.delete(id);
   
     const themeIndex = this.list.findIndex(theme => theme.id === id);
     const nextTheme = this.list[themeIndex + 1];
@@ -120,19 +120,30 @@ export class ThemeManagerService {
     if (!this.canSearch) {
       return of();
     }
+
     this.isLoading = true;
 
-    const collection = this.getCollection().filter(theme => (
+    const collection = this.list.filter(theme => (
       new RegExp(value, 'i').test(theme.name)
     ));
 
-    return from(collection.toArray()).pipe(
-      tap(list => {
-        this.list = list;
-        this.updateSelected();
-      }),
-      finalize(() => this.isLoading = false)
-    )
+    this.isLoading = false;
+
+    return collection;
+  }
+
+  async clear() {
+    for (let section of browserStorageDB.sections) {
+      await section.clear(this.selected.id)
+    }
+  }
+
+  async isTokenNameUnique(name: string) {
+    for (let section of browserStorageDB.sections) {
+      const isUnique = await section.tokens.isNameUnique(name, this.selected.id);
+      if (!isUnique) return false;
+    }
+    return true;
   }
 
   private async getSelectedTheme() {
@@ -146,17 +157,13 @@ export class ThemeManagerService {
       }
     }
 
-    const theme = await this.table.get(parseInt(themeId));
-    if (theme) return theme
+    const themes = await this.storage.get({index: 'id', key: parseInt(themeId)});
+    if (themes.length) return themes[0];
   }
 
   private async addToDB(name = this.DEFAULT_THEME_NAME) {
-    const id = await this.table.add({name});
+    const id = await this.storage.add({name});
     return {id, name} as ThemeModel;
-  }
-
-  private getCollection() {
-    return this.table.orderBy('id').reverse();
   }
 
   // without updating the selected theme, nz-select won't be able to mark an object of a new list as active

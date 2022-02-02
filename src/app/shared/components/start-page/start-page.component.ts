@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DBGroup, DBToken } from '@core/core.model';
-import { db } from '@core/indexedDB';
+
 import { ThemeManagerService } from '@core/services/theme-manager.service';
+import { browserStorageDB } from '@core/storages/browser-storage/browser-storage-db';
+import { StorageGroup, StorageToken } from '@core/storages/storages-types';
 
 @Component({
   selector: 'app-start-page',
@@ -176,9 +177,9 @@ export class StartPageComponent implements OnInit {
       }
     }
 
-    for (let tables of db.sections) {
-      const groups: DBGroup[] = data[tables.name]?.groups;
-      const tokens: DBToken[] = data[tables.name]?.tokens;
+    for (let tables of browserStorageDB.sections) {
+      const groups: StorageGroup[] = data[tables.name]?.groups;
+      const tokens: StorageToken[] = data[tables.name]?.tokens;
 
       if (groups) {
         for (let group of groups) {

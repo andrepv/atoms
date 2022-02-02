@@ -1,44 +1,36 @@
 import { Component, OnInit } from '@angular/core';
-import { SectionContentManagerService } from '@core/services/section-content-manager.service';
-import { getScaleValue } from '@utils';
-import { SpacingDBGroup, SpacingDBToken, SPACING_DB_DATA } from '@spacing/spacing.model';
-import { provideSectionDeps } from '@utils/provide-section-deps';
-import { StoreToken, StoreGroup } from '@core/core.model';
+import { SpacingDBGroup, SpacingDBToken } from '@spacing/spacing.model';
+import { StoreToken } from '@core/core-types';
+import { browserStorageDB } from '@core/storages/browser-storage/browser-storage-db';
+import ModularScaleManagerTokensService from '@shared/components/modular-scale-managers/modular-scale-manager-tokens.service';
+import SectionManagerContentService from '@core/services/section-manager-content.service';
+import ModularScaleManagerGroupsService from '@shared/components/modular-scale-managers/modular-scale-manager-groups.service';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
+import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
 
 @Component({
   selector: 'app-spacing-section',
   templateUrl: './spacing-section.component.html',
   styleUrls: ['./spacing-section.component.less'],
-  providers: [...provideSectionDeps(SPACING_DB_DATA.tableGroupName)]
+  providers: [
+    {provide: 'storage', useValue: browserStorageDB.spacing},
+    SectionManagerContentService,
+    {
+      useClass: ModularScaleManagerTokensService,
+      provide: SectionManagerTokensService
+    },
+    {
+      useClass: ModularScaleManagerGroupsService,
+      provide: SectionManagerGroupsService
+    },
+  ]
 })
 export class SpacingSectionComponent implements OnInit {
-  get sectionName() {
-    return this.section.sectionName;
-  }
+  constructor(private tokens: SectionManagerTokensService<SpacingDBToken, SpacingDBGroup>) {}
 
-  constructor(private section: SectionContentManagerService<SpacingDBToken, SpacingDBGroup>) {}
+  ngOnInit() {}
 
-  ngOnInit() {
-    this.section.configure({
-      hooks: {
-        getDefaultToken: groupId => ({
-          modularScaleTokenValue: this.getDefaultTokenValue(groupId),
-          modularScaleTokenIsLocked: false,
-        }),
-        getDefaultGroup: () => ({
-          scaleBase: 16,
-          scaleRatio: 1.067,
-        }),
-      },
-    })
-  }
-
-  private getDefaultTokenValue(groupId: number) {
-    const group = this.section.getGroup(groupId);
-    return getScaleValue(group.tokens.length, group.scaleRatio, group.scaleBase);
-  }
-
-  setTokenValue(value: SpacingDBToken['modularScaleTokenValue'], token: StoreToken, group: StoreGroup<SpacingDBGroup>) {
-    this.section.updateToken(token, group, {modularScaleTokenValue: value});
+  setTokenValue(value: SpacingDBToken['modularScaleTokenValue'], token: StoreToken) {
+    this.tokens.update(token, {modularScaleTokenValue: value});
   }
 }
