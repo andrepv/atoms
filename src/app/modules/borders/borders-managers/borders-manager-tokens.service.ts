@@ -13,4 +13,9 @@ export default class BordersManagerTokensService extends SectionManagerTokensSer
       style: "solid",
     }
   }
+
+  getStyleValue(token: BorderDBToken) {
+    const {width, style, color} = token;
+    return `${width}px ${style} ${color}`;
+  }
 }

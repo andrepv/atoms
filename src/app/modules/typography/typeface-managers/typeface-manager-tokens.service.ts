@@ -12,4 +12,8 @@ export default class TypefaceManagerTokensService extends SectionManagerTokensSe
       data: '',
     }
   }
+
+  getStyleValue(token: TypefaceDBToken) {
+    return token.family
+  }
 }

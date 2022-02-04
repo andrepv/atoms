@@ -11,4 +11,8 @@ export default class CustomTokensManagerTokensService extends SectionManagerToke
       value: 'empty',
     }
   }
+
+  getStyleValue(token: CustomTokensDBToken) {
+    return token.value;
+  }
 }

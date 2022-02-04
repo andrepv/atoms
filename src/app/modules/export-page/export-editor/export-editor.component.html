@@ -1,73 +1,15 @@
-<div class="container" *ngIf="!isLoading">
-  <div class="global-configs">
-    <div class="global-configs-container">
-      <div class="global-configs-wrapper">
-        <label for="format">Format</label>
-        <div class="global-configs-item">
-          <div id="format">
-            <nz-select
-              [ngModel]="commonConfigs.format"
-              (ngModelChange)="setFormat($event)"
-            >
-              <nz-option 
-                *ngFor="let option of formats"
-                [nzValue]="option.value"
-                [nzLabel]="option.label"
-              ></nz-option>
-            </nz-select>
-          </div>
-        </div>
-    
-        <label for="prefix">Prefix</label>
-        <div class="global-configs-item">
-          <div id="prefix">
-            <input nz-input [(ngModel)]="prefix" (blur)="setPrefix()" />
-          </div>
-        </div>
-  
-        <span>Show Comments</span>
-        <nz-switch
-          [(ngModel)]="commonConfigs.showComments"
-          (ngModelChange)="toggleComments($event)"
-        ></nz-switch>
-      </div>
-      <div class="checkbox-group">
-        <nz-checkbox-group
-          [(ngModel)]="sections"
-          (ngModelChange)="toggleSection($event)"
-        ></nz-checkbox-group>
-      </div>
-
-      <div class="global-configs-wrapper">
-      <label for="fileName">FileName</label>
-        <div class="global-configs-item">
-          <div id="fileName">
-            <app-input-file-name
-              [fileName]="commonConfigs.fileName"
-              [format]="commonConfigs.format"
-              (saveFileName)="saveFileName($event)"
-            ></app-input-file-name>
-          </div>
-        </div>
-      </div>
-
-      <div class="download" (click)="download()" *ngIf="canDownload()">Download All</div>
-    </div>
-
-  </div>
+<div class="container" *ngIf="!editor.isLoading">
+  <app-export-editor-shared-actions-bar></app-export-editor-shared-actions-bar>
   
   <div class="sections">
     <app-export-editor-text-styles></app-export-editor-text-styles>
-    <app-export-editor-line-height></app-export-editor-line-height>
+    <app-export-editor-typeface></app-export-editor-typeface>
+    <app-export-editor-spacing></app-export-editor-spacing>
+    <app-export-editor-box-shadow></app-export-editor-box-shadow>
     <app-export-editor-colors></app-export-editor-colors>
     <app-export-editor-borders></app-export-editor-borders>
     <app-export-editor-border-radius></app-export-editor-border-radius>
-    <app-export-editor-box-shadow></app-export-editor-box-shadow>
-    <app-export-editor-spacing></app-export-editor-spacing>
-    <app-export-editor-letter-spacing></app-export-editor-letter-spacing>
-    <app-export-editor-typeface></app-export-editor-typeface>
-    <app-export-editor-typescale></app-export-editor-typescale>
-    <app-export-editor-custom-tokens></app-export-editor-custom-tokens>
+    <app-export-editor-custom-tokens></app-export-editor-custom-tokens> 
     <app-export-editor-durations></app-export-editor-durations>
   </div>
 </div>

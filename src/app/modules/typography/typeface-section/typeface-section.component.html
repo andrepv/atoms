@@ -23,11 +23,11 @@
         <ng-template #tokenTemplate let-data>
           <div
             class="token-card token-interactive"
-            [style.font-family]="data.token.family"
+            [style.font-family]="tokens.getStyleValue(data.token)"
             (click)="data.openEditor()"
           >
             <h1>Ag</h1>
-            <p>{{ token.family }}</p>
+            <p>{{ tokens.getStyleValue(data.token) }}</p>
           </div>
         </ng-template>
       

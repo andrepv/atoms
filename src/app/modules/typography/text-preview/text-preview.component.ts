@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { StoreService } from '@core/services/store.service';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { TextStylesDBGroup, TextStylesDBToken } from '@typography/text-styles-section/text-styles.model';
-import TextStyles from './text-styles';
+import TextStyles from '../text-styles-managers/text-styles';
 
 @Component({
   selector: 'app-text-preview',
@@ -14,9 +14,9 @@ export class TextPreviewComponent implements OnInit {
 
   styles: TextStyles;
 
-  constructor(private store: StoreService) {}
+  constructor(public tokens: SectionManagerTokensService) {}
 
   ngOnInit() {
-    this.styles = new TextStyles(this.token, this.store);
+    this.styles = this.tokens.getStyleValue(this.token);
   }
 }

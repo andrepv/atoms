@@ -11,4 +11,8 @@ export default class BorderRadiusManagerTokensService extends SectionManagerToke
       radius: 0
     }
   }
+
+  getStyleValue(token: BorderRadiusDBToken) {
+    return `${token.radius}px`;
+  }
 }

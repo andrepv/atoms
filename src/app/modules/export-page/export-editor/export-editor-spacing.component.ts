@@ -1,20 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { db } from '@core/indexedDB';
-import { SpacingDBToken } from '@spacing/spacing.model';
+import { Component, OnInit } from '@angular/core';
+import spacingSectionProviders from '@spacing/spacing-section/spacing-section-providers';
 import { ExportEditorSectionService } from '../export-editor-section/export-editor-section.service';
 
 @Component({
   selector: 'app-export-editor-spacing',
   template: '<app-export-editor-section></app-export-editor-section>',
   providers: [
-    {provide: 'tables', useValue: db.spacing},
+    ...spacingSectionProviders,
     ExportEditorSectionService
   ]
 })
 export class ExportEditorSpacingComponent implements OnInit {
-  constructor(private editorSection: ExportEditorSectionService) {}
+  constructor() {}
 
-  ngOnInit() {
-    this.editorSection.getTokenValue = (token: SpacingDBToken) => `${token.value}px`;
-  }
+  ngOnInit() {}
 }

@@ -35,12 +35,12 @@
           >
             <app-token-name class="name" [token]="token"></app-token-name>
             <p class="value">
-              {{ data.token.modularScaleTokenValue + 'px' }}
+              {{ tokens.getStyleValue(data.token) }}
             </p>
             <div
               class="preview"
-              [style.width]="data.token.modularScaleTokenValue + 'px' "
-              [style.height]="data.token.modularScaleTokenValue + 'px'"></div>
+              [style.width]="tokens.getStyleValue(data.token)"
+              [style.height]="tokens.getStyleValue(data.token)"></div>
           </div>
         </ng-template>
 

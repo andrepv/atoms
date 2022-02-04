@@ -1,13 +1,13 @@
-<div class="section" *ngIf="!isLoading">
+<div class="section" *ngIf="!editorSection.isLoading">
   <header class="section-header">
-    <h1>{{ sectionName }}</h1>
+    <h1>{{ editorSection.sectionName }}</h1>
     <div class="section-actions">
-      <div *ngIf="configs.code.colorFormat">
+      <div *ngIf="editorSection.configs.code.colorFormat">
         <label for="colorFormat"></label>
         <div id="colorFormat">
           <nz-select
-          [ngModel]="configs.code.colorFormat"
-          (ngModelChange)="setCodePreviewConfigs('colorFormat', $event)"
+          [ngModel]="editorSection.configs.code.colorFormat"
+          (ngModelChange)="editorSection.setCodePreviewConfigs('colorFormat', $event)"
         >
           <nz-option
             *ngFor="let option of colorFormats"
@@ -18,11 +18,11 @@
         </div>
       </div>
 
-      <div *ngIf="configs.code.useReferences !== undefined">
+      <div *ngIf="editorSection.configs.code.useReferences !== undefined">
         <span>Use References</span>
         <nz-switch
-          [(ngModel)]="configs.code.useReferences"
-          (ngModelChange)="setCodePreviewConfigs('useReferences', $event)"
+          [(ngModel)]="editorSection.configs.code.useReferences"
+          (ngModelChange)="editorSection.setCodePreviewConfigs('useReferences', $event)"
         ></nz-switch>
       </div>
     </div>
@@ -33,14 +33,14 @@
       <div>
         <label for="fileName">FileName</label>
         <app-input-file-name
-          [fileName]="configs.fileName"
+          [fileName]="editorSection.configs.fileName"
           [format]="editor.format"
-          (saveFileName)="saveFileName($event)"
+          (saveFileName)="editorSection.saveFileName($event)"
         ></app-input-file-name>
       </div>
       <div>
-        <p (click)="copyCode()">Copy</p>
-        <p (click)="download()">Download</p>
+        <p (click)="editorSection.copyCode()">Copy</p>
+        <p (click)="editorSection.download()">Download</p>
       </div>
     </div>
 

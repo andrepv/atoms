@@ -1,3 +1,4 @@
+import TextStyles from "@typography/text-styles-managers/text-styles";
 import { CodeFormatter } from "../code-formatter";
 
 export class CodeFormatterCSSTextStyles extends CodeFormatter {
@@ -13,7 +14,7 @@ export class CodeFormatterCSSTextStyles extends CodeFormatter {
     return `.${varName} {${varValue}\n}`
   }
 
-  handleVariableValue(styles: any) {
+  async handleVariableValue(styles: TextStyles) {
     return Object.entries(styles).reduce((previousValue, [name, value]) => {
       const styleProperty = `\n   ${name}: ${value};`;
       return previousValue + styleProperty;

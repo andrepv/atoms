@@ -2,18 +2,18 @@
 
 <div class="list">
   <div class="list-wrapper">
-    <div *ngFor="let config of configurationList" class="group">
+    <div *ngFor="let config of exportConfigs.list" class="group">
       <app-text-editable
         #editableText
         [text]="config.name"
-        (blur)="renameConfiguration($event, config)"
+        (blur)="exportConfigs.rename($event, config)"
       >
         <p (click)="editableText.makeEditable()">{{ config.name }}</p>
       </app-text-editable>
       <p>{{ config.format }}</p>
-      <p (click)="deleteConfiguration(config.id)">delete</p>
+      <p (click)="exportConfigs.delete(config.id)">delete</p>
       <a [routerLink]="['./', '' + config.id]">Edit</a>
     </div>
   </div>
-  <div (click)="addConfiguration()">Add Configuration</div>
+  <div (click)="exportConfigs.add()">Add Configuration</div>
 </div>

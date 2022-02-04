@@ -1,4 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import SectionManagerContentService from '@core/services/section-manager-content.service';
+import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
+import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
 import { StorageToken } from '@core/storages/storages-types';
 import { Subject } from 'rxjs';
@@ -20,7 +23,10 @@ export class ExportCodePreviewComponent implements OnInit {
   private destroy$ = new Subject();
 
   constructor(
-    @Inject('tables') private sectionTables: any,
+    private groupsManager: SectionManagerGroupsService,
+    private sectionManager: SectionManagerContentService,
+    private tokensManager: SectionManagerTokensService,
+
     private editor: ExportEditorService,
     private editorSection: ExportEditorSectionService,
     private themeManager: ThemeManagerService,
@@ -50,15 +56,9 @@ export class ExportCodePreviewComponent implements OnInit {
   }
 
   private async load() {
-    const tokens = await this.sectionTables.tokenTable
-    .where("themeId")
-    .equals(this.themeManager.selected.id)
-    .toArray();
-    
-    const tokenGroups = await this.sectionTables.groupTable
-    .where("themeId")
-    .equals(this.themeManager.selected.id)
-    .toArray();
+    const tokens = await this.tokensManager.load({index: "themeId", key: this.themeManager.selected.id})
+
+    const tokenGroups = await this.groupsManager.load({index: "themeId", key: this.themeManager.selected.id});
 
     const groupsLookupTable = {};
 
@@ -80,7 +80,7 @@ export class ExportCodePreviewComponent implements OnInit {
     const codePreview = [];
 
     if (this.editor.showComments) {
-      const sectionName = this.sectionTables.name.toLowerCase();
+      const sectionName = this.sectionManager.name.toLowerCase();
       codePreview.push(`${this.formatter.getComment(sectionName)}\n\n`);
     }
 
@@ -108,7 +108,7 @@ export class ExportCodePreviewComponent implements OnInit {
 
     this.codePreview = codePreview;
 
-    this.editor.setSectionCode(this.sectionTables.name, this.codePreview.join(''));
+    this.editor.setSectionCode(this.sectionManager.name, this.codePreview.join(''));
   }
 
   private async createCodeLines(source: StorageToken[], container: string[]) {
@@ -126,7 +126,7 @@ export class ExportCodePreviewComponent implements OnInit {
   }
 
   private async getVariableValue(token: StorageToken) {
-    const value = await this.editorSection.getTokenValue(token);
+    const value = await this.tokensManager.getStyleValue(token);
     return this.formatter.handleVariableValue(value);
   }
 

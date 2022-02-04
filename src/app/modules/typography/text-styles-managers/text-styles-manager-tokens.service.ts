@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
-import { StoreGroup } from "@core/core-types";
+import { StoreGroup, StoreToken } from "@core/core-types";
 import ModularScaleManagerTokensService from "@shared/components/modular-scale-managers/modular-scale-manager-tokens.service";
+import TextStyles from "@typography/text-styles-managers/text-styles";
 import { TextStylesDBToken, TextStylesDBGroup } from "@typography/text-styles-section/text-styles.model";
+import { TypefaceDBToken } from "@typography/typeface-section/typeface.model";
 
 @Injectable()
 export default class TextStylesManagerTokensService extends ModularScaleManagerTokensService<TextStylesDBToken, TextStylesDBGroup> {
@@ -21,5 +23,25 @@ export default class TextStylesManagerTokensService extends ModularScaleManagerT
       fontStyle: 'normal',
       ...super.getDefaultValue(group)
     }
+  }
+
+  getStyleValue(token: TextStylesDBToken): TextStyles | Promise<TextStyles> {
+    return new TextStyles(token, this);
+  }
+
+  getTypeface(token: TextStylesDBToken): string | Promise<string> {
+    const defaultFontFamily = 'Arial';
+
+    if (!token.typefaceId) {
+      return defaultFontFamily;
+    }
+
+    const typeface: StoreToken<TypefaceDBToken> | false = this.store.getSectionToken('Type Face', token.typefaceId);
+
+    if (typeface) {
+      return typeface.family
+    }
+
+    return defaultFontFamily;
   }
 }

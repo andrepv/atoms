@@ -21,4 +21,19 @@ export default class BoxShadowManagerTokensService extends SectionManagerTokensS
       layers: [this.DEFAULT_LAYER_VALUE]
     }
   }
+
+  getStyleValue(token: BoxShadowDBToken) {
+    return token.layers.reduce((accumulator, layers, index) => {
+      let values = Object.values(layers);
+
+      if (!values[values.length - 1]) {
+        values.pop();
+      }
+
+      let comma = index + 1 !== token.layers.length ? ',' : '';
+      accumulator += values.join(' ');
+
+      return accumulator + comma
+    }, "")
+  }
 }

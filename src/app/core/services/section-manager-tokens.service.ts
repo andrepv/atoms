@@ -60,6 +60,10 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
     return {}
   }
 
+  getStyleValue(token: T): any {
+    return "";
+  }
+
   create(
     group: StoreGroup<G, T>,
     value = this.getDefaultValue(group),

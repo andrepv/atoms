@@ -1,12 +1,10 @@
-import { StoreService } from "@core/services/store.service";
 import { TextStylesDBToken } from "@typography/text-styles-section/text-styles.model";
-
-const defaultFontFamily = 'Arial';
+import TextStylesManagerTokensService from "./text-styles-manager-tokens.service";
 
 export default class TextStyles {
   constructor(
     private token: TextStylesDBToken,
-    private store: StoreService,
+    private tokensManager: TextStylesManagerTokensService,
   ) {}
 
   get block() {
@@ -30,7 +28,7 @@ export default class TextStyles {
   }
 
   get fontFamily() {
-    return this.getFontFamily()
+    return this.tokensManager.getTypeface(this.token)
   }
 
   get letterSpacing() {
@@ -59,19 +57,5 @@ export default class TextStyles {
 
   get fontStyle() {
     return this.token.fontStyle;
-  }
-
-  getFontFamily() {
-    if (!this.token.typefaceId) {
-      return defaultFontFamily;
-    }
-
-    const typeface = this.store.getSectionToken('Type Face', this.token.typefaceId);
-
-    if (typeface) {
-      return typeface.family
-    }
-
-    return defaultFontFamily;
   }
 }

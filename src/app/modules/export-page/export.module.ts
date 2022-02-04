@@ -17,6 +17,7 @@ import { ExportEditorSpacingComponent } from './export-editor/export-editor-spac
 import { ExportEditorTextStylesComponent } from './export-editor/export-editor-text-styles.component';
 import { ExportEditorTypefaceComponent } from './export-editor/export-editor-typeface.component';
 import { InputFileNameComponent } from './input-file-name/input-file-name.component';
+import { ExportEditorSharedActionsBarComponent } from './export-editor-shared-actions-bar/export-editor-shared-actions-bar.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { InputFileNameComponent } from './input-file-name/input-file-name.compon
     ExportEditorBoxShadowComponent,
     ExportEditorTextStylesComponent,
     ExportEditorTypefaceComponent,
+    ExportEditorSharedActionsBarComponent,
   ],
   imports: [
     CommonModule,
@@ -42,6 +44,6 @@ import { InputFileNameComponent } from './input-file-name/input-file-name.compon
     AppRoutingModule,
     NzCheckboxModule,
   ],
-  exports: [ExportEditorComponent]
+  exports: [ExportEditorComponent],
 })
 export class ExportPageModule {}

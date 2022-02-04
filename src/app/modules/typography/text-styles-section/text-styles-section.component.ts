@@ -1,29 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { TextStylesDBGroup } from './text-styles.model';
 import { SectionViewOption } from '@core/core-types';
-import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
-import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
-import { browserStorageDB } from '@core/storages/browser-storage/browser-storage-db';
-import SectionManagerContentService from '@core/services/section-manager-content.service';
-import TextStylesManagerTokensService from '@typography/text-styles-managers/text-styles-manager-tokens.service';
-import TextStylesManagerGroupsService from '@typography/text-styles-managers/text-styles-manager-groups.service';
+import textStylesSectionProviders from './text-styles-section-providers';
 
 @Component({
   selector: 'app-text-styles-section',
   templateUrl: './text-styles-section.component.html',
   styleUrls: ['./text-styles-section.component.less'],
-  providers: [
-    {provide: 'storage', useValue: browserStorageDB.textStyles},
-    SectionManagerContentService,
-    {
-      useClass: TextStylesManagerTokensService,
-      provide: SectionManagerTokensService
-    },
-    {
-      useClass: TextStylesManagerGroupsService,
-      provide: SectionManagerGroupsService
-    },
-  ]
+  providers: textStylesSectionProviders,
 })
 export class TextStylesSectionComponent implements OnInit {
   readonly viewOptions: SectionViewOption<TextStylesDBGroup['view']>[] = [
