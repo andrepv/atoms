@@ -11,11 +11,17 @@ export class GroupViewListComponent implements OnInit {
   @Input() options: SectionViewOption<string>[] = [];
   @Input() group: StoreGroup; 
 
+  isOpen = false;
+
   constructor(private groups: SectionManagerGroupsService) {}
 
   ngOnInit() {}
 
   setGroupView(view: string) {
     this.groups.update(this.group, {view});
+  }
+
+  toggle() {
+    this.isOpen = !this.isOpen;
   }
 }

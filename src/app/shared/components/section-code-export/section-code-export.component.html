@@ -1,0 +1,10 @@
+<div class="export-container">
+  <app-export-list
+    (edit)="selectExport($event)"
+    *ngIf="!isExportSelected"
+  ></app-export-list>
+
+  <ng-container *ngIf="isExportSelected">
+    <ng-container *ngTemplateOutlet="codePreviewTemplate; context: {$implicit: {backToExportList: backToExportList}}"></ng-container>
+  </ng-container>
+</div>

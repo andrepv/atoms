@@ -1,0 +1,49 @@
+<div class="global-configs on-bg-30">
+  <div class="global-configs-container">
+    <div class="global-configs-wrapper">
+      <label for="format">Format</label>
+      <div class="global-configs-item">
+        <app-export-editor-formats
+          [format]="editableExport.configs.format"
+          (setFormat)="editableExport.setFormat($event)"
+        ></app-export-editor-formats>
+      </div>
+  
+      <label for="prefix">Prefix</label>
+      <div class="global-configs-item">
+        <div id="prefix">
+          <input nz-input [(ngModel)]="prefix" (blur)="setPrefix()" />
+        </div>
+      </div>
+
+      <span>Show Comments</span>
+      <nz-switch
+        [(ngModel)]="editableExport.configs.showComments"
+        (ngModelChange)="editableExport.toggleComments($event)"
+      ></nz-switch>
+    </div>
+
+    <div class="checkbox-group">
+      <app-export-editor-sections-toggle
+        (excludeSection)="editableExport.excludeSection($event)"
+        (includeSection)="editableExport.includeSection($event)"
+      ></app-export-editor-sections-toggle>
+    </div>
+
+    <div class="global-configs-wrapper">
+    <label for="fileName">File Name</label>
+      <div class="global-configs-item">
+        <div id="fileName">
+          <app-input-file-name
+            [fileName]="editableExport.configs.fileName"
+            [format]="editableExport.configs.format"
+            (saveFileName)="editableExport.saveFileName($event)"
+          ></app-input-file-name>
+        </div>
+      </div>
+    </div>
+
+    <button nz-button nzType="primary" nzBlock (click)="editableExport.download()" *ngIf="canDownload()">Download All</button>
+  </div>
+
+</div>

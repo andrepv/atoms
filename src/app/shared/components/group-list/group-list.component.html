@@ -1,13 +1,24 @@
-<app-group-list-header></app-group-list-header>
+<app-group-list-header
+  (toggleCodeViewMode)="toggleCodeViewMode()"
+  [isCodeViewActive]="isCodeViewModeActive"
+></app-group-list-header>
 
 <ng-template #treeTemplate>
   <ng-container *ngTemplateOutlet="sectionTreeTemplate; context: {$implicit: groupList}"></ng-container>
 </ng-template>
 
 <div *ngIf="!section.isLoading">
-  <div *ngFor="let group of groupList">
-    <ng-container *ngTemplateOutlet="groupTemplate; context: {$implicit: group}"></ng-container>
-  </div>
+  <ng-container *ngIf="!isCodeViewModeActive">
+    <div *ngFor="let group of groupList">
+      <ng-container *ngTemplateOutlet="groupTemplate; context: {$implicit: group}"></ng-container>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="isCodeViewModeActive">
+    <div class="export-container">
+      <app-section-code-export [codePreviewTemplate]="codePreviewTemplate"></app-section-code-export>
+    </div>
+  </ng-container>
 </div>
 
 <div *ngIf="section.isLoading">Loading</div>

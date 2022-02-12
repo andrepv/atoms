@@ -1,6 +1,7 @@
 <app-group-list
   [groupTemplate]="groupTemplate"
   [sectionTreeTemplate]="sectionTreeTemplate"
+  [codePreviewTemplate]="codePreviewTemplate"
 ></app-group-list>
 
 <!-- group -->
@@ -14,16 +15,14 @@
     ></app-group-header>
 
     <ng-template #customButtonsTemplate>
-      <i (click)="toggleViewOptions()" class="icon-btn" nz-icon nzType="eye" nzTheme="outline"></i>
+      <i (click)="groupViewOptionsTemplate.toggle()" class="icon-btn" nz-icon nzType="eye" nzTheme="outline"></i>
     </ng-template>
 
-    <ng-container *ngIf="isViewOptionsOpen">
-      <app-group-view-list
-        [options]="viewOptions"
-        [group]="group"
-      ></app-group-view-list>
-      <div class="divider"></div>
-    </ng-container>
+    <app-group-view-list
+      #groupViewOptionsTemplate
+      [options]="viewOptions"
+      [group]="group"
+    ></app-group-view-list>
 
     <ng-container *ngFor="let token of group.tokens">
       <app-token
@@ -68,4 +67,22 @@
 
 <ng-template #sectionTreeTemplate let-groups>
   <app-section-tree [groups]="groups"></app-section-tree>
+</ng-template>
+
+<ng-template #codePreviewTemplate let-data>
+  <app-section-code-preview
+    [data]="data"
+    [sectionConfigsTemplate]="sectionConfigsTemplate">
+  </app-section-code-preview>
+
+  <ng-template #sectionConfigsTemplate>
+    <div class="align-center">
+      <nz-switch
+        [(ngModel)]="exportConfigs.configs.code.useReferences"
+        (ngModelChange)="exportConfigs.setCodePreviewConfigs('useReferences', $event)"
+      ></nz-switch>
+      <div class="space-horizontal space-horizontal-sm"></div>
+      <span>Use References</span>
+    </div>
+  </ng-template>
 </ng-template>

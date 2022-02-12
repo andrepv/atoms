@@ -1,8 +1,11 @@
-<div class="list">
-  <div
+<ng-container *ngIf="isOpen">
+  <div class="list">
+    <div
     class="item"
     *ngFor="let option of options"
     [class.active]="option.name === group.view"
     (click)="setGroupView(option.name)"
-  >{{ option.name }}</div>
-</div>
+    >{{ option.name }}</div>
+  </div>
+  <div class="divider"></div>
+</ng-container>

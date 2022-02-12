@@ -1,0 +1,35 @@
+<app-export-editor-section
+  [headerTemplateRef]="headerTemplate"
+></app-export-editor-section>
+
+<ng-template #headerTemplate>
+  <div class="container">
+
+    <!-- export configs -->
+    <div class="header justify-between">
+      <i class="icon-btn" nz-icon nzType="arrow-left" nzTheme="outline" (click)="data.backToExportList()"></i>
+  
+      <div class="align-center">
+        <div class="align-center comments-toggle">
+          <nz-switch
+            [(ngModel)]="editor.configs.showComments"
+            (ngModelChange)="editor.toggleComments($event)"
+          ></nz-switch>
+          <div class="space-horizontal space-horizontal-sm"></div>
+          <span>Comments</span>
+        </div>
+        <app-export-editor-formats
+          [format]="editor.configs.format"
+          (setFormat)="editor.setFormat($event)"
+        ></app-export-editor-formats>  
+      </div>
+    </div>
+    
+    <!-- export section configs -->
+    <ng-container *ngIf="sectionConfigsTemplate">
+      <div class="sub-header">
+        <ng-container *ngTemplateOutlet="sectionConfigsTemplate"></ng-container>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>

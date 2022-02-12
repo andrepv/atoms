@@ -3,6 +3,7 @@ import SectionManagerGroupsService from "@core/services/section-manager-groups.s
 import SectionManagerTokensService from "@core/services/section-manager-tokens.service";
 import { browserStorageDB } from "@core/storages/browser-storage/browser-storage-db";
 import BoxShadowManagerTokensService from "@shadows/box-shadow-managers/box-shadow-manager-tokens.service";
+import { ExportEditorSectionService } from "@shared/components/export-editor-section/export-editor-section.service";
 
 export default [
   {provide: 'storage', useValue: browserStorageDB.boxShadow},
@@ -12,4 +13,5 @@ export default [
   },
   SectionManagerContentService,
   SectionManagerGroupsService,
+  ExportEditorSectionService,
 ]

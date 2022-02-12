@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="justify-between header">
+    <h4>Your Configs</h4>
+    <i
+      class="icon-btn"
+      nz-icon nzType="plus" nzTheme="outline" (click)="exportConfigs.add()"></i>
+  </div>
+  
+  <div class="list">
+    <div
+      *ngFor="let config of exportConfigs.list"
+      class="item token-interactive"
+      (click)="edit.emit(config)"
+    >
+      <div class="justify-between">
+        <h5 class="format">{{ config.format }}</h5>
+        <i
+          class="icon-btn" nz-icon nzType="delete" nzTheme="outline"
+          (click)="delete($event, config.id)"
+        ></i>
+      </div>
+      <app-text-editable
+        #editableText
+        [text]="config.name"
+        (blur)="exportConfigs.rename($event, config)"
+      >
+        <p (click)="editableText.makeEditable()">{{ config.name }}</p>
+      </app-text-editable>
+    </div>
+  </div>
+</div>

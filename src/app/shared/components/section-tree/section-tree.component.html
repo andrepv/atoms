@@ -4,7 +4,7 @@
     <div class="tree-node">
       <div class="tree-folder" [class.isExpanded]="!isNodeHidden(0)">
         <i class="tree-switcher" nz-icon nzType="down" nzTheme="outline" (click)="toggleNode(0)"></i>
-        <!-- <p class="folder-name">{{ section.sectionName }}</p> -->
+        <p class="folder-name">{{ section.name }}</p>
       </div>
 
       <div

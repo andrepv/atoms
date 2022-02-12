@@ -15,11 +15,14 @@ export class GroupListComponent implements OnInit {
   @Input() groupTemplate: TemplateRef<any>;
   @Input() sectionTreeTemplate: TemplateRef<any>;
   @Input() isLoading = false;
+  @Input() codePreviewTemplate: TemplateRef<any>;
 
   @ViewChild("treeTemplate") treeTemplateRef: TemplateRef<any>
 
   groupList: StoreGroup[] = [];
   subscription: Subscription;
+
+  isCodeViewModeActive = false;
 
   constructor(
     private theme: ThemeManagerService,
@@ -42,5 +45,9 @@ export class GroupListComponent implements OnInit {
     await this.section.load();
     this.groupList = this.groupsManager.getList();
     this.explorer.addSection(this.section.name, this.treeTemplateRef)
+  }
+
+  toggleCodeViewMode() {
+    this.isCodeViewModeActive = !this.isCodeViewModeActive;
   }
 }

@@ -46,6 +46,16 @@ import { GroupViewListComponent } from './components/group-view-list/group-view-
 import { TokenNameComponent } from './components/token-name/token-name.component';
 
 
+import { ExportListComponent } from './components/export-list/export-list.component';
+import { SectionCodePreviewComponent } from './components/section-code-preview/section-code-preview.component';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { SectionCodeExportComponent } from './components/section-code-export/section-code-export.component';
+import { ExportCodePreviewComponent } from './components/export-code-preview/export-code-preview.component';
+import { ExportEditorFormatsComponent } from './components/export-editor-formats/export-editor-formats.component';
+import { ExportEditorSectionComponent } from './components/export-editor-section/export-editor-section.component';
+import { InputFileNameComponent } from './components/input-file-name/input-file-name.component';
+
+
 @NgModule({
   declarations: [
     GroupHeaderComponent,
@@ -70,12 +80,18 @@ import { TokenNameComponent } from './components/token-name/token-name.component
     EditorBlockComponent,
     GroupViewListComponent,
     TokenNameComponent,
+    ExportEditorSectionComponent,
+    ExportCodePreviewComponent,
+    InputFileNameComponent,
+    ExportEditorFormatsComponent,
+    ExportListComponent,
+    SectionCodePreviewComponent,
+    SectionCodeExportComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     AppRoutingModule,
-
     NzToolTipModule,
     NzDropDownModule,
     NzIconModule,
@@ -93,8 +109,8 @@ import { TokenNameComponent } from './components/token-name/token-name.component
     NzPopoverModule,
     NzTabsModule,
     NzGridModule,
-
-    ColorPickerModule
+    NzCheckboxModule,
+    ColorPickerModule,
   ],
   exports: [
     FormsModule,
@@ -135,8 +151,17 @@ import { TokenNameComponent } from './components/token-name/token-name.component
     NzInputNumberModule,
     NzPopoverModule,
     NzGridModule,
+    NzCheckboxModule,
 
-    ColorPickerModule
+    ColorPickerModule,
+
+    ExportEditorSectionComponent,
+    ExportCodePreviewComponent,
+    InputFileNameComponent,
+    ExportEditorFormatsComponent,
+    ExportListComponent,
+    SectionCodePreviewComponent,
+    SectionCodeExportComponent,
   ]
 })
 export class SharedModule {}

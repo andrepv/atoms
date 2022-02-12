@@ -1,0 +1,25 @@
+<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Export</span></button>
+
+<ng-template #modalTitleTemplate>
+  <div class="align-center modal-header">
+    <i *ngIf="isExportSelected" class="icon-btn" nz-icon nzType="arrow-left" nzTheme="outline" (click)="sectionCodeExport.backToExportList()"></i>
+    <h3>Export</h3>
+  </div>
+</ng-template>
+
+<nz-modal
+  [(nzVisible)]="isModalVisible"
+  [nzTitle]="modalTitleTemplate"
+  [nzFooter]="null"
+  (nzOnCancel)="hideModal()"
+>
+  <ng-container *nzModalContent>
+    <app-section-code-export
+      [codePreviewTemplate]="exportEditorTemplate"
+    ></app-section-code-export>
+
+    <ng-template #exportEditorTemplate>
+      <app-export-editor></app-export-editor>
+    </ng-template>
+  </ng-container>
+</nz-modal>

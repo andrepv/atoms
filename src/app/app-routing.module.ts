@@ -10,8 +10,6 @@ import { CustomTokensComponent } from './modules/custom-tokens/custom-tokens.com
 import { StartPageComponent } from '@shared/components/start-page/start-page.component';
 import { ContentComponent } from './layout/content/content.component';
 import { StartPageGuardService } from '@shared/components/start-page/start-page-guard.service';
-import { ExportEditorComponent } from './modules/export-page/export-editor/export-editor.component';
-import { ExportComponent } from './modules/export-page/export.component';
 
 const routes: Routes = [
   {
@@ -19,8 +17,6 @@ const routes: Routes = [
     component: StartPageComponent,
     canActivate: [StartPageGuardService]
   },
-  {path: 'export/:id', component: ExportEditorComponent},
-  {path: 'export', component: ExportComponent},
   {
     path: '',
     component: ContentComponent,

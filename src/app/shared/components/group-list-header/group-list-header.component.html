@@ -3,12 +3,21 @@
   <div class="actions">
     <i
       class="icon-btn"
+      [class.disable]="isCodeViewActive"
       nz-tooltip nzTooltipTitle="add group" nzTooltipPlacement="bottom"
       nz-icon nzType="plus" nzTheme="outline" (click)="addGroup()"></i>
+    <div class="space-horizontal space-horizontal-xxxs"></div>
+    <i
+      class="icon-btn"
+      [class.active]="isCodeViewActive"
+      nz-tooltip nzTooltipTitle="get code" nzTooltipPlacement="bottom"
+      nz-icon nzType="code" nzTheme="outline" (click)="toggleCodeViewMode.emit()"
+    ></i>
     <ng-container *ngIf="canUseClipboard()">
       <div class="space-horizontal space-horizontal-xxxs"></div>
       <i
         class="icon-btn"
+        [class.disable]="isCodeViewActive"
         nz-icon nzType="snippets" nzTheme="outline"
         nz-tooltip nzTooltipTitle="past group" nzTooltipPlacement="bottom"
         (click)="pastGroup()"></i>

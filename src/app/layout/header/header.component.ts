@@ -1,55 +1,14 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ThemeManagerService } from '@core/services/theme-manager.service';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { Component, OnInit } from '@angular/core';
+import { ExportEditorService } from '../export-editor/export-editor.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.less']
+  styleUrls: ['./header.component.less'],
+  providers: [ExportEditorService]
 })
 export class HeaderComponent implements OnInit {
-  nextThemeName = "";
-  currentThemeName = "";
+  constructor() {}
 
-  nextThemeEditorVisible = false;
-  currentThemeEditorVisible = false;
-
-  @ViewChild('input') inputEl: TemplateRef<any>;
-
-  constructor(
-    public themes: ThemeManagerService,
-    private modal: NzModalService
-  ) {}
-
-  ngOnInit() {
-    this.currentThemeName = this.themes.selected.name;
-  }
-
-  addTheme() {
-    this.themes.add(this.nextThemeName);
-    this.nextThemeEditorVisible = false;
-    this.nextThemeName = "";
-  }
-
-  renameTheme() {
-    this.themes.rename(this.currentThemeName);
-    this.currentThemeEditorVisible = false;
-  }
-
-  onCurrentThemeEditorOpen() {
-    this.currentThemeName = this.themes.selected.name;
-  }
-
-  deleteTheme(): void {
-    const {id} = this.themes.selected;
-
-    this.modal.confirm({
-      nzTitle: 'Are you sure delete this theme?',
-      nzOkText: 'Yes',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.themes.delete(id),
-      nzCancelText: 'No',
-    });
-  }
+  ngOnInit() {}
 }

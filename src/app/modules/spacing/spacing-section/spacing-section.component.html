@@ -1,6 +1,7 @@
 <app-group-list
   [groupTemplate]="groupTemplate"
   [sectionTreeTemplate]="sectionTreeTemplate"
+  [codePreviewTemplate]="codePreviewTemplate"
 ></app-group-list>
 
 <ng-template #groupTemplate let-group>
@@ -68,3 +69,6 @@
   <app-section-tree [groups]="groups"></app-section-tree>
 </ng-template>
 
+<ng-template #codePreviewTemplate let-data>
+  <app-section-code-preview [data]="data"></app-section-code-preview>
+</ng-template>

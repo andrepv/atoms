@@ -61,15 +61,7 @@ export default class ColorPaletteManagerTokensService extends SectionManagerToke
     return group.tokens.find(token => token.id === tokenId)
   }
 
-  getStyleValue(token: ColorPaletteDBToken, format = 'hex') {
-    let color = token.color;
-
-    if (format === 'rgb') {
-      color = chroma(token.color).css()
-    } else if (format === 'hsl') {
-      color = chroma(token.color).css('hsl');
-    }
-
-    return color;
+  getStyleValue(token: ColorPaletteDBToken) {
+    return token.color;
   }
 }

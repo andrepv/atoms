@@ -97,11 +97,13 @@ h5 {
 
 .icon-btn {
   --icon-btn-size: var(--icon-base);
+  --icon-btn-color-hover: var(--color-bg-10);
+
   padding: var(--space-xxxs);
   cursor: pointer;
   border-radius: var(--border-radius-sm);
   &:hover {
-    background: var(--color-bg-10);
+    background: var(--icon-btn-color-hover);
     transition: all 0.3s;
     border-radius: var(--border-radius-sm);
   }
@@ -109,6 +111,18 @@ h5 {
   svg {
     width: var(--icon-btn-size);
     height: var(--icon-btn-size);
+  }
+
+  &.active {
+    color: var(--color-primary);
+  }
+
+  &.disable {
+    color: var(--color-contrast-low);
+    cursor: not-allowed;
+    &:hover {
+      background: none;
+    }
   }
 }
 
@@ -487,5 +501,13 @@ h5 {
     .ant-switch-checked .ant-switch-handle {
       left: calc(100% - (@switch-height - 4px) - 2px);
     }
+  }
+}
+
+// select
+
+.on-bg-30 {
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    background-color: var(--color-bg);
   }
 }

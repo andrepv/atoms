@@ -9,7 +9,7 @@ import { BorderRadiusManager, BORDER_RADIUS_DB_DATA } from '../../../modules/bor
 import { BorderManager, BORDER_DB_DATA } from '../../../modules/borders/borders.model';
 import { DurationsManager, DURATIONS_DB_DATA } from '../../../modules/durations/durations.model';
 import { CustomTokensManager, CUSTOM_TOKENS_DB_DATA } from '../../../modules/custom-tokens/custom-tokens.model';
-import { ExportConfigsStorage, ExportConfigsSectionStorage } from '../../../modules/export-page/export-types';
+import { ExportConfigsStorage, ExportConfigsSectionStorage } from '../../types/export-types';
 import BrowserStorageSectionContent from './browser-storage-section-content';
 import { BrowserStorageSectionTokens } from './browser-storage-section-tokens';
 import { BrowserStorageSectionGroups } from './browser-storage-section-groups';

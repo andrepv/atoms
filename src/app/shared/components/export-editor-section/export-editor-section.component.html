@@ -1,0 +1,37 @@
+<div class="section" *ngIf="!editorSection.isLoading">
+  <section class="body">
+
+    <ng-container *ngIf="headerTemplateRef">
+      <ng-container *ngTemplateOutlet="headerTemplateRef"></ng-container>
+    </ng-container>
+
+    <div class="body-heading justify-between">
+      <div>
+        <app-input-file-name
+          [fileName]="editorSection.configs.fileName"
+          [format]="editor.configs.format"
+          (saveFileName)="editorSection.saveFileName($event)"
+        ></app-input-file-name>
+      </div>
+      <div class="justify-between">
+        <i 
+          class="icon-btn"
+          nz-icon nzType="download" nzTheme="outline"
+          (click)="editorSection.download()"
+        ></i>
+        <div class="space-horizontal space-horizontal-xxxs ng-star-inserted"></div>
+        <i
+          class="icon-btn"
+          nz-icon nzType="copy" nzTheme="outline"
+          (click)="editorSection.copyCode()"
+        ></i>
+      </div>
+    </div>
+
+    <app-export-code-preview></app-export-code-preview>
+  </section>
+</div>
+
+<div class="loading-placeholder" *ngIf="editorSection.isLoading">
+  <i nz-icon nzType="loading" nzTheme="outline"></i>
+</div>
