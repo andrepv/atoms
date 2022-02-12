@@ -1,51 +1,42 @@
 <div class="tree">
-  <div class="tree-list">
+  <div class="node">
 
-    <div class="tree-node">
-      <div class="tree-folder" [class.isExpanded]="!isNodeHidden(0)">
-        <i class="tree-switcher" nz-icon nzType="down" nzTheme="outline" (click)="toggleNode(0)"></i>
-        <p class="folder-name">{{ section.name }}</p>
-      </div>
-
-      <div
-        class="tree-node-children tree-group-list"
-        [class.invisible]="isNodeHidden(0)"
-      >
-        <div class="tree-node" *ngFor="let group of groups">
-
-          <div class="tree-folder" [class.isExpanded]="!isNodeHidden(group.id)">
-            <i class="tree-switcher" nz-icon nzType="down" nzTheme="outline" (click)="toggleNode(group.id)"></i>
-            <a [routerLink]="['./']"  [fragment]="'group-' + group.id" class="folder-name">{{ group.name }} ({{ group.tokens.length }})</a>
-          </div>
+    <div
+      class="header justify-between"
+      [class.isExpanded]="!isNodeHidden(0)"
+      (click)="toggleNode(0)"
+    >
+      <h3>{{ section.name }}</h3>
+      <i nz-icon nzType="down" nzTheme="outline"></i>
+    </div>
   
+    <div
+      class="children"
+      [class.invisible]="isNodeHidden(0)"
+    >
+      <div class="node" *ngFor="let group of groups">
+  
+        <div
+          class="header justify-between"
+          [class.isExpanded]="!isNodeHidden(group.id)"
+          (click)="toggleNode(group.id)"
+        >
+          <p class="group-name">{{ group.name }} <span class="count">({{ group.tokens.length }})</span></p>
+          <i nz-icon nzType="down" nzTheme="outline"></i>
+        </div>
+  
+        <div
+          class="children"
+          [class.invisible]="isNodeHidden(group.id)"
+        >
           <div
-            class="tree-node-children tree-token-list"
-            [class.invisible]="isNodeHidden(group.id)"
+            class="leaf"
+            *ngFor="let token of group.tokens"
           >
-            <div
-              class="tree-leaf"
-              *ngFor="let token of group.tokens"
-            >
-
-              <div *ngIf="leafTemplate">
-                <ng-container *ngTemplateOutlet="leafTemplate; context: {$implicit: token, group: group, leafDefaultTemplate: leafDefaultTemplate}"></ng-container>
-              </div>
-      
-              <div *ngIf="!leafTemplate">
-                <ng-container *ngTemplateOutlet="leafDefaultTemplate; context: {$implicit: token, group: group}"></ng-container>
-              </div>
-
-            </div>
-            <ng-template #leafDefaultTemplate let-token>
-              <div>
-                <a [routerLink]="['./']"  [fragment]="'token-' + token.id" class="folder-name">{{ token.name }}</a>
-              </div>
-            </ng-template>
+            <a [routerLink]="['./']"  [fragment]="'token-' + token.id">{{ token.name }}</a>
           </div>
         </div>
       </div>
     </div>
-
-
   </div>
 </div>

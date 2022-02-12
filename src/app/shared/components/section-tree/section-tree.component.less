@@ -1,24 +1,49 @@
+.tree {
+  margin-bottom: var(--space-xs);
+}
+
+.node {
+  padding: var(--space-xxxs) 0;
+}
+
+.header {
+  cursor: pointer;
+
+  i {
+    margin-right: 10px;
+    cursor: pointer;
+    transform: rotate(-90deg);
+    transition: all 0.3s;
+    font-size: var(--text-sm);
+    margin-left: var(--space-xl);
+    color: var(--color-contrast-medium);
+  }
+
+  &.isExpanded {
+    margin-bottom: var(--space-sm);
+    i {
+      transform: rotate(0);
+    }
+  }
+}
+
+.group-name {
+  font-weight: 500;
+}
+
 .invisible {
   display: none;
 }
 
-.tree-folder {
-  display: flex;
-  align-items: center;
-
-  i {
-    margin-right: 10px;
-    width: 15px;
-    height: 15px;
-    cursor: pointer;
-    transform: rotate(270deg);
-  }
-
-  &.isExpanded i {
-    transform: rotate(0);
-  }
+.count {
+  color: var(--color-contrast-medium);
 }
 
-.tree-node-children {
+.children {
   padding-left: 15px;
+  word-break: break-all;
+}
+
+.leaf {
+  padding: 2px 0;
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import SectionManagerContentService from '@core/services/section-manager-content.service';
 
 @Component({
@@ -8,8 +8,7 @@ import SectionManagerContentService from '@core/services/section-manager-content
 })
 export class SectionTreeComponent implements OnInit {
   @Input() groups = [];
-  @Input() leafTemplate: TemplateRef<any>;
-  hiddenNodes = [];
+  private hiddenNodes = new Set();
 
   constructor(public section: SectionManagerContentService) {}
 
@@ -17,14 +16,13 @@ export class SectionTreeComponent implements OnInit {
 
   toggleNode(nodeId: number) {
     if (this.isNodeHidden(nodeId)) {
-      const index = this.hiddenNodes.indexOf(nodeId);
-      this.hiddenNodes.splice(index, 1);
+      this.hiddenNodes.delete(nodeId);
     } else {
-      this.hiddenNodes.push(nodeId)
+      this.hiddenNodes.add(nodeId)
     }
   }
 
   isNodeHidden(nodeId: number) {
-    return this.hiddenNodes.includes(nodeId);
+    return this.hiddenNodes.has(nodeId);
   }
 }
