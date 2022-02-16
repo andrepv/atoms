@@ -1,16 +1,16 @@
 import { Injectable, TemplateRef } from '@angular/core';
-import { EditableContent, SectionNames } from '@core/core-types';
+import { EditableSectionContent, SectionNames } from '@core/core-types';
 import { StorageToken, StorageGroup } from '@core/storages/storages-types';
 import { ThemeManagerService } from './theme-manager.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EditorService<T extends StorageToken = any, G extends StorageGroup = any> {
+export class SectionContentEditorService<T extends StorageToken = any, G extends StorageGroup = any> {
 
   editorTemplateRef: TemplateRef<any>;
   section: SectionNames | '' = '';
-  content: EditableContent<T, G>;
+  content: EditableSectionContent<T, G>;
 
   get isActive() {
     return Boolean(this.section)
@@ -37,7 +37,7 @@ export class EditorService<T extends StorageToken = any, G extends StorageGroup 
 
   enable(
     sectionName: SectionNames,
-    content: EditableContent,
+    content: EditableSectionContent,
     templateRef: TemplateRef<any>,
   ) {
     this.content = content;

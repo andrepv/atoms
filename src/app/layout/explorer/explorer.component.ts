@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EditorService } from '@core/services//editor.service';
+import { SectionContentEditorService } from '@core/services/section-content-editor.service';
 import { SectionManagerCachedContentService  } from '@core/services/section-manager-cached-content.service';
 import { ExplorerService } from './explorer.service';
 
@@ -11,7 +11,7 @@ import { ExplorerService } from './explorer.service';
 export class ExplorerComponent implements OnInit {
   constructor(
     public cache: SectionManagerCachedContentService,
-    public editor: EditorService,
+    public editor: SectionContentEditorService,
     public explorer: ExplorerService
   ) {}
 

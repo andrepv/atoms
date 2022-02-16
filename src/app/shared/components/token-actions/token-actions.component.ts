@@ -3,7 +3,7 @@ import { CacheToken, CacheGroup } from '@core/core-types';
 import SectionManagerContentService from '@core/services/section-manager-content.service';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { ClipboardService } from '@core/services/clipboard.service';
-import { EditorService } from '@core/services/editor.service';
+import { SectionContentEditorService } from '@core/services/section-content-editor.service';
 
 @Component({
   selector: 'app-token-actions',
@@ -16,7 +16,7 @@ export class TokenActionsComponent implements OnInit {
   @Input() editorTemplate: TemplateRef<any> = null;
 
   constructor(
-    private editor: EditorService,
+    private editor: SectionContentEditorService,
     private clipboard: ClipboardService,
     private tokenManager: SectionManagerTokensService,
     private section: SectionManagerContentService,

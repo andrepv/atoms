@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CacheToken, CacheGroup } from '@core/core-types';
-import { EditorService } from '@core/services/editor.service';
+import { SectionContentEditorService } from '@core/services/section-content-editor.service';
 import SectionManagerContentService from '@core/services/section-manager-content.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class TokenComponent implements OnInit {
   @Input() nameVisible = true;
 
   constructor(
-    private editor: EditorService,
+    private editor: SectionContentEditorService,
     private section: SectionManagerContentService,
   ) {}
 

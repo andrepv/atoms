@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FontType, TypefaceDBToken, TypefaceTokenValue } from '../typeface-section/typeface.model';
-import { EditableContent } from '@core/core-types';
+import { EditableSectionContent } from '@core/core-types';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { StorageGroup } from '@core/storages/storages-types';
 
@@ -10,7 +10,7 @@ import { StorageGroup } from '@core/storages/storages-types';
   styleUrls: ['./typeface-editor.component.less'],
 })
 export class TypefaceEditorComponent implements OnInit {
-  @Input() content: EditableContent<TypefaceDBToken, StorageGroup>;
+  @Input() content: EditableSectionContent<TypefaceDBToken, StorageGroup>;
   radioValue: FontType | "loaded-fonts" = "google-fonts";
 
   constructor(private tokens: SectionManagerTokensService<TypefaceDBToken, StorageGroup>) {}

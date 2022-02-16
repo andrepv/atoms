@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { EditableContent } from '@core/core-types';
+import { EditableSectionContent } from '@core/core-types';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { StorageGroup } from '@core/storages/storages-types';
 import { CustomTokensDBToken } from '../custom-tokens.model';
@@ -10,7 +10,7 @@ import { CustomTokensDBToken } from '../custom-tokens.model';
   styleUrls: ['./custom-tokens-editor.component.less']
 })
 export class CustomTokensEditorComponent implements OnInit {
-  @Input() content: EditableContent<CustomTokensDBToken, StorageGroup>;
+  @Input() content: EditableSectionContent<CustomTokensDBToken, StorageGroup>;
   name: string;
   value: string;
 

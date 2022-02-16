@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { EditableContent } from '@core/core-types';
+import { EditableSectionContent } from '@core/core-types';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { StorageGroup, StorageToken } from '@core/storages/storages-types';
 import { ModularScaleToken } from '../modular-scale-editor/modular-scale-types';
@@ -10,7 +10,7 @@ import { ModularScaleToken } from '../modular-scale-editor/modular-scale-types';
   styleUrls: ['./modular-scale-editor-token.component.less']
 })
 export class ModularScaleEditorTokenComponent implements OnInit {
-  @Input() content: EditableContent<StorageToken & ModularScaleToken, StorageGroup>;
+  @Input() content: EditableSectionContent<StorageToken & ModularScaleToken, StorageGroup>;
   @Input() minValue = 1;
   @Input() maxValue = Infinity;
   @Input() title: string;

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { EditorService } from '@core/services/editor.service';
+import { SectionContentEditorService } from '@core/services/section-content-editor.service';
 
 @Component({
   selector: 'app-editor',
@@ -8,7 +8,7 @@ import { EditorService } from '@core/services/editor.service';
 })
 export class EditorComponent implements OnInit {
 
-  constructor(public editor: EditorService) {}
+  constructor(public editor: SectionContentEditorService) {}
 
   ngOnInit() {}
 }

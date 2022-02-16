@@ -18,7 +18,7 @@ export type CacheGroup<G extends StorageGroup = any, T extends StorageToken = an
   tokens: CacheToken<T>[];
 }
 
-export interface EditableContent<T extends StorageToken = any, G extends StorageGroup = any> {
+export interface EditableSectionContent<T extends StorageToken = any, G extends StorageGroup = any> {
   token?: CacheToken<T>,
   group: CacheGroup<G, T>,
 }

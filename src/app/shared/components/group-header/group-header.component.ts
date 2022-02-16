@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { EditorService } from '@core/services/editor.service';
+import { SectionContentEditorService } from '@core/services/section-content-editor.service';
 import { TextEditableComponent } from '../text-editable/text-editable.component';
 import { CacheGroup } from '@core/core-types';
 import { ClipboardService } from '@core/services/clipboard.service';
@@ -18,7 +18,7 @@ export class GroupHeaderComponent implements OnInit {
   @Input() customButtonsTemplate: TemplateRef<any>;
 
   constructor(
-    private editor: EditorService,
+    private editor: SectionContentEditorService,
     private clipboard: ClipboardService,
     private tokensManager: SectionManagerTokensService,
     private groupsManager: SectionManagerGroupsService,

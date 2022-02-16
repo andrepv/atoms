@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { EditableContent } from '@core/core-types';
+import { EditableSectionContent } from '@core/core-types';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { StorageGroup } from '@core/storages/storages-types';
 import { BoxShadowLayer, BoxShadowDBToken } from '../box-shadow-section/box-shadow-section.model';
@@ -12,7 +12,7 @@ type NumericPropertyNames = keyof Omit<BoxShadowLayer, 'inset' | 'color'>;
   styleUrls: ['./box-shadow-layer.component.less']
 })
 export class BoxShadowLayerComponent implements OnInit {
-  @Input() content: EditableContent<BoxShadowDBToken, StorageGroup>;
+  @Input() content: EditableSectionContent<BoxShadowDBToken, StorageGroup>;
   @Input() layer: BoxShadowLayer;
   @Input() index: number;
 

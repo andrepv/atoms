@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { EditableContent } from '@core/core-types';
+import { EditableSectionContent } from '@core/core-types';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { StorageGroup } from '@core/storages/storages-types';
 import { BorderDBToken } from '../borders.model';
@@ -10,7 +10,7 @@ import { BorderDBToken } from '../borders.model';
   styleUrls: ['./borders-editor.component.less'],
 })
 export class BordersEditorComponent implements OnInit {
-  @Input() content: EditableContent<BorderDBToken, StorageGroup>;
+  @Input() content: EditableSectionContent<BorderDBToken, StorageGroup>;
 
   readonly STYLES = ["dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset", "none"];
 

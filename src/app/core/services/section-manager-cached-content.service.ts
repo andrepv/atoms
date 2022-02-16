@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SectionNames, CacheGroup, PageName } from '@core/core-types';
-import { EditorService } from './editor.service';
+import { SectionContentEditorService } from './section-content-editor.service';
 
 export interface CachePageContent {
   [sectionName: string]: CacheGroup[];
@@ -20,7 +20,7 @@ export class SectionManagerCachedContentService {
     content: {},
   }
 
-  constructor(private editor: EditorService) {}
+  constructor(private editor: SectionContentEditorService) {}
 
   addPage(page: CachePage) {
     this.page = page;

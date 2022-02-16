@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { EditorService } from '@core/services/editor.service';
+import { SectionContentEditorService } from '@core/services/section-content-editor.service';
 import { ExplorerService } from '../../../layout/explorer/explorer.service';
 
 @Component({
@@ -11,7 +11,7 @@ export class PageComponent implements OnInit {
   @Input() name: string
 
   constructor(
-    private editor: EditorService,
+    private editor: SectionContentEditorService,
     private explorer: ExplorerService,
   ) {}
 

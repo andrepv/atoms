@@ -1,13 +1,13 @@
 import { ColorPaletteDBGroup, ColorPaletteDBToken, ColorPaletteCacheToken, Variant, VariantConfig } from '@colors/color-palette-section/color-palette.model';
 import { CacheGroup } from '@core/core-types';
-import { EditorService } from '@core/services/editor.service';
+import { SectionContentEditorService } from '@core/services/section-content-editor.service';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import chroma from 'chroma-js';
 
 export abstract class ColorVariants {
   constructor(
     protected storage: SectionManagerTokensService,
-    protected editor: EditorService<ColorPaletteDBToken, ColorPaletteDBGroup>,
+    protected editor: SectionContentEditorService<ColorPaletteDBToken, ColorPaletteDBGroup>,
   ) {}
 
   get primaryColorToken(): ColorPaletteCacheToken {

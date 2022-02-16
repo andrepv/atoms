@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { EditableContent } from '@core/core-types';
+import { EditableSectionContent } from '@core/core-types';
 import { BoxShadowDBToken } from '../box-shadow-section/box-shadow-section.model';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
@@ -11,7 +11,7 @@ import { StorageGroup } from '@core/storages/storages-types';
   styleUrls: ['./box-shadow-editor.component.less'],
 })
 export class BoxShadowEditorComponent implements OnInit {
-  @Input() content: EditableContent<BoxShadowDBToken, StorageGroup>;
+  @Input() content: EditableSectionContent<BoxShadowDBToken, StorageGroup>;
 
   get token() {
     return this.content.token;

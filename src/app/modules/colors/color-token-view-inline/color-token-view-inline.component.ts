@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { CacheGroup, CacheToken } from '@core/core-types';
-import { EditorService } from '@core/services/editor.service';
+import { SectionContentEditorService } from '@core/services/section-content-editor.service';
 import SectionManagerContentService from '@core/services/section-manager-content.service';
 import chroma from 'chroma-js';
 
@@ -16,7 +16,7 @@ export class ColorTokenViewInlineComponent implements OnInit {
 
   constructor(
     private section: SectionManagerContentService,
-    private editor: EditorService,
+    private editor: SectionContentEditorService,
   ) {}
 
   ngOnInit() {}

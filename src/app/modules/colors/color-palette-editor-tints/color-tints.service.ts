@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ColorVariants } from "@colors/color-palette-editor-variants/color-variants";
 import { ColorPaletteDBGroup, ColorPaletteDBToken, Variant } from "@colors/color-palette-section/color-palette.model";
-import { EditorService } from "@core/services/editor.service";
+import { SectionContentEditorService } from "@core/services/section-content-editor.service";
 import SectionManagerTokensService from "@core/services/section-manager-tokens.service";
 
 @Injectable()
@@ -11,7 +11,7 @@ export default class ColorTintsService extends ColorVariants {
 
   constructor(
     protected storage: SectionManagerTokensService,
-    protected editor: EditorService<ColorPaletteDBToken, ColorPaletteDBGroup>
+    protected editor: SectionContentEditorService<ColorPaletteDBToken, ColorPaletteDBGroup>
   ) {
     super(storage, editor)
   }

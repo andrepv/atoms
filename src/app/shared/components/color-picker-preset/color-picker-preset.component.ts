@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ColorPaletteDBToken } from '@colors/color-palette-section/color-palette.model';
 import { CacheToken } from '@core/core-types';
-import { EditorService } from '@core/services/editor.service';
+import { SectionContentEditorService } from '@core/services/section-content-editor.service';
 
 @Component({
   selector: 'app-color-picker-preset',
@@ -15,7 +15,7 @@ export class ColorPickerPresetPresetComponent implements OnInit {
 
   excludedTokenId = 0;
 
-  constructor(private editor: EditorService) {}
+  constructor(private editor: SectionContentEditorService) {}
 
   ngOnInit() {
     if (this.editor.section === "Color Palette") {

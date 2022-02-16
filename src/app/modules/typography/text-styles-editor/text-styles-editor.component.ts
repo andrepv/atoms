@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { EditableContent, StorageTokenValue } from '@core/core-types';
+import { EditableSectionContent, StorageTokenValue } from '@core/core-types';
 import { TextStylesDBGroup, TextStylesDBToken } from '@typography/text-styles-section/text-styles.model';
 import { SectionManagerCachedContentService  } from '@core/services/section-manager-cached-content.service';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
@@ -10,7 +10,7 @@ import SectionManagerTokensService from '@core/services/section-manager-tokens.s
   styleUrls: ['./text-styles-editor.component.less'],
 })
 export class TextStylesEditorComponent implements OnInit {
-  @Input() content: EditableContent<TextStylesDBToken, TextStylesDBGroup>;
+  @Input() content: EditableSectionContent<TextStylesDBToken, TextStylesDBGroup>;
 
   get token() {
     return this.content.token;
