@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { StoreGroup, StoreToken } from "@core/core-types";
+import { CacheGroup, CacheToken } from "@core/core-types";
 import ModularScaleManagerTokensService from "@shared/components/modular-scale-managers/modular-scale-manager-tokens.service";
 import TextStyles from "@typography/text-styles-managers/text-styles";
 import { TextStylesDBToken, TextStylesDBGroup } from "@typography/text-styles-section/text-styles.model";
@@ -9,7 +9,7 @@ import { TypefaceDBToken } from "@typography/typeface-section/typeface.model";
 export default class TextStylesManagerTokensService extends ModularScaleManagerTokensService<TextStylesDBToken, TextStylesDBGroup> {
   readonly DEFAULT_TEXT = 'Quick brown fox jumped over the lazy red dog';
 
-  getDefaultValue(group: StoreGroup<TextStylesDBGroup, TextStylesDBToken>) {
+  getDefaultValue(group: CacheGroup<TextStylesDBGroup, TextStylesDBToken>) {
     return {
       text: this.DEFAULT_TEXT,
       backgroundColor: '#1e2022',
@@ -36,7 +36,7 @@ export default class TextStylesManagerTokensService extends ModularScaleManagerT
       return defaultFontFamily;
     }
 
-    const typeface: StoreToken<TypefaceDBToken> | false = this.store.getSectionToken('Type Face', token.typefaceId);
+    const typeface: CacheToken<TypefaceDBToken> | false = this.cache.getSectionToken('Type Face', token.typefaceId);
 
     if (typeface) {
       return typeface.family

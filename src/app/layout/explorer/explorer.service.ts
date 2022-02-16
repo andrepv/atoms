@@ -1,6 +1,6 @@
 import { Injectable, TemplateRef } from '@angular/core';
 import { SectionNames } from '@core/core-types';
-import { StoreService } from '@core/services/store.service';
+import { SectionManagerCachedContentService  } from '@core/services/section-manager-cached-content.service';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class ExplorerService {
   } = {}
 
   constructor(
-    private store: StoreService,
+    private cache: SectionManagerCachedContentService,
     private themeManager: ThemeManagerService
   ) {
     this.themeManager.selected$.subscribe(() => {
@@ -28,7 +28,7 @@ export class ExplorerService {
     sectionName: SectionNames,
     sectionTreeTemplate: TemplateRef<any>
   ) {
-    const sectionCount = Object.keys(this.store.page.content).length;
+    const sectionCount = Object.keys(this.cache.page.content).length;
 
     this.sectionTreeTemplates[sectionName] = sectionTreeTemplate;
     
@@ -43,7 +43,7 @@ export class ExplorerService {
   }
 
   onPageInit() {
-    for (let section in this.store.page.content) {
+    for (let section in this.cache.page.content) {
       this.sectionTreeTemplates[section] = null;
     }
   }

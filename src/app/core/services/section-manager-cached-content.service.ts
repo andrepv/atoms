@@ -1,40 +1,39 @@
 import { Injectable } from '@angular/core';
-import { SectionNames, StoreGroup, PageName } from '@core/core-types';
+import { SectionNames, CacheGroup, PageName } from '@core/core-types';
 import { EditorService } from './editor.service';
 
-export interface StorePageContent {
-  [sectionName: string]: StoreGroup[]
-} 
+export interface CachePageContent {
+  [sectionName: string]: CacheGroup[];
+}
 
-export interface StorePage {
+export interface CachePage {
   name: PageName | '';
-  content: StorePageContent;
+  content: CachePageContent;
 }
 
 @Injectable({ providedIn: 'root' })
-export class StoreService {
+export class SectionManagerCachedContentService {
   isLoading = false;
 
-  page: StorePage = {
+  page: CachePage = {
     name: "",
     content: {},
   }
 
   constructor(private editor: EditorService) {}
 
-  setPageStructure(page: StorePage) {
+  addPage(page: CachePage) {
     this.page = page;
   }
 
   setSectionContent(
     sectionName: SectionNames,
-    groupList: StoreGroup[]
+    groupList: CacheGroup[]
   ) {
     this.page.content[sectionName] = groupList;
   }
 
-
-  addGroup(sectionName: SectionNames, group: StoreGroup) {
+  addGroup(sectionName: SectionNames, group: CacheGroup) {
     this.page.content[sectionName].push(group);
   }
 
@@ -65,7 +64,7 @@ export class StoreService {
     return this.page.content[sectionName];
   }
 
-  updateGroup(group: StoreGroup, sectionName: SectionNames) {
+  updateGroup(group: CacheGroup, sectionName: SectionNames) {
     const index = this.page.content[sectionName].indexOf(group);
     if (index > -1) {
       this.page.content[sectionName][index] = {...group};
@@ -73,11 +72,10 @@ export class StoreService {
   }
 
   getSectionTokens(sectionName: SectionNames) {
-    const tokens = [];
-    this.getGroupList(sectionName).forEach(group => {
-      tokens.push(...group.tokens);
-    })
-    return tokens;
+    return this.getGroupList(sectionName).reduce((acc, group) => {
+      acc.push(...group.tokens);
+      return acc
+    }, [])
   }
 
   getSectionToken(sectionName: SectionNames, tokenId: number) {
@@ -86,21 +84,11 @@ export class StoreService {
         if (token.id === tokenId) return token;
       }
     }
-    return false;
-  }
-
-  getGroupToken(
-    sectionName: SectionNames,
-    groupId: number,
-    tokenId: number
-  ) {
-    const {tokens} = this.getGroup(sectionName, groupId)
-    return tokens.find(({id}) => id === tokenId)
   }
 
   deleteToken(
     sectionName: SectionNames,
-    group: StoreGroup,
+    group: CacheGroup,
     tokenId: number
   ) {
     if (this.editor.isTokenEditable(tokenId, sectionName)) {

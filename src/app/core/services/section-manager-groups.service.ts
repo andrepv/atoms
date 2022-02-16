@@ -1,5 +1,5 @@
-import { StoreService } from '@core/services/store.service';
-import { StoreGroup, StorageGroupValue, SectionNames, StoreToken } from '@core/core-types';
+import { SectionManagerCachedContentService  } from '@core/services/section-manager-cached-content.service';
+import { CacheGroup, StorageGroupValue, SectionNames, CacheToken } from '@core/core-types';
 import { ThemeManagerService } from './theme-manager.service';
 import SectionManagerTokensService from './section-manager-tokens.service';
 import { StorageGroup, StorageGroupsManager, StorageSectionContentManager, StorageToken } from '../storages/storages-types';
@@ -20,7 +20,7 @@ export default class SectionManagerGroupsService<T extends StorageToken = any, G
   constructor(
     @Inject('storage') storageSection: StorageSectionContentManager<T, G>,
     protected tokensManager: SectionManagerTokensService<T, G>,
-    protected store: StoreService,
+    protected cache: SectionManagerCachedContentService,
     protected themeManager: ThemeManagerService,
     protected clipboard: ClipboardService,
     protected message: NzMessageService,
@@ -43,32 +43,32 @@ export default class SectionManagerGroupsService<T extends StorageToken = any, G
 
   async add(group = this.create()) {
     const groupId = await this.storage.add(group);
-    const newGroup: StoreGroup<G, T> = {
+    const newGroup: CacheGroup<G, T> = {
       ...group,
       id: groupId,
       tokens: this.getDefaultTokens(),
     }
-    this.store.addGroup(this.sectionName, newGroup)
+    this.cache.addGroup(this.sectionName, newGroup)
     return groupId;
   }
 
-  async delete(group: StoreGroup<G, T>) {
+  async delete(group: CacheGroup<G, T>) {
     await this.storage.delete(group.id);
 
     for (let token of group.tokens) {
       this.tokensManager.delete(token, group)
     }
 
-    this.store.deleteGroup(this.sectionName, group.id);
+    this.cache.deleteGroup(this.sectionName, group.id);
   }
 
-  clear(group: StoreGroup<G, T>) {
+  clear(group: CacheGroup<G, T>) {
     for (let token of group.tokens) {
       this.tokensManager.delete(token, group)
     }
   }
 
-  async rename(groupName: string, group: StoreGroup<G, T>) {
+  async rename(groupName: string, group: CacheGroup<G, T>) {
     await this.storage.update(group.id, {name: groupName});
     group.name = groupName
   }
@@ -82,20 +82,20 @@ export default class SectionManagerGroupsService<T extends StorageToken = any, G
   }
 
   async update(
-    group: StoreGroup<G, T>,
+    group: CacheGroup<G, T>,
     changes: Partial<StorageGroupValue<G>>
   ) {
     const key = Object.keys(changes)[0];
     await this.storage.update(group.id, changes);
-    this.store.getGroup(this.sectionName, group.id)[key] = changes[key]
+    this.cache.getGroup(this.sectionName, group.id)[key] = changes[key]
   }
 
   get(groupId: number)  {
-    return this.store.getGroup(this.sectionName, groupId) as StoreGroup<G, T>;
+    return this.cache.getGroup(this.sectionName, groupId) as CacheGroup<G, T>;
   }
 
   getList() {
-    return this.store.getGroupList(this.sectionName) as StoreGroup<G, T>[]
+    return this.cache.getGroupList(this.sectionName) as CacheGroup<G, T>[]
   }
 
   async copy(content: T) {
@@ -133,7 +133,7 @@ export default class SectionManagerGroupsService<T extends StorageToken = any, G
     }
   }
 
-  async duplicate(group: StoreGroup<G, T>) {
+  async duplicate(group: CacheGroup<G, T>) {
     const duplicate = this.getDuplicate(group);
     const groupId = await this.add(duplicate);
     const newGroup = this.get(groupId);
@@ -142,8 +142,8 @@ export default class SectionManagerGroupsService<T extends StorageToken = any, G
   }
 
   protected async duplicateTokens(
-    group: StoreGroup<G, T>,
-    tokens: StoreToken<T>[]
+    group: CacheGroup<G, T>,
+    tokens: CacheToken<T>[]
   ) {
     for (let token of tokens) {
       await this.tokensManager.duplicate(token, group)

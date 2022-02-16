@@ -1,4 +1,4 @@
-import { DBSectionData, StoreToken } from "@core/core-types";
+import { DBSectionData, CacheToken } from "@core/core-types";
 import { StorageGroup, StorageSectionContentManager, StorageToken } from "@core/storages/storages-types";
 
 export type Variant = "tint" | "shade";
@@ -21,7 +21,7 @@ export type ColorPaletteDBGroup = StorageGroup & {
   view: 'grouped' | 'default' | 'inline';
 }
 
-export type ColorPaletteStoreToken = StoreToken<ColorPaletteDBToken> & {
+export type ColorPaletteCacheToken = CacheToken<ColorPaletteDBToken> & {
   tint?: ColorPaletteDBToken[];
   shade?: ColorPaletteDBToken[];
 }

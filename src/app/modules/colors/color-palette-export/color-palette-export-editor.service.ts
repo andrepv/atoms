@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import chroma from "chroma-js";
 import { BehaviorSubject } from "rxjs";
 import { ExportColorFormat } from "@core/types/export-types";
-import { StoreToken } from "@core/core-types";
+import { CacheToken } from "@core/core-types";
 import { ExportEditorSectionService } from "@shared/components/export-editor-section/export-editor-section.service";
 
 type ColorPaletteConfigs = {colorFormat: ExportColorFormat}
@@ -13,7 +13,7 @@ export class ColorPaletteExportEditorService extends ExportEditorSectionService 
 
   codePreviewConfigs$ = new BehaviorSubject<any>({colorFormat: 'hex'})
 
-  getStyleValue(token: StoreToken, configs: ColorPaletteConfigs) {
+  getStyleValue(token: CacheToken, configs: ColorPaletteConfigs) {
     let color = token.color;
 
     if (configs.colorFormat === 'rgb') {

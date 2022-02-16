@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { StoreToken, StoreGroup } from '@core/core-types';
+import { CacheToken, CacheGroup } from '@core/core-types';
 import SectionManagerContentService from '@core/services/section-manager-content.service';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { ClipboardService } from '@core/services/clipboard.service';
@@ -11,8 +11,8 @@ import { EditorService } from '@core/services/editor.service';
   styleUrls: ['./token-actions.component.less']
 })
 export class TokenActionsComponent implements OnInit {
-  @Input() token: StoreToken;
-  @Input() group: StoreGroup;
+  @Input() token: CacheToken;
+  @Input() group: CacheGroup;
   @Input() editorTemplate: TemplateRef<any> = null;
 
   constructor(

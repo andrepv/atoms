@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StoreToken } from '@core/core-types';
+import { CacheToken } from '@core/core-types';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { StorageGroup } from '@core/storages/storages-types';
 import { ExportEditorService } from '../../../layout/export-editor/export-editor.service';
@@ -21,7 +21,7 @@ export class BorderRadiusSectionComponent implements OnInit {
 
   setTokenValue(
     radius: BorderRadiusDBToken['radius'],
-    token: StoreToken<BorderRadiusDBToken>,
+    token: CacheToken<BorderRadiusDBToken>,
   ) {
     this.tokens.update(token, {radius});
   }

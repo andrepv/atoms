@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { StoreService } from './store.service';
+import { SectionManagerCachedContentService  } from './section-manager-cached-content.service';
 
 describe('StoreService', () => {
-  let service: StoreService;
+  let service: SectionManagerCachedContentService ;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(StoreService);
+    service = TestBed.inject(SectionManagerCachedContentService );
   });
 
   it('should be created', () => {

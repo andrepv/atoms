@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@angular/core";
 import SectionManagerGroupsService from "@core/services/section-manager-groups.service";
 import SectionManagerContentService from "@core/services/section-manager-content.service";
 import SectionManagerTokensService from "@core/services/section-manager-tokens.service";
-import { StoreService } from "@core/services/store.service";
+import { SectionManagerCachedContentService } from "@core/services/section-manager-cached-content.service";
 import { ThemeManagerService } from "@core/services/theme-manager.service";
 import { FontManagerService } from "@typography/typeface-editor/font-manager.service";
 import { StorageGroup, StorageSectionContentManager } from "@core/storages/storages-types";
@@ -15,10 +15,10 @@ export class TypefaceManagerContentService extends SectionManagerContentService<
     protected groups: SectionManagerGroupsService,
     protected tokens: SectionManagerTokensService,
     protected theme: ThemeManagerService,
-    protected store: StoreService,
+    protected cache: SectionManagerCachedContentService,
     private fontManager: FontManagerService,
   ) {
-    super(storage, groups, tokens, theme, store);
+    super(storage, groups, tokens, theme, cache);
   }
 
   async load() {

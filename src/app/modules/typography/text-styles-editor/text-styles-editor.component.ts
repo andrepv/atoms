@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EditableContent, StorageTokenValue } from '@core/core-types';
 import { TextStylesDBGroup, TextStylesDBToken } from '@typography/text-styles-section/text-styles.model';
-import { StoreService } from '@core/services/store.service';
+import { SectionManagerCachedContentService  } from '@core/services/section-manager-cached-content.service';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class TextStylesEditorComponent implements OnInit {
   }
 
   constructor(
-    private store: StoreService,
+    private cache: SectionManagerCachedContentService,
     private tokensManager: SectionManagerTokensService,
   ) {}
 
@@ -71,13 +71,13 @@ export class TextStylesEditorComponent implements OnInit {
 
   updateTextStyles(
     styles: Partial<StorageTokenValue<TextStylesDBToken>>,
-    updateStore = false
+    updateCache = false
   ) {
-    return this.tokensManager.update(this.token, styles, updateStore)
+    return this.tokensManager.update(this.token, styles, updateCache)
   }
 
   private async getVariants() {
-    const typeface = this.store.getSectionToken('Type Face', this.token.typefaceId);
+    const typeface = this.cache.getSectionToken('Type Face', this.token.typefaceId);
 
     if (typeface) {
 

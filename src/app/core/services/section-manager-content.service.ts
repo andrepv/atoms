@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@angular/core";
 import { SectionNames } from "../core-types";
 import SectionManagerGroupsService from "./section-manager-groups.service";
 import SectionManagerTokensService from "./section-manager-tokens.service";
-import { StoreService } from "./store.service";
+import { SectionManagerCachedContentService  } from "./section-manager-cached-content.service";
 import { ThemeManagerService } from "./theme-manager.service";
 import { StorageGroup, StorageSectionContentManager, StorageToken } from "../storages/storages-types";
 
@@ -16,7 +16,7 @@ export default class SectionManagerContentService<T extends StorageToken = any, 
     protected groups: SectionManagerGroupsService<T, G>,
     protected tokens: SectionManagerTokensService<T, G>,
     protected theme: ThemeManagerService,
-    protected store: StoreService,
+    protected cache: SectionManagerCachedContentService,
   ) {
     this.name = storage.sectionName;
   }
@@ -24,7 +24,7 @@ export default class SectionManagerContentService<T extends StorageToken = any, 
   async load() {
     this.isLoading = true;
 
-    let groups: any = await this.groups.load({index: "themeId", key: this.theme.selected.id});
+    let groups: any[] = await this.groups.load({index: "themeId", key: this.theme.selected.id});
 
     if (groups.length) {
       for (let group of groups) {
@@ -33,7 +33,7 @@ export default class SectionManagerContentService<T extends StorageToken = any, 
       }
     }
 
-    this.store.setSectionContent(this.name, groups)
+    this.cache.setSectionContent(this.name, groups)
     this.isLoading = false;
     return groups;
   }

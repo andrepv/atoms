@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { getScaleValue } from '@utils';
-import { StoreGroup } from '@core/core-types';
+import { CacheGroup } from '@core/core-types';
 import { ModularScaleGroup, ModularScalePreset, ModularScaleToken } from './modular-scale-types';
 import { MODULAR_SCALE_PRESETS } from './modular-scale-presets';
 import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
@@ -13,7 +13,7 @@ import { StorageToken } from '@core/storages/storages-types';
   styleUrls: ['./modular-scale-editor.component.less']
 })
 export class ModularScaleEditorComponent implements OnInit {
-  @Input() group: StoreGroup<any, StorageToken & ModularScaleToken> & ModularScaleGroup;
+  @Input() group: CacheGroup<any, StorageToken & ModularScaleToken> & ModularScaleGroup;
   @Input() minBase = 4;
   @Input() maxBase = 100;
   @Input() units = 'px';

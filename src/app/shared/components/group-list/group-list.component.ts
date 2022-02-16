@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { StoreGroup } from '@core/core-types';
+import { CacheGroup } from '@core/core-types';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
 import { ExplorerService } from '../../../layout/explorer/explorer.service';
 import { Subscription } from 'rxjs';
@@ -19,7 +19,7 @@ export class GroupListComponent implements OnInit {
 
   @ViewChild("treeTemplate") treeTemplateRef: TemplateRef<any>
 
-  groupList: StoreGroup[] = [];
+  groupList: CacheGroup[] = [];
   subscription: Subscription;
 
   isCodeViewModeActive = false;

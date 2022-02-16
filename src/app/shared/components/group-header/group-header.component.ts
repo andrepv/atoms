@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { EditorService } from '@core/services/editor.service';
 import { TextEditableComponent } from '../text-editable/text-editable.component';
-import { StoreGroup } from '@core/core-types';
+import { CacheGroup } from '@core/core-types';
 import { ClipboardService } from '@core/services/clipboard.service';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
@@ -13,7 +13,7 @@ import SectionManagerContentService from '@core/services/section-manager-content
   styleUrls: ['./group-header.component.less']
 })
 export class GroupHeaderComponent implements OnInit {
-  @Input() group: StoreGroup;
+  @Input() group: CacheGroup;
   @Input() groupEditorTemplate: TemplateRef<any>;
   @Input() customButtonsTemplate: TemplateRef<any>;
 

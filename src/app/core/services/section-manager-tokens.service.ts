@@ -1,7 +1,7 @@
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { StoreService } from '@core/services/store.service';
+import { SectionManagerCachedContentService  } from '@core/services/section-manager-cached-content.service';
 import { getRandomChars } from '@utils';
-import { StoreToken, StoreGroup, StorageTokenValue, SectionNames } from '@core/core-types';
+import { CacheToken, CacheGroup, StorageTokenValue, SectionNames } from '@core/core-types';
 import { ThemeManagerService } from './theme-manager.service';
 import { StorageGroup, StorageSectionContentManager, StorageToken, StorageTokensManager } from '../storages/storages-types';
 import { ClipboardService } from '../services/clipboard.service';
@@ -19,7 +19,7 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
 
   constructor(
     @Inject('storage') storageSection: StorageSectionContentManager<T, G>,
-    protected store: StoreService,
+    protected cache: SectionManagerCachedContentService ,
     protected message: NzMessageService,
     protected theme: ThemeManagerService,
     protected clipboard: ClipboardService,
@@ -32,7 +32,7 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
     return this.storage.get(query);
   }
 
-  async addToGroup(group: StoreGroup<G, T>, token = this.create(group)) {
+  async addToGroup(group: CacheGroup<G, T>, token = this.create(group)) {
     return this.add(token, group.tokens);
   }
 
@@ -49,12 +49,12 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
     }
   }
 
-  async delete(token: StoreToken<T>, group: StoreGroup<G, T>) {
+  async delete(token: CacheToken<T>, group: CacheGroup<G, T>) {
     await this.storage.delete(token.id);
-    this.store.deleteToken(this.sectionName, group, token.id)
+    this.cache.deleteToken(this.sectionName, group, token.id)
   }
 
-  async rename(tokenName: string, token: StoreToken<T>) {
+  async rename(tokenName: string, token: CacheToken<T>) {
     const isUnique = await this.theme.isTokenNameUnique(tokenName);
     if (!isUnique) {
       this.message.error('The token name must be unique');
@@ -66,7 +66,7 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
     token.name = tokenName
   }
 
-  getDefaultValue(group?: StoreGroup<G, T>): any {
+  getDefaultValue(group?: CacheGroup<G, T>): any {
     return {}
   }
 
@@ -79,7 +79,7 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
   }
 
   create(
-    group: StoreGroup<G, T>,
+    group: CacheGroup<G, T>,
     value = this.getDefaultValue(group),
     name = `token-${getRandomChars()}`,
   ) {
@@ -92,27 +92,27 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
   }
 
   async update(
-    token: StoreToken<T>,
+    token: CacheToken<T>,
     changes: Partial<StorageTokenValue<T>>,
-    updateStore = true,
+    updateCache = true,
   ) {
     const keys = Object.keys(changes);
 
     for (let key of keys) {
       await this.storage.update(token.id, changes);
 
-      if (updateStore) {
+      if (updateCache) {
         token[key] = changes[key];
       }
     }
   }
 
-  getList(): StoreToken<T>[] {
-    return this.store.getSectionTokens(this.sectionName)
+  getList(): CacheToken<T>[] {
+    return this.cache.getSectionTokens(this.sectionName)
   }
 
-  get(tokenId: number): StoreToken<T> | false {
-    return this.store.getSectionToken(this.sectionName, tokenId)
+  get(tokenId: number): CacheToken<T> | false {
+    return this.cache.getSectionToken(this.sectionName, tokenId)
   }
 
   async copy(content: T) {
@@ -123,7 +123,7 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
     }));
   }
 
-  async past(group: StoreGroup<G, T>) {
+  async past(group: CacheGroup<G, T>) {
     try {
       const data = await this.clipboard.getCopiedData();
       if (this.canPast(data)) {
@@ -136,7 +136,7 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
     }
   }
 
-  duplicate(token: StoreToken<T>, group: StoreGroup<G, T>) {
+  duplicate(token: CacheToken<T>, group: CacheGroup<G, T>) {
     const duplicate = this.getDuplicate(token, group);
     return this.addToGroup(group, duplicate);
   }
@@ -146,7 +146,7 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
     return true;
   }
 
-  protected getDuplicate(originalToken: T, group: StoreGroup<G, T>): T {
+  protected getDuplicate(originalToken: T, group: CacheGroup<G, T>): T {
     const duplicate = deepClone(originalToken);
     const tokenName = `${duplicate.name}-${getRandomChars(4)}`;
     delete duplicate.id;

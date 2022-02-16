@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SpacingDBGroup, SpacingDBToken } from '@spacing/spacing.model';
-import { StoreToken } from '@core/core-types';
+import { CacheToken } from '@core/core-types';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import spacingSectionProviders from './spacing-section-providers';
 import { ExportEditorService } from '../../../layout/export-editor/export-editor.service';
@@ -16,7 +16,7 @@ export class SpacingSectionComponent implements OnInit {
 
   ngOnInit() {}
 
-  setTokenValue(value: SpacingDBToken['modularScaleTokenValue'], token: StoreToken) {
+  setTokenValue(value: SpacingDBToken['modularScaleTokenValue'], token: CacheToken) {
     this.tokens.update(token, {modularScaleTokenValue: value});
   }
 }

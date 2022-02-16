@@ -8,19 +8,19 @@ export type StorageTokenValue<T extends StorageToken> = Omit<T, keyof StorageTok
 
 export type StorageGroupValue<G extends StorageGroup> = Omit<G, keyof StorageGroup>
 
-export type StoreToken<T extends StorageToken = any> = {
+export type CacheToken<T extends StorageToken = any> = {
   [K in keyof T]: T[K]
 }
 
-export type StoreGroup<G extends StorageGroup = any, T extends StorageToken = any> = {
+export type CacheGroup<G extends StorageGroup = any, T extends StorageToken = any> = {
   [K in keyof G]: G[K] 
 } & {
-  tokens: StoreToken<T>[];
+  tokens: CacheToken<T>[];
 }
 
 export interface EditableContent<T extends StorageToken = any, G extends StorageGroup = any> {
-  token?: StoreToken<T>,
-  group: StoreGroup<G, T>,
+  token?: CacheToken<T>,
+  group: CacheGroup<G, T>,
 }
 
 export interface DBSectionData {

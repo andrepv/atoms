@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ColorVariants } from '@colors/color-palette-editor-variants/color-variants';
-import { ColorPaletteStoreToken } from '@colors/color-palette-section/color-palette.model';
-import { StoreGroup } from '@core/core-types';
+import { ColorPaletteCacheToken } from '@colors/color-palette-section/color-palette.model';
+import { CacheGroup } from '@core/core-types';
 import { StorageGroup } from '@core/storages/storages-types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -19,8 +19,8 @@ import ColorTintsService from './color-tints.service';
   ]
 })
 export class ColorPaletteEditorTintsComponent implements OnInit {
-  @Input() token: ColorPaletteStoreToken;
-  @Input() group: StoreGroup<StorageGroup>;
+  @Input() token: ColorPaletteCacheToken;
+  @Input() group: CacheGroup<StorageGroup>;
 
   @Input() colorChange$: Subject<void>;
   @Input() colorSave$: Subject<void>;

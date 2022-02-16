@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { StoreGroup, StoreToken } from '@core/core-types';
+import { CacheGroup, CacheToken } from '@core/core-types';
 import chroma from 'chroma-js';
 
 @Component({
@@ -8,9 +8,9 @@ import chroma from 'chroma-js';
   styleUrls: ['./color-palette-view-default.component.less']
 })
 export class ColorPaletteViewDefaultComponent implements OnInit {
-  @Input() group: StoreGroup;
+  @Input() group: CacheGroup;
 
-  getHexCodeColor(token: StoreToken) {
+  getHexCodeColor(token: CacheToken) {
     return chroma(token.color).luminance() > 0.4 ? "#000" : "#fff";
   }
 

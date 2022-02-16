@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { ColorPaletteDBToken, ColorPaletteStoreToken } from "@colors/color-palette-section/color-palette.model";
-import { StoreGroup, StoreToken } from "@core/core-types";
+import { ColorPaletteDBToken, ColorPaletteCacheToken } from "@colors/color-palette-section/color-palette.model";
+import { CacheGroup, CacheToken } from "@core/core-types";
 import SectionManagerTokensService from "@core/services/section-manager-tokens.service";
 import { StorageGroup } from "@core/storages/storages-types";
 import chroma from "chroma-js";
@@ -17,8 +17,8 @@ export default class ColorPaletteManagerTokensService extends SectionManagerToke
   }
 
   async delete(
-    token: StoreToken<ColorPaletteDBToken>,
-    group: StoreGroup<StorageGroup, ColorPaletteDBToken>
+    token: CacheToken<ColorPaletteDBToken>,
+    group: CacheGroup<StorageGroup, ColorPaletteDBToken>
   ) {
     await super.delete(token, group);
 
@@ -30,17 +30,17 @@ export default class ColorPaletteManagerTokensService extends SectionManagerToke
   }
 
   addToGroup(
-    group: StoreGroup<StorageGroup>,
+    group: CacheGroup<StorageGroup>,
     token = this.create(group)
   ) {
     return this.addPrimaryColor(token, group);
   }
 
   async duplicate(
-    token: ColorPaletteStoreToken,
-    group: StoreGroup<StorageGroup, ColorPaletteDBToken>
+    token: ColorPaletteCacheToken,
+    group: CacheGroup<StorageGroup, ColorPaletteDBToken>
   ) {
-    let duplicate = this.getDuplicate(token, group) as ColorPaletteStoreToken;
+    let duplicate = this.getDuplicate(token, group) as ColorPaletteCacheToken;
 
     if (duplicate.tint || duplicate.shade) {
       return this.duplicatePrimaryColor(duplicate, group);
@@ -53,10 +53,10 @@ export default class ColorPaletteManagerTokensService extends SectionManagerToke
     return token.color;
   }
 
-  addCustomIterator(tokens: StoreToken<ColorPaletteDBToken>[]) {
+  addCustomIterator(tokens: CacheToken<ColorPaletteDBToken>[]) {
     tokens[Symbol.iterator] = function* () {
       for (let i of Object.values(this)) {
-        const token = i as ColorPaletteStoreToken;
+        const token = i as ColorPaletteCacheToken;
 
         if (token.isPrimary) {
           for (let i = token.tint.length - 1; i >= 0; i--) {
@@ -77,14 +77,14 @@ export default class ColorPaletteManagerTokensService extends SectionManagerToke
 
   async add(token: ColorPaletteDBToken, container: any[]) {
     const nextToken = await super.add(token, container);
-    const group = this.store.getGroup(this.sectionName, nextToken.groupId);
+    const group = this.cache.getGroup(this.sectionName, nextToken.groupId);
     group.tokens = this.addCustomIterator(group.tokens);
     return nextToken;
   }
 
   protected getDuplicate(
-    originalToken: ColorPaletteStoreToken,
-    group: StoreGroup<StorageGroup, ColorPaletteDBToken>
+    originalToken: ColorPaletteCacheToken,
+    group: CacheGroup<StorageGroup, ColorPaletteDBToken>
   ) {
     let duplicate = super.getDuplicate(originalToken, group);
 
@@ -96,25 +96,25 @@ export default class ColorPaletteManagerTokensService extends SectionManagerToke
   }
 
   private deleteVariant(
-    token: ColorPaletteStoreToken,
-    group: StoreGroup
+    token: ColorPaletteCacheToken,
+    group: CacheGroup
   ) {
     const primaryColor = group.tokens.find(primaryColorToken => primaryColorToken.id === token.primaryColorId);
 
     if (primaryColor) {
-      primaryColor[token.type] = primaryColor[token.type].filter((variant: StoreToken) => variant.id !== token.id)
+      primaryColor[token.type] = primaryColor[token.type].filter((variant: CacheToken) => variant.id !== token.id)
     }
   }
 
   private deletePrimaryColor(
-    token: ColorPaletteStoreToken,
-    group: StoreGroup<StorageGroup, ColorPaletteDBToken>
+    token: ColorPaletteCacheToken,
+    group: CacheGroup<StorageGroup, ColorPaletteDBToken>
   ) {
     token.tint.map(token => super.delete(token, group))
     token.shade.map(token => super.delete(token, group))
   }
 
-  private transformVariantToPrimaryColor(clonedVariant: ColorPaletteStoreToken) {
+  private transformVariantToPrimaryColor(clonedVariant: ColorPaletteCacheToken) {
 
     delete clonedVariant.type;
     delete clonedVariant.primaryColorId;
@@ -127,8 +127,8 @@ export default class ColorPaletteManagerTokensService extends SectionManagerToke
   }
 
   private async duplicatePrimaryColor(
-    token: ColorPaletteStoreToken,
-    group: StoreGroup<StorageGroup>
+    token: ColorPaletteCacheToken,
+    group: CacheGroup<StorageGroup>
   ) {
     let {tint: tints, shade: shades} = token;
 
@@ -151,8 +151,8 @@ export default class ColorPaletteManagerTokensService extends SectionManagerToke
   }
 
   private async addPrimaryColor(
-    token: ColorPaletteStoreToken,
-    group: StoreGroup<StorageGroup>
+    token: ColorPaletteCacheToken,
+    group: CacheGroup<StorageGroup>
   ) {
     const newToken: any = await super.add(token, group.tokens);
 

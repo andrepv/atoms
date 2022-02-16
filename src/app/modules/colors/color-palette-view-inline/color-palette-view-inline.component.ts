@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { StoreGroup } from '@core/core-types';
+import { CacheGroup } from '@core/core-types';
 
 @Component({
   selector: 'app-color-palette-view-inline',
@@ -7,7 +7,7 @@ import { StoreGroup } from '@core/core-types';
   styleUrls: ['./color-palette-view-inline.component.less']
 })
 export class ColorPaletteViewInlineComponent implements OnInit {
-  @Input() group: StoreGroup;
+  @Input() group: CacheGroup;
 
   constructor() { }
 

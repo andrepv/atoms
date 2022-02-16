@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { SectionNames } from '@core/core-types';
-import { StoreService } from '@core/services/store.service';
+import { SectionManagerCachedContentService  } from '@core/services/section-manager-cached-content.service';
 
 @Component({
   selector: 'app-tokens-section-select',
@@ -15,10 +15,10 @@ export class TokensSectionSelectComponent implements OnInit {
   @Output() change: EventEmitter<number> = new EventEmitter();
 
   get tokens() {
-    return this.store.getSectionTokens(this.section)
+    return this.cache.getSectionTokens(this.section)
   }
 
-  constructor(private store: StoreService) {}
+  constructor(private cache: SectionManagerCachedContentService) {}
 
   ngOnInit() {}
 }

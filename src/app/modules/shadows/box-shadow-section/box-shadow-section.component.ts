@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StoreToken } from '@core/core-types';
+import { CacheToken } from '@core/core-types';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { ExportEditorService } from '../../../layout/export-editor/export-editor.service';
 import boxShadowSectionProviders from './box-shadow-section-providers';
@@ -16,7 +16,7 @@ export class BoxShadowSectionComponent implements OnInit {
 
   ngOnInit() {}
 
-  getBlockStyle(token: StoreToken<BoxShadowDBToken>) {
+  getBlockStyle(token: CacheToken<BoxShadowDBToken>) {
     return {
       backgroundColor: token.blockColor,
       boxShadow: this.tokens.getStyleValue(token),

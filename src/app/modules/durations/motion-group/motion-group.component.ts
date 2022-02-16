@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { StoreGroup } from '@core/core-types';
+import { CacheGroup } from '@core/core-types';
 import { ButtonPlayState } from '../button-play/button-play.component';
 
 @Component({
@@ -8,7 +8,7 @@ import { ButtonPlayState } from '../button-play/button-play.component';
   styleUrls: ['./motion-group.component.less']
 })
 export class MotionGroupComponent implements OnInit {
-  @Input() group: StoreGroup;
+  @Input() group: CacheGroup;
   state: ButtonPlayState = 'pause';
 
   get isActive() {

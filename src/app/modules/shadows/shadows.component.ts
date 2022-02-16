@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StoreService } from '@core/services/store.service';
+import { SectionManagerCachedContentService  } from '@core/services/section-manager-cached-content.service';
 
 @Component({
   selector: 'app-shadows',
@@ -9,10 +9,10 @@ import { StoreService } from '@core/services/store.service';
 export class ShadowsComponent implements OnInit {
   readonly PAGE_NAME = "Shadows";
 
-  constructor(public store: StoreService) {}
+  constructor(public cache: SectionManagerCachedContentService) {}
 
   ngOnInit() {
-    this.store.setPageStructure({
+    this.cache.addPage({
       name: this.PAGE_NAME,
       content: {
         "Box Shadow": [],

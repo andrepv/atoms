@@ -1,5 +1,5 @@
-import { ColorPaletteDBGroup, ColorPaletteDBToken, ColorPaletteStoreToken, Variant, VariantConfig } from '@colors/color-palette-section/color-palette.model';
-import { StoreGroup } from '@core/core-types';
+import { ColorPaletteDBGroup, ColorPaletteDBToken, ColorPaletteCacheToken, Variant, VariantConfig } from '@colors/color-palette-section/color-palette.model';
+import { CacheGroup } from '@core/core-types';
 import { EditorService } from '@core/services/editor.service';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import chroma from 'chroma-js';
@@ -10,11 +10,11 @@ export abstract class ColorVariants {
     protected editor: EditorService<ColorPaletteDBToken, ColorPaletteDBGroup>,
   ) {}
 
-  get primaryColorToken(): ColorPaletteStoreToken {
+  get primaryColorToken(): ColorPaletteCacheToken {
     return this.editor.content.token;
   }
 
-  get group(): StoreGroup<ColorPaletteDBGroup> {
+  get group(): CacheGroup<ColorPaletteDBGroup> {
     return this.editor.content.group;
   }
 
@@ -70,7 +70,7 @@ export abstract class ColorVariants {
   }
 
   private traverseVariants(
-    callback: (variant: ColorPaletteStoreToken, color: string, index: number) => void,
+    callback: (variant: ColorPaletteCacheToken, color: string, index: number) => void,
     amount = this.list.length
   ) {
     const colorScale = this.getVariantsColorScale(amount);

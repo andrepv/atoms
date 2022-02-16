@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SectionViewOption, StoreGroup } from '@core/core-types';
+import { SectionViewOption, CacheGroup } from '@core/core-types';
 import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
 
 @Component({
@@ -9,7 +9,7 @@ import SectionManagerGroupsService from '@core/services/section-manager-groups.s
 })
 export class GroupViewListComponent implements OnInit {
   @Input() options: SectionViewOption<string>[] = [];
-  @Input() group: StoreGroup; 
+  @Input() group: CacheGroup; 
 
   isOpen = false;
 

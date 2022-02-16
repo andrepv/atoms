@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StoreToken } from '@core/core-types';
+import { CacheToken } from '@core/core-types';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { ExportEditorService } from '../../../layout/export-editor/export-editor.service';
 import { DurationsDBGroup, DurationsDBToken } from '../durations.model';
@@ -16,7 +16,7 @@ export class DurationsSectionComponent implements OnInit {
 
   ngOnInit() {}
 
-  setTokenValue(value: DurationsDBToken['modularScaleTokenValue'], token: StoreToken) {
+  setTokenValue(value: DurationsDBToken['modularScaleTokenValue'], token: CacheToken) {
     this.tokens.update(token, {modularScaleTokenValue: value});
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { ColorPaletteDBToken, ColorPaletteStoreToken } from "@colors/color-palette-section/color-palette.model";
-import { StoreGroup } from "@core/core-types";
+import { ColorPaletteDBToken, ColorPaletteCacheToken } from "@colors/color-palette-section/color-palette.model";
+import { CacheGroup } from "@core/core-types";
 import SectionManagerContentService from "@core/services/section-manager-content.service";
 import { StorageGroup } from "@core/storages/storages-types";
 
@@ -12,7 +12,7 @@ export class ColorPaletteContentService extends SectionManagerContentService<Col
 
     this.groups.getList().map(group => {
 
-      group.tokens = group.tokens.reduce((acc, token: ColorPaletteStoreToken) => {
+      group.tokens = group.tokens.reduce((acc, token: ColorPaletteCacheToken) => {
         if (!token.isPrimary) {
           this.attachVariantToPrimaryColor(token, group);
         }
@@ -35,7 +35,7 @@ export class ColorPaletteContentService extends SectionManagerContentService<Col
     return this.groups.getList();
   }
 
-  private attachVariantToPrimaryColor(variant: ColorPaletteStoreToken, group: StoreGroup) {
+  private attachVariantToPrimaryColor(variant: ColorPaletteCacheToken, group: CacheGroup) {
     const {primaryColorId = 0, type = 'tint'} = variant;
     const primaryColor = group.tokens.find(token => token.id === primaryColorId);
 

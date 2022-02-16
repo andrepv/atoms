@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EditorService } from '@core/services//editor.service';
-import { StoreService } from '@core/services/store.service';
+import { SectionManagerCachedContentService  } from '@core/services/section-manager-cached-content.service';
 import { ExplorerService } from './explorer.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { ExplorerService } from './explorer.service';
 })
 export class ExplorerComponent implements OnInit {
   constructor(
-    public store: StoreService,
+    public cache: SectionManagerCachedContentService,
     public editor: EditorService,
     public explorer: ExplorerService
   ) {}

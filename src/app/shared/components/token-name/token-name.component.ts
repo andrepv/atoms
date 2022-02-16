@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { StoreToken } from '@core/core-types';
+import { CacheToken } from '@core/core-types';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { TextEditableComponent } from '../text-editable/text-editable.component';
 
@@ -9,7 +9,7 @@ import { TextEditableComponent } from '../text-editable/text-editable.component'
   styleUrls: ['./token-name.component.less']
 })
 export class TokenNameComponent implements OnInit {
-  @Input() token: StoreToken;
+  @Input() token: CacheToken;
 
   constructor(private tokenManager: SectionManagerTokensService) {}
 

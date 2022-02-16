@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { StoreGroup, StoreToken } from '@core/core-types';
+import { CacheGroup, CacheToken } from '@core/core-types';
 import { EditorService } from '@core/services/editor.service';
 import SectionManagerContentService from '@core/services/section-manager-content.service';
 import chroma from 'chroma-js';
@@ -10,8 +10,8 @@ import chroma from 'chroma-js';
   styleUrls: ['./color-token-view-inline.component.less']
 })
 export class ColorTokenViewInlineComponent implements OnInit {
-  @Input() group: StoreGroup;
-  @Input() token: StoreToken;
+  @Input() group: CacheGroup;
+  @Input() token: CacheToken;
   @Input() tooltipPosition = "top";
 
   constructor(

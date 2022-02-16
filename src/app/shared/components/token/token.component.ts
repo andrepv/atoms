@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { StoreToken, StoreGroup } from '@core/core-types';
+import { CacheToken, CacheGroup } from '@core/core-types';
 import { EditorService } from '@core/services/editor.service';
 import SectionManagerContentService from '@core/services/section-manager-content.service';
 
@@ -11,8 +11,8 @@ import SectionManagerContentService from '@core/services/section-manager-content
 export class TokenComponent implements OnInit {
   @ViewChild('editor') editorTemplateRef: TemplateRef<any>;
 
-  @Input() token: StoreToken;
-  @Input() group: StoreGroup;
+  @Input() token: CacheToken;
+  @Input() group: CacheGroup;
   @Input() previewTemplate: TemplateRef<any>;
   @Input() editorTemplate: TemplateRef<any> = null;
   @Input() nameVisible = true;

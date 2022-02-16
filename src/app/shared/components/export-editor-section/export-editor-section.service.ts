@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SectionNames, StoreToken } from '@core/core-types';
+import { SectionNames, CacheToken } from '@core/core-types';
 import { ClipboardService } from '@core/services/clipboard.service';
 import SectionManagerContentService from '@core/services/section-manager-content.service';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
@@ -82,7 +82,7 @@ export class ExportEditorSectionService {
     downloadFile(content, fileName);
   }
 
-  getStyleValue(token: StoreToken, configs?: any) {
+  getStyleValue(token: CacheToken, configs?: any) {
     return this.tokensManager.getStyleValue(token);
   }
 
