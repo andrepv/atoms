@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ColorPaletteDBToken, ColorPaletteStoreToken, Variant } from '../color-palette-section/color-palette.model';
-import { EditableContent, StoreGroup, StoreToken } from '@core/core-types';
-import { ColorVariantsComponent } from '@colors/color-variants/color-variants.component';
+import { ColorPaletteDBToken, ColorPaletteStoreToken } from '../color-palette-section/color-palette.model';
+import { EditableContent, StoreGroup } from '@core/core-types';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { StorageGroup } from '@core/storages/storages-types';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-color-palette-editor',
@@ -11,10 +11,10 @@ import { StorageGroup } from '@core/storages/storages-types';
   styleUrls: ['./color-palette-editor.component.less'],
 })
 export class ColorPaletteEditorComponent implements OnInit {
-  @ViewChild('tintsTemplateRef') tintsTemplateRef: ColorVariantsComponent;
-  @ViewChild('shadesTemplateRef') shadesTemplateRef: ColorVariantsComponent;
-
   @Input() content: EditableContent<ColorPaletteStoreToken, StoreGroup<StorageGroup, ColorPaletteStoreToken>>;
+
+  colorChange$ = new Subject<void>();
+  colorSave$ = new Subject<void>();
 
   contrastColor = "#fff";
 
@@ -32,60 +32,14 @@ export class ColorPaletteEditorComponent implements OnInit {
 
   changeColor(value: string) {
     this.token.color = value;
-
-    setTimeout(() => {
-      if (this.token.isPrimary) {
-        this.tintsTemplateRef.changeVariantsColor();
-        this.shadesTemplateRef.changeVariantsColor();
-      }
-    }, 50)
+    this.colorChange$.next()
   }
 
   async saveColor() {
     await this.tokens.storage.update(this.token.id, {color: this.token.color});
 
     if (this.token.isPrimary) {
-      this.tintsTemplateRef.saveVariantsColor();
-      this.shadesTemplateRef.saveVariantsColor();
+      this.colorSave$.next();
     }
-  }
-
-  async addVariant(
-    color: string,
-    type: Variant,
-    variants: ColorPaletteStoreToken[],
-    templateRef: ColorVariantsComponent
-  ) {
-    const token = {
-      ...this.tokens.create(this.group),
-      color,
-      isPrimary: false,
-      primaryColorId: this.token.id,
-      type
-    } as ColorPaletteDBToken
-
-    await this.tokens.addToContainer(token, variants);
-    templateRef.updateVariants();
-  }
-
-  async deleteVariant(
-    variant: StoreToken<ColorPaletteDBToken>,
-    variants: ColorPaletteStoreToken[],
-    templateRef: ColorVariantsComponent,
-  ) {
-    await this.tokens.delete(variant, this.group);
-    templateRef.updateVariants(variants.length - 1);
-  }
-
-  changeVariantColor(variant: ColorPaletteStoreToken) {
-    this.tokens.update(variant, {color: variant.color});
-  }
-  
-  getPresetColors() {
-    return this.tokens.getList().filter(({id}) => id !== this.token.id)
-  }
-
-  updateConfigs(value: {[key: string]: {mixRatio: number, saturation: number}}) {
-    this.tokens.update(this.token, value);
   }
 }

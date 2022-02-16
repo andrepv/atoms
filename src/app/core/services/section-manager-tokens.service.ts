@@ -6,10 +6,11 @@ import { ThemeManagerService } from './theme-manager.service';
 import { StorageGroup, StorageSectionContentManager, StorageToken, StorageTokensManager } from '../storages/storages-types';
 import { ClipboardService } from '../services/clipboard.service';
 import { Inject, Injectable } from '@angular/core';
+import { deepClone } from '@utils/deep-clone';
 
 @Injectable()
 export default class SectionManagerTokensService<T extends StorageToken = any, G extends StorageGroup = any> {
-  private sectionName: SectionNames;
+  protected sectionName: SectionNames;
   storage: StorageTokensManager<T>
 
   get selectedThemeId() {
@@ -39,6 +40,15 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
     return this.add(token, container);
   }
 
+  async add(token: T, container: any[]) {
+    const tokenId = await this.storage.add(token);
+    if (tokenId) {
+      const newToken = {id: tokenId, ...token};
+      container.push(newToken);
+      return newToken;
+    }
+  }
+
   async delete(token: StoreToken<T>, group: StoreGroup<G, T>) {
     await this.storage.delete(token.id);
     this.store.deleteToken(this.sectionName, group, token.id)
@@ -56,12 +66,16 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
     token.name = tokenName
   }
 
-  getDefaultValue(group: StoreGroup<G, T>): any {
+  getDefaultValue(group?: StoreGroup<G, T>): any {
     return {}
   }
 
   getStyleValue(token: T): any {
     return "";
+  }
+
+  addCustomIterator(tokens: T[]): T[] {
+    return tokens;
   }
 
   create(
@@ -113,8 +127,8 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
     try {
       const data = await this.clipboard.getCopiedData();
       if (this.canPast(data)) {
-        const duplicate = this.getDuplicate(data.content, group);
-        await this.addToGroup(group, duplicate);
+
+        await this.duplicate(data.content, group)
         this.message.success('Done');
       }
     } catch (err) {
@@ -133,7 +147,7 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
   }
 
   protected getDuplicate(originalToken: T, group: StoreGroup<G, T>): T {
-    const duplicate = {...originalToken};
+    const duplicate = deepClone(originalToken);
     const tokenName = `${duplicate.name}-${getRandomChars(4)}`;
     delete duplicate.id;
 
@@ -141,14 +155,5 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
       ...duplicate,
       ...this.create(group, {}, tokenName)
     };
-  }
-
-  protected async add(token: T, container: any[]) {
-    const tokenId = await this.storage.add(token);
-    if (tokenId) {
-      const newToken = {id: tokenId, ...token};
-      container.push(newToken);
-      return newToken;
-    }
   }
 }

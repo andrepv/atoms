@@ -2,28 +2,6 @@
 
 <ng-container *ngFor="let token of group.tokens">
 
-  <!-- tints -->
-
-  <ng-container *ngFor="let tints of token.tint.reverse()">
-    <ng-container *ngTemplateOutlet="tokenTemplate; context: {$implicit: tints, group: group}"></ng-container>
-  </ng-container>
-  
-  <!-- primary color -->
-
-  <ng-container *ngTemplateOutlet="tokenTemplate; context: {$implicit: token, group: group}"></ng-container>
-  
-  <!-- shades -->
-
-  <ng-container *ngFor="let shades of token.shade">
-    <ng-container *ngTemplateOutlet="tokenTemplate; context: {$implicit: shades, group: group}"></ng-container>
-  </ng-container>
-
-</ng-container>
-
-
-<!-- token -->
-
-<ng-template #tokenTemplate let-token let-group="group">
   <app-token
     [token]="token"
     [group]="group"
@@ -47,4 +25,5 @@
       >{{ data.token.color }}</h4>
     </div>
   </ng-template>
-</ng-template>
+
+</ng-container>

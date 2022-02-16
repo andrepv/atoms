@@ -1,11 +1,12 @@
 import { StoreService } from '@core/services/store.service';
-import { StoreGroup, StorageGroupValue, SectionNames } from '@core/core-types';
+import { StoreGroup, StorageGroupValue, SectionNames, StoreToken } from '@core/core-types';
 import { ThemeManagerService } from './theme-manager.service';
 import SectionManagerTokensService from './section-manager-tokens.service';
 import { StorageGroup, StorageGroupsManager, StorageSectionContentManager, StorageToken } from '../storages/storages-types';
 import { ClipboardService } from './clipboard.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Inject, Injectable } from '@angular/core';
+import { deepClone } from '@utils/deep-clone';
 
 @Injectable()
 export default class SectionManagerGroupsService<T extends StorageToken = any, G extends StorageGroup = any> {
@@ -32,6 +33,10 @@ export default class SectionManagerGroupsService<T extends StorageToken = any, G
     return {};
   }
 
+  getDefaultTokens() {
+    return [];
+  }
+
   load(query: {index: string, key: number}) {
     return this.storage.get(query);
   }
@@ -41,7 +46,7 @@ export default class SectionManagerGroupsService<T extends StorageToken = any, G
     const newGroup: StoreGroup<G, T> = {
       ...group,
       id: groupId,
-      tokens: [],
+      tokens: this.getDefaultTokens(),
     }
     this.store.addGroup(this.sectionName, newGroup)
     return groupId;
@@ -115,11 +120,9 @@ export default class SectionManagerGroupsService<T extends StorageToken = any, G
       const duplicate = this.getDuplicate(original)
 
       const groupId = await this.add(duplicate);
-      const group = this.get(groupId)
+      const group = this.get(groupId);
 
-      for (let token of original.tokens) {
-        await this.tokensManager.duplicate(token, group)
-      }
+      await this.duplicateTokens(group, original.tokens);
 
       this.message.success('Done');
 
@@ -135,8 +138,15 @@ export default class SectionManagerGroupsService<T extends StorageToken = any, G
     const groupId = await this.add(duplicate);
     const newGroup = this.get(groupId);
 
-    for (let token of group.tokens) {
-      await this.tokensManager.duplicate(token, newGroup)
+    await this.duplicateTokens(newGroup, group.tokens);
+  }
+
+  protected async duplicateTokens(
+    group: StoreGroup<G, T>,
+    tokens: StoreToken<T>[]
+  ) {
+    for (let token of tokens) {
+      await this.tokensManager.duplicate(token, group)
     }
   }
 
@@ -146,7 +156,7 @@ export default class SectionManagerGroupsService<T extends StorageToken = any, G
   }
 
   protected getDuplicate(copiedGroup: any) {
-    const duplicate = {...copiedGroup}
+    const duplicate = deepClone(copiedGroup);
 
     delete duplicate.id;
     delete duplicate.tokens;

@@ -8,39 +8,43 @@ import { StorageGroup } from "@core/storages/storages-types";
 export class ColorPaletteContentService extends SectionManagerContentService<ColorPaletteDBToken, StorageGroup> {
 
   async load() {
-    const groups = await super.load();
+    await super.load();
 
     this.groups.getList().map(group => {
-      group.tokens.map(token => this.handleTokenLoad(token, group))
-      group.tokens = group.tokens.filter(token => token.isPrimary)
-    })
-  
-    return groups;
-  }
 
-  private handleTokenLoad(token: ColorPaletteStoreToken, group: StoreGroup) {
-    if (!token.isPrimary) {
-      const {primaryColorId = 0, type = 'tint'} = token;
-      const primaryColor = this.getToken(group, primaryColorId);
-
-      if (primaryColor) {
-        if (!primaryColor[type]) {
-          primaryColor[type] = [];
+      group.tokens = group.tokens.reduce((acc, token: ColorPaletteStoreToken) => {
+        if (!token.isPrimary) {
+          this.attachVariantToPrimaryColor(token, group);
         }
 
-        primaryColor[type].push(token)
-      }
-    }
+        if (token.isPrimary) {
+          if (!token.tint) token.tint = [];
+          if (!token.shade) token.shade = [];
 
-    if (token.isPrimary) {
-      if (!token.tint) token.tint = [];
-      if (!token.shade) token.shade = [];
-    }
+          acc.push(token);
+        }
+      
+        return acc
+      }, [])
+
+      group.tokens = this.tokens.addCustomIterator(group.tokens);
+
+      return group;
+    })
   
-    return token;
+    return this.groups.getList();
   }
 
-  private getToken(group: StoreGroup, tokenId: number) {
-    return group.tokens.find(token => token.id === tokenId)
+  private attachVariantToPrimaryColor(variant: ColorPaletteStoreToken, group: StoreGroup) {
+    const {primaryColorId = 0, type = 'tint'} = variant;
+    const primaryColor = group.tokens.find(token => token.id === primaryColorId);
+
+    if (primaryColor) {
+      if (!primaryColor[type]) {
+        primaryColor[type] = [];
+      }
+
+      primaryColor[type].push(variant);
+    }
   }
 }

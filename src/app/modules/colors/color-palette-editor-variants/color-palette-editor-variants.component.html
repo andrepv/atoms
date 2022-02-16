@@ -1,10 +1,10 @@
-<app-editor-card [hasBody]="!variants.length">
+<app-editor-card [hasBody]="!variants.list.length">
   <div header class="justify-between">
     <h5 class="label">{{ title }}</h5>
     <div class="align-center">
-      <i class="icon-btn" nz-icon nzType="minus" nzTheme="outline" (click)="delete()" *ngIf="variants.length"></i>
+      <i class="icon-btn" nz-icon nzType="minus" nzTheme="outline" (click)="variants.delete()" *ngIf="variants.list.length"></i>
       <div class="space-horizontal-xxxs"></div>
-      <i class="icon-btn" nz-icon nzType="plus" nzTheme="outline" (click)="add()"></i>
+      <i class="icon-btn" nz-icon nzType="plus" nzTheme="outline" (click)="variants.add()"></i>
     </div>
   </div>
 
@@ -12,7 +12,7 @@
     <div class="variants-grid">
       <div
         class="variant"
-        *ngFor="let variant of variants"
+        *ngFor="let variant of variants.list" 
         [style.background]="variant.color"
       ></div>
     </div>
@@ -28,9 +28,9 @@
           [min]="1"
           [max]="100"
           [displayInput]="false"
-          [(model)]="mixRatio"
-          (modelChange)="changeVariantsColor()"
-          (afterModelChange)="saveConfigs()"
+          [(model)]="variants.configs.mixRatio"
+          (modelChange)="variants.recalculateColors({save: false})"
+          (afterModelChange)="variants.updateConfigs()"
         ></app-slider>
       </div>
     </div>
@@ -46,9 +46,9 @@
           [min]="1"
           [max]="100"
           [displayInput]="false"
-          [(model)]="saturation"
-          (modelChange)="changeVariantsColor()"
-          (afterModelChange)="saveConfigs()"
+          [(model)]="variants.configs.saturation"
+          (modelChange)="variants.recalculateColors({save: false})"
+          (afterModelChange)="variants.updateConfigs()"
         ></app-slider>
       </div>
     </div>

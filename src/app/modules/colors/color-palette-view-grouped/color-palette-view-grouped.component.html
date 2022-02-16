@@ -2,18 +2,20 @@
 
 <ng-container *ngFor="let token of group.tokens">
 
-  <app-token
-    [token]="token"
-    [group]="group"
-    [previewTemplate]="tokenPreviewTemplate"
-    [editorTemplate]="editorTemplate"
-  ></app-token>
-
-  <!-- token's editor -->
-
-  <ng-template #editorTemplate let-content>
-    <app-color-palette-editor [content]="content"></app-color-palette-editor>
-  </ng-template>
+  <ng-container *ngIf="token.isPrimary">
+    <app-token
+      [token]="token"
+      [group]="group"
+      [previewTemplate]="tokenPreviewTemplate"
+      [editorTemplate]="editorTemplate"
+    ></app-token>
+  
+    <!-- token's editor -->
+  
+    <ng-template #editorTemplate let-content>
+      <app-color-palette-editor [content]="content"></app-color-palette-editor>
+    </ng-template>
+  </ng-container>
 
   <!-- token's preview -->
 
@@ -23,12 +25,14 @@
       <!-- tints -->
   
       <div class="align-center">
-        <ng-container *ngFor="let tints of data.token.tint.reverse()">
-          <app-color-token-view-inline
-            [token]="tints"
-            [group]="data.group"
-            tooltipPosition="bottom"
-          ></app-color-token-view-inline>
+        <ng-container *ngIf="data.token.tint.length">
+          <ng-container *ngFor="let tints of data.token.tint">
+            <app-color-token-view-inline
+              [token]="tints"
+              [group]="data.group"
+              tooltipPosition="bottom"
+            ></app-color-token-view-inline>
+          </ng-container>
         </ng-container>
       </div>
   
@@ -48,11 +52,13 @@
       <!-- shades -->
   
       <div class="align-center">
-        <ng-container *ngFor="let shades of data.token.shade">
-          <app-color-token-view-inline
-            [token]="shades"
-            [group]="data.group"
-          ></app-color-token-view-inline>
+        <ng-container *ngIf="data.token.shade.length">
+          <ng-container *ngFor="let shades of data.token.shade">
+            <app-color-token-view-inline
+              [token]="shades"
+              [group]="data.group"
+            ></app-color-token-view-inline>
+          </ng-container>
         </ng-container>
       </div> 
     </div>

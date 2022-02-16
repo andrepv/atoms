@@ -27,37 +27,17 @@
 <div *ngIf="token.isPrimary">
   <div class="divider"></div>
 
-  <app-color-variants
-    #tintsTemplateRef
+  <app-color-palette-editor-tints
+    [token]="token"
+    [group]="group"
+    [colorChange$]="colorChange$"
+    [colorSave$]="colorSave$"
+  ></app-color-palette-editor-tints>
 
-    [variants]="token.tint"
-    [primaryColor]="token.color"
-    mixedColor="white"
-    [mixRatio]="token.tintConfigs.mixRatio"
-    [saturation]="token.tintConfigs.saturation"
-    title="Tints"
-    mixRatioName="Light Side"
-
-    (addVariant)="addVariant($event, 'tint', token.tint, tintsTemplateRef)"
-    (deleteVariant)="deleteVariant($event, token.tint, tintsTemplateRef)"
-    (changeVariantColor)="changeVariantColor($event)"
-    (updateVariantConfigs)="updateConfigs({tintConfigs: $event})"
-  ></app-color-variants>
-
-  <app-color-variants
-    #shadesTemplateRef
-
-    [variants]="token.shade"
-    [primaryColor]="token.color"
-    mixedColor="black"
-    [mixRatio]="token.shadeConfigs.mixRatio"
-    [saturation]="token.shadeConfigs.saturation"
-    title="Shades"
-    mixRatioName="Dark Side"
-
-    (addVariant)="addVariant($event, 'shade', token.shade, shadesTemplateRef)"
-    (deleteVariant)="deleteVariant($event, token.shade, shadesTemplateRef)"
-    (changeVariantColor)="changeVariantColor($event)"
-    (updateVariantConfigs)="updateConfigs({shadeConfigs: $event})"
-  ></app-color-variants>
+  <app-color-palette-editor-shades
+    [token]="token"
+    [group]="group"
+    [colorChange$]="colorChange$"
+    [colorSave$]="colorSave$"
+  ></app-color-palette-editor-shades>
 </div>

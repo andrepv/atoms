@@ -40,9 +40,9 @@ export class EditorService<T extends StorageToken = any, G extends StorageGroup 
     content: EditableContent,
     templateRef: TemplateRef<any>,
   ) {
+    this.content = content;
     this.section = sectionName;
     this.editorTemplateRef = templateRef;
-    this.content = content;
   }
 
   disable() {
