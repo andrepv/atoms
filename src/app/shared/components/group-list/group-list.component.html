@@ -21,4 +21,6 @@
   </ng-container>
 </div>
 
-<div *ngIf="section.isLoading">Loading</div>
+<div class="loading-placeholder flex-center" *ngIf="section.isLoading">
+  <i nz-icon nzType="loading" nzTheme="outline"></i>
+</div>

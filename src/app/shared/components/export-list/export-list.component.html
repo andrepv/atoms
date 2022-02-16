@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="!exportConfigs.isLoading">
   <div class="justify-between header">
     <h4>Your Configs</h4>
     <i
@@ -28,4 +28,11 @@
       </app-text-editable>
     </div>
   </div>
+</div>
+
+<div
+  class="loading-placeholder flex-center"
+  *ngIf="exportConfigs.isLoading"
+>
+  <i nz-icon nzType="loading" nzTheme="outline"></i>
 </div>

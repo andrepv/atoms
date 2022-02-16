@@ -2,3 +2,10 @@
   <app-export-editor-toolbar></app-export-editor-toolbar>
   <app-export-editor-sections></app-export-editor-sections>
 </div>
+
+<div
+  class="loading-placeholder flex-center"
+  *ngIf="editor.isLoading"
+>
+  <i nz-icon nzType="loading" nzTheme="outline"></i>
+</div>
