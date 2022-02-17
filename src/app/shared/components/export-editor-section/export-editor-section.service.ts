@@ -8,7 +8,7 @@ import { CodePreviewConfigs, ExportConfigsSection } from '@core/types/export-typ
 import { downloadFile } from '@utils/download-file';
 import { BehaviorSubject } from 'rxjs';
 import { standardFormatters } from '../export-code-preview/export-code-formatter/standard-formatters';
-import { ExportEditorService } from '../../../components/export-editor/export-editor.service';
+import { ExportEditorService } from '@app/components/export-editor/export-editor.service';
 
 @Injectable()
 export class ExportEditorSectionService {

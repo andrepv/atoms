@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import durationsSectionProviders from '../../modules/durations/durations-section/durations-section-providers';
+import durationsSectionProviders from '@durations/durations-section/durations-section-providers';
 
 @Component({
   selector: 'app-export-editor-durations',

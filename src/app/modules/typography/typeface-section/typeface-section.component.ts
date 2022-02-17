@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
-import { ExportEditorService } from '../../../components/export-editor/export-editor.service';
+import { ExportEditorService } from '@app/components/export-editor/export-editor.service';
 import typefaceSectionProviders from './typeface-section-providers';
 
 @Component({

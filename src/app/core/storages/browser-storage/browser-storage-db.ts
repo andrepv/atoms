@@ -3,12 +3,12 @@ import { TEXTSTYLES_DB_DATA, TextStylesManager } from '@typography/text-styles-s
 import { TYPEFACE_DB_DATA, TypefaceManager } from '@typography/typeface-section/typeface.model';
 import { ColorPaletteManager, COLORPALETTE_DB_DATA } from '@colors/color-palette-section/color-palette.model';
 import { SpacingManager, SPACING_DB_DATA } from '@spacing/spacing.model';
-import { DBSectionData, ThemeModel, ThemeTable as ThemeStorage } from '@core/core-types';
+import { DBSectionData, ThemeTable as ThemeStorage } from '@core/core-types';
 import { BoxShadowManager, BOX_SHADOW_DB_DATA } from '@shadows/box-shadow-section/box-shadow-section.model';
-import { BorderRadiusManager, BORDER_RADIUS_DB_DATA } from '../../../modules/borders/border-radius-section/border-radius.model';
-import { BorderManager, BORDER_DB_DATA } from '../../../modules/borders/borders.model';
-import { DurationsManager, DURATIONS_DB_DATA } from '../../../modules/durations/durations.model';
-import { CustomTokensManager, CUSTOM_TOKENS_DB_DATA } from '../../../modules/custom-tokens/custom-tokens.model';
+import { BorderRadiusManager, BORDER_RADIUS_DB_DATA } from '@borders/border-radius-section/border-radius.model';
+import { BorderManager, BORDER_DB_DATA } from '@borders/borders.model';
+import { DurationsManager, DURATIONS_DB_DATA } from '@durations/durations.model';
+import { CustomTokensManager, CUSTOM_TOKENS_DB_DATA } from '@custom-tokens/custom-tokens.model';
 import { ExportConfigsStorage, ExportConfigsSectionStorage } from '../../types/export-types';
 import BrowserStorageSectionContent from './browser-storage-section-content';
 import { BrowserStorageSectionTokens } from './browser-storage-section-tokens';

@@ -18,6 +18,7 @@
       "dom"
     ],
     "paths": {
+      "@app/*": ["src/app/*"],
       "@core/*": ["src/app/core/*"],
       "@shared/*": ["src/app/shared/*"],
       "@utils/*": ["src/app/utils/*"],
@@ -25,7 +26,10 @@
       "@colors/*": ["src/app/modules/colors/*"],
       "@spacing/*": ["src/app/modules/spacing/*"],
       "@typography/*": ["src/app/modules/typography/*"],
-      "@shadows/*": ["src/app/modules/shadows/*"]
+      "@shadows/*": ["src/app/modules/shadows/*"],
+      "@borders/*": ["src/app/modules/borders/*"],
+      "@custom-tokens/*": ["src/app/modules/custom-tokens/*"],
+      "@durations/*": ["src/app/modules/durations/*"],
     }
   }
 }

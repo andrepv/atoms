@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CacheToken } from '@core/core-types';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
-import { ExportEditorService } from '../../../components/export-editor/export-editor.service';
-import { DurationsDBGroup, DurationsDBToken } from '../durations.model';
+import { ExportEditorService } from '@app/components/export-editor/export-editor.service';
+import { DurationsDBGroup, DurationsDBToken } from '@durations/durations.model';
 import durationsSectionProviders from './durations-section-providers';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import bordersSectionProviders from '../../modules/borders/borders-section/borders-section-providers';
+import bordersSectionProviders from '@borders/borders-section/borders-section-providers';
 
 
 @Component({

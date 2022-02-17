@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SectionContentEditorService } from '@core/services/section-content-editor.service';
-import { ExplorerService } from '../../../components/explorer/explorer.service';
+import { ExplorerService } from '@app/components/explorer/explorer.service';
 
 @Component({
   selector: 'app-page',

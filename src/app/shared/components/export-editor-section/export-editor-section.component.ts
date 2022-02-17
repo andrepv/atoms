@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { ExportColorFormat } from '@core/types/export-types';
-import { ExportEditorService } from '../../../components/export-editor/export-editor.service';
+import { ExportEditorService } from '@app/components/export-editor/export-editor.service';
 import { ExportEditorSectionService } from './export-editor-section.service';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import customTokensSectionProviders from '../../modules/custom-tokens/custom-tokens-section/custom-tokens-section-providers';
+import customTokensSectionProviders from '@custom-tokens/custom-tokens-section/custom-tokens-section-providers';
 
 @Component({
   selector: 'app-export-editor-custom-tokens',

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import borderRadiusSectionProviders from '../../modules/borders/border-radius-section/border-radius-section-providers';
+import borderRadiusSectionProviders from '@borders/border-radius-section/border-radius-section-providers';
 
 @Component({
   selector: 'app-export-editor-border-radius',

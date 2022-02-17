@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CacheToken } from '@core/core-types';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { StorageGroup } from '@core/storages/storages-types';
-import { ExportEditorService } from '../../../components/export-editor/export-editor.service';
+import { ExportEditorService } from '@app/components/export-editor/export-editor.service';
 import borderRadiusSectionProviders from './border-radius-section-providers';
 import { BorderRadiusDBToken } from './border-radius.model';
 
