@@ -8,7 +8,7 @@ import { BordersComponent } from './modules/borders/borders.component';
 import { DurationsComponent } from './modules/durations/durations.component';
 import { CustomTokensComponent } from './modules/custom-tokens/custom-tokens.component';
 import { StartPageComponent } from '@shared/components/start-page/start-page.component';
-import { ContentComponent } from './layout/content/content.component';
+import { ContentComponent } from './components/content/content.component';
 import { StartPageGuardService } from '@shared/components/start-page/start-page-guard.service';
 
 const routes: Routes = [

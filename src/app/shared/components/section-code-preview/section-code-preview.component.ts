@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { ExportEditorService } from '../../../layout/export-editor/export-editor.service';
+import { ExportEditorService } from '../../../components/export-editor/export-editor.service';
 
 type InputData = {
   backToExportList: () => any;

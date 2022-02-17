@@ -7,7 +7,7 @@ import { StorageToken } from '@core/storages/storages-types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ExportEditorSectionService } from '../export-editor-section/export-editor-section.service';
-import { ExportEditorService } from '../../../layout/export-editor/export-editor.service';
+import { ExportEditorService } from '../../../components/export-editor/export-editor.service';
 import { CodeFormatter } from './export-code-formatter/code-formatter';
 
 @Component({

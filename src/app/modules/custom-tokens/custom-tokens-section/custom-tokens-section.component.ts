@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ExportEditorService } from '../../../layout/export-editor/export-editor.service';
+import { ExportEditorService } from '../../../components/export-editor/export-editor.service';
 import customTokensSectionProviders from './custom-tokens-section-providers';
 
 @Component({

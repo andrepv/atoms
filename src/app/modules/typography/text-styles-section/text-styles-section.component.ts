@@ -3,7 +3,7 @@ import { TextStylesDBGroup } from './text-styles.model';
 import { SectionViewOption } from '@core/core-types';
 import textStylesSectionProviders from './text-styles-section-providers';
 import { ExportEditorSectionService } from '@shared/components/export-editor-section/export-editor-section.service';
-import { ExportEditorService } from '../../../layout/export-editor/export-editor.service';
+import { ExportEditorService } from '../../../components/export-editor/export-editor.service';
 
 @Component({
   selector: 'app-text-styles-section',

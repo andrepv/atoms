@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CacheGroup } from '@core/core-types';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
-import { ExplorerService } from '../../../layout/explorer/explorer.service';
+import { ExplorerService } from '../../../components/explorer/explorer.service';
 import { Subscription } from 'rxjs';
 import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
 import SectionManagerContentService from '@core/services/section-manager-content.service';
