@@ -34,16 +34,16 @@ export class ModularScaleEditorComponent implements OnInit {
     this.ratio = this.getInitialRatio();
   }
 
-  updateModularScale() {
-    this.group.tokens.forEach((token, index) => {
-      if (!token.modularScaleTokenIsLocked) {
-        const value = getScaleValue(index, this.ratio.value, this.base);
-        this.tokens.update(token, {modularScaleTokenValue: value});
-      }
-    })
-
+  async updateModularScale() {
     this.groups.update(this.group, {scaleRatio: this.ratio.value})
-    this.groups.update(this.group, {base: this.base})
+    this.groups.update(this.group, {scaleBase: this.base});
+
+    for (let token of this.group.tokens) {
+      if (!token.modularScaleTokenIsLocked) {
+        const value = getScaleValue(token.modularScaleTokenPosition, this.ratio.value, this.base);
+        await this.tokens.update(token, {modularScaleTokenValue: value});
+      }
+    }
   }
 
   setCustomRatio(value: number) {

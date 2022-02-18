@@ -11,25 +11,25 @@
     </app-text-editable>
   </div>
 
-  <div>
-    <i 
+  <div class="actions">
+    <i
+      *ngIf="canAddToken()"
       nz-tooltip nzTooltipTitle="add token" nzTooltipPlacement="bottom"
       class="icon-btn" nz-icon nzType="plus" nzTheme="outline" 
       (click)="addToken()"
     ></i>
-    <div class="space-horizontal space-horizontal-xxxs"></div>
 
     <i
+      *ngIf="canDuplicate()"
       nz-tooltip nzTooltipTitle="duplicate group" nzTooltipPlacement="bottom"
       class="icon-btn" nz-icon nzType="block" nzTheme="outline"
       (click)="duplicateGroup()"
     ></i>
-    <div class="space-horizontal space-horizontal-xxxs"></div>
 
     <i
+      *ngIf="groupEditorTemplate && canEdit()"
       nz-tooltip nzTooltipTitle="edit group" nzTooltipPlacement="bottom" 
       class="icon-btn"
-      *ngIf="groupEditorTemplate"
       nz-icon nzType="edit"
       nzTheme="outline"
       (click)="openEditor(editor)"
@@ -38,14 +38,6 @@
         <ng-container *ngTemplateOutlet="groupEditorTemplate; context: {$implicit: group}"></ng-container>
       </ng-template>
     </i>
-    <div class="space-horizontal space-horizontal-xxxs"></div>
-
-    <i
-      nz-tooltip nzTooltipTitle="delete group" nzTooltipPlacement="bottom" 
-      class="icon-btn" nz-icon nzType="delete" nzTheme="outline"
-      (click)="deleteGroup()"
-    ></i>
-    <div class="space-horizontal space-horizontal-xxxs"></div>
     
     <ng-container *ngIf="customButtonsTemplate">
       <ng-container *ngTemplateOutlet="customButtonsTemplate; context: {$implicit: group}"></ng-container>
@@ -58,8 +50,9 @@
     >
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu>
-          <li *ngIf="canUseClipboard()" nz-menu-item (click)="pastToken()">Past Token</li>
-          <li *ngIf="canUseClipboard()" nz-menu-item (click)="copyGroup()">Copy Group</li>
+          <li *ngIf="canDelete()" nz-menu-item (click)="deleteGroup()">Delete Group</li>
+          <li *ngIf="canUseClipboard() && canPast()" nz-menu-item (click)="pastToken()">Past Token</li>
+          <li *ngIf="canUseClipboard() && canCopy()" nz-menu-item (click)="copyGroup()">Copy Group</li>
         </ul>
       </nz-dropdown-menu>
     </i>

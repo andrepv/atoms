@@ -44,7 +44,7 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
     const tokenId = await this.storage.add(token);
     if (tokenId) {
       const newToken = {id: tokenId, ...token};
-      container.push(newToken);
+      this.addToCache(newToken, container)
       return newToken;
     }
   }
@@ -107,11 +107,15 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
     }
   }
 
-  getList(): CacheToken<T>[] {
+  addToCache(token: T, container: any[]) {
+    container.push(token);
+  }
+
+  getCachedList(): CacheToken<T>[] {
     return this.cache.getSectionTokens(this.sectionName)
   }
 
-  get(tokenId: number): CacheToken<T> | false {
+  getFromCache(tokenId: number): CacheToken<T> | false {
     return this.cache.getSectionToken(this.sectionName, tokenId)
   }
 

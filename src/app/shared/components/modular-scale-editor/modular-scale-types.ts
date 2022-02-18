@@ -1,7 +1,8 @@
 export type ModularScaleToken = {
   modularScaleTokenValue: number,
   modularScaleTokenIsLocked: boolean,
-  units: string,
+  modularScaleTokenPosition: number,
+  units?: string,
 }
 
 export type ModularScaleGroup = {

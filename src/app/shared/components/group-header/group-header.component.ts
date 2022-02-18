@@ -7,6 +7,8 @@ import SectionManagerTokensService from '@core/services/section-manager-tokens.s
 import SectionManagerGroupsService from '@core/services/section-manager-groups.service';
 import SectionManagerContentService from '@core/services/section-manager-content.service';
 
+type GroupActions = "add token" | "duplicate" | "edit" | "delete" | "copy" | "past";
+
 @Component({
   selector: 'app-group-header',
   templateUrl: './group-header.component.html',
@@ -16,6 +18,7 @@ export class GroupHeaderComponent implements OnInit {
   @Input() group: CacheGroup;
   @Input() groupEditorTemplate: TemplateRef<any>;
   @Input() customButtonsTemplate: TemplateRef<any>;
+  @Input() excludedActions: GroupActions[] = [];
 
   constructor(
     private editor: SectionContentEditorService,
@@ -38,11 +41,7 @@ export class GroupHeaderComponent implements OnInit {
   async renameGroup(value: string, editableText: TextEditableComponent) {
     editableText.isLoading = true;
     try {
-      if (this.groupsManager) {
-        await this.groupsManager.rename(value, this.group);
-      } else {
-        await this.groupsManager.rename(value, this.group);
-      }
+      await this.groupsManager.rename(value, this.group);
     } finally {
       editableText.isLoading = false;
       editableText.makeUneditable();
@@ -71,5 +70,29 @@ export class GroupHeaderComponent implements OnInit {
 
   canUseClipboard() {
     return this.clipboard.isAvailable;
+  }
+  
+  canAddToken() {
+    return !this.excludedActions.includes("add token");
+  }
+
+  canDuplicate() {
+    return !this.excludedActions.includes("duplicate");
+  }
+
+  canEdit() {
+    return !this.excludedActions.includes("edit");
+  }
+
+  canDelete() {
+    return !this.excludedActions.includes("delete");
+  }
+
+  canCopy() {
+    return !this.excludedActions.includes("copy");
+  }
+
+  canPast() {
+    return !this.excludedActions.includes("past");
   }
 }

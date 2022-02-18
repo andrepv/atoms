@@ -4,6 +4,7 @@ import { SectionViewOption } from '@core/core-types';
 import textStylesSectionProviders from './text-styles-section-providers';
 import { ExportEditorSectionService } from '@shared/components/export-editor-section/export-editor-section.service';
 import { ExportEditorService } from '@app/components/export-editor/export-editor.service';
+import SectionManagerTokensService from '@app/core/services/section-manager-tokens.service';
 
 @Component({
   selector: 'app-text-styles-section',
@@ -18,7 +19,10 @@ export class TextStylesSectionComponent implements OnInit {
     {name: 'minimal'},
   ];
 
-  constructor(public exportConfigs: ExportEditorSectionService) {}
+  constructor(
+    public exportConfigs: ExportEditorSectionService,
+    public tokens: SectionManagerTokensService,
+  ) {}
 
   ngOnInit() {}
 }

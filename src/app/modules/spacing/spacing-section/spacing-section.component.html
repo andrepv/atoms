@@ -9,6 +9,7 @@
     <app-group-header
       [group]="group"
       [groupEditorTemplate]="editorGroupTemplate"
+      [excludedActions]="['add token']"
     ></app-group-header>
 
     <!-- group's body -->
@@ -17,6 +18,12 @@
       <div class="thead">
         <p>Name</p>
         <p>Size</p>
+      </div>
+      <div
+        class="interactive flex-center add-btn"
+        (click)="tokens.addHigh(group)"
+      >
+        <i class="arrow-icon" nz-icon nzType="arrow-up" nzTheme="outline"></i>
       </div>
       <ng-container *ngFor="let token of group.tokens; let even = even">
         <app-token
@@ -53,6 +60,13 @@
           ></app-modular-scale-editor-token>
         </ng-template>
       </ng-container>
+      <div class="add-btn-divider"></div>
+      <div
+        class="interactive flex-center add-btn"
+        (click)="tokens.addLow(group)"
+      >
+        <i class="arrow-icon down" nz-icon nzType="arrow-down" nzTheme="outline"></i>
+      </div>
     </div>
   </div>
 </ng-template>

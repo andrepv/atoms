@@ -12,6 +12,7 @@
       [group]="group"
       [groupEditorTemplate]="editorGroupTemplate"
       [customButtonsTemplate]="customButtonsTemplate"
+      [excludedActions]="['add token']"
     ></app-group-header>
 
     <ng-template #customButtonsTemplate>
@@ -23,6 +24,10 @@
       [options]="viewOptions"
       [group]="group"
     ></app-group-view-list>
+
+    <div class="interactive flex-center add-btn add-high" (click)="tokens.addHigh(group)">
+      <i class="arrow-icon" nz-icon nzType="arrow-up" nzTheme="outline"></i>
+    </div>
 
     <ng-container *ngFor="let token of group.tokens">
       <app-token
@@ -50,7 +55,11 @@
       <ng-template #editorTemplate let-content>
         <app-text-styles-editor [content]="content"></app-text-styles-editor>
       </ng-template>
-    </ng-container>
+    </ng-container> 
+
+    <div class="interactive flex-center add-btn add-low" (click)="tokens.addLow(group)">
+      <i class="arrow-icon down" nz-icon nzType="arrow-down" nzTheme="outline"></i>
+    </div>
   </div>
 </ng-template>
 

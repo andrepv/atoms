@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import SectionManagerTokensService from '@app/core/services/section-manager-tokens.service';
 import { CacheGroup } from '@core/core-types';
 import { ButtonPlayState } from '../button-play/button-play.component';
 
@@ -15,7 +16,7 @@ export class MotionGroupComponent implements OnInit {
     return this.state === 'play';
   }
 
-  constructor() { }
+  constructor(public tokens: SectionManagerTokensService) { }
 
   ngOnInit() {}
 
