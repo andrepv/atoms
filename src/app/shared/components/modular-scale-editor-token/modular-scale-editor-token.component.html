@@ -7,3 +7,11 @@
   [(model)]="content.token.modularScaleTokenValue"
   (afterModelChange)="setValue($event)"
 ></app-slider>
+
+<div class="blocker justify-between">
+  <p>auto-update</p>
+  <nz-switch
+    [(ngModel)]="!content.token.modularScaleTokenIsLocked"
+    (ngModelChange)="toggleLock($event)"
+  ></nz-switch>
+</div>

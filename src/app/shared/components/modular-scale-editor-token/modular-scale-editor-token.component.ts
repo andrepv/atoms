@@ -27,4 +27,10 @@ export class ModularScaleEditorTokenComponent implements OnInit {
       this.tokens.update(this.content.token, {modularScaleTokenIsLocked: true})
     }
   }
+
+  toggleLock(value: boolean) {
+    this.tokens.update(this.content.token, {
+      modularScaleTokenIsLocked: !value,
+    });
+  }
 }

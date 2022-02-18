@@ -27,8 +27,18 @@
       </app-editor-block>
     </div>
   </div>
+  
+  <div class="divider color-picker-divider"></div>
 </ng-container>
 
+<app-editor-block>
+  <app-modular-scale-editor-token
+    [content]="content"
+    title="Font Size"
+  ></app-modular-scale-editor-token>
+
+  <div class="divider"></div>
+</app-editor-block>
 
 <app-editor-block title="Type Face">
   <app-tokens-section-select
@@ -44,13 +54,6 @@
       </div>
     </ng-template>
   </app-tokens-section-select>
-</app-editor-block>
-
-<app-editor-block>
-  <app-modular-scale-editor-token
-    [content]="content"
-    title="Font Size"
-  ></app-modular-scale-editor-token>
 </app-editor-block>
 
 <app-editor-block>
