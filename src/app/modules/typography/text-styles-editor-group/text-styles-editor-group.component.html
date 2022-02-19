@@ -1,0 +1,50 @@
+<ng-container *ngIf="group.view !== 'minimal'">
+  <app-editor-block title="Color Contrast">
+    <app-color-contrast-checker
+      [backgroundColor]="backgroundColor"
+      [textColor]="color"
+    ></app-color-contrast-checker>
+  </app-editor-block>
+
+  <div nz-row [nzGutter]="20" nzAlign="center">
+    <div nz-col nzSpan="12">
+      <app-editor-block title="Text Color">
+        <app-color-picker
+          [color]="group.color"
+          (colorChange)="changeTextColor($event)"
+          (colorSave)="groups.update(group, {color: color})"
+        ></app-color-picker>
+      </app-editor-block>
+    </div>
+
+    <div nz-col nzSpan="12">
+      <app-editor-block title="Background Color">
+        <app-color-picker
+          [color]="group.backgroundColor"
+          (colorChange)="changeBackgroundColor($event)"
+          (colorSave)="groups.update(group, {backgroundColor: backgroundColor})"
+        ></app-color-picker>
+      </app-editor-block>
+    </div>
+  </div>
+
+  <div class="divider top-0"></div>
+</ng-container>
+
+<app-modular-scale-editor
+  [group]="group"
+  title="Base Font Size"
+></app-modular-scale-editor>
+
+<div class="divider"></div>
+
+<app-editor-block title="Type Face">
+  <app-typeface-list-select
+    [typefaceId]="group.typefaceId"
+    (change)="setFontFamily($event)"
+  ></app-typeface-list-select>
+</app-editor-block>
+
+<app-editor-block title="Text">
+  <textarea rows="4" nz-input [(ngModel)]="text" (blur)="setPreviewText()"></textarea>
+</app-editor-block>

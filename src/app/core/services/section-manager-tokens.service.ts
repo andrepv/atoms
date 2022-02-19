@@ -70,7 +70,7 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
     return {}
   }
 
-  getStyleValue(token: T): any {
+  getStyleValue(token: T, group?: G): any {
     return "";
   }
 

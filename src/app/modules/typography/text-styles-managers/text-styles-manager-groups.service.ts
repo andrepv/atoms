@@ -9,6 +9,10 @@ export default class TextStylesManagerGroupsService extends ModularScaleManagerG
     return {
       ...super.getDefaultValue(),
       view: 'default',
+      text: 'Quick brown fox jumped over the lazy red dog',
+      backgroundColor: '#1e2022',
+      color: '#D6D6D6',
+      typefaceId: 0,
     }
   }
 }

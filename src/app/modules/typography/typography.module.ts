@@ -13,6 +13,8 @@ import { TypefaceSectionComponent } from './typeface-section/typeface-section.co
 import { TypographyComponent } from './typography.component';
 import { FontManagerService } from './typeface-editor/font-manager.service';
 import { TextPreviewComponent } from './text-preview/text-preview.component';
+import { TextStylesEditorGroupComponent } from './text-styles-editor-group/text-styles-editor-group.component';
+import { TypefaceListSelectComponent } from './typeface-list-select/typeface-list-select.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { TextPreviewComponent } from './text-preview/text-preview.component';
     TypefaceDropzoneComponent,
 
     TextPreviewComponent,
+    TextStylesEditorGroupComponent,
+    TypefaceListSelectComponent,
   ],
   imports: [
     CommonModule,

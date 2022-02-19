@@ -17,6 +17,10 @@ export type TextStylesDBToken = StorageToken & ModularScaleToken & {
 
 export type TextStylesDBGroup = StorageGroup & ModularScaleGroup & {
   view: 'detailed' | 'default' | 'minimal';
+  typefaceId: number;
+  text: string;
+  backgroundColor: string;
+  color: string;
 }
 
 export type TextStylesManager = StorageSectionContentManager<TextStylesDBToken, StorageGroup>;

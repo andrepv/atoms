@@ -1,16 +1,17 @@
-import { TextStylesDBToken } from "@typography/text-styles-section/text-styles.model";
+import { TextStylesDBGroup, TextStylesDBToken } from "@typography/text-styles-section/text-styles.model";
 import TextStylesManagerTokensService from "./text-styles-manager-tokens.service";
 
 export default class TextStyles {
   constructor(
     private token: TextStylesDBToken,
+    private group: TextStylesDBGroup,
     private tokensManager: TextStylesManagerTokensService,
   ) {}
 
   get block() {
     return {
-      color: this.token.color,
-      backgroundColor: this.token.backgroundColor
+      color: this.token.color || this.group.color,
+      backgroundColor: this.token.backgroundColor || this.group.backgroundColor
     }
   }
 
@@ -28,7 +29,7 @@ export default class TextStyles {
   }
 
   get fontFamily() {
-    return this.tokensManager.getTypeface(this.token)
+    return this.tokensManager.getTypeface(this.token, this.group)
   }
 
   get letterSpacing() {

@@ -31,19 +31,20 @@ export class TextStylesEditorComponent implements OnInit {
   variants = [];
 
   async ngOnInit() {
-    this.text = this.token.text;
-    this.color = this.token.color;
-    this.backgroundColor = this.token.backgroundColor;
+    this.text = this.token.text || this.group.text;
+    this.color = this.token.color || this.group.color;
+    this.backgroundColor = this.token.backgroundColor || this.group.backgroundColor;
     this.variants = await this.getVariants();
   }
 
   setPreviewText() {
     const inputValue = this.text.trim();
+    const text = this.token.text || this.group.text;
 
-    if (inputValue.length && inputValue !== this.token.text) {
+    if (inputValue.length && inputValue !== text) {
       this.updateTextStyles({text: inputValue}, true);
     } else {
-      this.text = this.token.text;
+      this.text = text;
     }
   }
 
@@ -77,7 +78,9 @@ export class TextStylesEditorComponent implements OnInit {
   }
 
   private async getVariants() {
-    const typeface = this.cache.getSectionToken('Type Face', this.token.typefaceId);
+    const typefaceId = this.token.typefaceId || this.group.typefaceId;
+
+    const typeface = this.cache.getSectionToken('Type Face', typefaceId);
 
     if (typeface) {
 

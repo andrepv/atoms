@@ -1,0 +1,13 @@
+<app-tokens-section-select
+  section="Type Face"
+  [selectedTokenId]="typefaceId"
+  (change)="change.emit($event)"
+  [customContent]="customContent"
+>
+  <ng-template let-token #customContent>
+    <div class="justify-between">
+      <h3 [style.fontFamily]="token.family">Aa</h3>
+      <h5 class="typeface-name">{{ token.name }}</h5>
+    </div>
+  </ng-template>
+</app-tokens-section-select>

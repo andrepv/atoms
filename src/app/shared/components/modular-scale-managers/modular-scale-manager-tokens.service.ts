@@ -23,7 +23,7 @@ export default class ModularScaleManagerTokensService<T extends StorageModularSc
     })
   }
 
-  getStyleValue(token: CacheToken): any {
+  getStyleValue(token: CacheToken, group?: CacheGroup): any {
     return `${token.modularScaleTokenValue}${this.getUnits()}`;
   }
 

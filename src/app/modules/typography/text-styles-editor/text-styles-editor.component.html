@@ -10,7 +10,7 @@
     <div nz-col nzSpan="12">
       <app-editor-block title="Text Color">
         <app-color-picker
-          [color]="token.color"
+          [color]="token.color || group.color"
           (colorChange)="changeTextColor($event)"
           (colorSave)="updateTextStyles({color: color}, true)"
         ></app-color-picker>
@@ -20,7 +20,7 @@
     <div nz-col nzSpan="12">
       <app-editor-block title="Background Color">
         <app-color-picker
-          [color]="token.backgroundColor"
+          [color]="token.backgroundColor || group.backgroundColor"
           (colorChange)="changeBackgroundColor($event)"
           (colorSave)="updateTextStyles({backgroundColor: backgroundColor}, true)"
         ></app-color-picker>
@@ -28,7 +28,7 @@
     </div>
   </div>
   
-  <div class="divider color-picker-divider"></div>
+  <div class="divider top-0"></div>
 </ng-container>
 
 <app-editor-block>
@@ -41,19 +41,10 @@
 </app-editor-block>
 
 <app-editor-block title="Type Face">
-  <app-tokens-section-select
-    section="Type Face"
-    [selectedTokenId]="token.typefaceId"
+  <app-typeface-list-select
+    [typefaceId]="token.typefaceId || group.typefaceId"
     (change)="setFontFamily($event)"
-    [customContent]="customContent"
-  >
-    <ng-template let-token #customContent>
-      <div class="justify-between">
-        <h3 [style.fontFamily]="token.family">Aa</h3>
-        <h5 class="typeface-name">{{ token.name }}</h5>
-      </div>
-    </ng-template>
-  </app-tokens-section-select>
+  ></app-typeface-list-select>
 </app-editor-block>
 
 <app-editor-block>

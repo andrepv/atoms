@@ -17,6 +17,10 @@ export class TextPreviewComponent implements OnInit {
   constructor(public tokens: SectionManagerTokensService) {}
 
   ngOnInit() {
-    this.styles = this.tokens.getStyleValue(this.token);
+    this.styles = this.tokens.getStyleValue(this.token, this.group);
+  }
+
+  get text() {
+    return this.token.text || this.group.text
   }
 }

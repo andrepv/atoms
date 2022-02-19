@@ -116,13 +116,7 @@ export default class SectionManagerGroupsService<T extends StorageToken = any, G
         return;
       }
 
-      const original = copiedData.content;
-      const duplicate = this.getDuplicate(original)
-
-      const groupId = await this.add(duplicate);
-      const group = this.get(groupId);
-
-      await this.duplicateTokens(group, original.tokens);
+      await this.duplicate(copiedData.content);
 
       this.message.success('Done');
 
@@ -163,7 +157,7 @@ export default class SectionManagerGroupsService<T extends StorageToken = any, G
 
     return {
       ...duplicate,
-      ...this.create(duplicate.name)
+      themeId: this.selectedThemeId,
     }
   }
 }
