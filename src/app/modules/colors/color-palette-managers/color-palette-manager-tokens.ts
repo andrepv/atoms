@@ -118,6 +118,7 @@ export default class ColorPaletteManagerTokensService extends SectionManagerToke
 
     delete clonedVariant.type;
     delete clonedVariant.primaryColorId;
+    delete clonedVariant.autoUpdate;
 
     return {
       ...clonedVariant,

@@ -60,7 +60,9 @@ export abstract class ColorVariants {
 
     this.traverseVariants((variant, color) => {
       if (update) {
-        variant.color = color;
+        if (variant.autoUpdate) {
+          variant.color = color;
+        }
       }
 
       if (save) {

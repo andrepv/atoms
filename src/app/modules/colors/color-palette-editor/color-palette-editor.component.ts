@@ -42,4 +42,10 @@ export class ColorPaletteEditorComponent implements OnInit {
       this.colorSave$.next();
     }
   }
+
+  toggleLock(value: boolean) {
+    this.tokens.update(this.content.token, {
+      autoUpdate: value,
+    });
+  }
 }

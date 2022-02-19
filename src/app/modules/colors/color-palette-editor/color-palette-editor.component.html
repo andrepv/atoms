@@ -24,6 +24,16 @@
   </div>
 </div>
 
+<div *ngIf="!token.isPrimary">
+  <div class="blocker justify-between">
+    <p>Auto-Update</p>
+    <nz-switch
+      [(ngModel)]="content.token.autoUpdate"
+      (ngModelChange)="toggleLock($event)"
+    ></nz-switch>
+  </div>
+</div>
+
 <div *ngIf="token.isPrimary">
   <div class="divider"></div>
 

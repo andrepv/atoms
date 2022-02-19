@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import SectionManagerTokensService from '@app/core/services/section-manager-tokens.service';
 import { CacheGroup } from '@core/core-types';
 import { ButtonPlayState } from '../button-play/button-play.component';
+import DurationManagerTokensService from '../duration-managers/duration-managers-manager-tokens.service';
 
 @Component({
   selector: 'app-motion-group',
@@ -16,7 +16,7 @@ export class MotionGroupComponent implements OnInit {
     return this.state === 'play';
   }
 
-  constructor(public tokens: SectionManagerTokensService) { }
+  constructor(public tokens: DurationManagerTokensService) {}
 
   ngOnInit() {}
 
@@ -28,4 +28,11 @@ export class MotionGroupComponent implements OnInit {
     this.state = 'pause';
   }
 
+  addHigh(group: any) {
+    this.tokens.addHigh(group);
+  }
+
+  addLow(group: any) {
+    this.tokens.addLow(group);
+  }
 }

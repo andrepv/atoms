@@ -38,7 +38,8 @@ export default class ColorShadesService extends ColorVariants {
   getDefaultValue(): any {
     return {
       isPrimary: false,
-      type: "shade"
+      type: "shade",
+      autoUpdate: true,
     }
   }
 }

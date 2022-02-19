@@ -38,7 +38,8 @@ export default class ColorTintsService extends ColorVariants {
   getDefaultValue(): any {
     return {
       isPrimary: false,
-      type: "tint"
+      type: "tint",
+      autoUpdate: true,
     }
   }
 }

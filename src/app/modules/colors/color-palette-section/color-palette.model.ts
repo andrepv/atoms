@@ -15,6 +15,7 @@ export type ColorPaletteDBToken = StorageToken & {
   type?: Variant;
   tintConfigs: VariantConfig;
   shadeConfigs: VariantConfig;
+  autoUpdate?: boolean;
 };
 
 export type ColorPaletteDBGroup = StorageGroup & {
