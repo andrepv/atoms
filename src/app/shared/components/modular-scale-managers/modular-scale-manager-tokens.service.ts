@@ -1,12 +1,8 @@
 import { Injectable } from "@angular/core";
 import { CacheGroup, CacheToken } from "@core/core-types";
 import SectionManagerTokensService from "@core/services/section-manager-tokens.service";
-import { StorageGroup, StorageToken } from "@core/storages/storages-types";
 import { getScaleValue } from "@utils/get-type-scale-value";
-import { ModularScaleToken, ModularScaleGroup } from "../modular-scale-editor/modular-scale-types";
-
-type StorageModularScaleGroup = StorageGroup & ModularScaleGroup;
-type StorageModularScaleToken = StorageToken & ModularScaleToken;
+import { StorageModularScaleGroup, StorageModularScaleToken } from "../modular-scale-editor/modular-scale-types";
 
 @Injectable()
 export default class ModularScaleManagerTokensService<T extends StorageModularScaleToken = any, G extends StorageModularScaleGroup = any> extends SectionManagerTokensService<T, G> {
