@@ -90,7 +90,7 @@ export class ColorPickerComponent implements OnInit {
   }
 
   private async setThemeColors() {
-    this.currentThemeColors = await this.colors.load({ index: 'themeId', key: this.themeManager.selected.id});
+    this.currentThemeColors = await this.colors.load();
   }
 
   private async setAllThemesColors() {

@@ -4,17 +4,21 @@ import { ClipboardService } from '@core/services/clipboard.service';
 import SectionManagerContentService from '@core/services/section-manager-content.service';
 import SectionManagerTokensService from '@core/services/section-manager-tokens.service';
 import { browserStorageDB } from '@core/storages/browser-storage/browser-storage-db';
-import { CodePreviewConfigs, ExportConfigsSection } from '@core/types/export-types';
+import { CodePreviewConfigs, ExportConfigsSection, ExportConfigsSectionStorage } from '@core/types/export-types';
 import { downloadFile } from '@utils/download-file';
 import { BehaviorSubject } from 'rxjs';
 import { standardFormatters } from '../export-code-preview/export-code-formatter/standard-formatters';
 import { ExportEditorService } from '@app/components/export-editor/export-editor.service';
+import { StorageGroup } from '@app/core/storages/storages-types';
+
 
 @Injectable()
 export class ExportEditorSectionService {
   isLoading = false;
   configs: ExportConfigsSection;
   sectionName: SectionNames;
+  storage: ExportConfigsSectionStorage;
+  codeFormatters = standardFormatters;
 
   codePreviewConfigs$ = new BehaviorSubject<null | CodePreviewConfigs>(null);
 
@@ -29,14 +33,12 @@ export class ExportEditorSectionService {
   constructor(
     sectionManager: SectionManagerContentService,
     protected editor: ExportEditorService,
-    private tokensManager: SectionManagerTokensService,
-    private clipboard: ClipboardService,
-
+    protected tokensManager: SectionManagerTokensService,
+    protected clipboard: ClipboardService,
   ) {
     this.sectionName = sectionManager.name;
+    this.storage = browserStorageDB.exportConfigsSection;
   }
-
-  codeFormatters = standardFormatters;
 
   async load() {
     this.isLoading = true;
@@ -46,11 +48,11 @@ export class ExportEditorSectionService {
       if (!configs) {
         configs = await this.addDefaultConfigs();
       }
-  
+
       if (configs.code) {
         this.codePreviewConfigs = configs.code;
       }
-  
+
       this.configs = configs;
     } finally {
       this.isLoading = false;
@@ -59,15 +61,14 @@ export class ExportEditorSectionService {
 
   setCodePreviewConfigs<T extends keyof CodePreviewConfigs>(key: T, value: CodePreviewConfigs[T]) {
     const codeConfigs = {...this.configs.code, [key]: value}
-    browserStorageDB.exportConfigsSection.update(this.configs.id, {code: codeConfigs});
+    this.storage.update(this.configs.id, {code: codeConfigs});
     this.configs.code = codeConfigs;
-
     this.codePreviewConfigs = codeConfigs;
   }
 
   saveFileName(value: string) {
     this.configs.fileName = value;
-    browserStorageDB.exportConfigsSection.update(this.configs.id, {fileName: value});
+    this.storage.update(this.configs.id, {fileName: value});
   }
 
   copyCode() {
@@ -76,14 +77,22 @@ export class ExportEditorSectionService {
   }
 
   download() {
-    const content = this.getCode();
+    const fileContent = this.getCode();
     const fileName = this.getFileName();
 
-    downloadFile(content, fileName);
+    downloadFile(fileContent, fileName);
   }
 
-  getStyleValue(token: CacheToken, configs?: any) {
-    return this.tokensManager.getStyleValue(token);
+  getStyleValue(data: {
+    token: CacheToken,
+    configs?: CodePreviewConfigs,
+    group?: StorageGroup
+  }) {
+    return this.tokensManager.getStyleValue(data.token);
+  }
+
+  getCodeFormatter() {
+    return new this.codeFormatters[this.editor.configs.format]();
   }
 
   private getCode() {
@@ -95,7 +104,7 @@ export class ExportEditorSectionService {
   }
 
   private async getConfigs() {
-    return browserStorageDB.exportConfigsSection.table
+    return this.storage.table
     .where("commonConfigsId")
     .equals(this.editor.configs.id)
     .and(value => value.sectionName === this.sectionName)
@@ -109,7 +118,7 @@ export class ExportEditorSectionService {
       configs.code = this.codePreviewConfigs;
     }
 
-    const id = await browserStorageDB.exportConfigsSection.add(configs);
+    const id = await this.storage.add(configs);
     configs.id = id;
 
     return configs;

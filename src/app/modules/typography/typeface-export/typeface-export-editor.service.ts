@@ -4,8 +4,8 @@ import { ExportEditorSectionService } from "@shared/components/export-editor-sec
 
 @Injectable()
 export class TypefaceExportEditorService extends ExportEditorSectionService {
-  getStyleValue(token: CacheToken<any>) {
+  getStyleValue(data: {token: CacheToken<any>}) {
     const quote = this.editor.configs.format === "js" ? '' : '"';
-    return `${quote}${token.family}${quote}`;
+    return `${quote}${data.token.family}${quote}`;
   }
 }

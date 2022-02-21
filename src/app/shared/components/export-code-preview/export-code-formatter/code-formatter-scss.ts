@@ -5,8 +5,8 @@ export class CodeFormatterScss extends CodeFormatter {
     super();
   }
 
-  formatToken({varName, varValue}) {
-    return `${this.tokenIndent}$${varName}: ${varValue};`
+  getToken({tokenName, tokenValue}) {
+    return `${this.tokenIndent}$${tokenName}: ${tokenValue};`
   }
 
   getTokenReference(tokenName: string) {

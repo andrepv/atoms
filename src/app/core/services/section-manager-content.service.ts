@@ -24,7 +24,7 @@ export default class SectionManagerContentService<T extends StorageToken = any, 
   async load() {
     this.isLoading = true;
 
-    let groups: any[] = await this.groups.load({index: "themeId", key: this.theme.selected.id});
+    let groups: any[] = await this.groups.load();
 
     if (groups.length) {
       for (let group of groups) {

@@ -13,7 +13,8 @@ export class ColorPaletteExportEditorService extends ExportEditorSectionService 
 
   codePreviewConfigs$ = new BehaviorSubject<any>({colorFormat: 'hex'})
 
-  getStyleValue(token: CacheToken, configs: ColorPaletteConfigs) {
+  getStyleValue(data: {token: CacheToken, configs: ColorPaletteConfigs}) {
+    const {token, configs} = data;
     let color = token.color;
 
     if (configs.colorFormat === 'rgb') {

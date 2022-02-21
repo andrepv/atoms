@@ -28,8 +28,9 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
     this.sectionName = storageSection.sectionName;
   }
 
-  load(query: {index: string, key: number}) {
-    return this.storage.get(query);
+  load(query: {index?: string, key?: number} = {}) {
+    const {index = "themeId", key = this.theme.selected.id} = query; 
+    return this.storage.get({index, key});
   }
 
   async addToGroup(group: CacheGroup<G, T>, token = this.create(group)) {

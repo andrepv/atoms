@@ -37,8 +37,9 @@ export default class SectionManagerGroupsService<T extends StorageToken = any, G
     return [];
   }
 
-  load(query: {index: string, key: number}) {
-    return this.storage.get(query);
+  load(query: {index?: string, key?: number} = {}) {
+    const {index = "themeId", key = this.themeManager.selected.id} = query; 
+    return this.storage.get({index, key});
   }
 
   async add(group = this.create()) {

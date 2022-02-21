@@ -12,9 +12,9 @@ export abstract class CodeFormatter {
     return '';
   }
 
-  abstract formatToken(data: {
-    varName: string,
-    varValue: string,
+  abstract getToken(data: {
+    tokenName: string,
+    tokenValue: string,
   }): string;
 
   getCodeAfterTokens() {
@@ -25,16 +25,16 @@ export abstract class CodeFormatter {
     return tokenName;
   }
 
-  handleVariableName(value: string, prefix: string) {
-    const splittedName = this.splitVariableName(value, prefix)
+  transformTokenName(value: string, prefix: string) {
+    const splittedName = this.splitTokenName(value, prefix)
     return splittedName.join('-');
   }
 
-  handleVariableValue(value: any): Promise<string> | string {
+  transformTokenValue(value: any): Promise<string> | string {
     return value;
   }
 
-  splitVariableName(value: string, prefix: string) {
+  splitTokenName(value: string, prefix: string) {
     const name = `${prefix}-${value}`;
     const matches = name.trim().toLowerCase().match(/([a-z0-9]+)/gmi);
     if (matches) {

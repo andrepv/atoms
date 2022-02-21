@@ -5,12 +5,12 @@ export class CodeFormatterJS extends CodeFormatter {
     super();
   }
 
-  formatToken({varName, varValue}) {
-    return `${this.tokenIndent}const ${varName} = "${varValue}";`
+  getToken({tokenName, tokenValue}) {
+    return `${this.tokenIndent}const ${tokenName} = "${tokenValue}";`
   }
 
-  handleVariableName(value: string, prefix: string) {
-    const splittedName = this.splitVariableName(value, prefix);
+  transformTokenName(value: string, prefix: string) {
+    const splittedName = this.splitTokenName(value, prefix);
     return splittedName.map((chunk, index) => {
       return !index 
         ? chunk 

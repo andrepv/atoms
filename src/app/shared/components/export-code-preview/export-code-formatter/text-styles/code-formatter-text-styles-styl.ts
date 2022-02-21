@@ -2,17 +2,16 @@ import { CodeFormatter } from "../code-formatter";
 
 export class CodeFormatterStylusTextStyles extends CodeFormatter {
   tokenIndent = ' ';
-  commentsAllowed = false;
 
   constructor() {
     super();
   }
 
-  formatToken({varName, varValue}) {
-    return `${varName}() ${varValue}\n`
+  getToken({tokenName, tokenValue}) {
+    return `${tokenName}() ${tokenValue}\n`
   }
 
-  handleVariableValue(styles: any) {
+  transformTokenValue(styles: any) {
     return Object.entries(styles).reduce((previousValue, [name, value]) => {
       const styleProperty = `\n   ${name}: ${value}`;
       return previousValue + styleProperty;

@@ -12,8 +12,8 @@ export class CodeFormatterCSS extends CodeFormatter {
     return `${comment}:root {\n`;
   }
 
-  formatToken({varName, varValue}) {
-    return `${this.tokenIndent}--${varName}: ${varValue};`
+  getToken({tokenName, tokenValue}) {
+    return `${this.tokenIndent}--${tokenName}: ${tokenValue};`
   }
 
   getCodeAfterTokens() {
