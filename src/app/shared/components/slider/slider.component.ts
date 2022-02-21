@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Subject } from 'rxjs';
+import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-slider',
@@ -18,13 +20,28 @@ export class SliderComponent implements OnInit {
   @Output() modelChange: EventEmitter<number> = new EventEmitter();
   @Output() afterModelChange: EventEmitter<number> = new EventEmitter();
 
+  private inputChange$ = new Subject<number>();
+  private destroy$ = new Subject();
+
   constructor() {}
 
-  ngOnInit() {}
-
-  onInputChange() {
-    this.modelChange.emit(this.model);
-    this.afterModelChange.emit(this.model);
+  ngOnInit() {
+    this.inputChange$.pipe(
+      takeUntil(this.destroy$),
+      debounceTime(300),
+      tap(() => {
+        this.modelChange.emit(this.model);
+        this.afterModelChange.emit(this.model);
+      })
+    ).subscribe();
   }
 
+  onInputChange() {
+    this.inputChange$.next();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
