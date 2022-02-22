@@ -24,22 +24,14 @@
     <nz-select
       [ngModel]="themes.selected"
       nzShowSearch
-      nzServerSearch
       (ngModelChange)="themes.selectTheme($event)"
-      nzOptionOverflowSize="7"
-      (nzOnSearch)="themes.search($event)"
     >
       <ng-container *ngFor="let item of themes.list">
         <nz-option
-         *ngIf="!themes.isLoading"
           [nzValue]="item"
           [nzLabel]="item.name"
         ></nz-option>
       </ng-container>
-
-      <nz-option *ngIf="themes.isLoading" nzDisabled nzCustomContent>
-        <i nz-icon nzType="loading" nzTheme="outline"></i>
-      </nz-option>
 
     </nz-select>
   </app-select-split-item>

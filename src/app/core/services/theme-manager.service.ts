@@ -29,8 +29,8 @@ export class ThemeManagerService {
   
   private _selected: ThemeModel = null;
   private _list: ThemeModel[] = [];
-  private searchChange$ = new BehaviorSubject('');
-  private isSearching = false;
+  // private searchChange$ = new BehaviorSubject('');
+  // private isSearching = false;
   private canSearch = false;
 
   private readonly DEFAULT_THEME_NAME = "new theme";
@@ -38,12 +38,12 @@ export class ThemeManagerService {
   constructor() {
     this.storage = browserStorageDB.theme;
 
-    this.searchChange$.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      tap(value => this.isSearching = Boolean(value)),
-      switchMap(themeName => this.getSearchResults(themeName))
-    ).subscribe();
+    // this.searchChange$.pipe(
+    //   debounceTime(500),
+    //   distinctUntilChanged(),
+    //   tap(value => this.isSearching = Boolean(value)),
+    //   switchMap(themeName => this.getSearchResults(themeName))
+    // ).subscribe();
   }
 
   async loadList() {
@@ -63,13 +63,13 @@ export class ThemeManagerService {
     localStorage.setItem('selectedThemeId', `${theme.id}`);
   }
 
-  search(themeName: string) {
-    if (!this.canSearch) {
-      this.canSearch = true;
-    }
+  // search(themeName: string) {
+  //   if (!this.canSearch) {
+  //     this.canSearch = true;
+  //   }
 
-    this.searchChange$.next(themeName);
-  }
+  //   this.searchChange$.next(themeName);
+  // }
 
 
   async add(name = this.DEFAULT_THEME_NAME) {
@@ -116,21 +116,21 @@ export class ThemeManagerService {
     this.selectTheme(nextSelectedTheme)
   }
 
-  getSearchResults(value: string) {
-    if (!this.canSearch) {
-      return of();
-    }
+  // getSearchResults(value: string) {
+  //   if (!this.canSearch) {
+  //     return of();
+  //   }
 
-    this.isLoading = true;
+  //   this.isLoading = true;
 
-    const collection = this.list.filter(theme => (
-      new RegExp(value, 'i').test(theme.name)
-    ));
+  //   const collection = this.list.filter(theme => (
+  //     new RegExp(value, 'i').test(theme.name)
+  //   ));
 
-    this.isLoading = false;
+  //   this.isLoading = false;
 
-    return collection;
-  }
+  //   return collection;
+  // }
 
   async clear() {
     for (let section of browserStorageDB.sections) {
