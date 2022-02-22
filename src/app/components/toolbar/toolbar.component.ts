@@ -16,7 +16,7 @@ export class ToolbarComponent implements OnInit {
     {name: 'Shadows', url: '/shadows', icon: '/assets/shadow.svg'},
     {name: 'Durations', url: 'durations', icon: '/assets/motion.svg'},
     {name: 'Borders', url: '/borders', icon: '/assets/border.svg'},
-    {name: 'Custom Tokens', url: '/custom-tokens', icon: '/assets/z-index.svg'},
+    {name: 'Custom Tokens', url: '/custom-tokens', icon: '/assets/more.svg'},
   ]
 
   constructor() {}

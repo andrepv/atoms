@@ -22,6 +22,7 @@
         <ng-template #tokenTemplate let-data>
           <div
             class="token-card token-interactive"
+            [class.token-editable]="data.isEditable(data.token.id)"
             (click)="data.openEditor()"
           >
             <div

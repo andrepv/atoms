@@ -47,6 +47,7 @@
           (click)="data.openEditor()"
           [token]="data.token"
           [group]="data.group"
+          [isEditable]="data.isEditable(data.token.id)"
         ></app-text-preview>
       </ng-template>
       

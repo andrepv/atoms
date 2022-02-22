@@ -34,6 +34,7 @@
             class="tr token-interactive"
             (click)="data.openEditor()"
             [ngClass]="{ even: even }"
+            [class.token-editable]="data.isEditable(data.token.id)"
           >
             <td><app-token-name [token]="token"></app-token-name></td>
             <td>{{ data.token.value }}</td>

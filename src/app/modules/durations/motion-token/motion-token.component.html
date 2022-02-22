@@ -1,4 +1,7 @@
-<div class="container token-interactive token-card">
+<div
+  class="container token-interactive token-card"
+  [class.token-editable]="isEditable"
+>
   <div class="header justify-between">
 
     <app-button-play

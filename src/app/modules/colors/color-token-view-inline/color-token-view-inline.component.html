@@ -7,6 +7,7 @@
 
   <div
     class="preview token-interactive flex-center"
+    [class.token-editable]="isEditable"
     [style.background]="token.color"
     (click)="openEditor(editor)"
   >

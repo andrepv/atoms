@@ -1,16 +1,14 @@
-@import "design-tokens";
-
 .header {
   margin-bottom: 4px;
-  padding: @space-xxs @space-sm;
-  background: @color-bg-30;
-  border-radius: @border-radius-sm @border-radius-sm 0 0;
+  padding: var(--space-xxs) var(--space-sm);
+  background: var(--color-bg-30);
+  border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
 }
 
 .body {
-  background: @color-bg-30;
-  padding: @space-lg @space-sm;
-  border-radius: 0 0 @border-radius-sm @border-radius-sm;
+  background: var(--color-bg-30);
+  padding: var(--space-lg) var(--space-sm);
+  border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
 }
 
 .collapse-content {
@@ -19,7 +17,7 @@
   }
 
   .header {
-    border-radius: @border-radius-md;
+    border-radius: var(--border-radius-md);
     margin-bottom: 0;
   }
 }

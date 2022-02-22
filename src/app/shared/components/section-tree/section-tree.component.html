@@ -33,7 +33,7 @@
             class="leaf"
             *ngFor="let token of group.tokens"
           >
-            <a [routerLink]="['./']"  [fragment]="'token-' + token.id">{{ token.name }}</a>
+            <a class="link" [routerLink]="['./']"  [fragment]="'token-' + token.id">{{ token.name }}</a>
           </div>
         </div>
       </div>

@@ -1,4 +1,3 @@
-@import "design-tokens";
 @import "styles";
 
 :host {
@@ -21,16 +20,16 @@
 }
 
 .categories {
-  background: @color-bg-30;
-  padding: @space-sm;
-  border-radius: @border-radius-sm;
-  margin-top: @space-xs;
+  background: var(--color-bg-30);
+  padding: var(--space-sm);
+  border-radius: var(--border-radius-sm);
+  margin-top: var(--space-xs);
 }
 
 .category {
   display: flex;
   justify-content: space-between;
-  margin-bottom: @space-xxs;
+  margin-bottom: var(--space-xxs);
 }
 
 .typeface-preview-block {
@@ -39,19 +38,19 @@
 
 .typeface-preview-text {
   cursor: pointer;
-  padding: @space-lg @space-sm;
-  background: @color-bg-30;
-  font-size: @text-md;
+  padding: var(--space-lg) var(--space-sm);
+  background: var(--color-bg-30);
+  font-size: var(--text-md);
 }
 
 .typeface-preview-info {
   display: flex;
   justify-content: space-between;
-  font-size: @text-sm;
-  color: @color-contrast-medium;
-  margin-top: @space-xxs;
+  font-size: var(--text-sm);
+  color: var(--color-contrast-medium);
+  margin-top: var(--space-xxs);
 }
 
 .ant-list-split .ant-list-item {
-  border-bottom: 1px solid @color-border;
+  border-bottom: 1px solid var(--color-border);
 }

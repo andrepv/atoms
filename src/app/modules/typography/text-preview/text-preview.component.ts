@@ -11,6 +11,7 @@ import TextStyles from '../text-styles-managers/text-styles';
 export class TextPreviewComponent implements OnInit {
   @Input() token: TextStylesDBToken;
   @Input() group: TextStylesDBGroup;
+  @Input() isEditable = false;
 
   styles: TextStyles;
 

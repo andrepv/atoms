@@ -1,4 +1,3 @@
-@import "design-tokens";
 @import "styles";
 
 :host {
@@ -7,17 +6,17 @@
 
 .item {
   cursor: pointer;
-  background: @color-bg-30;
+  background: var(--color-bg-30);
   border-radius: 0;
   margin-right: 4px;
   height: 100%;
 
   &.first {
-    border-radius: @border-radius-md 0 0 @border-radius-md;
+    border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
   }
   &.last {
     margin-right: 0;
-    border-radius: 0 @border-radius-md @border-radius-md 0;
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
   }
 }
 
@@ -26,10 +25,10 @@
   align-items: center;
   justify-content: center;
   padding: 0 13px;
-  transition: all 0.3s @ease-in-out;
+  transition: all 0.3s;
   border: 1px solid transparent;
 
   &.active, &:hover {
-    border: 1px solid @color-primary;
+    border: 1px solid var(--color-primary);
   }
 }

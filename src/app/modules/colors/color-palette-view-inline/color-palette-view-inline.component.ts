@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { SectionContentEditorService } from '@core/services/section-content-editor.service';
 import { CacheGroup } from '@core/core-types';
+import SectionManagerContentService from '@core/services/section-manager-content.service';
 
 @Component({
   selector: 'app-color-palette-view-inline',
@@ -9,7 +11,10 @@ import { CacheGroup } from '@core/core-types';
 export class ColorPaletteViewInlineComponent implements OnInit {
   @Input() group: CacheGroup;
 
-  constructor() { }
+  constructor(
+    public editor: SectionContentEditorService,
+    public section: SectionManagerContentService,
+  ) { }
 
   ngOnInit() {}
 

@@ -13,6 +13,7 @@ export class ColorTokenViewInlineComponent implements OnInit {
   @Input() group: CacheGroup;
   @Input() token: CacheToken;
   @Input() tooltipPosition = "top";
+  @Input() isEditable = false;
 
   constructor(
     private section: SectionManagerContentService,

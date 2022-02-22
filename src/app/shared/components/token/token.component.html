@@ -1,5 +1,5 @@
 <div [id]="'token-' + token.id" class="wrapper">
-  <ng-container *ngTemplateOutlet="previewTemplate; context: {$implicit: {token: token, group: group, openEditor: openEditor}}"></ng-container>
+  <ng-container *ngTemplateOutlet="previewTemplate; context: {$implicit: {token: token, group: group, openEditor: openEditor, isEditable: isEditable}}"></ng-container>
   
   <app-token-actions
     [token]="token"

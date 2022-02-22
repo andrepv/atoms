@@ -33,6 +33,7 @@
           (click)="data.openEditor()"
           [duration]="data.token.modularScaleTokenValue"
           [isActive]="isActive"
+          [isEditable]="data.isEditable(data.token.id)"
         ></app-motion-token>
       </ng-template>
 

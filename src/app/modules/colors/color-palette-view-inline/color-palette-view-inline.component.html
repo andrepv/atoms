@@ -5,6 +5,7 @@
   <app-color-token-view-inline
     [token]="token"
     [group]="group"
+    [isEditable]="editor.isTokenEditable(token.id, section.name)"
   ></app-color-token-view-inline>
 
 </ng-container>

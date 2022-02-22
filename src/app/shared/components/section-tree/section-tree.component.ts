@@ -8,7 +8,7 @@ import SectionManagerContentService from '@core/services/section-manager-content
 })
 export class SectionTreeComponent implements OnInit {
   @Input() groups = [];
-  private hiddenNodes = new Set();
+  private expandedNodes = new Set([0]);
 
   constructor(public section: SectionManagerContentService) {}
 
@@ -16,13 +16,13 @@ export class SectionTreeComponent implements OnInit {
 
   toggleNode(nodeId: number) {
     if (this.isNodeHidden(nodeId)) {
-      this.hiddenNodes.delete(nodeId);
+      this.expandedNodes.add(nodeId);
     } else {
-      this.hiddenNodes.add(nodeId)
+      this.expandedNodes.delete(nodeId)
     }
   }
 
   isNodeHidden(nodeId: number) {
-    return this.hiddenNodes.has(nodeId);
+    return !this.expandedNodes.has(nodeId);
   }
 }

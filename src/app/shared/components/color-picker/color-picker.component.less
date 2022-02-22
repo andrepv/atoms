@@ -1,13 +1,13 @@
-@import "design-tokens";
 @import "mixins";
 @import "styles";
 
-@popover-width: 230px;
-@popover-max-height: 360px;
+.ant-radio-group {
+  font-size: 16px;
+}
 
 .color-picker-popover {
-  width: @popover-width;
-  max-height: @popover-max-height;
+  width: 230px;
+  max-height: 360px;
 
   .color-picker-container {
     & > input {
@@ -20,16 +20,16 @@
       .anticon {
         cursor: pointer;
         &.active {
-          color: @color-primary;
+          color: var(--color-primary);
         }
       }
     }
-  
+
     .color-presets-source {
       span {
-        font-size: @text-sm;
-        margin-right: @space-xs;
-        color: @color-contrast-high;
+        font-size: var(--text-sm);
+        margin-right: var(--space-xs);
+        color: var(--color-contrast-high);
         font-weight: 500;
       }
     }  
@@ -40,59 +40,54 @@
     overflow-y: scroll;
     margin-left: -6%;
     width: 112%;
-  
 
     .theme-name {
       padding-left: 6%;
-      color: @color-contrast-high;
-      font-size: @text-sm;
+      color: var(--color-contrast-high);
+      font-size: var(--text-sm);
       font-weight: 500;
-      margin-bottom: @space-xxs;
+      margin-bottom: var(--space-xxs);
     }
   
     .theme-color-presets:not(:last-child) {
-      margin-bottom: @space-lg;
+      margin-bottom: var(--space-lg);
     }
   }
 }
-
-@color-preview-width: 15px;
-@color-preview-height: 30px;
 
 .color-preview-wrapper {
   display: flex;
   align-items: center;
   cursor: pointer;
-
 }
 
 .color-preview {
-  width: @color-preview-width;
-  height: @color-preview-height;
-  border-radius: @border-radius-sm 0 0 @border-radius-sm;
+  width: 15px;
+  height: 30px;
+  border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
   margin-right: 4px;
 }
 
 .color-preview-hex-text {
-  background: @color-bg-30;
-  padding: 0 @space-sm;
-  border-radius: 0 @border-radius-sm @border-radius-sm 0;
-  height: @color-preview-height;
+  background: var(--color-bg-30);
+  padding: 0 var(--space-sm);
+  border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: @text-sm;
+  font-size: var(--text-sm);
   text-transform: uppercase;
   border: 1px solid transparent;
   flex-grow: 1;
   &:hover {
-    border: 1px solid @color-primary;
-    transition: all @animation-duration-slow;
+    border: 1px solid var(--color-primary);
+    transition: all 0.3s;
   }
 }
 
 .light-mode {
   .color-preview-hex-text {
-    background-color: @color-bg-15;
+    background-color: var(--color-bg-15);
   }
 }

@@ -30,6 +30,7 @@
             <app-color-token-view-inline
               [token]="tints"
               [group]="data.group"
+              [isEditable]="data.isEditable(tints.id)"
               tooltipPosition="bottom"
             ></app-color-token-view-inline>
           </ng-container>
@@ -40,6 +41,7 @@
   
       <div
         class="color-primary token-interactive"
+        [class.token-editable]="data.isEditable(data.token.id)"
         [style.background]="data.token.color"
         (click)="data.openEditor()"
       >
@@ -57,6 +59,7 @@
             <app-color-token-view-inline
               [token]="shades"
               [group]="data.group"
+              [isEditable]="data.isEditable(shades.id)"
             ></app-color-token-view-inline>
           </ng-container>
         </ng-container>

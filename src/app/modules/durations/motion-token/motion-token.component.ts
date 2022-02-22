@@ -16,6 +16,7 @@ import { ButtonPlayState } from '../button-play/button-play.component';
 })
 export class MotionTokenComponent implements OnInit {
   @Input() duration: number;
+  @Input() isEditable = false;
 
   @Input() set isActive(value: false) {
     if (!value && this._isActive) {

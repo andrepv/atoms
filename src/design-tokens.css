@@ -6,7 +6,7 @@
   --color-primary-20: #8e71d8;
   --color-primary-30: #52379f;
   --color-primary-40: #3c2874;
-  
+
   --color-bg-10: #393a3b;
   --color-bg-15: #2a2c2e;
   --color-bg-20: #242628;
@@ -49,6 +49,7 @@
   --space-lg: 1.25em;
   --space-xl: 1.5625em;
   --space-xxl: 1.9375em;
+  --space-xxxl: 3.125em;
 
   /* borders */
 

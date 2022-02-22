@@ -1,5 +1,9 @@
 <ng-container *ngIf="group.view === 'detailed'">
-  <div [style]="styles.block" class="text-preview token-interactive">
+  <div
+    [style]="styles.block"
+    class="text-preview token-interactive"
+    [class.token-editable]="isEditable"
+  >
     <p class="text" [style]="styles.text">{{ text }}</p>
 
     <div class="text-styles-info justify-between">
@@ -24,11 +28,19 @@
 </ng-container>
 
 <ng-container *ngIf="group.view === 'default'">
-  <div class="text-preview minimal token-interactive" [style]="styles.block">
+  <div
+    class="text-preview minimal token-interactive"
+    [class.token-editable]="isEditable"
+    [style]="styles.block"
+  >
     <p [style]="styles.text">{{ text }}</p>
   </div>
 </ng-container>
 
 <ng-container *ngIf="group.view === 'minimal'">
-  <p class="token-interactive" [style]="styles.text">{{ text }}</p>
+  <p
+    class="token-interactive"
+    [class.token-editable]="isEditable"
+    [style]="styles.text"
+  >{{ text }}</p>
 </ng-container>

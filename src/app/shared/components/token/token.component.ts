@@ -31,4 +31,8 @@ export class TokenComponent implements OnInit {
       this.editorTemplateRef
     )
   }
+
+  isEditable = (tokenId: number) => {
+    return this.editor.isTokenEditable(tokenId, this.section.name);
+  }
 }

@@ -17,6 +17,7 @@
     <div
       class="color-preview token-interactive"
       [style.background]="data.token.color"
+      [class.token-editable]="data.isEditable(data.token.id)"
       (click)="data.openEditor()"
     >
       <h4

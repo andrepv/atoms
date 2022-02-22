@@ -38,6 +38,7 @@
         <ng-template #tokenTemplate let-data>
           <div
             class="tr token-interactive"
+            [class.token-editable]="data.isEditable(data.token.id)"
             [ngClass]="{ even: even }"
             (click)="data.openEditor()"
           >

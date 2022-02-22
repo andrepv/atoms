@@ -1,23 +1,22 @@
-@import "design-tokens";
 @import "styles";
 
 .color-item {
-  font-size: @text-sm;
-  padding: @space-xxs 0;
+  font-size: var(--text-sm);
+  padding: var(--space-xxs) 0;
   cursor: pointer;
   padding-left: 6%;
-  transition: all @animation-duration-base;
+  transition: all 0.3s;
 
   &:hover {
-    background-color: @color-bg-20;
+    background-color: var(--color-bg-20);
   }
 }
 
 .color-preview {
   width: 25px;
   height: 25px;
-  margin-right: @space-sm;
-  border-radius: @border-radius-sm;
+  margin-right: var(--space-sm);
+  border-radius: var(--border-radius-sm);
 }
 
 .grid {
