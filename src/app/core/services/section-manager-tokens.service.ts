@@ -44,8 +44,10 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
   async add(token: T, container: any[]) {
     const tokenId = await this.storage.add(token);
     if (tokenId) {
-      const newToken = {id: tokenId, ...token};
-      this.addToCache(newToken, container)
+      const name = this.getDefaultTokenName(tokenId);
+      const newToken = {id: tokenId, ...token, name};
+      this.addToCache(newToken, container);
+      await this.rename(name, newToken);
       return newToken;
     }
   }
@@ -73,6 +75,22 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
 
   getStyleValue(token: T, group?: G): any {
     return "";
+  }
+
+  getDefaultTokenName(tokenId: number) {
+    const name = {
+      "Type Face": 'font-family',
+      "Text Styles": 'text',
+      "Spacing": 'space',
+      "Color Palette": 'color',
+      "Box Shadow": 'box-shadow',
+      "Border Radius": 'border-radius',
+      "Borders": 'border',
+      "Durations": 'timing',
+      "Custom Tokens": 'token',
+    }
+
+    return `${name[this.sectionName]}-${tokenId}`;
   }
 
   addCustomIterator(tokens: T[]): T[] {
