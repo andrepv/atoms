@@ -16,7 +16,7 @@ export class BordersComponent implements OnInit {
       name: this.PAGE_NAME,
       content: {
         "Borders": [],
-        "Border Radius": [],
+        "Corner Radii": [],
       }
     });
   }

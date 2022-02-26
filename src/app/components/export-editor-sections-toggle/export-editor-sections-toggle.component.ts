@@ -12,13 +12,13 @@ export class ExportEditorSectionsToggleComponent implements OnInit {
   @Output() includeSection: EventEmitter<string> = new EventEmitter();
 
   sections: {label: string; value: SectionNames; checked: boolean}[] = [
-    { label: 'TypeFace', value: 'Type Face', checked: true },
+    { label: 'TypeFace', value: 'Typefaces', checked: true },
     { label: 'Text Styles', value: 'Text Styles', checked: true },
     { label: 'Color Palette', value: 'Color Palette', checked: true },
     { label: 'Spacing', value: 'Spacing', checked: true },
     { label: 'Box Shadow', value: 'Box Shadow', checked: true },
     { label: 'Borders', value: 'Borders', checked: true },
-    { label: 'Border Radius', value: 'Border Radius', checked: true },
+    { label: 'Corner Radii', value: 'Corner Radii', checked: true },
     { label: 'Durations', value: 'Durations', checked: true },
     { label: 'Custom Tokens', value: 'Custom Tokens', checked: true },
   ];

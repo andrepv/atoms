@@ -38,7 +38,7 @@ export default class TextStylesManagerTokensService extends ModularScaleManagerT
       return defaultFontFamily;
     }
 
-    const typeface: CacheToken<TypefaceDBToken> | false = this.cache.getSectionToken('Type Face', typefaceId);
+    const typeface: CacheToken<TypefaceDBToken> | false = this.cache.getSectionToken('Typefaces', typefaceId);
 
     if (typeface) {
       return typeface.family

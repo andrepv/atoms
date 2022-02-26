@@ -25,5 +25,5 @@ export const TYPEFACE_DB_DATA: DBSectionData = {
   tableGroupName: 'typeface',
   tokenTableName: 'typefaceToken',
   groupTableName: 'typefaceGroup',
-  name: 'Type Face',
+  name: 'Typefaces',
 }

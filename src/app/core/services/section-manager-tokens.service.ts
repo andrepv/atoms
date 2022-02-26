@@ -79,12 +79,12 @@ export default class SectionManagerTokensService<T extends StorageToken = any, G
 
   getDefaultTokenName(tokenId: number) {
     const name = {
-      "Type Face": 'font-family',
+      "Typefaces": 'font-family',
       "Text Styles": 'text',
       "Spacing": 'space',
       "Color Palette": 'color',
       "Box Shadow": 'box-shadow',
-      "Border Radius": 'border-radius',
+      "Corner Radii": 'border-radius',
       "Borders": 'border',
       "Durations": 'timing',
       "Custom Tokens": 'token',

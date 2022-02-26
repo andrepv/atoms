@@ -80,7 +80,7 @@ export class TextStylesEditorComponent implements OnInit {
   private async getVariants() {
     const typefaceId = this.token.typefaceId || this.group.typefaceId;
 
-    const typeface = this.cache.getSectionToken('Type Face', typefaceId);
+    const typeface = this.cache.getSectionToken('Typefaces', typefaceId);
 
     if (typeface) {
 

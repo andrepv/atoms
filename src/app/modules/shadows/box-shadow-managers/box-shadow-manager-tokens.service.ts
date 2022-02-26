@@ -6,18 +6,18 @@ import { BoxShadowDBToken, BoxShadowLayer } from "@shadows/box-shadow-section/bo
 @Injectable()
 export default class BoxShadowManagerTokensService extends SectionManagerTokensService<BoxShadowDBToken, StorageGroup> {
   readonly DEFAULT_LAYER_VALUE: BoxShadowLayer = {
-    offsetX: '17px',
-    offsetY: '17px',
+    offsetX: '9px',
+    offsetY: '9px',
     blur: '12px',
-    spread: '2px',
-    color: '#2e475a',
+    spread: '0',
+    color: '#9B9B9B',
     inset: ''
   }
 
   getDefaultValue() {
     return {
-      backgroundColor: "#ffffff",
-      blockColor: "#2d2d2d",
+      backgroundColor: "#DCDCDC",
+      blockColor: "#ffffff",
       layers: [this.DEFAULT_LAYER_VALUE]
     }
   }

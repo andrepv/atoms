@@ -9,5 +9,5 @@ export const BORDER_RADIUS_DB_DATA: DBSectionData = {
   tableGroupName: 'borderRadius',
   tokenTableName: 'borderRadiusToken',
   groupTableName: 'borderRadiusGroup',
-  name: 'Border Radius',
+  name: 'Corner Radii',
 }

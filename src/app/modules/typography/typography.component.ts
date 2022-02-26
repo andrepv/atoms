@@ -15,7 +15,7 @@ export class TypographyComponent implements OnInit {
     this.cache.addPage({
       name: this.PAGE_NAME,
       content: {
-        "Type Face": [],
+        "Typefaces": [],
         "Text Styles": [],
       }
     });

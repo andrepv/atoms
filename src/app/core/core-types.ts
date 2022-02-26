@@ -1,6 +1,6 @@
 import { StorageEntityManager, StorageToken, StorageGroup } from "./storages/storages-types";
 
-export type SectionNames = "Type Face" | "Text Styles" | "Spacing" | "Color Palette" | "Box Shadow" | "Border Radius" | "Borders" | "Durations" | "Custom Tokens";
+export type SectionNames = "Typefaces" | "Text Styles" | "Spacing" | "Color Palette" | "Box Shadow" | "Corner Radii" | "Borders" | "Durations" | "Custom Tokens";
 
 export type PageName = "Typography" | "Colors" | "Spacing" | "Shadows" | "Borders" | "Durations" | "Custom Tokens";
 

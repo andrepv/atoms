@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ThemeManagerService } from '@core/services/theme-manager.service';
 import { browserStorageDB } from '@core/storages/browser-storage/browser-storage-db';
 import { StorageGroup, StorageToken } from '@core/storages/storages-types';
+import { getPrebuiltTheme } from './get-prebuilt-theme';
 
 @Component({
   selector: 'app-start-page',
@@ -11,8 +12,8 @@ import { StorageGroup, StorageToken } from '@core/storages/storages-types';
   styleUrls: ['./start-page.component.less']
 })
 export class StartPageComponent implements OnInit {
-  themeName = "";
-  radioValue: "empty" | "prebuilt" = "empty";
+  themeName = "theme";
+  radioValue: "empty" | "prebuilt" = "prebuilt";
   isLoading = false;
 
   constructor(
@@ -35,6 +36,20 @@ export class StartPageComponent implements OnInit {
         await this.fillTheme(theme.id);
       }
 
+      const exportConfigs = await browserStorageDB.exportConfigs.loadList();
+
+      if (!exportConfigs.length) {
+        await browserStorageDB.exportConfigs.table.add({
+          excludedSections: [],
+          fileName: "design-tokens",
+          format: "css",
+          id: 1,
+          name: "My export",
+          prefix: "",
+          showComments: true,
+        }, 1);
+      }
+
       this.router.navigate(['']);
     } finally {
       this.isLoading = false;
@@ -42,153 +57,21 @@ export class StartPageComponent implements OnInit {
   }
 
   async fillTheme(themeId: number) {
-    const data = {
-      "Borders": {
-        groups: [
-          {name: 'borders',themeId, id: 1}
-        ],
-        tokens: [
-          {id: 1, groupId: 1, name: 'border-1', themeId, color: "#000", width: 4, style: "solid"},
-          {id: 2, groupId: 1, name: 'border-2', themeId, color: "#fff", width: 8, style: "dotted",}
-      ],
-      },
-      "Custom Tokens": {
-        groups: [
-          {name: 'z-index', themeId, id: 1},
-          {name: 'opacity', themeId, id: 2},
-        ],
-        tokens: [
-          {id: 1, name: 'z-index-1', groupId: 1, themeId, value: '1'},
-          {id: 2, name: 'z-index-2', groupId: 1, themeId, value: '2'},
-          {id: 3, name: 'opacity-0', groupId: 2, themeId, value: '0'},
-          {id: 4, name: 'opacity-1', groupId: 2, themeId, value: '1'},
-        ],
-      },
-      "Spacing": {
-        groups: [
-          {id: 1, name: 'spacing', themeId, scale: {scaleRatio: 1.067, base: 16}}
-        ],
-        tokens: [
-          {id: 1, groupId: 1, name: 'spacing-10', themeId, value: 14.054},
-          {id: 2, groupId: 1, name: 'spacing-20', themeId, value: 14.995},
-          {id: 3, groupId: 1, name: 'spacing-base', themeId, value: 16},
-        ],
-      },
-      "Durations": {
-        groups: [
-          {id: 1, name: 'group', themeId, scale: {scaleRatio: 1.125, base: 140}}
-        ],
-        tokens: [
-          {id: 1, groupId: 1, name: 'durations-10', themeId, value: 110.617},
-          {id: 2, groupId: 1, name: 'durations-20', themeId, value: 124.444},
-          {id: 3, groupId: 1, name: 'durations-base', themeId, value: 140},
-        ],
-      },
-      "Box Shadow": {
-        groups: [{id: 1, name: 'group', themeId}],
-        tokens: [{
-          id: 1,
-          groupId: 1,
-          name: 'box-shadow-1',
-          themeId,
-          backgroundColor: '#ffffff',
-          blockColor: '#2d2d2d',
-          layers: [{
-            blur: "12px",
-            color: "#2e475a",
-            inset: "",
-            offsetX: "17px",
-            offsetY: "17px",
-            spread: "2px",
-          }]
-        }],
-      },
-      "Color Palette": {
-        groups: [{id: 1, name: 'primary-color', themeId}],
-        tokens: [
-          {
-            id: 1,
-            name: "primary-color",
-            color: "#9038ce",
-            isPrimary: true,
-            groupId: 1,
-            themeId,
-            shadeConfigs: {mixRatio: 63, saturation: 1},
-            tintConfigs: {saturation: 1, mixRatio: 63},
-          },
-          {
-            id: 2,
-            color: "#b579de",
-            groupId: 1,
-            isPrimary: false,
-            name: "primary-color-100",
-            primaryColorId: 1,
-            themeId,
-            type: "tint"
-          },
-          {
-            id: 3,
-            color: "#d6b5ed",
-            groupId: 1,
-            isPrimary: false,
-            name: "primary-color-50", 
-            primaryColorId: 1,
-            themeId,
-            type: "tint"
-          },
-          {
-            id: 4,
-            color: "#61268a",
-            groupId: 1,
-            isPrimary: false,
-            name: "primary-color-200",
-            primaryColorId: 1,
-            themeId,
-            type: "shade"
-          },
-          {
-            id: 5,
-            color: "#35154c",
-            groupId: 1,
-            isPrimary: false,
-            name: "primary-color-300",
-            primaryColorId: 1,
-            themeId,
-            type: "shade"
-          },
-        ],
-      },
-      "Type Face": {
-        groups: [
-          {name: 'group', themeId, id: 1},
-        ],
-        tokens: [{
-          id: 1,
-          category: "display",
-          data: "",
-          family: "Poiret One",
-          groupId: 1,
-          name: "token-yu7CIUSwqf",
-          subsets: ['cyrillic', 'latin', 'latin-ext'],
-          themeId,
-          type: "google-fonts",
-          variants: ['regular'],
-        }]
-      }
-    }
+    const theme = getPrebuiltTheme(themeId)
 
     for (let tables of browserStorageDB.sections) {
-      const groups: StorageGroup[] = data[tables.name]?.groups;
-      const tokens: StorageToken[] = data[tables.name]?.tokens;
+      const sectionName = tables?.sectionName;
+      const groups: StorageGroup[] = theme[sectionName]?.groups;
+      const tokens: StorageToken[] = theme[sectionName]?.tokens;
 
       if (groups) {
         for (let group of groups) {
-          await tables.groupTable.add(group, group.id);
+          await tables.groups.table.add(group, group.id);
         }
 
         if (tokens) {
           for (let token of tokens) {
-            await tables.tokenTable.add(token, token.id);
+            await tables.tokens.table.add(token, token.id);
           }
         }
       }

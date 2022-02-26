@@ -1,6 +1,8 @@
 @import "styles";
 @import "design-tokens.css";
 
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 ul {
   padding: 0;
 }
@@ -279,6 +281,11 @@ h5 {
 
 // radio
 
+.ant-radio-wrapper {
+  display: flex;
+  align-items: center;
+}
+
 .ant-radio-group {
   width: 100%;
   display: flex;
@@ -291,12 +298,14 @@ h5 {
 }
 
 .ant-radio-button-wrapper-checked:not([class*=' ant-radio-button-wrapper-disabled']).ant-radio-button-wrapper:first-child {
+  border-color: transparent;
   border-right-color: var(--color-bg-30);
 }
 
 .ant-radio-button-wrapper:hover,
 .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
   color: var(--color-contrast-higher);
+  border-color: var(--color-bg-30);
 }
 
 .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
@@ -413,7 +422,6 @@ h5 {
   
     .saturation-lightness {
       border-radius: var(--border-radius-sm);
-      height: 150px;
     }
   
     .cursor {
