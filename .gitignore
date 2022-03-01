@@ -44,3 +44,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+.github/workflows/firebase-hosting-pull-request.yml
+.github/workflows/firebase-hosting-merge.yml
+.firebase/hosting.ZGlzdFx1aS10aGVtZS1idWlsZGVy.cache
+firebase.json
+.firebaserc
