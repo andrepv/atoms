@@ -1,27 +1,39 @@
-# UiThemeBuilder
+The graphical tool that can help you create and manage the building blocks of your design system (so-called design tokens: color palette, typography, spacing, etc.) and export them to the desired format.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.2.0.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- Themes are stored in one place, you can conveniently switch between them;
 
-## Code scaffolding
+- Organize your design elements into groups.
+	- Duplicate groups within the same theme
+	- Use copy/past to duplicate groups between different themes
+- Generate typography, spacing, animation duration based on ratios
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+	![](https://raw.githubusercontent.com/andrepv/atoms/master/images/screenshots/screenshot-5.png?token=GHSAT0AAAAAABJ7OUJ2Y4VSEXSVSZJCO2UUYQ6ISAA)
 
-## Build
+- Use flexible tools to generate a color palette
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+- Check accessibility of color contrasts
 
-## Running unit tests
+	![](https://raw.githubusercontent.com/andrepv/atoms/master/images/screenshots/screenshot-1.png?token=GHSAT0AAAAAABJ7OUJ3735IQ5NJM6AEETTYYQ6ITMA)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- Export themes to various formats and build components based on them using various technologies. Currently, the following formats are available: javascript, css, sass, scss, less, stylus.javascript, css, sass, scss, less, stylus
 
-## Running end-to-end tests
+	![](https://raw.githubusercontent.com/andrepv/atoms/master/images/screenshots/screenshot-3.png?token=GHSAT0AAAAAABJ7OUJ3N2FMID6GDRACJTOQYQ6IWCQ)
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+- Save and use various export configurations
 
-## Further help
+	![](https://raw.githubusercontent.com/andrepv/atoms/master/images/screenshots/screenshot-4.png?token=GHSAT0AAAAAABJ7OUJ2XQVA3N62LXIIFOVAYQ6IYZQ)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- Google fonts integration
+
+	![](https://raw.githubusercontent.com/andrepv/atoms/master/images/screenshots/screenshot-2.png?token=GHSAT0AAAAAABJ7OUJ2EQ4NWCVTNY45R4NGYQ6I3EA)
+
+*more features coming soon*...
+
+Note: all data is stored locally on the client.
+
+------------
+
+What features would you like to see, I will be glad to your suggestions?
