@@ -18,7 +18,7 @@ The graphical tool that can help you create and manage the building blocks of yo
 
 	![](https://raw.githubusercontent.com/andrepv/atoms/master/images/screenshots/screenshot-1.png?token=GHSAT0AAAAAABJ7OUJ2GFCHEXTEQF2BFZYCYQ7NZUA)
 
-- Export themes to various formats and build components based on them using various technologies. Currently, the following formats are available: javascript, css, sass, scss, less, stylus.javascript, css, sass, scss, less, stylus
+- Export themes to various formats and build components based on them using various technologies. Currently, the following formats are available: javascript, css, sass, scss, less, stylus
 
 	![](https://raw.githubusercontent.com/andrepv/atoms/master/images/screenshots/screenshot-3.png?token=GHSAT0AAAAAABJ7OUJ3LO2BD3CDMXESSOPCYQ7N2QA)
 
@@ -36,4 +36,4 @@ Note: all data is stored locally on the client.
 
 ------------
 
-What features would you like to see, I will be glad to your suggestions?
+What features would you like to see, I will be glad to receive your feedback and ideas?
